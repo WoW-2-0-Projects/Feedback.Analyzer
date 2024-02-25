@@ -12,6 +12,7 @@ public static partial class HostConfiguration
         builder
             .AddExposers()
             .AddDevTools();
+        
         return new(builder);
     }
     
@@ -23,6 +24,7 @@ public static partial class HostConfiguration
     public static  ValueTask<WebApplication> ConfigureAsync(this WebApplication app)
     {
         app.UseDevTools().UseExposers();
+        
         return new (app);
     }
 
