@@ -2,6 +2,11 @@
 
 public static partial class HostConfigurations
 {
+    /// <summary>
+    /// Configures the web application asynchronously.
+    /// </summary>
+    /// <param name="builder">The <see cref="WebApplicationBuilder"/> instance to configure.</param>
+    /// <returns>A <see cref="ValueTask"/> representing the asynchronous operation, containing the updated <see cref="WebApplicationBuilder"/> instance.</returns>
     public static ValueTask<WebApplicationBuilder> ConfigureAsync(this WebApplicationBuilder builder)
     {
         builder
@@ -10,6 +15,11 @@ public static partial class HostConfigurations
         return new(builder);
     }
     
+    /// <summary>
+    /// Configures the web application asynchronously.
+    /// </summary>
+    /// <param name="app">The <see cref="WebApplication"/> instance to configure.</param>
+    /// <returns>A <see cref="ValueTask"/> representing the asynchronous operation, containing the same <see cref="WebApplication"/> instance.</returns>
     public static async ValueTask<WebApplication> ConfigureAsync(this WebApplication app)
     {
         return app;
