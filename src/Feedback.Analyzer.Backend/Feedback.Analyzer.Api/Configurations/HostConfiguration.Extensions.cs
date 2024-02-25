@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
-public static partial class HostConfigurations
+public static partial class HostConfiguration
 {
     /// <summary>
     /// Adds persistence-related services to the web application builder.
