@@ -5,7 +5,7 @@
 /// This class inherits from the IEntity interface and implements its Id property.
 /// Use this class as a base for more specific entity types that require additional properties and behaviors.
 /// </summary>
-public class Entity : IEntity
+public abstract class Entity : IEntity
 {
     /// <summary>
     /// Gets or sets the unique identifier of the entity. This identifier should be globally unique within the system.

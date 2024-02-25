@@ -5,7 +5,7 @@
 /// `SoftDeletedEntity` and `IModificationAuditableEntity`, providing properties for tracking creation, modification,
 /// and soft deletion timestamps, as well as the identifier of the user who last modified the entity.
 /// </summary>
-public class AuditableEntity : SoftDeletedEntity, IAuditableEntity
+public abstract class AuditableEntity : SoftDeletedEntity, IAuditableEntity
 {
     /// <summary>
     /// Gets or sets the date and time when the entity was created. This value is typically set automatically by the

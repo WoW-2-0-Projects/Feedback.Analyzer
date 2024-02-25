@@ -13,5 +13,5 @@ public interface IModificationAuditableEntity
     /// <value>
     /// The identifier of the user who last modified the entity.
     /// </value>
-    public Guid ModifiedBUserId { get; set; }
+    public Guid ModifiedByUserId { get; set; }
 }
