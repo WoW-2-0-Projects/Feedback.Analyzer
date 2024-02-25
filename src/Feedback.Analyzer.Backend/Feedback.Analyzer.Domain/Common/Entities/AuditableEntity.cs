@@ -1,9 +1,7 @@
 ﻿namespace Feedback.Analyzer.Domain.Common.Entities;
 
 /// <summary>
-/// Represents an entity that combines soft deletion with auditing capabilities. This class inherits from both
-/// `SoftDeletedEntity` and `IModificationAuditableEntity`, providing properties for tracking creation, modification,
-/// and soft deletion timestamps, as well as the identifier of the user who last modified the entity.
+/// Represents an abstract class providing audit functionality for entities, inheriting properties from SoftDeletedEntity and implementing IAuditableEntity.
 /// </summary>
 public abstract class AuditableEntity : SoftDeletedEntity, IAuditableEntity
 {
