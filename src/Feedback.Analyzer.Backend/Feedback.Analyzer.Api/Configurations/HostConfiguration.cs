@@ -1,27 +1,32 @@
-﻿namespace Feedback.Analyzer.Api.Configurations;
+namespace Feedback.Analyzer.Api.Configurations;
 
 public static partial class HostConfiguration
 {
     /// <summary>
-    /// Configures the web application asynchronously.
+    /// Configures application builder
     /// </summary>
-    /// <param name="builder">The <see cref="WebApplicationBuilder"/> instance to configure.</param>
-    /// <returns>A <see cref="ValueTask"/> representing the asynchronous operation, containing the updated <see cref="WebApplicationBuilder"/> instance.</returns>
+    /// <param name="builder">Application builder</param>
+    /// <returns>Application builder</returns>
     public static ValueTask<WebApplicationBuilder> ConfigureAsync(this WebApplicationBuilder builder)
     {
         builder
-            .AddPersistence();
+            .AddExposers()
+            .AddDevTools();
         
         return new(builder);
     }
     
     /// <summary>
-    /// Configures the web application asynchronously.
+    /// Configures application
     /// </summary>
-    /// <param name="app">The <see cref="WebApplication"/> instance to configure.</param>
-    /// <returns>A <see cref="ValueTask"/> representing the asynchronous operation, containing the same <see cref="WebApplication"/> instance.</returns>
-    public static async ValueTask<WebApplication> ConfigureAsync(this WebApplication app)
+    /// <param name="app">Application host</param>
+    /// <returns>Application host</returns>
+    public static  ValueTask<WebApplication> ConfigureAsync(this WebApplication app)
     {
-        return app;
+        app.UseDevTools().UseExposers();
+        
+        return new (app);
     }
+
 }
+            .AddPersistence();
