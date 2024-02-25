@@ -1,7 +1,29 @@
-﻿namespace Feedback.Analyzer.Api.Configurations;
+﻿using System.Reflection;
+
+namespace Feedback.Analyzer.Api.Configurations;
 
 public static partial class HostConfiguration
 {
+    private static readonly ICollection<Assembly> Assemblies;
+
+    static HostConfiguration()
+    {
+        Assemblies = Assembly.GetExecutingAssembly().GetReferencedAssemblies().Select(Assembly.Load).ToList();
+        Assemblies.Add(Assembly.GetExecutingAssembly());
+    }
+    
+    /// <summary>
+    /// Adds MediatR services to the application with custom service registrations.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddMediatR(conf => { conf.RegisterServicesFromAssemblies(Assemblies.ToArray()); });
+
+        return builder;
+    }
+
     /// <summary>
     ///  Configures exposers including controllers and routing.
     /// </summary>
