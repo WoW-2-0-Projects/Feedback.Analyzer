@@ -12,7 +12,7 @@ public interface ICommand<out TResult> : ICommand, IRequest<TResult>
 }
 
 /// <summary>
-/// Marker interface for commands.
+/// Defines interface for commands.
 /// </summary>
 public interface ICommand
 {

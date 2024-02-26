@@ -11,7 +11,7 @@ public interface IQuery<out TResult> : IRequest<TResult>, IQuery
 }
 
 /// <summary>
-/// Marker interface for queries in a CQRS architecture.
+/// Defines interface for queries in a CQRS architecture.
 /// </summary>
 public interface IQuery
 {

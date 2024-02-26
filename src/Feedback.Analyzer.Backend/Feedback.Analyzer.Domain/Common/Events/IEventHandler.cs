@@ -12,7 +12,7 @@ public interface IEventHandler<in TEvent> : IEventHandler, INotificationHandler<
 }
 
 /// <summary>
-/// Marker interface for event handlers.
+/// Defines interface for event handlers.
 /// </summary>
 public interface IEventHandler
 {
