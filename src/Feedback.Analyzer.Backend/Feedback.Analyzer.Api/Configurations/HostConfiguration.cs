@@ -1,4 +1,4 @@
-﻿namespace Feedback.Analyzer.Api.Configurations;
+namespace Feedback.Analyzer.Api.Configurations;
 
 public static partial class HostConfiguration
 {
@@ -11,6 +11,7 @@ public static partial class HostConfiguration
     {
         builder
             .AddMediator()    
+            .AddPersistence()
             .AddExposers()
             .AddDevTools();
         
@@ -30,3 +31,4 @@ public static partial class HostConfiguration
     }
 
 }
+            

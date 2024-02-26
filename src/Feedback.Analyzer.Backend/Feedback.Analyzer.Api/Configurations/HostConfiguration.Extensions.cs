@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+using System.Reflection;
+using Feedback.Analyzer.Persistence.DataContexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
@@ -25,6 +27,20 @@ public static partial class HostConfiguration
     }
 
     /// <summary>
+    /// Adds persistence-related services to the web application builder.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddPersistence(this WebApplicationBuilder builder)
+    {
+        // register ef interceptors
+        
+        //register db context
+        builder.Services.AddDbContext<AppDbContext>(options => { options.UseInMemoryDatabase("FeedbackAnalyzer"); });
+        return builder;
+    }
+
+    /// <summary>
     ///  Configures exposers including controllers and routing.
     /// </summary>
     /// <param name="builder">>Application builder</param>
@@ -33,10 +49,10 @@ public static partial class HostConfiguration
     {
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
         builder.Services.AddControllers();
-        
+
         return builder;
     }
-    
+
     /// <summary>
     /// Configures devTools including controllers
     /// </summary>
@@ -46,10 +62,10 @@ public static partial class HostConfiguration
     {
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        
+
         return builder;
     }
-    
+
     /// <summary>
     /// Add Controller middleWhere
     /// </summary>
@@ -58,10 +74,10 @@ public static partial class HostConfiguration
     private static WebApplication UseExposers(this WebApplication app)
     {
         app.MapControllers();
-        
+
         return app;
     }
-    
+
     /// <summary>
     /// Add Controller middleWhere
     /// </summary>
@@ -71,7 +87,7 @@ public static partial class HostConfiguration
     {
         app.UseSwagger();
         app.UseSwaggerUI();
-        
+
         return app;
     }
 }
