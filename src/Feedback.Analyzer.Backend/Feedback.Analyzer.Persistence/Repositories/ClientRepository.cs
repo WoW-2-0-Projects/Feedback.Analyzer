@@ -6,6 +6,9 @@ using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
+/// <summary>
+/// Repository implementation for managing client entities.
+/// </summary>
 public class ClientRepository(AppDbContext dbContext) : EntityRepositoryBase<Client, AppDbContext>(dbContext), IClientRepository
 {
     public new IQueryable<Client> Get(Expression<Func<Client, bool>>? predicate = default, bool asNoTracking = false)

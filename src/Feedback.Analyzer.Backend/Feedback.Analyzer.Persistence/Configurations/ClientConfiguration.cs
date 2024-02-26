@@ -8,8 +8,8 @@ public class ClientConfiguration : IEntityTypeConfiguration<Client>
 {
     public void Configure(EntityTypeBuilder<Client> builder)
     {
-        builder.Property(client => client.FirstName).HasMaxLength(256).IsRequired();
-        builder.Property(client => client.LastName).HasMaxLength(256).IsRequired();
+        builder.Property(client => client.FirstName).HasMaxLength(64).IsRequired();
+        builder.Property(client => client.LastName).HasMaxLength(64).IsRequired();
         builder.Property(client => client.Email).HasMaxLength(128).IsRequired();
         builder.Property(client => client.Password).HasMaxLength(128).IsRequired();
     }

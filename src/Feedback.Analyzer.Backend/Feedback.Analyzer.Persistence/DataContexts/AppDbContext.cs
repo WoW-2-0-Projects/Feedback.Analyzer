@@ -6,8 +6,11 @@ namespace Feedback.Analyzer.Persistence.DataContexts;
 
 public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbContext(dbContextOptions)
 {
-    //Db sets
+    #region ClientsInfrastructure
     public DbSet<Client> Clients => Set<Client>();
+
+    #endregion
+    
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
