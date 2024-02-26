@@ -52,7 +52,8 @@ public static partial class HostConfiguration
         // Register repositories
         builder.Services
             .AddScoped<IClientRepository, ClientRepository>()
-            .AddScoped<IOrganizationRepository, OrganizationRepository>();
+            .AddScoped<IOrganizationRepository, OrganizationRepository>()
+            .AddScoped<IProductRepository, ProductRepository>();
 
         return builder;
     }
