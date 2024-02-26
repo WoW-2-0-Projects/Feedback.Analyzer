@@ -25,7 +25,7 @@ public interface IClientRepository
     /// <param name="queryOptions">Indicates whether the entity should be queried without tracking changes (default is false).</param>
     /// <param name="cancellationToken">A cancellation token to cancel the asynchronous operation (optional).</param>
     /// <returns>A task representing the asynchronous operation, containing the client entity, or null if not found.</returns>
-    ValueTask<Client?> GetByIdAsync(Guid clientId,QueryOptions queryOptions = new(), CancellationToken cancellationToken = default);
+    ValueTask<Client?> GetByIdAsync(Guid clientId,QueryOptions queryOptions = default, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously creates a new client entity.
@@ -34,7 +34,7 @@ public interface IClientRepository
     /// <param name="commandOptions">Indicates whether changes should be saved to the underlying data store (default is true).</param>
     /// <param name="cancellationToken">A cancellation token to cancel the asynchronous operation (optional).</param>
     /// <returns>A task representing the asynchronous operation, containing the created client entity.</returns>
-    ValueTask<Client> CreateAsync(Client client, CommandOptions commandOptions = new(), CancellationToken cancellationToken = default);
+    ValueTask<Client> CreateAsync(Client client, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously updates an existing client entity.
@@ -43,7 +43,7 @@ public interface IClientRepository
     /// <param name="commandOptions">Indicates whether changes should be saved to the underlying data store (default is true).</param>
     /// <param name="cancellationToken">A cancellation token to cancel the asynchronous operation (optional).</param>
     /// <returns>A task representing the asynchronous operation, containing the updated client entity.</returns>
-    ValueTask<Client> UpdateAsync(Client client, CommandOptions commandOptions = new(), CancellationToken cancellationToken = default);
+    ValueTask<Client> UpdateAsync(Client client, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously deletes an existing client entity.
@@ -52,7 +52,7 @@ public interface IClientRepository
     /// <param name="commandOptions">Indicates whether changes should be saved to the underlying data store.</param>
     /// <param name="cancellationToken">A cancellation token to cancel the asynchronous operation (optional).</param>
     /// <returns>A task representing the asynchronous operation, containing the deleted client entity, or null if not found.</returns>
-    ValueTask<Client?> DeleteAsync(Client client, CommandOptions commandOptions = new(), CancellationToken cancellationToken = default);
+    ValueTask<Client?> DeleteAsync(Client client, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Asynchronously deletes a client entity by its unique identifier.

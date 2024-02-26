@@ -26,7 +26,7 @@ public interface IOrganizationRepository
     /// <param name="queryOptions">If true, disables change tracking for the returned entity, potentially improving performance.</param>
     /// <param name="cancellationToken">A token to allow the operation to be cancelled.</param>
     /// <returns>The requested Organization if found, otherwise null.</returns>
-    ValueTask<Organization?> GetByIdAsync(Guid organizationId, QueryOptions queryOptions = new(), CancellationToken cancellationToken = default);
+    ValueTask<Organization?> GetByIdAsync(Guid organizationId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Retrieves a list of Organizations based on a collection of their unique identifiers (IDs).
@@ -35,7 +35,7 @@ public interface IOrganizationRepository
     /// <param name="queryOptions">If true, disables change tracking for the returned entities, potentially improving performance.</param>
     /// <param name="cancellationToken">A token to allow the operation to be cancelled.</param>
     /// <returns>A list of Organizations matching the provided IDs.  If an ID doesn't correspond to an existing Organization, it is omitted in the result.</returns> 
-    ValueTask<IList<Organization>> GetByIdsAsync(IEnumerable<Guid> ids, QueryOptions queryOptions = new() , CancellationToken cancellationToken = default);
+    ValueTask<IList<Organization>> GetByIdsAsync(IEnumerable<Guid> ids, QueryOptions queryOptions = default , CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Creates a new Organization record.
@@ -44,7 +44,7 @@ public interface IOrganizationRepository
     /// <param name="commandOptions">If true, automatically saves changes to the underlying data store. If false, additional changes can be made before saving.</param>
     /// <param name="cancellationToken">A token to allow the operation to be cancelled.</param>
     /// <returns>The newly created Organization object.</returns>
-    ValueTask<Organization> CreateAsync(Organization organization, CommandOptions commandOptions = new(), CancellationToken cancellationToken = default);
+    ValueTask<Organization> CreateAsync(Organization organization, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Updates an existing Organization record.
@@ -53,7 +53,7 @@ public interface IOrganizationRepository
     /// <param name="commandOptions">If true, automatically saves changes to the underlying data store. If false, additional changes can be made before saving.</param>
     /// <param name="cancellationToken">A token to allow the operation to be cancelled.</param>
     /// <returns>The updated Organization object.</returns> 
-    ValueTask<Organization> UpdateAsync(Organization organization, CommandOptions commandOptions = new() , CancellationToken cancellationToken = default);
+    ValueTask<Organization> UpdateAsync(Organization organization, CommandOptions commandOptions = default , CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Deletes an existing Organization record.
@@ -62,7 +62,7 @@ public interface IOrganizationRepository
     /// <param name="commandOptions">If true, automatically saves changes to the underlying data store. If false, additional changes can be made before saving.</param>
     /// <param name="cancellationToken">A token to allow the operation to be cancelled.</param>
     /// <returns>The deleted Organization object if successful, otherwise null (e.g., if the Organization was not found).</returns>
-    ValueTask<Organization?> DeleteAsync(Organization organization, CommandOptions commandOptions = new(), CancellationToken cancellationToken = default);
+    ValueTask<Organization?> DeleteAsync(Organization organization, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Deletes an existing Organization record based on its unique identifier (ID).
@@ -71,5 +71,5 @@ public interface IOrganizationRepository
     /// <param name="commandOptions">If true, automatically saves changes to the underlying data store. If false, additional changes can be made before saving.</param>
     /// <param name="cancellationToken">A token to allow the operation to be cancelled.</param>
     /// <returns>The deleted Organization object if successful, otherwise null (e.g., if the Organization was not found).</returns>
-    ValueTask<Organization?> DeleteByIdAsync(Guid organizationId, CommandOptions commandOptions = new(), CancellationToken cancellationToken = default);
+    ValueTask<Organization?> DeleteByIdAsync(Guid organizationId, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
 }

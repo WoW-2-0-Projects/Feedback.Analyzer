@@ -44,7 +44,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     /// <param name="queryOptions"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>A ValueTask,TEntity,representing the asynchronous operation. The result will be the found entity, or null if not found.</returns>
-    protected async ValueTask<TEntity?> GetByIdAsync(Guid id, QueryOptions queryOptions = new(), CancellationToken cancellationToken = default)
+    protected async ValueTask<TEntity?> GetByIdAsync(Guid id, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
     {
         var initialQuery = DbContext.Set<TEntity>().AsQueryable();
 
@@ -63,7 +63,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     /// <param name="queryOptions"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>A ValueTask,IList,TEntity, representing the asynchronous operation. The result will be a list of the found entities</returns>
-    protected async ValueTask<IList<TEntity>> GetByIdsAsync(IEnumerable<Guid> ids, QueryOptions queryOptions = new(), CancellationToken cancellationToken = default)
+    protected async ValueTask<IList<TEntity>> GetByIdsAsync(IEnumerable<Guid> ids, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
     {
         var initialQuery = DbContext.Set<TEntity>().Where(entity => ids.Contains(entity.Id));
 
@@ -80,7 +80,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     /// <param name="commandOptions"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>A ValueTask,TEntity,representing the asynchronous operation. The result will be the newly created entity.</returns>
-    protected async ValueTask<TEntity> CreateAsync(TEntity entity, CommandOptions commandOptions = new(), CancellationToken cancellationToken = default)
+    protected async ValueTask<TEntity> CreateAsync(TEntity entity, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
     {
         await DbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
 
@@ -99,7 +99,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     /// <returns>A ValueTask,TEntity, representing the asynchronous operation. The result will be the updated entity.</returns>
     protected async ValueTask<TEntity> UpdateAsync(
         TEntity entity,
-        CommandOptions commandOptions = new(),
+        CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default
     )
     {
@@ -120,7 +120,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     /// <returns>A ValueTask,TEntity, representing the asynchronous operation. The result will be the deleted entity, or null if not found.</returns>
     protected async ValueTask<TEntity?> DeleteAsync(
         TEntity entity,
-        CommandOptions commandOptions = new(),
+        CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default
     )
     {
@@ -141,7 +141,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     /// <returns>A ValueTask,TEntity, representing the asynchronous operation. The result will be the deleted entity, or null if not found.</returns>
     protected async ValueTask<TEntity?> DeleteByIdAsync(
         Guid id,
-        CommandOptions commandOptions = new(),
+        CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default
     )
     {

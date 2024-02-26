@@ -5,9 +5,6 @@ namespace Feedback.Analyzer.Domain.Entities;
 /// <summary>
 /// Represents an organization within the system.
 /// </summary>
-/// <remarks>
-/// Inherits from SoftDeletedEntity to support soft deletion functionality.
-/// </remarks>
 public class Organization : SoftDeletedEntity
 {
     /// <summary>
@@ -18,7 +15,7 @@ public class Organization : SoftDeletedEntity
     /// <summary>
     /// Gets or sets the  name of the Organization.
     /// </summary>
-    public string? OrganizationName { get; set; }
+    public string? Name { get; set; }
     
     /// <summary>
     ///  Gets or sets the  description of the Organization.

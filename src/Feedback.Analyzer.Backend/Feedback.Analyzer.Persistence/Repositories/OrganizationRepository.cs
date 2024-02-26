@@ -20,10 +20,10 @@ public class OrganizationRepository(AppDbContext dbContext)
     public new IQueryable<Organization> Get(Expression<Func<Organization, bool>>? predicate, QueryOptions queryOptions = new())
         => base.Get(predicate, queryOptions);
     
-    public new ValueTask<Organization?> GetByIdAsync(Guid organizationId, QueryOptions queryOptions = new(), CancellationToken cancellationToken = default)
+    public new ValueTask<Organization?> GetByIdAsync(Guid organizationId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
         => base.GetByIdAsync(organizationId, queryOptions, cancellationToken);
 
-    public new ValueTask<IList<Organization>> GetByIdsAsync(IEnumerable<Guid> ids, QueryOptions queryOptions = new(), CancellationToken cancellationToken = default)
+    public new ValueTask<IList<Organization>> GetByIdsAsync(IEnumerable<Guid> ids, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
         => base.GetByIdsAsync(ids, queryOptions, cancellationToken);
 
     public new ValueTask<Organization> CreateAsync(Organization organization, CommandOptions commandOptions , CancellationToken cancellationToken = default)
