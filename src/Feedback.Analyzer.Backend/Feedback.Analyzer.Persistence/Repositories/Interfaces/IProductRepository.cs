@@ -6,7 +6,7 @@ using Feedback.Analyzer.Domain.Entities;
 namespace Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
 /// <summary>
-/// Represents a repository for managing products.
+/// Defines a repository for managing products.
 /// </summary>
 public interface IProductRepository
 {

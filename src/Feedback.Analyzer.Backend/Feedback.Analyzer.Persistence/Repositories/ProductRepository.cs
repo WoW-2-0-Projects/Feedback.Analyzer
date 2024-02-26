@@ -10,7 +10,6 @@ namespace Feedback.Analyzer.Persistence.Repositories;
 /// <summary>
 /// Represents a repository for managing product data.
 /// </summary>
-/// <param name="dbContext"></param>
 public class ProductRepository
     (AppDbContext dbContext)
     : EntityRepositoryBase<Product, AppDbContext>(dbContext), IProductRepository

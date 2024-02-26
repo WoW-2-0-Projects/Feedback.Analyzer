@@ -3,7 +3,7 @@ using Feedback.Analyzer.Domain.Common.Entities;
 namespace Feedback.Analyzer.Domain.Entities;
 
 /// <summary>
-/// Represents a product entity, inheriting auditable properties.
+/// Represents a product entity in the system
 /// </summary>
 public class Product : AuditableEntity
 {
