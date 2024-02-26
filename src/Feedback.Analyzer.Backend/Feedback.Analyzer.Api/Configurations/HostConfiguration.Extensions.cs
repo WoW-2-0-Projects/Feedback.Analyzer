@@ -49,8 +49,10 @@ public static partial class HostConfiguration
 
     private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
     {
+        // Register repositories
         builder.Services
-            .AddScoped<IClientRepository, ClientRepository>();
+            .AddScoped<IClientRepository, ClientRepository>()
+            .AddScoped<IOrganizationRepository, OrganizationRepository>();
 
         return builder;
     }
