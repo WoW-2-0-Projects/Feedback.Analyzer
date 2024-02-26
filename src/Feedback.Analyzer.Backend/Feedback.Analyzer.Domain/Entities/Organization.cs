@@ -27,5 +27,8 @@ public class Organization : SoftDeletedEntity
     /// </summary>
     public Client Client { get; set; } = default!;
 
+    /// <summary>
+    /// Gets or sets the collection of products.
+    /// </summary>
     public IEnumerable<Product> Products { get; set; } = default!;
 }
