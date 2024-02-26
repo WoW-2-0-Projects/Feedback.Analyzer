@@ -1,10 +1,33 @@
+using System.Reflection;
 using Feedback.Analyzer.Persistence.DataContexts;
+using Feedback.Analyzer.Persistence.Repositories;
+using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
 public static partial class HostConfiguration
 {
+    private static readonly ICollection<Assembly> Assemblies;
+
+    static HostConfiguration()
+    {
+        Assemblies = Assembly.GetExecutingAssembly().GetReferencedAssemblies().Select(Assembly.Load).ToList();
+        Assemblies.Add(Assembly.GetExecutingAssembly());
+    }
+    
+    /// <summary>
+    /// Adds MediatR services to the application with custom service registrations.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddMediatR(conf => { conf.RegisterServicesFromAssemblies(Assemblies.ToArray()); });
+
+        return builder;
+    }
+
     /// <summary>
     /// Adds persistence-related services to the web application builder.
     /// </summary>
@@ -13,9 +36,22 @@ public static partial class HostConfiguration
     private static WebApplicationBuilder AddPersistence(this WebApplicationBuilder builder)
     {
         // register ef interceptors
-        
+
         //register db context
-        builder.Services.AddDbContext<AppDbContext>(options => { options.UseInMemoryDatabase("FeedbackAnalyzer"); });
+        builder.Services.AddDbContext<AppDbContext>(options =>
+        {
+            options
+                .UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionString"));
+        });
+
+        return builder;
+    }
+
+    private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
+    {
+        builder.Services
+            .AddScoped<IClientRepository, ClientRepository>();
+
         return builder;
     }
 
