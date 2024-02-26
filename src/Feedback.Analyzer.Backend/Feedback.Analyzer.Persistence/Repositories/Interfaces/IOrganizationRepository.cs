@@ -16,7 +16,7 @@ public interface IOrganizationRepository
     /// <param name="predicate">An optional expression to filter the results.</param>
     /// <param name="queryOptions">Whether to disable entity change tracking for performance optimization.</param>
     /// <returns>An IQueryable of Organization objects.</returns>
-    IQueryable<Organization> Get(Expression<Func<Organization, bool>>? predicate, QueryOptions queryOptions = new());
+    IQueryable<Organization> Get(Expression<Func<Organization, bool>>? predicate, QueryOptions queryOptions = default);
     
     
     /// <summary>

@@ -13,7 +13,7 @@ namespace Feedback.Analyzer.Persistence.Repositories;
 /// </summary>
 public class ClientRepository(AppDbContext dbContext) : EntityRepositoryBase<Client, AppDbContext>(dbContext), IClientRepository
 {
-    public new IQueryable<Client> Get(Expression<Func<Client, bool>>? predicate = default, QueryOptions queryOptions = new())
+    public new IQueryable<Client> Get(Expression<Func<Client, bool>>? predicate = default, QueryOptions queryOptions = default)
         => base.Get(predicate, queryOptions);
 
     public new ValueTask<Client?> GetByIdAsync(Guid clientId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)

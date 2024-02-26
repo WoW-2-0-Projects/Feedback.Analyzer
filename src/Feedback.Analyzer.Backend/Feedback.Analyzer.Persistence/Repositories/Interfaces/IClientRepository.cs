@@ -16,7 +16,7 @@ public interface IClientRepository
     /// <param name="predicate">A predicate to filter the clients (optional).</param>
     /// <param name="queryOptions">Indicates whether the entities should be queried without tracking changes (default is false).</param>
     /// <returns>A queryable collection of client entities.</returns>
-    IQueryable<Client> Get(Expression<Func<Client, bool>>? predicate = default, QueryOptions queryOptions = new());
+    IQueryable<Client> Get(Expression<Func<Client, bool>>? predicate = default, QueryOptions queryOptions = default);
 
     /// <summary>
     /// Asynchronously retrieves a client entity by its unique identifier.

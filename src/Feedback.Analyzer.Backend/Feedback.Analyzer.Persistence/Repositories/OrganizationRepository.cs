@@ -17,7 +17,7 @@ public class OrganizationRepository(AppDbContext dbContext)
         dbContext
     ), IOrganizationRepository
 {
-    public new IQueryable<Organization> Get(Expression<Func<Organization, bool>>? predicate, QueryOptions queryOptions = new())
+    public new IQueryable<Organization> Get(Expression<Func<Organization, bool>>? predicate, QueryOptions queryOptions = default)
         => base.Get(predicate, queryOptions);
     
     public new ValueTask<Organization?> GetByIdAsync(Guid organizationId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)

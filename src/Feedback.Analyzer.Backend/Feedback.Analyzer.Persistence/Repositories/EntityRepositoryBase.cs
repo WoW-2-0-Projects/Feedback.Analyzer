@@ -24,7 +24,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     /// <param name="predicate"></param>
     /// <param name="queryOptions"></param>
     /// <returns>An IQueryable,TEntity, representing the query, allowing for further chaining and filtering</returns>
-    protected IQueryable<TEntity> Get(Expression<Func<TEntity, bool>>? predicate = default, QueryOptions queryOptions = new())
+    protected IQueryable<TEntity> Get(Expression<Func<TEntity, bool>>? predicate = default, QueryOptions queryOptions = default)
     {
         var initialQuery = DbContext.Set<TEntity>().Where(entity => true);
 
