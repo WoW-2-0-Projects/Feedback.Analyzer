@@ -62,7 +62,6 @@ public interface IOrganizationRepository
     /// <param name="commandOptions">If true, automatically saves changes to the underlying data store. If false, additional changes can be made before saving.</param>
     /// <param name="cancellationToken">A token to allow the operation to be cancelled.</param>
     /// <returns>The deleted Organization object if successful, otherwise null (e.g., if the Organization was not found).</returns>
-    /// <exception cref="ArgumentNullException">Thrown if the provided 'organization' is null.</exception> 
     ValueTask<Organization?> DeleteAsync(Organization organization, CommandOptions commandOptions = new(), CancellationToken cancellationToken = default);
     
     /// <summary>

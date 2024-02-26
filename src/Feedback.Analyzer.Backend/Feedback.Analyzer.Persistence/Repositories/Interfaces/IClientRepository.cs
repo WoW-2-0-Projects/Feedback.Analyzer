@@ -5,7 +5,6 @@ using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
-
 /// <summary>
 /// Represents a repository for managing client entities.
 /// </summary>
