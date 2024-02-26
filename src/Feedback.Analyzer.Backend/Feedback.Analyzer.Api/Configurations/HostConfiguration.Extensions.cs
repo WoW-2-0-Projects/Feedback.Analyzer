@@ -1,4 +1,6 @@
 using Feedback.Analyzer.Persistence.DataContexts;
+using Feedback.Analyzer.Persistence.Repositories;
+using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Api.Configurations;
@@ -13,9 +15,22 @@ public static partial class HostConfiguration
     private static WebApplicationBuilder AddPersistence(this WebApplicationBuilder builder)
     {
         // register ef interceptors
-        
+
         //register db context
-        builder.Services.AddDbContext<AppDbContext>(options => { options.UseInMemoryDatabase("FeedbackAnalyzer"); });
+        builder.Services.AddDbContext<AppDbContext>(options =>
+        {
+            options
+                .UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionString"));
+        });
+
+        return builder;
+    }
+
+    private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
+    {
+        builder.Services
+            .AddScoped<IClientRepository, ClientRepository>();
+
         return builder;
     }
 
