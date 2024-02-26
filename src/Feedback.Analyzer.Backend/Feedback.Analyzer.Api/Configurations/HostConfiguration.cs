@@ -1,4 +1,4 @@
-﻿namespace Feedback.Analyzer.Api.Configurations;
+namespace Feedback.Analyzer.Api.Configurations;
 
 public static partial class HostConfiguration
 {
@@ -10,6 +10,7 @@ public static partial class HostConfiguration
     public static ValueTask<WebApplicationBuilder> ConfigureAsync(this WebApplicationBuilder builder)
     {
         builder
+            .AddPersistence()
             .AddExposers()
             .AddDevTools();
         
@@ -29,3 +30,4 @@ public static partial class HostConfiguration
     }
 
 }
+            
