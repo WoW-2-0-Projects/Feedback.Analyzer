@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Feedback.Analyzer.Domain", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Feedback.Analyzer.Application", "Feedback.Analyzer.Application\Feedback.Analyzer.Application.csproj", "{13E8D8FF-1835-4A61-94E4-C3E54FD8B14B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Feedback.Analyzer.Infrastucture", "Feedback.Analyzer.Infrastucture\Feedback.Analyzer.Infrastucture.csproj", "{9F012561-1C2C-4B56-93D5-8E8DEAA3989A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Feedback.Analyzer.Infrastructure", "Feedback.Analyzer.Infrastructure\Feedback.Analyzer.Infrastructure.csproj", "{9F012561-1C2C-4B56-93D5-8E8DEAA3989A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Feedback.Analyzer.Persistence", "Feedback.Analyzer.Persistence\Feedback.Analyzer.Persistence.csproj", "{87F08288-B8EF-4536-A029-DC990CC314B2}"
 EndProject
