@@ -1,3 +1,4 @@
+using System.Reflection;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
@@ -7,6 +8,26 @@ namespace Feedback.Analyzer.Api.Configurations;
 
 public static partial class HostConfiguration
 {
+    private static readonly ICollection<Assembly> Assemblies;
+
+    static HostConfiguration()
+    {
+        Assemblies = Assembly.GetExecutingAssembly().GetReferencedAssemblies().Select(Assembly.Load).ToList();
+        Assemblies.Add(Assembly.GetExecutingAssembly());
+    }
+    
+    /// <summary>
+    /// Adds MediatR services to the application with custom service registrations.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddMediatR(conf => { conf.RegisterServicesFromAssemblies(Assemblies.ToArray()); });
+
+        return builder;
+    }
+
     /// <summary>
     /// Adds persistence-related services to the web application builder.
     /// </summary>
@@ -28,8 +49,10 @@ public static partial class HostConfiguration
 
     private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
     {
+        // Register repositories
         builder.Services
-            .AddScoped<IClientRepository, ClientRepository>();
+            .AddScoped<IClientRepository, ClientRepository>()
+            .AddScoped<IOrganizationRepository, OrganizationRepository>();
 
         return builder;
     }
