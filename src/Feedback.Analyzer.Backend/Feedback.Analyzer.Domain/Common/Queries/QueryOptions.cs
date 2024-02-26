@@ -10,9 +10,4 @@ public struct QueryOptions
     /// Disabling change tracking can potentially improve performance.
     /// </summary>
     public bool AsNoTracking { get; set; }
-    
-    /// <summary>
-    /// Provides a default set of QueryOptions, likely with 'AsNoTracking' set to false.
-    /// </summary>
-    public static QueryOptions Default => new ();
 }

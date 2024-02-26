@@ -10,7 +10,6 @@ namespace Feedback.Analyzer.Persistence.Repositories;
 /// <summary>
 /// Provides data access functionality for Organization entities, 
 /// inheriting core repository logic from EntityRepositoryBase.
-/// Implements the IOrganizationRepository interface.
 /// </summary>
 public class OrganizationRepository(AppDbContext dbContext) 
     : EntityRepositoryBase
