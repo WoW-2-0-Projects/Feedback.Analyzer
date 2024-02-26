@@ -25,5 +25,8 @@ public class Organization : SoftDeletedEntity
     /// </summary>
     public string? Description { get; set; }
 
+    /// <summary>
+    /// Gets or sets a collection of Clients.
+    /// </summary>
     public Client Client { get; set; } = default!;
 }
