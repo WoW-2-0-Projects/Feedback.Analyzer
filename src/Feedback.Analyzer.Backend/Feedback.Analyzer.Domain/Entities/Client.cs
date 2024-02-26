@@ -27,4 +27,5 @@ public class Client : AuditableEntity
     /// </summary> 
     public string Password { get; set; } = default!;
 
+    public IEnumerable<Organization>? Organizations { get; set; } = default!;
 }
