@@ -6,20 +6,19 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddClientEntity : Migration
+    public partial class AddProductEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Clients",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    FirstName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    LastName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    EmailAddress = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    Password = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Description = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    OrganizationId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     CreatedTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -27,15 +26,26 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clients", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_Organizations_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_OrganizationId",
+                table: "Products",
+                column: "OrganizationId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Clients");
+                name: "Products");
         }
     }
 }

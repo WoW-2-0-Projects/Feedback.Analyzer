@@ -19,14 +19,8 @@ public class ClientRepository(AppDbContext dbContext) : EntityRepositoryBase<Cli
     public new ValueTask<Client?> GetByIdAsync(Guid clientId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
         => base.GetByIdAsync(clientId, queryOptions, cancellationToken);
     
-    public new ValueTask<Client> CreateAsync(Client client, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
-        => base.CreateAsync(client, commandOptions , cancellationToken);
-
     public new ValueTask<Client> UpdateAsync(Client client, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         => base.UpdateAsync(client, commandOptions, cancellationToken);
-
-    public new ValueTask<Client?> DeleteAsync(Client client, CommandOptions commandOptions = default , CancellationToken cancellationToken = default)
-        => base.DeleteAsync(client, commandOptions, cancellationToken);
     
     public new ValueTask<Client?> DeleteByIdAsync(Guid clientId, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         => base.DeleteByIdAsync(clientId, commandOptions, cancellationToken);

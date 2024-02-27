@@ -10,4 +10,8 @@
       <ProjectReference Include="..\Feedback.Analyzer.Domain\Feedback.Analyzer.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Clients\Events\" />
+    </ItemGroup>
+
 </Project>

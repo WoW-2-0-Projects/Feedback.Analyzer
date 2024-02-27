@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240226085026_Add_Organization Entity")]
-    partial class Add_OrganizationEntity
+    [Migration("20240226122639_Add Product Entity")]
+    partial class AddProductEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +37,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<DateTimeOffset?>("DeletedTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("EmailAddress")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
@@ -100,6 +100,44 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.ToTable("Organizations");
                 });
 
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("DeletedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("ModifiedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.ToTable("Products");
+                });
+
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.Client", "Client")
@@ -111,9 +149,25 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("Client");
                 });
 
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Product", b =>
+                {
+                    b.HasOne("Feedback.Analyzer.Domain.Entities.Organization", "Organization")
+                        .WithMany("Products")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Client", b =>
                 {
                     b.Navigation("Organizations");
+                });
+
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
