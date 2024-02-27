@@ -7,6 +7,9 @@ using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
+/// <summary>
+/// Represents a repository for managing customer feedback entities in the database.
+/// </summary>
 public class FeedbackRepository(AppDbContext dbContext)
     : EntityRepositoryBase<CustomerFeedback, AppDbContext>(dbContext),IFeedbackRepository
 {
