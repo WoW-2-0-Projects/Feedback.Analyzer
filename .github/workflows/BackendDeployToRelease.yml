@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - release/**
+    paths:
+      - ./.github/workflows/BackendDeployToRelease.yml
+      - ./src/Feedback.Analyzer.Backend/**
 
 jobs:
   build-and-push:
