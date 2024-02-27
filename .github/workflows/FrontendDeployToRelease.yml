@@ -37,3 +37,27 @@ jobs:
           file: ./src/Insight.Box.FrontEnd/Dockerfile
           tags: ${{ secrets.AZ_ACR_LOGIN_SERVER }}/insightboxfrontend:${{ env.IMAGE_VERSION }}
           push: true
+
+  deploy-container-app:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Log in to Azure Container App
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZ_SP_CREDENTIALS }}
+
+      - name: Extract release version and Set to variable
+        id: release_version
+        run: |
+          VERSION=$(echo "${{ github.ref }}" | sed -E 's/^refs\/heads\/release\/(.*)$/\1/')
+          echo "IMAGE_VERSION=$VERSION" >> $GITHUB_ENV
+  
+      - name: Build and deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          acrName: ${{ secrets.AZ_ACR_NAME }}
+          containerAppName: ${{ secrets.AZ_FRONTEND_ACA_NAME }}
+          resourceGroup: ${{ secrets.AZ_RG_NAME }}
+          imageToDeploy: ${{ secrets.AZ_ACR_LOGIN_SERVER }}/insightboxfrontend:${{ env.IMAGE_VERSION }}
