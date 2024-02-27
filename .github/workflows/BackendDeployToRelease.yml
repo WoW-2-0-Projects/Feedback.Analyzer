@@ -4,7 +4,9 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - release/**
+      - 'release/**'
+    paths:
+      - './src/Feedback.Analyzer.Backend/**'
 
 jobs:
   build-and-push:
