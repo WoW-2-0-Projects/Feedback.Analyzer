@@ -20,7 +20,7 @@ public class Client : AuditableEntity
     /// <summary>
     /// Gets or sets the email address of the client.
     /// </summary>
-    public string Email { get; set; } = default!;
+    public string EmailAddress { get; set; } = default!;
 
     /// <summary>
     /// Gets or sets the password of the client's email address.

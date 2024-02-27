@@ -18,7 +18,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     FirstName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     LastName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    Email = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    EmailAddress = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     Password = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
