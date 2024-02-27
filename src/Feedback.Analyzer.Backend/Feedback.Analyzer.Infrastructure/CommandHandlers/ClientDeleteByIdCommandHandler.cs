@@ -13,6 +13,6 @@ public class ClientDeleteByIdCommandHandler(IClientService clientService) : ICom
 {
     public async Task<Client?> Handle(ClientDeleteByIdCommand request, CancellationToken cancellationToken)
     {
-        return await clientService.DeleteByIdAsync(request.ClientId, new CommandOptions(), cancellationToken: cancellationToken);
+        return await clientService.DeleteByIdAsync(request.ClientId, new CommandOptions(), cancellationToken);
     }
 }

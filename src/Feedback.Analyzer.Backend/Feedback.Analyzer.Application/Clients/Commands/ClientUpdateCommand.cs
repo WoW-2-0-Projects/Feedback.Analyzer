@@ -8,5 +8,5 @@ namespace Feedback.Analyzer.Application.Clients.Commands;
 /// </summary>
 public class ClientUpdateCommand : ICommand<Client>
 {
-    public Client? Client { get; set; }
+    public Client Client { get; set; } = default!;
 }

@@ -2,6 +2,7 @@
 using Feedback.Analyzer.Api.Models.DTOs;
 using Feedback.Analyzer.Application.Clients.Commands;
 using Feedback.Analyzer.Application.Clients.Model;
+using Feedback.Analyzer.Application.Clients.Queries;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Domain.Common.Query;
 using Feedback.Analyzer.Domain.Entities;
@@ -17,16 +18,16 @@ namespace Feedback.Analyzer.Api.Controllers;
 public class ClientsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     [HttpGet]
-    public async ValueTask<IActionResult> Get([FromQuery] ClientGetCommand clientGetCommand, CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> Get([FromQuery] ClientGetQuery clientGetQuery, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(clientGetCommand, cancellationToken);
+        var result = await mediator.Send(clientGetQuery, cancellationToken);
         return result.Any() ? Ok(mapper.Map<IEnumerable<ClientDto>>(result)) : NoContent();
     }
 
     [HttpGet("{clientId:guid}")]
     public async ValueTask<IActionResult> GetById([FromRoute] Guid clientId, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new ClientGetByIdCommand(){ClientId = clientId}, cancellationToken);
+        var result = await mediator.Send(new ClientGetByIdQuery(){ClientId = clientId}, cancellationToken);
         return result is not null ? Ok(mapper.Map<ClientDto>(result)) : NoContent();
     }
 
