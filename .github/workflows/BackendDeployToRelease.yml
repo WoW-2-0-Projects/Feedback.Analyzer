@@ -1,11 +1,12 @@
 name: Build and push InsightBox backend to Azure Container Registry and deploy to Azure Container App
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - release/**
     paths:
-      - ./src/Feedback.Analyzer.Backend/**
+      - './src/Feedback.Analyzer.Backend/**'
 
 jobs:
   build-and-push:
