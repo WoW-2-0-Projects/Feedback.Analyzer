@@ -2,6 +2,7 @@ using System.Reflection;
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
+using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
@@ -39,13 +40,20 @@ public static partial class HostConfiguration
     /// <returns></returns>
     private static WebApplicationBuilder AddPersistence(this WebApplicationBuilder builder)
     {
+        // Register configurations
+        builder.Services.Configure<DataAccessSettings>(builder.Configuration.GetSection(nameof(DataAccessSettings)));
+        var dataAccessSettings = builder.Configuration.GetSection(nameof(DataAccessSettings)).Get<DataAccessSettings>()
+                                 ?? throw new InvalidOperationException("Data access settings not found");
+        
         // register ef interceptors
 
         //register db context
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
-            options
-                .UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionString"));
+            if(dataAccessSettings.UseInMemoryDatabase)
+                options.UseInMemoryDatabase("InsightBox.Database");
+            else
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionString"));
         });
 
         return builder;
