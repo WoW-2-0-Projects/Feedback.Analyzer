@@ -26,4 +26,9 @@ public class Product : AuditableEntity
     /// Gets or sets the organization associated with this product.
     /// </summary>
     public Organization Organization { get; set; } = default!;
+
+    /// <summary>
+    /// Gets or sets the collection of customer feedback associated with this product.
+    /// </summary>
+    public IEnumerable<CustomerFeedback> CustomerFeedbacks { get; set; } = default!;
 }
