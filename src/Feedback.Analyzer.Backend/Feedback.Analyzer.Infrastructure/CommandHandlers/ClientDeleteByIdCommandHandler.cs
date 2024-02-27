@@ -6,6 +6,9 @@ using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Infrastructure.CommandHandlers;
 
+/// <summary>
+/// Command handler for deleting a client by their unique identifier.
+/// </summary>
 public class ClientDeleteByIdCommandHandler(IClientService clientService) : ICommandHandler<ClientDeleteByIdCommand, Client?>
 {
     public async Task<Client?> Handle(ClientDeleteByIdCommand request, CancellationToken cancellationToken)

@@ -2,6 +2,9 @@
 
 namespace Feedback.Analyzer.Application.Clients.Model;
 
+/// <summary>
+/// Represents a filter for querying clients with pagination support.
+/// </summary>
 public class ClientFilter : FilterPagination
 {
     public ClientFilter()

@@ -5,6 +5,10 @@ using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Infrastructure.CommandHandlers;
 
+
+/// <summary>
+/// Command handler for updating a client entity.
+/// </summary>
 public class ClientUpdateCommandHandler(IClientService clientService) : ICommandHandler<ClientUpdateCommand, Client?>
 {
     public async Task<Client?> Handle(ClientUpdateCommand request, CancellationToken cancellationToken)

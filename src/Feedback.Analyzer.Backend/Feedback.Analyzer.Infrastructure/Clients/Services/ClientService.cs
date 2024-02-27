@@ -8,6 +8,9 @@ using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
 namespace Feedback.Analyzer.Infrastructure.Clients.Services;
 
+/// <summary>
+/// Service implementation for managing client entities.
+/// </summary>
 public class ClientService(IClientRepository clientRepository) : IClientService
 {
     public IQueryable<Client> Get(Expression<Func<Client, bool>>? predicate = default, QueryOptions queryOptions = default)
@@ -18,10 +21,7 @@ public class ClientService(IClientRepository clientRepository) : IClientService
 
     public ValueTask<Client?> GetByIdAsync(Guid clientId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
         => clientRepository.GetByIdAsync(clientId, queryOptions, cancellationToken);
-
-    public ValueTask<Client> CreateAsync(Client client, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
-        => clientRepository.CreateAsync(client, commandOptions, cancellationToken);
-
+    
     public async ValueTask<Client?> UpdateAsync(Client client, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
     {
         var foundClient = await GetByIdAsync(client.Id, cancellationToken: cancellationToken) ?? throw new InvalidOperationException();
@@ -32,10 +32,7 @@ public class ClientService(IClientRepository clientRepository) : IClientService
 
         return await clientRepository.UpdateAsync(foundClient, commandOptions, cancellationToken);
     }
-
-    public ValueTask<Client?> DeleteAsync(Client client, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
-        => clientRepository.DeleteAsync(client, commandOptions, cancellationToken);
-
+    
     public ValueTask<Client?> DeleteByIdAsync(Guid clientId, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         => clientRepository.DeleteByIdAsync(clientId, commandOptions, cancellationToken);
 }

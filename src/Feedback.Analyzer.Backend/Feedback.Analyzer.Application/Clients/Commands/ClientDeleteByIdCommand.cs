@@ -3,6 +3,9 @@ using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Application.Clients.Commands;
 
+/// <summary>
+/// Represents a command to delete a client by their unique identifier.
+/// </summary>
 public class ClientDeleteByIdCommand : ICommand<Client?>
 {
     public Guid ClientId { get; set; }

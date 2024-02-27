@@ -6,6 +6,9 @@ using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Infrastructure.CommandHandlers;
 
+/// <summary>
+/// Command handler for retrieving a client by their unique identifier.
+/// </summary>
 public class ClientGetByIdCommandHandler(IClientService clientService) : ICommandHandler<ClientGetByIdCommand, Client?>
 {
     public async Task<Client?> Handle(ClientGetByIdCommand request, CancellationToken cancellationToken)
