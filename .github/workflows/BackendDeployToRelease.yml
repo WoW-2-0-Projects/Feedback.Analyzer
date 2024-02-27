@@ -34,7 +34,7 @@ jobs:
           tags: ${{ secrets.AZ_ACR_LOGIN_SERVER }}/insightboxbackend:${{ env.IMAGE_VERSION }}
           push: true
 
-   deploy-container-app:
+  deploy-container-app:
     needs: build-and-push
     runs-on: ubuntu-latest
   
