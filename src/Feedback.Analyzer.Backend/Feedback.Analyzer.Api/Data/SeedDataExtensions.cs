@@ -32,7 +32,7 @@ public static class SeedDataExtensions
         {
             FirstName = "John",
             LastName = "Doe",
-            Email = "example@gmail.com",
+            EmailAddress = "example@gmail.com",
             Password = "abc1234567"
         };
 
@@ -40,11 +40,14 @@ public static class SeedDataExtensions
         {
             FirstName = "Bob",
             LastName = "Richard",
-            Email = "tastBobRichard@gmail.com",
+            EmailAddress = "tastBobRichard@gmail.com",
             Password = "asdf1234"
         };
 
-        await dbContext.Clients.AddAsync(client1);
-        await dbContext.Clients.AddAsync(client2);
+        List<Client> clients = new ();
+        clients.Add(client1);
+        clients.Add(client2);
+
+        await dbContext.Clients.AddRangeAsync(clients);
     }
 }

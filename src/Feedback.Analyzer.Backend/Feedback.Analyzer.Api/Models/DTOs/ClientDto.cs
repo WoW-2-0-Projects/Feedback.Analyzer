@@ -1,5 +1,8 @@
 ﻿namespace Feedback.Analyzer.Api.Models.DTOs;
 
+/// <summary>
+/// Data transfer object (DTO) representing a client.
+/// </summary>
 public class ClientDto
 {
     /// <summary>
@@ -20,5 +23,5 @@ public class ClientDto
     /// <summary>
     /// Gets or sets the email address of the client.
     /// </summary>
-    public string Email { get; set; } = default!;
+    public string EmailAddress { get; set; } = default!;
 }

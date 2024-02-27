@@ -10,7 +10,7 @@ public class ClientConfiguration : IEntityTypeConfiguration<Client>
     {
         builder.Property(client => client.FirstName).HasMaxLength(64).IsRequired();
         builder.Property(client => client.LastName).HasMaxLength(64).IsRequired();
-        builder.Property(client => client.Email).HasMaxLength(128).IsRequired();
+        builder.Property(client => client.EmailAddress).HasMaxLength(128).IsRequired();
         builder.Property(client => client.Password).HasMaxLength(128).IsRequired();
     }
 }
