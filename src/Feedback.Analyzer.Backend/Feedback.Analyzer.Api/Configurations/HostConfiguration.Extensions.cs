@@ -1,7 +1,11 @@
 using System.Reflection;
+using Feedback.Analyzer.Api.Data;
+using Feedback.Analyzer.Application.Clients.Services;
+using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Api.Configurations;
@@ -15,7 +19,7 @@ public static partial class HostConfiguration
         Assemblies = Assembly.GetExecutingAssembly().GetReferencedAssemblies().Select(Assembly.Load).ToList();
         Assemblies.Add(Assembly.GetExecutingAssembly());
     }
-    
+
     /// <summary>
     /// Adds MediatR services to the application with custom service registrations.
     /// </summary>
@@ -47,12 +51,40 @@ public static partial class HostConfiguration
         return builder;
     }
 
+    /// <summary>
+    /// Configures the Dependency Injection container to include validators from referenced assemblies.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddValidators(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddValidatorsFromAssemblies(Assemblies);
+        return builder;
+    }
+
+    /// <summary>
+    /// Configures AutoMapper for object-to-object mapping using the specified profile.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddMappers(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddAutoMapper(Assemblies);
+        return builder;
+    }
+
+    /// <summary>
+    /// Adds client-related infrastructure services to the web application builder.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
     private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
     {
         // Register repositories
         builder.Services
             .AddScoped<IClientRepository, ClientRepository>()
-            .AddScoped<IOrganizationRepository, OrganizationRepository>();
+            .AddScoped<IClientService, ClientService>();
+        
 
         return builder;
     }
@@ -81,6 +113,19 @@ public static partial class HostConfiguration
         builder.Services.AddSwaggerGen();
 
         return builder;
+    }
+
+    /// <summary>
+    /// Seeds data into the application's database by creating a service scope and initializing the seed operation.
+    /// </summary>
+    /// <param name="app"></param>
+    /// <returns></returns>
+    private static async ValueTask<WebApplication> SeedDataAsync(this WebApplication app)
+    {
+        var serviceScope = app.Services.CreateScope();
+        await serviceScope.ServiceProvider.InitializeSeedAsync();
+
+        return app;
     }
 
     /// <summary>
