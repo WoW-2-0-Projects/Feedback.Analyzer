@@ -1,4 +1,7 @@
-
 <template>
-    <h1>Hello </h1>
+
+    <div class="h-screen w-screen flex items-center justify-center bg-[#292C33] text-white">
+        <h1>Hello </h1>
+    </div>
+
 </template>
