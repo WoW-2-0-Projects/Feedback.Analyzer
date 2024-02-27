@@ -1,5 +1,4 @@
-﻿using Feedback.Analyzer.Api.Models.DTOs;
-using Feedback.Analyzer.Application.Clients.Model;
+﻿using Feedback.Analyzer.Application.Clients.Models;
 using Feedback.Analyzer.Domain.Common.Queries;
 
 namespace Feedback.Analyzer.Application.Clients.Queries;

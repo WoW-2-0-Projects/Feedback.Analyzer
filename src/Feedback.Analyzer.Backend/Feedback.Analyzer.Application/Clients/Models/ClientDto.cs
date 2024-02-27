@@ -1,4 +1,4 @@
-﻿namespace Feedback.Analyzer.Api.Models.DTOs;
+﻿namespace Feedback.Analyzer.Application.Clients.Models;
 
 /// <summary>
 /// Data transfer object (DTO) representing a client.

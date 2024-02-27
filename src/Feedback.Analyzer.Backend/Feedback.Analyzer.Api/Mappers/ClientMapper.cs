@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Feedback.Analyzer.Api.Models.DTOs;
+using Feedback.Analyzer.Application.Clients.Models;
 using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Api.Mappers;

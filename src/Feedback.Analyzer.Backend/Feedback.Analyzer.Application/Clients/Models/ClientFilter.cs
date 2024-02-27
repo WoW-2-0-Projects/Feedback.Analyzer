@@ -1,6 +1,6 @@
 ﻿using Feedback.Analyzer.Domain.Common.Query;
 
-namespace Feedback.Analyzer.Application.Clients.Model;
+namespace Feedback.Analyzer.Application.Clients.Models;
 
 /// <summary>
 /// Represents a filter for querying clients with pagination support.
