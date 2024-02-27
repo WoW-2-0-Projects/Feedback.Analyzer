@@ -1,11 +1,12 @@
 name: Build and push InsightBox frontend to Azure Container Registry and deploy to Azure Container App
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - release/**
     paths:
-      - ./src/Insight.Box.FrontEnd/**
+      - './src/Insight.Box.FrontEnd/**'
     
 
 jobs:
