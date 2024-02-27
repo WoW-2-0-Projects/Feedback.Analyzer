@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Feedback.Analyzer.Persistence.Configurations;
+namespace Feedback.Analyzer.Persistence.EntityConfiguration;
 
 public class ClientConfiguration : IEntityTypeConfiguration<Client>
 {

@@ -62,4 +62,6 @@ public interface IClientRepository
     /// <param name="cancellationToken">A cancellation token to cancel the asynchronous operation (optional).</param>
     /// <returns>A task representing the asynchronous operation, containing the deleted client entity, or null if not found.</returns>
     ValueTask<Client?> DeleteByIdAsync(Guid clientId, CommandOptions commandOptions, CancellationToken cancellationToken = default);
+
+   
 }
