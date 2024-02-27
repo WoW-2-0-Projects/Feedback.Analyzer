@@ -54,6 +54,6 @@ jobs:
         uses: azure/container-apps-deploy-action@v1
         with:
           acrName: ${{ secrets.AZ_ACR_NAME }}
-          containerAppName: ${{ secrets.AZ_ACA_NAME }}
+          containerAppName: ${{ secrets.AZ_BACKEND_ACA_NAME }}
           resourceGroup: ${{ secrets.AZ_RG_NAME }}
           imageToDeploy: ${{ secrets.AZ_ACR_LOGIN_SERVER }}/insightboxbackend:${{ env.IMAGE_VERSION }}
