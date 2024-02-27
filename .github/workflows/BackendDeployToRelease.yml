@@ -34,7 +34,7 @@ jobs:
           tags: ${{ secrets.AZ_ACR_LOGIN_SERVER }}/insightboxbackend:${{ env.IMAGE_VERSION }}
           push: true
 
-   deploy-container-app:
+  deploy-container-app:
     needs: build-and-push
     runs-on: ubuntu-latest
   
@@ -53,7 +53,7 @@ jobs:
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
-          acrName: insightboxbackend
-          containerAppName: ${{ secrets.AZ_ACA_NAME }}
-          resourceGroup: ${{ secrets.AZ_ACA_RG_NAME }}
+          acrName: ${{ secrets.AZ_ACR_NAME }}
+          containerAppName: ${{ secrets.AZ_BACKEND_ACA_NAME }}
+          resourceGroup: ${{ secrets.AZ_RG_NAME }}
           imageToDeploy: ${{ secrets.AZ_ACR_LOGIN_SERVER }}/insightboxbackend:${{ env.IMAGE_VERSION }}
