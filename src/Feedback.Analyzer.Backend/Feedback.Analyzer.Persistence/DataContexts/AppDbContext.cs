@@ -12,6 +12,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     
     public DbSet<Organization> Organizations => Set<Organization>();
 
+    public DbSet<Product> Products => Set<Product>();
     #endregion
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

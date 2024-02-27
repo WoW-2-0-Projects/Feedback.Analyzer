@@ -91,8 +91,12 @@ public static partial class HostConfiguration
         // Register repositories
         builder.Services
             .AddScoped<IClientRepository, ClientRepository>()
-            .AddScoped<IClientService, ClientService>();
+            .AddScoped<IOrganizationRepository, OrganizationRepository>()
+            .AddScoped<IProductRepository, ProductRepository>();
         
+        // Register services
+        builder.Services
+            .AddScoped<IClientService, ClientService>();
 
         return builder;
     }
