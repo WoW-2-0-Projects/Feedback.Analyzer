@@ -6,7 +6,7 @@ await builder.ConfigureAsync();
 
 var app = builder.Build();
 
-Console.WriteLine("Hello");
+Console.WriteLine("Hello world");
 
 await app.ConfigureAsync();
 await app.RunAsync();
