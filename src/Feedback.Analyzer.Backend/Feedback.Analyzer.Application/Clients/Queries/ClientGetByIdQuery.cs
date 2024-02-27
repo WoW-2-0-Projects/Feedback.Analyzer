@@ -1,13 +1,12 @@
-﻿using Feedback.Analyzer.Domain.Common.Commands;
+﻿using Feedback.Analyzer.Api.Models.DTOs;
 using Feedback.Analyzer.Domain.Common.Queries;
-using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Application.Clients.Queries;
 
 /// <summary>
 /// Represents a command to retrieve a client by their unique identifier.
 /// </summary>
-public class ClientGetByIdQuery : IQuery<Client>
+public record ClientGetByIdQuery : IQuery<ClientDto?>
 {
-    public Guid ClientId { get; set; }
+    public Guid ClientId { get; init; }
 }

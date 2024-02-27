@@ -8,7 +8,7 @@ public class ClientDto
     /// <summary>
     /// Gets or sets the unique identifier for the listing.
     /// </summary>
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
     /// <summary>
     /// Gets or sets the first name of the client.

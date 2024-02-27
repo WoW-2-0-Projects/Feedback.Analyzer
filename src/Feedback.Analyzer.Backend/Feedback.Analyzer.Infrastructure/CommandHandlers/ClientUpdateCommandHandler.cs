@@ -1,18 +1,22 @@
-﻿using Feedback.Analyzer.Application.Clients.Commands;
+﻿using AutoMapper;
+using Feedback.Analyzer.Api.Models.DTOs;
+using Feedback.Analyzer.Application.Clients.Commands;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Infrastructure.CommandHandlers;
 
-
 /// <summary>
 /// Command handler for updating a client entity.
 /// </summary>
-public class ClientUpdateCommandHandler(IClientService clientService) : ICommandHandler<ClientUpdateCommand, Client?>
+public class ClientUpdateCommandHandler(IClientService clientService, IMapper mapper) : ICommandHandler<ClientUpdateCommand, ClientDto>
 {
-    public async Task<Client?> Handle(ClientUpdateCommand request, CancellationToken cancellationToken)
+    public async Task<ClientDto> Handle(ClientUpdateCommand request, CancellationToken cancellationToken)
     {
-        return await clientService.UpdateAsync(request.Client!, new CommandOptions(), cancellationToken);
+        var client = mapper.Map<Client>(request); 
+        var updatedClient = await clientService.UpdateAsync(client, new CommandOptions(), cancellationToken);
+        
+        return mapper.Map<ClientDto>(updatedClient);
     }
 }

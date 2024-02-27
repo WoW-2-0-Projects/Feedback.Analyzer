@@ -6,7 +6,7 @@ namespace Feedback.Analyzer.Application.Clients.Commands;
 /// <summary>
 /// Represents a command to delete a client by their unique identifier.
 /// </summary>
-public class ClientDeleteByIdCommand : ICommand<Client?>
+public record ClientDeleteByIdCommand : ICommand<bool>
 {
-    public Guid ClientId { get; set; }
+    public Guid ClientId { get; init; }
 }

@@ -1,12 +1,12 @@
-﻿using Feedback.Analyzer.Domain.Common.Commands;
-using Feedback.Analyzer.Domain.Entities;
+﻿using Feedback.Analyzer.Api.Models.DTOs;
+using Feedback.Analyzer.Domain.Common.Commands;
 
 namespace Feedback.Analyzer.Application.Clients.Commands;
 
 /// <summary>
 /// Represents a command to update a client entity.
 /// </summary>
-public class ClientUpdateCommand : ICommand<Client>
+public record ClientUpdateCommand : ICommand<ClientDto>
 {
-    public Client Client { get; set; } = default!;
+    public ClientDto Client { get; init; } = default!;
 }

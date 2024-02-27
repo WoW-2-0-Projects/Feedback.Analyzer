@@ -1,5 +1,4 @@
-﻿using Bogus;
-using Feedback.Analyzer.Domain.Entities;
+﻿using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,25 +27,23 @@ public static class SeedDataExtensions
     /// <returns>A task representing the asynchronous operation.</returns>
     private static async ValueTask SeedClientsAsync(this AppDbContext dbContext)
     {
-        var client1 = new Client()
+        var clients = new List<Client>
         {
-            FirstName = "John",
-            LastName = "Doe",
-            EmailAddress = "example@gmail.com",
-            Password = "abc1234567"
+            new()
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                EmailAddress = "example@gmail.com",
+                Password = "abc1234567"
+            },
+            new()
+            {
+                FirstName = "Bob",
+                LastName = "Richard",
+                EmailAddress = "tastBobRichard@gmail.com",
+                Password = "asdf1234"
+            }
         };
-
-        var client2 = new Client()
-        {
-            FirstName = "Bob",
-            LastName = "Richard",
-            EmailAddress = "tastBobRichard@gmail.com",
-            Password = "asdf1234"
-        };
-
-        List<Client> clients = new ();
-        clients.Add(client1);
-        clients.Add(client2);
 
         await dbContext.Clients.AddRangeAsync(clients);
     }
