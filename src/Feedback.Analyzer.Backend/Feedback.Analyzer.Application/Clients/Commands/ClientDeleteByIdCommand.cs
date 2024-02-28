@@ -8,5 +8,8 @@ namespace Feedback.Analyzer.Application.Clients.Commands;
 /// </summary>
 public record ClientDeleteByIdCommand : ICommand<bool>
 {
+    /// <summary>
+    /// Gets the unique identifier of the client to delete.
+    /// </summary>
     public Guid ClientId { get; init; }
 }
