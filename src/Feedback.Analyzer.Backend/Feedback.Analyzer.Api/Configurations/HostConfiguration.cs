@@ -10,14 +10,14 @@ public static partial class HostConfiguration
     public static ValueTask<WebApplicationBuilder> ConfigureAsync(this WebApplicationBuilder builder)
     {
         builder
-            .AddMediator()
-            .AddPersistence()
-            .AddClientInfrastructure()
             .AddValidators()
             .AddMappers()
-            .AddExposers()
+            .AddPersistence()
+            .AddClientInfrastructure()
+            .AddMediator()
             .AddDevTools()
-            .AddClientInfrastructure();
+            .AddExposers();
+            
         
         return new(builder);
     }

@@ -27,17 +27,30 @@ public static partial class HostConfiguration
     }
 
     /// <summary>
-    /// Adds MediatR services to the application with custom service registrations.
+    /// Configures the Dependency Injection container to include validators from referenced assemblies.
     /// </summary>
     /// <param name="builder"></param>
     /// <returns></returns>
-    private static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
+    private static WebApplicationBuilder AddValidators(this WebApplicationBuilder builder)
     {
-        builder.Services.AddMediatR(conf => {conf.RegisterServicesFromAssemblies(Assemblies.ToArray());});
+        builder.Services.Configure<ValidationSettings>(builder.Configuration.GetSection(nameof(ValidationSettings)));
+
+        builder.Services.AddValidatorsFromAssemblies(Assemblies).AddFluentValidationAutoValidation();
         
         return builder;
     }
 
+    /// <summary>
+    /// Configures AutoMapper for object-to-object mapping using the specified profile.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddMappers(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddAutoMapper(Assemblies);
+        return builder;
+    }
+    
     /// <summary>
     /// Adds persistence-related services to the web application builder.
     /// </summary>
@@ -65,55 +78,12 @@ public static partial class HostConfiguration
     }
     
     /// <summary>
-    /// Asynchronously migrates database schemas associated with the application.
-    /// </summary>
-    /// <param name="app">The WebApplication instance to configure.</param>
-    /// <returns>A ValueTask representing the asynchronous operation, with the WebApplication instance.</returns>
-    private static async ValueTask<WebApplication> MigrateDataBaseSchemasAsync(this WebApplication app)
-    {
-        var serviceScopeFactory = app.Services.GetRequiredKeyedService<IServiceScopeFactory>(null);
-        
-        await serviceScopeFactory.MigrateAsync<AppDbContext>();
-        
-        return app;
-    }
-    
-    /// <summary>
-    /// Configures the Dependency Injection container to include validators from referenced assemblies.
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <returns></returns>
-    private static WebApplicationBuilder AddValidators(this WebApplicationBuilder builder)
-    {
-        builder.Services.Configure<ValidationSettings>(builder.Configuration.GetSection(nameof(ValidationSettings)));
-
-        builder.Services.AddValidatorsFromAssemblies(Assemblies).AddFluentValidationAutoValidation();
-        
-        return builder;
-    }
-
-    /// <summary>
-    /// Configures AutoMapper for object-to-object mapping using the specified profile.
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <returns></returns>
-    private static WebApplicationBuilder AddMappers(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddAutoMapper(Assemblies);
-        return builder;
-    }
-
-    /// <summary>
     /// Adds client-related infrastructure services to the web application builder.
     /// </summary>
     /// <param name="builder"></param>
     /// <returns> </returns>
     private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
     {
-        // Register Services
-        builder.Services.
-            AddScoped<IOrganizationService, OrganizationService>();
-        
         // Register repositories
         builder.Services
             .AddScoped<IClientRepository, ClientRepository>()
@@ -122,7 +92,33 @@ public static partial class HostConfiguration
         
         // Register services
         builder.Services
-            .AddScoped<IClientService, ClientService>();
+            .AddScoped<IClientService, ClientService>()
+            .AddScoped<IOrganizationService, OrganizationService>();
+
+        return builder;
+    }
+    
+    /// <summary>
+    /// Adds MediatR services to the application with custom service registrations.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddMediatR(conf => {conf.RegisterServicesFromAssemblies(Assemblies.ToArray());});
+        
+        return builder;
+    }
+
+    /// <summary>
+    /// Configures devTools including controllers
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns>Application builder</returns>
+    private static WebApplicationBuilder AddDevTools(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
         return builder;
     }
@@ -142,20 +138,21 @@ public static partial class HostConfiguration
         builder.Services.AddControllers();
         return builder;
     }
-
+    
     /// <summary>
-    /// Configures devTools including controllers
+    /// Asynchronously migrates database schemas associated with the application.
     /// </summary>
-    /// <param name="builder"></param>
-    /// <returns>Application builder</returns>
-    private static WebApplicationBuilder AddDevTools(this WebApplicationBuilder builder)
+    /// <param name="app">The WebApplication instance to configure.</param>
+    /// <returns>A ValueTask representing the asynchronous operation, with the WebApplication instance.</returns>
+    private static async ValueTask<WebApplication> MigrateDataBaseSchemasAsync(this WebApplication app)
     {
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-
-        return builder;
+        var serviceScopeFactory = app.Services.GetRequiredKeyedService<IServiceScopeFactory>(null);
+        
+        await serviceScopeFactory.MigrateAsync<AppDbContext>();
+        
+        return app;
     }
-
+    
     /// <summary>
     /// Seeds data into the application's database by creating a service scope and initializing the seed operation.
     /// </summary>
@@ -174,22 +171,22 @@ public static partial class HostConfiguration
     /// </summary>
     /// <param name="app">Application host</param>
     /// <returns>Application host</returns>
-    private static WebApplication UseExposers(this WebApplication app)
+    private static WebApplication UseDevTools(this WebApplication app)
     {
-        app.MapControllers();
+        app.UseSwagger();
+        app.UseSwaggerUI();
 
         return app;
     }
-
+    
     /// <summary>
     /// Add Controller middleWhere
     /// </summary>
     /// <param name="app">Application host</param>
     /// <returns>Application host</returns>
-    private static WebApplication UseDevTools(this WebApplication app)
+    private static WebApplication UseExposers(this WebApplication app)
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        app.MapControllers();
 
         return app;
     }

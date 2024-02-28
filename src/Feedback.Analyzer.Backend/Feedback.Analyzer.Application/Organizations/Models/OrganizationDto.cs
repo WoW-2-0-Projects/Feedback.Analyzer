@@ -31,5 +31,5 @@ public class OrganizationDto
     /// <summary>
     /// Gets or sets a collection of Clients.
     /// </summary>
-    public Client Client { get; set; } = default!;
+    public Client ClientDto { get; set; } = default!;
 }
