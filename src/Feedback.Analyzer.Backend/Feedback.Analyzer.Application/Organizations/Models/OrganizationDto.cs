@@ -1,12 +1,18 @@
-﻿using Feedback.Analyzer.Domain.Common.Entities;
+﻿using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Domain.Entities;
+namespace Feedback.Analyzer.Api.Models.DTOs;
 
 /// <summary>
-/// Represents an organization within the system.
+/// Represents a data transfer object (DTO) for an organization.
+/// This class will hold the properties needed to transfer organization-related data.
 /// </summary>
-public class Organization : SoftDeletedEntity
+public class OrganizationDto
 {
+    /// <summary>
+    /// Gets or sets the unique identifier of the organization.
+    /// </summary>
+    public Guid Id { get; set; }
+    
     /// <summary>
     /// The unique identifier of the client associated with this organization.
     /// </summary>
@@ -26,9 +32,4 @@ public class Organization : SoftDeletedEntity
     /// Gets or sets a collection of Clients.
     /// </summary>
     public Client Client { get; set; } = default!;
-
-    /// <summary>
-    /// Gets or sets the collection of products.
-    /// </summary>
-    public IEnumerable<Product> Products { get; set; } = default!;
 }

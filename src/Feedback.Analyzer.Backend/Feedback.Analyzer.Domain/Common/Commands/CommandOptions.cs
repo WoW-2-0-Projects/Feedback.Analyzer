@@ -1,4 +1,4 @@
-﻿namespace Feedback.Analyzer.Domain.Common.Commands;
+namespace Feedback.Analyzer.Domain.Common.Commands;
 
 /// <summary>
 /// Represents options related to the execution of a command, particularly controlling data persistence.
