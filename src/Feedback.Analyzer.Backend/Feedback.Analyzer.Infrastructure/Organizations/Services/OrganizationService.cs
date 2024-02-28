@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using Feedback.Analyzer.Application.Organizations;
 using Feedback.Analyzer.Application.Organizations.Models;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
@@ -44,7 +43,7 @@ public class OrganizationService(
                     options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
 
         if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors.ToString());
+            throw new ValidationException(validationResult.Errors);
         
        return organizationRepository.CreateAsync(organization, commandOptions, cancellationToken);
     }
