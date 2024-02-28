@@ -11,5 +11,5 @@ public class UpdateOrganizationCommand : ICommand<OrganizationDto>
     /// <summary>
     /// Contains the updated organization data. 
     /// </summary>
-    public OrganizationDto Organization { get; init; } = default!; 
+    public OrganizationDto Organization { get; set; } = default!; 
 }
