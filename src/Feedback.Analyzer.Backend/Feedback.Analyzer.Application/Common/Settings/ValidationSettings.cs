@@ -1,4 +1,4 @@
-﻿namespace Feedback.Analyzer.Application.Settings;
+﻿namespace Feedback.Analyzer.Application.Common.Settings;
 
 public class ValidationSettings
 {

@@ -5,7 +5,7 @@ using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Infrastructure.CommandHandlers;
+namespace Feedback.Analyzer.Infrastructure.Clients.CommandHandlers;
 
 /// <summary>
 /// Command handler for updating a client entity.

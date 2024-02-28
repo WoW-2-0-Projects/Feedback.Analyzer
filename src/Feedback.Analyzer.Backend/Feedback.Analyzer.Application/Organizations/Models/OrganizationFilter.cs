@@ -1,6 +1,6 @@
 ﻿using Feedback.Analyzer.Domain.Common.Query;
 
-namespace Feedback.Analyzer.Api.Models.DTOs;
+namespace Feedback.Analyzer.Application.Organizations.Models;
 
 public class OrganizationFilter : FilterPagination
 {

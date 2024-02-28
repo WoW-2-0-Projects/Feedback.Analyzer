@@ -1,10 +1,10 @@
-﻿using Feedback.Analyzer.Application.Settings;
+﻿using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using FluentValidation;
 using Microsoft.Extensions.Options;
 
-namespace Feedback.Analyzer.Infrastructure.Validators;
+namespace Feedback.Analyzer.Infrastructure.Organizations.Validators;
 
 /// <summary>
 /// Validator class for validating user data using FluentValidation.

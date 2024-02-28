@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Feedback.Analyzer.Api.Models.DTOs;
-using Feedback.Analyzer.Application.Organizations;
 using Feedback.Analyzer.Application.Organizations.Commands;
+using Feedback.Analyzer.Application.Organizations.Models;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Entities;

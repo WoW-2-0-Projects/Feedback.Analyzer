@@ -1,4 +1,4 @@
-﻿using Feedback.Analyzer.Application.Settings;
+﻿using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using FluentValidation;

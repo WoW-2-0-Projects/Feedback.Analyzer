@@ -1,12 +1,12 @@
 ﻿using System.Linq.Expressions;
-using Feedback.Analyzer.Api.Models.DTOs;
 using Feedback.Analyzer.Application.Organizations;
+using Feedback.Analyzer.Application.Organizations.Models;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
-using Feedback.Analyzer.Infrastructure.Validators;
+using Feedback.Analyzer.Infrastructure.Organizations.Validators;
 using Feedback.Analyzer.Persistence.Extensions;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using FluentValidation;

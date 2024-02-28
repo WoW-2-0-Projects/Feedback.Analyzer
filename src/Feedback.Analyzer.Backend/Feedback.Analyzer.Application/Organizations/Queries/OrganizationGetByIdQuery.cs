@@ -1,4 +1,4 @@
-﻿using Feedback.Analyzer.Api.Models.DTOs;
+﻿using Feedback.Analyzer.Application.Organizations.Models;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 

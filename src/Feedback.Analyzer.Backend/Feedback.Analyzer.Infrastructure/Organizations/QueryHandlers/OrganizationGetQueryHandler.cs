@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Feedback.Analyzer.Api.Models.DTOs;
-using Feedback.Analyzer.Application.Organizations;
+using Feedback.Analyzer.Application.Organizations.Models;
 using Feedback.Analyzer.Application.Organizations.Queries;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Domain.Common.Queries;
-using Feedback.Analyzer.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.Organizations.QueryHandlers;

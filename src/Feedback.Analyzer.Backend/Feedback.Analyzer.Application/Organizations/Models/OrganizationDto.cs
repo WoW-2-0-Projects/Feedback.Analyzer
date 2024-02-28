@@ -1,6 +1,6 @@
 ﻿using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Api.Models.DTOs;
+namespace Feedback.Analyzer.Application.Organizations.Models;
 
 /// <summary>
 /// Represents a data transfer object (DTO) for an organization.
