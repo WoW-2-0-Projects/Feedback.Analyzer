@@ -6,12 +6,12 @@ using Feedback.Analyzer.Domain.Common.Commands;
 namespace Feedback.Analyzer.Infrastructure.Organizations.CommandHandlers;
 
 /// <summary>
-/// Handles the execution of the <see cref="DeleteOrganizationByIdCommand"/>,
+/// Handles the execution of the <see cref="OrganizationDeleteByIdCommand"/>,
 /// responsible for deleting an organization.
 /// </summary>
-public class DeleteOrganizationCommandHandler(IMapper mapper, IOrganizationService organizationService) : ICommandHandler<DeleteOrganizationByIdCommand, bool>
+public class OrganizationDeleteCommandHandler(IMapper mapper, IOrganizationService organizationService) : ICommandHandler<OrganizationDeleteByIdCommand, bool>
 {
-    public async Task<bool> Handle(DeleteOrganizationByIdCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(OrganizationDeleteByIdCommand request, CancellationToken cancellationToken)
     {
         await organizationService.DeleteByIdAsync(request.OrganizationId, cancellationToken: cancellationToken);
         return true;

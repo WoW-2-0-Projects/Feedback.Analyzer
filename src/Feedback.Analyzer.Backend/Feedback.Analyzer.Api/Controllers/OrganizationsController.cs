@@ -10,7 +10,7 @@ namespace Feedback.Analyzer.Api.Controllers;
 public class OrganizationsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async ValueTask<IActionResult> GetAsync([FromQuery] OrganizationGetQuery organizationGetQuery, CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> Get([FromQuery] OrganizationGetQuery organizationGetQuery, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(organizationGetQuery, cancellationToken);
         return result.Any() ? Ok(result) : NoContent();
@@ -24,14 +24,14 @@ public class OrganizationsController(IMediator mediator) : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> CreateOrganization([FromBody] CreateOrganizationCommand command, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreateOrganization([FromBody] OrganizationCreateCommand command, CancellationToken cancellationToken = default)
     {
         var result = await mediator.Send(command, cancellationToken);
         return Ok(result);
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateOrganization([FromBody] UpdateOrganizationCommand command, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> UpdateOrganization([FromBody] OrganizationUpdateCommand command, CancellationToken cancellationToken = default)
     {
         var result = await mediator.Send(command, cancellationToken);
         return Ok(result);
@@ -40,7 +40,7 @@ public class OrganizationsController(IMediator mediator) : ControllerBase
     [HttpDelete("{organizationId:guid}")]
     public async ValueTask<IActionResult> DeleteOrganizationById([FromRoute] Guid organizationId, CancellationToken cancellationToken = default)
     {
-       var result =  await mediator.Send(new DeleteOrganizationByIdCommand{ OrganizationId = organizationId}, cancellationToken);
+       var result =  await mediator.Send(new OrganizationDeleteByIdCommand{ OrganizationId = organizationId}, cancellationToken);
         return  result ? Ok() : BadRequest();
     }
 }

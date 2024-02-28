@@ -8,12 +8,12 @@ using Feedback.Analyzer.Domain.Entities;
 namespace Feedback.Analyzer.Infrastructure.Organizations.CommandHandlers;
 
 /// <summary>
-/// Handles the execution of the <see cref="UpdateOrganizationCommand"/>. Responsible 
+/// Handles the execution of the <see cref="OrganizationUpdateCommand"/>. Responsible 
 /// for coordinating the modification of an existing organization.
 /// </summary>
-public class UpdateOrganizationCommandHandler(IMapper mapper, IOrganizationService organizationService) : ICommandHandler<UpdateOrganizationCommand, OrganizationDto>
+public class OrganizationUpdateCommandHandler(IMapper mapper, IOrganizationService organizationService) : ICommandHandler<OrganizationUpdateCommand, OrganizationDto>
 {
-    public async Task<OrganizationDto> Handle(UpdateOrganizationCommand request, CancellationToken cancellationToken)
+    public async Task<OrganizationDto> Handle(OrganizationUpdateCommand request, CancellationToken cancellationToken)
     {
         // Conversion to domain entity cancellationToken
         var organization = mapper.Map<Organization>(request.Organization);

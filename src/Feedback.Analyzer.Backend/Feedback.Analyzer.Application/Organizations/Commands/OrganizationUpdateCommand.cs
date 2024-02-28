@@ -4,12 +4,12 @@ using Feedback.Analyzer.Domain.Common.Commands;
 namespace Feedback.Analyzer.Application.Organizations.Commands;
 
 /// <summary>
-/// Represents a command to create a new organization. 
+/// Represents a command to modify an existing organization's information.
 /// </summary>
-public class CreateOrganizationCommand : ICommand<OrganizationDto>
+public record OrganizationUpdateCommand : ICommand<OrganizationDto>
 {
     /// <summary>
-    /// The data required to create a new organization.
+    /// Contains the updated organization data. 
     /// </summary>
     public OrganizationDto Organization { get; set; } = default!; 
 }
