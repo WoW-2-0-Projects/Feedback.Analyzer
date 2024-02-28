@@ -4,7 +4,7 @@ using Feedback.Analyzer.Application.Clients.Queries;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Domain.Common.Queries;
 
-namespace Feedback.Analyzer.Infrastructure.QueryHandlers;
+namespace Feedback.Analyzer.Infrastructure.Clients.QueryHandlers;
 
 /// <summary>
 /// Command handler for retrieving a client by their unique identifier.

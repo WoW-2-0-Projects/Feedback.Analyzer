@@ -5,7 +5,7 @@ using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Infrastructure.CommandHandlers;
+namespace Feedback.Analyzer.Infrastructure.Clients.CommandHandlers;
 
 /// <summary>
 /// Command handler for updating a client entity.
@@ -14,8 +14,8 @@ public class ClientUpdateCommandHandler(IClientService clientService, IMapper ma
 {
     public async Task<ClientDto> Handle(ClientUpdateCommand request, CancellationToken cancellationToken)
     {
-        var client = mapper.Map<Client>(request); 
-        var updatedClient = await clientService.UpdateAsync(client, new CommandOptions(), cancellationToken);
+        var client = mapper.Map<Client>(request.Client); 
+        var updatedClient = await clientService.UpdateAsync(client, cancellationToken: cancellationToken);
         
         return mapper.Map<ClientDto>(updatedClient);
     }

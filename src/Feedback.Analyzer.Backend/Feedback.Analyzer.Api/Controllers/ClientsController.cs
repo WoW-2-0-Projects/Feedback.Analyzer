@@ -13,7 +13,7 @@ public class ClientsController(IMediator mediator) : ControllerBase
     public async ValueTask<IActionResult> Get([FromQuery] ClientGetQuery clientGetQuery, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(clientGetQuery, cancellationToken);
-        return result.Any() ? Ok() : NoContent();
+        return result.Any() ? Ok(result) : NoContent();
     }
 
     [HttpGet("{clientId:guid}")]

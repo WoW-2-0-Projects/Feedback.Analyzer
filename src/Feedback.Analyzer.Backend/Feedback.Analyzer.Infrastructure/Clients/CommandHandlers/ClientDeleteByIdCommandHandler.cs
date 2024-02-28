@@ -2,7 +2,7 @@
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 
-namespace Feedback.Analyzer.Infrastructure.CommandHandlers;
+namespace Feedback.Analyzer.Infrastructure.Clients.CommandHandlers;
 
 /// <summary>
 /// Command handler for deleting a client by their unique identifier.
@@ -11,7 +11,7 @@ public class ClientDeleteByIdCommandHandler(IClientService clientService) : ICom
 {
     public async Task<bool> Handle(ClientDeleteByIdCommand request, CancellationToken cancellationToken)
     {
-        await clientService.DeleteByIdAsync(request.ClientId, new CommandOptions(), cancellationToken);
+        await clientService.DeleteByIdAsync(request.ClientId, cancellationToken: cancellationToken);
         return true;
     }
 }
