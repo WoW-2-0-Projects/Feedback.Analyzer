@@ -10,14 +10,15 @@ public static partial class HostConfiguration
     public static ValueTask<WebApplicationBuilder> ConfigureAsync(this WebApplicationBuilder builder)
     {
         builder
-            .AddMediator()
-            .AddPersistence()
-            .AddClientInfrastructure()
             .AddValidators()
             .AddMappers()
-            .AddExposers()
-            .AddDevTools();
-
+            .AddPersistence()
+            .AddClientInfrastructure()
+            .AddMediator()
+            .AddDevTools()
+            .AddExposers();
+            
+        
         return new(builder);
     }
 
@@ -26,12 +27,14 @@ public static partial class HostConfiguration
     /// </summary>
     /// <param name="app">Application host</param>
     /// <returns>Application host</returns>
-    public static async ValueTask<WebApplication> ConfigureAsync(this WebApplication app)
+    public static async  ValueTask<WebApplication> ConfigureAsync(this WebApplication app)
     {
+        await app.MigrateDataBaseSchemasAsync();
         await app.SeedDataAsync();
-
-        app.UseDevTools().UseExposers();
-
+        app
+            .UseDevTools()
+            .UseExposers();
+        
         return app;
     }
 }
