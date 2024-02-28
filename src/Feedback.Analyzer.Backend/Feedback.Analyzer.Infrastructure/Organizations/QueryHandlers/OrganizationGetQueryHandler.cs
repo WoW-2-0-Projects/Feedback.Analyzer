@@ -19,6 +19,4 @@ public class OrganizationGetQueryHandler(IOrganizationService organizationServic
         
         return mapper.Map<ICollection<OrganizationDto>>(matchedOrganizations);
     }
-
-    
 }

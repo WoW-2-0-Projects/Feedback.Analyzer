@@ -3,7 +3,13 @@ using Feedback.Analyzer.Domain.Common.Queries;
 
 namespace Feedback.Analyzer.Application.Organizations.Queries;
 
+/// <summary>
+///  Represents a query to retrieve a collection of organizations.
+/// </summary>
 public class OrganizationGetQuery : IQuery<ICollection<OrganizationDto>>
 {
-    public OrganizationFilter OrganizationFilter { get; init; } = default!;
+    /// <summary>
+    ///  Gets or sets the filter to apply when retrieving organizations.
+    /// </summary>
+    public OrganizationFilter OrganizationFilter { get; set; } = default!;
 }
