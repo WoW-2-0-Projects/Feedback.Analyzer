@@ -9,6 +9,11 @@ namespace Feedback.Analyzer.Api.Data;
 /// </summary>
 public static class SeedDataExtensions
 {
+    /// <summary>
+    /// Initializes the seed data asynchronously.
+    /// </summary>
+    /// <param name="serviceProvider">The service provider.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public static async ValueTask InitializeSeedAsync(this IServiceProvider serviceProvider)
     {
         var appDbContext = serviceProvider.GetRequiredService<AppDbContext>();

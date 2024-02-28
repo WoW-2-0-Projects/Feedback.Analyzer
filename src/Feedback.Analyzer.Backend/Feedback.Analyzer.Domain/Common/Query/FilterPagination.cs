@@ -6,14 +6,14 @@
 public class FilterPagination
 {
     /// <summary>
-    /// Gets or sets the number of items to include on each page.
+    /// Gets or sets the number of items to include on each page.(default: 20)
     /// </summary>
-    public uint PageSize { get; set; }
+    public uint PageSize { get; set; } = 20;
 
     /// <summary>
-    /// Gets or sets the token representing the page to retrieve in a paginated collection.
+    /// Gets or sets the token representing the page to retrieve in a paginated collection.(default: 1)
     /// </summary>
-    public uint PageToken { get; set; }
+    public uint PageToken { get; set; } = 1;
 
     /// <summary>
     ///  Initializes a new instance of the <see cref="FilterPagination"/> class with specified page size and page token.
