@@ -3,6 +3,7 @@ using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
+using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
@@ -97,6 +98,24 @@ public static partial class HostConfiguration
         // Register services
         builder.Services
             .AddScoped<IClientService, ClientService>();
+
+        return builder;
+    }
+    
+    /// <summary>
+    /// Adds feedback-related infrastructure services to the web application builder.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddFeedbackInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Register repositories
+        builder.Services
+               .AddScoped<ICustomerFeedbackRepository, CustomerCustomerFeedbackRepository>();
+        
+        // Register services
+        builder.Services
+               .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>();
 
         return builder;
     }
