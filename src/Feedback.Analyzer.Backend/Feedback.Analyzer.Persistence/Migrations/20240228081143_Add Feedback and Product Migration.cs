@@ -11,6 +11,11 @@ namespace Feedback.Analyzer.Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.RenameColumn(
+                name: "Email",
+                table: "Clients",
+                newName: "EmailAddress");
+
             migrationBuilder.CreateTable(
                 name: "Feedbacks",
                 columns: table => new
@@ -46,6 +51,11 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Feedbacks");
+
+            migrationBuilder.RenameColumn(
+                name: "EmailAddress",
+                table: "Clients",
+                newName: "Email");
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Feedback.Analyzer.Persistence.Repositories.Interfaces;
 /// <summary>
 /// Defines a repository interface for managing customer feedback entities.
 /// </summary>
-public interface IFeedbackRepository
+public interface ICustomerFeedbackRepository
 {
     /// <summary>
     /// Retrieves a queryable collection of customer feedback entities based on the specified predicate and query options.
