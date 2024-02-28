@@ -1,12 +1,19 @@
 using System.Reflection;
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
+using Feedback.Analyzer.Application.Organizations.Queries;
+using Feedback.Analyzer.Application.Organizations.Services;
+using Feedback.Analyzer.Application.Settings;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
+using Feedback.Analyzer.Infrastructure.Organizations.QueryHandlers;
+using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Api.Configurations;
@@ -28,8 +35,8 @@ public static partial class HostConfiguration
     /// <returns></returns>
     private static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
     {
-        builder.Services.AddMediatR(conf => { conf.RegisterServicesFromAssemblies(Assemblies.ToArray()); });
-
+        builder.Services.AddMediatR(conf => {conf.RegisterServicesFromAssemblies(Assemblies.ToArray());});
+        
         return builder;
     }
 
@@ -58,7 +65,21 @@ public static partial class HostConfiguration
 
         return builder;
     }
-
+    
+    /// <summary>
+    /// Asynchronously migrates database schemas associated with the application.
+    /// </summary>
+    /// <param name="app">The WebApplication instance to configure.</param>
+    /// <returns>A ValueTask representing the asynchronous operation, with the WebApplication instance.</returns>
+    private static async ValueTask<WebApplication> MigrateDataBaseSchemasAsync(this WebApplication app)
+    {
+        var serviceScopeFactory = app.Services.GetRequiredKeyedService<IServiceScopeFactory>(null);
+        
+        await serviceScopeFactory.MigrateAsync<AppDbContext>();
+        
+        return app;
+    }
+    
     /// <summary>
     /// Configures the Dependency Injection container to include validators from referenced assemblies.
     /// </summary>
@@ -66,7 +87,10 @@ public static partial class HostConfiguration
     /// <returns></returns>
     private static WebApplicationBuilder AddValidators(this WebApplicationBuilder builder)
     {
-        builder.Services.AddValidatorsFromAssemblies(Assemblies);
+        builder.Services.Configure<ValidationSettings>(builder.Configuration.GetSection(nameof(ValidationSettings)));
+
+        builder.Services.AddValidatorsFromAssemblies(Assemblies).AddFluentValidationAutoValidation();
+        
         return builder;
     }
 
@@ -85,9 +109,13 @@ public static partial class HostConfiguration
     /// Adds client-related infrastructure services to the web application builder.
     /// </summary>
     /// <param name="builder"></param>
-    /// <returns></returns>
+    /// <returns> </returns>
     private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
     {
+        // Register Services
+        builder.Services.
+            AddScoped<IOrganizationService, OrganizationService>();
+        
         // Register repositories
         builder.Services
             .AddScoped<IClientRepository, ClientRepository>()
@@ -108,9 +136,12 @@ public static partial class HostConfiguration
     /// <returns>Application builder</returns>
     private static WebApplicationBuilder AddExposers(this WebApplicationBuilder builder)
     {
+        builder.Services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
+        });
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
         builder.Services.AddControllers();
-
         return builder;
     }
 
