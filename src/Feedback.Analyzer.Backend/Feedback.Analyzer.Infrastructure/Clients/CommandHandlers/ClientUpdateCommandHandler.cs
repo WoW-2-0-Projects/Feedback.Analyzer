@@ -14,7 +14,7 @@ public class ClientUpdateCommandHandler(IClientService clientService, IMapper ma
 {
     public async Task<ClientDto> Handle(ClientUpdateCommand request, CancellationToken cancellationToken)
     {
-        var client = mapper.Map<Client>(request); 
+        var client = mapper.Map<Client>(request.Client); 
         var updatedClient = await clientService.UpdateAsync(client, new CommandOptions(), cancellationToken);
         
         return mapper.Map<ClientDto>(updatedClient);
