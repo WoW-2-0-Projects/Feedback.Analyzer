@@ -12,6 +12,11 @@ using FluentValidation;
 
 namespace Feedback.Analyzer.Infrastructure.Organizations.Services;
 
+/// <summary>
+/// Initializes a new instance of the <see cref="OrganizationService"/> class.
+/// </summary>
+/// <param name="organizationRepository">The repository for managing organization data.</param>
+/// <param name="organizationValidator">The validator for ensuring organization data integrity.</param>
 public class OrganizationService(
     IOrganizationRepository organizationRepository,
     OrganizationValidator organizationValidator ) 

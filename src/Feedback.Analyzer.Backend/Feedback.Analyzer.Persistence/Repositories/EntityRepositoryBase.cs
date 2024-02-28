@@ -84,7 +84,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     {
         await DbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
 
-        if (commandOptions.SaveChanges)    
+        if (!commandOptions.SkipSaveChanges)    
             await DbContext.SaveChangesAsync(cancellationToken);
 
         return entity;
@@ -105,7 +105,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     {
         DbContext.Set<TEntity>().Update(entity);
 
-        if (commandOptions.SaveChanges)
+        if (!commandOptions.SkipSaveChanges)
             await DbContext.SaveChangesAsync(cancellationToken);
 
         return entity;
@@ -126,7 +126,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     {
         DbContext.Set<TEntity>().Remove(entity);
 
-        if (commandOptions.SaveChanges)
+        if (!commandOptions.SkipSaveChanges)
             await DbContext.SaveChangesAsync(cancellationToken);
 
         return entity;
@@ -150,7 +150,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
 
         DbContext.Set<TEntity>().Remove(entity);
 
-        if (commandOptions.SaveChanges)
+        if (!commandOptions.SkipSaveChanges)
             await DbContext.SaveChangesAsync(cancellationToken);
 
         return entity;
