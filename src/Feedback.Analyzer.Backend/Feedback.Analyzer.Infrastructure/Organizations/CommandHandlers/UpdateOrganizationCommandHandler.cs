@@ -19,7 +19,7 @@ public class UpdateOrganizationCommandHandler(IMapper mapper, IOrganizationServi
         var organization = mapper.Map<Organization>(request.Organization);
         
         // Call service
-        var updatedOrganization = await organizationService.UpdateAsync(organization, new CommandOptions(), cancellationToken);
+        var updatedOrganization = await organizationService.UpdateAsync(organization, cancellationToken: cancellationToken);
 
         // Conversion to DTO
         var organizationDto = mapper.Map<OrganizationDto>(updatedOrganization);

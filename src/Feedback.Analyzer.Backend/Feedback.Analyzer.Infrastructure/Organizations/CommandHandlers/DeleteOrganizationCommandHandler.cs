@@ -13,7 +13,7 @@ public class DeleteOrganizationCommandHandler(IMapper mapper, IOrganizationServi
 {
     public async Task<bool> Handle(DeleteOrganizationByIdCommand request, CancellationToken cancellationToken)
     {
-        await organizationService.DeleteByIdAsync(request.OrganizationId, new CommandOptions(), cancellationToken);
+        await organizationService.DeleteByIdAsync(request.OrganizationId, cancellationToken: cancellationToken);
         return true;
     }
 }
