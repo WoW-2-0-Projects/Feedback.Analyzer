@@ -3,8 +3,8 @@ using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Organizations.Services;
+using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
-using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
@@ -58,20 +58,17 @@ public static partial class HostConfiguration
     /// <returns></returns>
     private static WebApplicationBuilder AddPersistence(this WebApplicationBuilder builder)
     {
-        // Register configurations
-        builder.Services.Configure<DataAccessSettings>(builder.Configuration.GetSection(nameof(DataAccessSettings)));
-        var dataAccessSettings = builder.Configuration.GetSection(nameof(DataAccessSettings)).Get<DataAccessSettings>()
-                                 ?? throw new InvalidOperationException("Data access settings not found");
+        // define db connection string based on runtime environment
+        var dbConnectionString = builder.Environment.IsProduction()
+            ? Environment.GetEnvironmentVariable(DataAccessConstants.DbConnectionString)
+            : builder.Configuration.GetConnectionString(DataAccessConstants.DbConnectionString);
         
         // register ef interceptors
 
         //register db context
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
-            if(dataAccessSettings.UseInMemoryDatabase)
-                options.UseInMemoryDatabase("InsightBox.Database");
-            else
-                options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionString"));
+            options.UseNpgsql(dbConnectionString);
         });
 
         return builder;
