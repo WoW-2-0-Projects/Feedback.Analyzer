@@ -3,6 +3,7 @@ using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Organizations.Services;
+using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
@@ -59,8 +60,8 @@ public static partial class HostConfiguration
     {
         // define db connection string based on runtime environment
         var dbConnectionString = builder.Environment.IsProduction()
-            ? Environment.GetEnvironmentVariable("DbConnectionString")
-            : builder.Configuration.GetConnectionString("DbConnectionString");
+            ? Environment.GetEnvironmentVariable(DataAccessConstants.DbConnectionString)
+            : builder.Configuration.GetConnectionString(DataAccessConstants.DbConnectionString);
         
         // register ef interceptors
 
