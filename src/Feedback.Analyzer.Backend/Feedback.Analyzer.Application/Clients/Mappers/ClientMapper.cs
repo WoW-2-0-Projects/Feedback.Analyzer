@@ -1,12 +1,9 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Feedback.Analyzer.Application.Clients.Models;
 using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Api.Mappers;
+namespace Feedback.Analyzer.Application.Clients.Mappers;
 
-/// <summary>
-/// Mapper configuration for mapping between <see cref="Client"/> and <see cref="ClientDto"/>.
-/// </summary>
 public class ClientMapper : Profile
 {
     public ClientMapper()
