@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
-using Feedback.Analyzer.Application.Clients.Models;
+using Feedback.Analyzer.Application.CustomerFeedbacks.Models;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Application.Clients.Services;
+namespace Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 
 /// <summary>
 /// Interface for managing customer feedback entities.
@@ -36,6 +36,15 @@ public interface ICustomerFeedbackService
     /// <returns>A task representing the asynchronous operation that returns the customer feedback entity.</returns>
     ValueTask<CustomerFeedback?> GetByIdAsync(Guid customerFeedbackId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Creates a new customer feedback entity asynchronously.
+    /// </summary>
+    /// <param name="customerFeedback">The customer feedback entity to create.</param>
+    /// <param name="commandOptions">Command options for the create operation.</param>
+    /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+    /// <returns>A task representing the asynchronous operation that returns the created customer feedback entity.</returns>
+    ValueTask<CustomerFeedback> CreateAsync(CustomerFeedback customerFeedback, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
+    
     /// <summary>
     /// Updates a customer feedback entity asynchronously.
     /// </summary>
