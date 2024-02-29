@@ -2,11 +2,11 @@ using System.Reflection;
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.Settings;
+using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
-using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
@@ -131,7 +131,7 @@ public static partial class HostConfiguration
     {
         // Register repositories
         builder.Services
-               .AddScoped<ICustomerFeedbackRepository, CustomerCustomerFeedbackRepository>();
+               .AddScoped<ICustomerFeedbackRepository, CustomerFeedbackRepository>();
         
         // Register services
         builder.Services
