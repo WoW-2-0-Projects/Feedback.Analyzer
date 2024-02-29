@@ -5,7 +5,7 @@ using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Microsoft.EntityFrameworkCore;
 
-namespace Feedback.Analyzer.Infrastructure.QueryHandlers;
+namespace Feedback.Analyzer.Infrastructure.Clients.QueryHandlers;
 
 /// <summary>
 /// Command handler for retrieving a collection of clients based on specified criteria.

@@ -16,7 +16,7 @@ public interface IOrganizationRepository
     /// <param name="predicate">An optional expression to filter the results.</param>
     /// <param name="queryOptions">Whether to disable entity change tracking for performance optimization.</param>
     /// <returns>An IQueryable of Organization objects.</returns>
-    IQueryable<Organization> Get(Expression<Func<Organization, bool>>? predicate, QueryOptions queryOptions = default);
+    IQueryable<Organization> Get(Expression<Func<Organization, bool>>? predicate = default, QueryOptions queryOptions = default);
     
     
     /// <summary>
@@ -27,15 +27,6 @@ public interface IOrganizationRepository
     /// <param name="cancellationToken">A token to allow the operation to be cancelled.</param>
     /// <returns>The requested Organization if found, otherwise null.</returns>
     ValueTask<Organization?> GetByIdAsync(Guid organizationId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default);
-    
-    /// <summary>
-    /// Retrieves a list of Organizations based on a collection of their unique identifiers (IDs).
-    /// </summary>
-    /// <param name="ids">A collection of Organization IDs.</param>
-    /// <param name="queryOptions">If true, disables change tracking for the returned entities, potentially improving performance.</param>
-    /// <param name="cancellationToken">A token to allow the operation to be cancelled.</param>
-    /// <returns>A list of Organizations matching the provided IDs.  If an ID doesn't correspond to an existing Organization, it is omitted in the result.</returns> 
-    ValueTask<IList<Organization>> GetByIdsAsync(IEnumerable<Guid> ids, QueryOptions queryOptions = default , CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Creates a new Organization record.
