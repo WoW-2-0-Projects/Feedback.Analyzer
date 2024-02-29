@@ -28,6 +28,7 @@ public class ProductValidator : AbstractValidator<Product>
                     .MinimumLength(3)
                     .MaximumLength(128)
                     .Matches(validationSettingsValue.NameRegexPattern);
+                
                 RuleFor(product => product.Description)
                     .NotEmpty()
                     .MinimumLength(3)
@@ -44,6 +45,7 @@ public class ProductValidator : AbstractValidator<Product>
                     .MinimumLength(3)
                     .MaximumLength(128)
                     .Matches(validationSettingsValue.NameRegexPattern);
+                
                 RuleFor(product => product.Description)
                     .NotEmpty()
                     .MinimumLength(3)
