@@ -1,6 +1,6 @@
 ﻿using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Application.Clients.Models;
+namespace Feedback.Analyzer.Application.CustomerFeedbacks.Models;
 
 /// <summary>
 /// Represents the data transfer object (DTO) for customer feedback.
