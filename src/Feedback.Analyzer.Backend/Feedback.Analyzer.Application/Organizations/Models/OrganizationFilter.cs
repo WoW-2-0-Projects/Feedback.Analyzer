@@ -4,12 +4,6 @@ namespace Feedback.Analyzer.Application.Organizations.Models;
 
 public class OrganizationFilter : FilterPagination
 {
-    public OrganizationFilter() 
-    { 
-        PageSize = int.MaxValue;
-        PageToken = 1;
-    }
-    
     /// <summary>
     /// Overrides base GetHashCode method
     /// </summary>
