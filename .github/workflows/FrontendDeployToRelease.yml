@@ -5,7 +5,7 @@ on:
     branches:
       - release/**
     paths:
-      - './src/Insight.Box.FrontEnd/**'
+      - src/Insight.Box.FrontEnd/**
 
 jobs:
   build-and-push:
@@ -31,8 +31,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ./src/Insight.Box.FrontEnd
-          file: ./src/Insight.Box.FrontEnd/Dockerfile
+          context: src/Insight.Box.FrontEnd
+          file: src/Insight.Box.FrontEnd/Dockerfile
           tags: ${{ secrets.AZ_ACR_LOGIN_SERVER }}/insightboxfrontend:${{ env.IMAGE_VERSION }}
           push: true
 
