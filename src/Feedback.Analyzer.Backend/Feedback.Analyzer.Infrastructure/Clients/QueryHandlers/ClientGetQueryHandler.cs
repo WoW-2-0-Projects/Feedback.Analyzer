@@ -14,8 +14,8 @@ public class ClientGetQueryHandler(IClientService clientService, IMapper mapper)
 {
     public async Task<ICollection<ClientDto>> Handle(ClientGetQuery request, CancellationToken cancellationToken)
     {
-        var matchedClients =  await clientService.Get(request.ClientFilter, new QueryOptions() { AsNoTracking = true }).ToListAsync(cancellationToken);
+        var matchedClients = await clientService.Get(request.ClientFilter, new QueryOptions() { AsNoTracking = true }).ToListAsync(cancellationToken);
         
-        return mapper.Map<ICollection<ClientDto>>(matchedClients);
+        return mapper.Map<IList<ClientDto>>(matchedClients);
     }
 }
