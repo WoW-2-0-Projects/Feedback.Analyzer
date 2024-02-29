@@ -11,26 +11,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "LastName",
-                table: "Clients",
-                type: "character varying(64)",
-                maxLength: 64,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "character varying(256)",
-                oldMaxLength: 256);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "FirstName",
-                table: "Clients",
-                type: "character varying(64)",
-                maxLength: 64,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "character varying(256)",
-                oldMaxLength: 256);
-
             migrationBuilder.CreateTable(
                 name: "Organizations",
                 columns: table => new
