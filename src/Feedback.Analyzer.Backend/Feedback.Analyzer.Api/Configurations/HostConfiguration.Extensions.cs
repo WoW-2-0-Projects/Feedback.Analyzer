@@ -58,21 +58,14 @@ public static partial class HostConfiguration
     /// <returns></returns>
     private static WebApplicationBuilder AddPersistence(this WebApplicationBuilder builder)
     {
-        // Register configurations
-        builder.Services.Configure<DataAccessSettings>(builder.Configuration.GetSection(nameof(DataAccessSettings)));
-        var dataAccessSettings = builder.Configuration.GetSection(nameof(DataAccessSettings)).Get<DataAccessSettings>()
-                                 ?? throw new InvalidOperationException("Data access settings not found");
+        // define db connection string based on environment
+        var dbConnectionString = builder.Environment.IsProduction()
+            ? Environment.GetEnvironmentVariable("DbConnectionString")
+            : builder.Configuration.GetConnectionString("DbConnectionString");
         
-        // register ef interceptors
-
         //register db context
         builder.Services.AddDbContext<AppDbContext>(options =>
-        {
-            if(dataAccessSettings.UseInMemoryDatabase)
-                options.UseInMemoryDatabase("InsightBox.Database");
-            else
-                options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionString"));
-        });
+            options.UseNpgsql(dbConnectionString));
 
         return builder;
     }
