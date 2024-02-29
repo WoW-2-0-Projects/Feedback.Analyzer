@@ -1,5 +1,7 @@
 ﻿using Feedback.Analyzer.Application.Clients.Commands;
 using Feedback.Analyzer.Application.Clients.Services;
+using Feedback.Analyzer.Application.CustomerFeedbacks.Commands;
+using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 
 namespace Feedback.Analyzer.Infrastructure.CustomerFeedbacks.CommandHandlers;

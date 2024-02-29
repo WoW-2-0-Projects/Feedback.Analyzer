@@ -2,6 +2,9 @@
 using Feedback.Analyzer.Application.Clients.Models;
 using Feedback.Analyzer.Application.Clients.Queries;
 using Feedback.Analyzer.Application.Clients.Services;
+using Feedback.Analyzer.Application.CustomerFeedbacks.Models;
+using Feedback.Analyzer.Application.CustomerFeedbacks.Queries;
+using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Domain.Common.Queries;
 
 namespace Feedback.Analyzer.Infrastructure.CustomerFeedbacks.QueryHandlers;

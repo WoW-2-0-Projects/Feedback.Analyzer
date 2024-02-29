@@ -1,11 +1,11 @@
 ﻿using Feedback.Analyzer.Domain.Common.Commands;
 
-namespace Feedback.Analyzer.Application.Clients.Commands;
+namespace Feedback.Analyzer.Application.CustomerFeedbacks.Commands;
 
 /// <summary>
 /// Represents a command for deleting customer feedback by product ID.
 /// </summary>
-public class CustomerFeedbackDeleteByIdCommand : ICommand<bool>
+public record CustomerFeedbackDeleteByIdCommand : ICommand<bool>
 {
-    public Guid ProductId { get; set; } 
+    public Guid ProductId { get; set; }
 }

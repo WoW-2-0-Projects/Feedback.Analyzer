@@ -1,7 +1,7 @@
-﻿using Feedback.Analyzer.Application.Clients.Models;
+﻿using Feedback.Analyzer.Application.CustomerFeedbacks.Models;
 using Feedback.Analyzer.Domain.Common.Queries;
 
-namespace Feedback.Analyzer.Application.Clients.Queries;
+namespace Feedback.Analyzer.Application.CustomerFeedbacks.Queries;
 
 /// <summary>
 /// Represents a query for retrieving a collection of customer feedback data transfer objects.
