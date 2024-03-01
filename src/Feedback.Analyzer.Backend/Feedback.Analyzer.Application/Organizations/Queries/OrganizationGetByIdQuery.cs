@@ -7,7 +7,7 @@ namespace Feedback.Analyzer.Application.Organizations.Queries;
 /// <summary>
 /// Represents a query to retrieve a specific organization by its ID.
 /// </summary>
-public class OrganizationGetByIdQuery : IQuery<OrganizationDto?>
+public record OrganizationGetByIdQuery : IQuery<OrganizationDto?>
 {
     /// <summary>
     /// The unique identifier of the organization to retrieve.
