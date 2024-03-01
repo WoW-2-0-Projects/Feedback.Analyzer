@@ -1,4 +1,5 @@
 import ApiClientBase from "@/infrastructure/apiClients/apiClientBase/ApiClientBase";
+import { OrganizationsEndpointsClient } from "./OrganizationsEndpoints";
 
 /*
  * Represents Insight-Box API client
@@ -23,5 +24,9 @@ export class InsightBoxApiClient {
             baseURL: this.baseUrl,
             withCredentials: true
         });
+
+        this.organizations = new OrganizationsEndpointsClient(this.client);
     }
+
+    public organizations: OrganizationsEndpointsClient;
 }

@@ -21,22 +21,39 @@
 
 <script setup lang="ts">
 
-import {onMounted, ref} from "vue";
+import {onMounted, onBeforeMount, ref} from "vue";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import {OrganizationFilter} from "@/modules/organizations/models/OrganizationFilter";
 import OrganizationsSearchBar from "@/modules/organizations/components/OrganizationsSearchBar.vue";
 import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
 import {NotificationSource} from "@/infrastructure/models/notifications/Action";
+import { Organization } from "../models/Organization";
+import { InsightBoxApiClient } from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
+import { FilterPagination } from "@/common/FilterPagination";
 
+const insightBoxApiClient = new InsightBoxApiClient();
 const documentService = new DocumentService();
+const organizations = ref<Array<Organization>>([]);
+const organizationsFilter = ref<FilterPagination>(new FilterPagination());
 
-const organizationFilter = ref<OrganizationFilter>({});
 
-onMounted(() => {
+onBeforeMount(async () => {
     // Set page title
     documentService.setTitle(LayoutConstants.Organizations);
+    await loadOrganizationsAsync();
 });
+
+const loadOrganizationsAsync = async () => {
+    const organizationsResponse = await insightBoxApiClient.organizations.getAsync(organizationsFilter.value);
+    if(organizationsResponse.isSuccess) {
+        const data = organizationsResponse.response as Organization[];
+        console.log(data);
+        organizations.value.push(...data);
+    } else{
+        console.log("Something is wrong");
+    }
+};
 
 /*
  * Change source of organizations to re-calculate layout
