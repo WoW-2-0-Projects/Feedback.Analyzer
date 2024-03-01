@@ -14,7 +14,7 @@ public class ProductRepository
     (AppDbContext dbContext)
     : EntityRepositoryBase<Product, AppDbContext>(dbContext), IProductRepository
 {
-    public IQueryable<Product> Get(Expression<Func<Product, bool>>? predicate = default, QueryOptions queryOptions = default)
+    public new IQueryable<Product> Get(Expression<Func<Product, bool>>? predicate = default, QueryOptions queryOptions = default)
     {
         return base.Get(predicate, queryOptions);
     }

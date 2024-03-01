@@ -4,9 +4,11 @@ using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.Organizations.Services;
+using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
+using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
@@ -92,7 +94,8 @@ public static partial class HostConfiguration
         // Register services
         builder.Services
             .AddScoped<IClientService, ClientService>()
-            .AddScoped<IOrganizationService, OrganizationService>();
+            .AddScoped<IOrganizationService, OrganizationService>()
+            .AddScoped<IProductService, ProductService>();
 
         return builder;
     }
