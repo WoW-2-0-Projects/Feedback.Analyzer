@@ -8,10 +8,17 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Feedback.Analyzer.Domain\Feedback.Analyzer.Domain.csproj" />
+      <ProjectReference Include="..\Feedback.Analyzer.Persistence\Feedback.Analyzer.Persistence.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Clients\Events\" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="DeepCloner" Version="0.10.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
 </Project>
