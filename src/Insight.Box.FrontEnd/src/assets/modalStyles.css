@@ -19,5 +19,13 @@
 }
 
 .modal-bg-overlay-blur {
-    @apply absolute z-30 bg-opacity-30 bg-black top-0 left-0 h-screen w-screen backdrop-filter backdrop-blur-lg;
+  @apply absolute z-30 bg-opacity-30 bg-black top-0 left-0 h-screen w-screen backdrop-filter backdrop-blur-lg;
+}
+
+.modal-content-padding {
+  @apply py-10 px-10;
+}
+
+.modal-content-layout {
+  @apply w-[600px];
 }

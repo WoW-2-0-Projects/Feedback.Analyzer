@@ -7,7 +7,7 @@
 
             <!-- Modal container -->
             <div :class="isActive ? ' absolute-y-center' : ' opacity-0'"
-                 class="fixed h-fit transform top-1/2 absolute-x-center theme-modal-transition
+                 class="fixed h-fit transform top-1/2 w-fit absolute-x-center theme-modal-transition
                      theme-modal-bg modal-border-round theme-modal-border inset-0 z-30 overflow-auto no-scrollbar">
 
                 <div class="w-full h-full relative pt-20" @click.stop>
