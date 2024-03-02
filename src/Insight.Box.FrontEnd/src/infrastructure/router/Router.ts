@@ -1,5 +1,4 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import HomeView from '../../common/views/HomeView.vue'
 import {RouteName} from "@/infrastructure/router/RouteName";
 
 const router = createRouter({
@@ -14,6 +13,11 @@ const router = createRouter({
             path: '/organizations',
             name: RouteName.Organizations,
             component: () => import('../../modules/organizations/components/OrganizationsTab.vue')
+        },
+        {
+            path: '/products',
+            name: RouteName.Products,
+            component: () => import('../../modules/products/components/ProductsTab.vue')
         },
         {
             path: '/about',
