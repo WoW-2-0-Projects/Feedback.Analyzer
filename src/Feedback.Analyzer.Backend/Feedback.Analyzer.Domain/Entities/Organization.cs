@@ -15,12 +15,12 @@ public class Organization : SoftDeletedEntity
     /// <summary>
     /// Gets or sets the  name of the Organization.
     /// </summary>
-    public string? Name { get; set; }
+    public string Name { get; set; } = default!;
     
     /// <summary>
     ///  Gets or sets the  description of the Organization.
     /// </summary>
-    public string? Description { get; set; }
+    public string Description { get; set; } = default!;
 
     /// <summary>
     /// Gets or sets a collection of Clients.

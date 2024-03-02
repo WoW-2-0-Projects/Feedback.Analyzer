@@ -22,9 +22,6 @@ public class OrganizationRepository(AppDbContext dbContext, ICacheBroker cacheBr
     public new ValueTask<Organization?> GetByIdAsync(Guid organizationId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
         => base.GetByIdAsync(organizationId, queryOptions, cancellationToken);
 
-    public new ValueTask<IList<Organization>> GetByIdsAsync(IEnumerable<Guid> ids, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
-        => base.GetByIdsAsync(ids, queryOptions, cancellationToken);
-
     public new ValueTask<Organization> CreateAsync(Organization organization, CommandOptions commandOptions , CancellationToken cancellationToken = default)
         => base.CreateAsync(organization, commandOptions, cancellationToken);
 

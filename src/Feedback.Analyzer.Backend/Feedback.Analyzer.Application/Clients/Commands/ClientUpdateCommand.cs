@@ -8,5 +8,8 @@ namespace Feedback.Analyzer.Application.Clients.Commands;
 /// </summary>
 public record ClientUpdateCommand : ICommand<ClientDto>
 {
+    /// <summary>
+    /// Contains the updated organization data. 
+    /// </summary>
     public ClientDto Client { get; init; } = default!;
 }

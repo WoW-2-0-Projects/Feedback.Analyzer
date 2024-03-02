@@ -44,7 +44,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(256)
+                        .HasMaxLength(64)
                         .HasColumnType("character varying(256)");
 
                     b.Property<bool>("IsDeleted")
@@ -52,7 +52,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(256)
+                        .HasMaxLength(64)
                         .HasColumnType("character varying(256)");
 
                     b.Property<DateTimeOffset?>("ModifiedTime")

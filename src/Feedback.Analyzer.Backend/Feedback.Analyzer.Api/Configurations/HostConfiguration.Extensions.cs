@@ -10,6 +10,10 @@ using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Serializers;
 using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Domain.Common.Events;
+using Feedback.Analyzer.Application.Common.Settings;
+using Feedback.Analyzer.Application.Organizations.Services;
+using Feedback.Analyzer.Application.Products.Services;
+using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.Identity.Services;
@@ -17,11 +21,14 @@ using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.RequestContexts.Brokers;
 using Feedback.Analyzer.Infrastructure.Serializers;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
+using Feedback.Analyzer.Infrastructure.Organizations.Services;
+using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -38,14 +45,16 @@ public static partial class HostConfiguration
     }
 
     /// <summary>
-    /// Adds MediatR services to the application with custom service registrations.
+    /// Configures the Dependency Injection container to include validators from referenced assemblies.
     /// </summary>
     /// <param name="builder"></param>
     /// <returns></returns>
-    private static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
+    private static WebApplicationBuilder AddValidators(this WebApplicationBuilder builder)
     {
-        builder.Services.AddMediatR(conf => { conf.RegisterServicesFromAssemblies(Assemblies.ToArray()); });
+        builder.Services.Configure<ValidationSettings>(builder.Configuration.GetSection(nameof(ValidationSettings)));
 
+        builder.Services.AddValidatorsFromAssemblies(Assemblies).AddFluentValidationAutoValidation();
+        
         return builder;
     }
 
@@ -114,31 +123,39 @@ public static partial class HostConfiguration
     }
     
     /// <summary>
+    /// Configures AutoMapper for object-to-object mapping using the specified profile.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddMappers(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddAutoMapper(Assemblies);
+        return builder;
+    }
+    
+    /// <summary>
     /// Adds persistence-related services to the web application builder.
     /// </summary>
     /// <param name="builder"></param>
     /// <returns></returns>
     private static WebApplicationBuilder AddPersistence(this WebApplicationBuilder builder)
     {
-        // Register configurations
-        builder.Services.Configure<DataAccessSettings>(builder.Configuration.GetSection(nameof(DataAccessSettings)));
-        var dataAccessSettings = builder.Configuration.GetSection(nameof(DataAccessSettings)).Get<DataAccessSettings>()
-                                 ?? throw new InvalidOperationException("Data access settings not found");
+        // define db connection string based on runtime environment
+        var dbConnectionString = builder.Environment.IsProduction()
+            ? Environment.GetEnvironmentVariable(DataAccessConstants.DbConnectionString)
+            : builder.Configuration.GetConnectionString(DataAccessConstants.DbConnectionString);
         
         // register ef interceptors
 
         //register db context
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
-            if(dataAccessSettings.UseInMemoryDatabase)
-                options.UseInMemoryDatabase("InsightBox.Database");
-            else
-                options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionString"));
+            options.UseNpgsql(dbConnectionString);
         });
 
         return builder;
     }
-
+    
     /// <summary>
     /// Extension method for adding event bus services to the application.
     /// </summary>
@@ -150,27 +167,41 @@ public static partial class HostConfiguration
     
     /// <summary>
     /// Configures the Dependency Injection container to include validators from referenced assemblies.
+    /// Adds client-related infrastructure services to the web application builder.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns> </returns>
+    private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Register repositories
+        builder.Services
+            .AddScoped<IClientRepository, ClientRepository>()
+            .AddScoped<IOrganizationRepository, OrganizationRepository>()
+            .AddScoped<IProductRepository, ProductRepository>();
+        
+        // Register services
+        builder.Services
+            .AddScoped<IClientService, ClientService>()
+            .AddScoped<IOrganizationService, OrganizationService>()
+            .AddScoped<IProductService, ProductService>();
+
+        return builder;
+    }
+    
+    /// <summary>
+    /// Adds MediatR services to the application with custom service registrations.
     /// </summary>
     /// <param name="builder"></param>
     /// <returns></returns>
-    private static WebApplicationBuilder AddValidators(this WebApplicationBuilder builder)
+    private static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
     {
-        builder.Services.AddValidatorsFromAssemblies(Assemblies);
+        builder.Services.AddMediatR(conf => {conf.RegisterServicesFromAssemblies(Assemblies.ToArray());});
+        
         return builder;
     }
 
     /// <summary>
-    /// Configures AutoMapper for object-to-object mapping using the specified profile.
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <returns></returns>
-    private static WebApplicationBuilder AddMappers(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddAutoMapper(Assemblies);
-        return builder;
-    }
-
-    /// <summary>
+    /// Configures devTools including controllers
     /// Configures IdentityInfrastructure including controllers
     /// </summary>
     /// <param name="builder"></param>
@@ -202,18 +233,11 @@ public static partial class HostConfiguration
     /// Adds client-related infrastructure services to the web application builder.
     /// </summary>
     /// <param name="builder"></param>
-    /// <returns></returns>
-    private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
+    /// <returns>Application builder</returns>
+    private static WebApplicationBuilder AddDevTools(this WebApplicationBuilder builder)
     {
-        // Register repositories
-        builder.Services
-            .AddScoped<IClientRepository, ClientRepository>()
-            .AddScoped<IOrganizationRepository, OrganizationRepository>()
-            .AddScoped<IProductRepository, ProductRepository>();
-        
-        // Register services
-        builder.Services
-            .AddScoped<IClientService, ClientService>();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
         return builder;
     }
@@ -242,25 +266,29 @@ public static partial class HostConfiguration
     /// <returns>Application builder</returns>
     private static WebApplicationBuilder AddExposers(this WebApplicationBuilder builder)
     {
+        builder.Services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
+        });
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
         builder.Services.AddControllers();
-
         return builder;
     }
-
+    
     /// <summary>
-    /// Configures devTools including controllers
+    /// Asynchronously migrates database schemas associated with the application.
     /// </summary>
-    /// <param name="builder"></param>
-    /// <returns>Application builder</returns>
-    private static WebApplicationBuilder AddDevTools(this WebApplicationBuilder builder)
+    /// <param name="app">The WebApplication instance to configure.</param>
+    /// <returns>A ValueTask representing the asynchronous operation, with the WebApplication instance.</returns>
+    private static async ValueTask<WebApplication> MigrateDataBaseSchemasAsync(this WebApplication app)
     {
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-
-        return builder;
+        var serviceScopeFactory = app.Services.GetRequiredKeyedService<IServiceScopeFactory>(null);
+        
+        await serviceScopeFactory.MigrateAsync<AppDbContext>();
+        
+        return app;
     }
-
+    
     /// <summary>
     /// Seeds data into the application's database by creating a service scope and initializing the seed operation.
     /// </summary>
@@ -279,22 +307,22 @@ public static partial class HostConfiguration
     /// </summary>
     /// <param name="app">Application host</param>
     /// <returns>Application host</returns>
-    private static WebApplication UseExposers(this WebApplication app)
+    private static WebApplication UseDevTools(this WebApplication app)
     {
-        app.MapControllers();
+        app.UseSwagger();
+        app.UseSwaggerUI();
 
         return app;
     }
-
+    
     /// <summary>
     /// Add Controller middleWhere
     /// </summary>
     /// <param name="app">Application host</param>
     /// <returns>Application host</returns>
-    private static WebApplication UseDevTools(this WebApplication app)
+    private static WebApplication UseExposers(this WebApplication app)
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        app.MapControllers();
 
         return app;
     }

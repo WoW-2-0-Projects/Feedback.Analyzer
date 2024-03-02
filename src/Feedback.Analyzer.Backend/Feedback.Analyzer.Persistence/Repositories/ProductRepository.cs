@@ -15,7 +15,7 @@ public class ProductRepository
     (AppDbContext dbContext, ICacheBroker cacheBroker)
     : EntityRepositoryBase<Product, AppDbContext>(dbContext, cacheBroker), IProductRepository
 {
-    public IQueryable<Product> Get(Expression<Func<Product, bool>>? predicate = default, QueryOptions queryOptions = default)
+    public new IQueryable<Product> Get(Expression<Func<Product, bool>>? predicate = default, QueryOptions queryOptions = default)
     {
         return base.Get(predicate, queryOptions);
     }

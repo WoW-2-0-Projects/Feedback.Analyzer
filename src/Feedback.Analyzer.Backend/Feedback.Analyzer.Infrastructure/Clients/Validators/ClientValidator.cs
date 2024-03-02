@@ -1,33 +1,71 @@
-﻿using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Application.Common.Settings;
+using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using FluentValidation;
+using Microsoft.Extensions.Options;
 
 namespace Feedback.Analyzer.Infrastructure.Clients.Validators;
 
 public class ClientValidator : AbstractValidator<Client>
 {
-    public ClientValidator()
+    public ClientValidator(IOptions<ValidationSettings> validationSettings)
     {
-        RuleSet(EntityEvent.OnCreate.ToString(), () => 
-        {
-            RuleFor(client => client.FirstName).NotEmpty().MaximumLength(64);
-            
-            RuleFor(client => client.LastName).NotEmpty().MaximumLength(64);
-
-            RuleFor(client => client.EmailAddress).NotEmpty().MaximumLength(128);
-            
-            RuleFor(client => client.PasswordHash).NotEmpty().MaximumLength(128);
-        });
+        var validationSettingsValue = validationSettings.Value;
         
-        RuleSet(EntityEvent.OnUpdate.ToString(), () => 
-        {
-            RuleFor(client => client.FirstName).NotEmpty().MaximumLength(64);
-            
-            RuleFor(client => client.LastName).NotEmpty().MaximumLength(64);
+        RuleSet(
+            EntityEvent.OnCreate.ToString(),
+            () =>
+            {
+                RuleFor(client => client.FirstName)
+                    .NotEmpty()
+                    .MinimumLength(3)
+                    .MaximumLength(64)
+                    .Matches(validationSettingsValue.NameRegexPattern);
 
-            RuleFor(client => client.EmailAddress).NotEmpty().MaximumLength(128);
-            
-            RuleFor(client => client.PasswordHash).NotEmpty().MaximumLength(128);
-        });
+                RuleFor(client => client.LastName)
+                    .NotEmpty()
+                    .MinimumLength(3)
+                    .MaximumLength(64)
+                    .Matches(validationSettingsValue.NameRegexPattern);
+                    
+
+                RuleFor(client => client.EmailAddress)
+                    .NotEmpty()
+                    .MinimumLength(3)
+                    .MaximumLength(128)
+                    .Matches(validationSettingsValue.EmailRegexPattern);
+
+                RuleFor(client => client.Password).NotEmpty();
+            }
+        );
+        
+        RuleSet(
+            EntityEvent.OnUpdate.ToString(),
+            () =>
+            {
+                RuleFor(client => client.FirstName)
+                    .NotEmpty()
+                    .MinimumLength(3)
+                    .MaximumLength(64)
+                    .Matches(validationSettingsValue.NameRegexPattern);
+
+                RuleFor(client => client.LastName)
+                    .NotEmpty()
+                    .MinimumLength(3)
+                    .MaximumLength(64)
+                    .Matches(validationSettingsValue.NameRegexPattern);
+                    
+
+                RuleFor(client => client.EmailAddress)
+                    .NotEmpty()
+                    .MinimumLength(3)
+                    .MaximumLength(128)
+                    .Matches(validationSettingsValue.EmailRegexPattern);
+
+                RuleFor(client => client.Password).NotEmpty();
+            }
+        );
+
+        
     }
 }
