@@ -1,4 +1,4 @@
-using Feedback.Analyzer.Application.Common.Settings;
+﻿using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using FluentValidation;
@@ -35,7 +35,7 @@ public class ClientValidator : AbstractValidator<Client>
                     .MaximumLength(128)
                     .Matches(validationSettingsValue.EmailRegexPattern);
 
-                RuleFor(client => client.Password).NotEmpty();
+                RuleFor(client => client.PasswordHash).NotEmpty();
             }
         );
         
@@ -62,7 +62,7 @@ public class ClientValidator : AbstractValidator<Client>
                     .MaximumLength(128)
                     .Matches(validationSettingsValue.EmailRegexPattern);
 
-                RuleFor(client => client.Password).NotEmpty();
+                RuleFor(client => client.PasswordHash).NotEmpty();
             }
         );
 

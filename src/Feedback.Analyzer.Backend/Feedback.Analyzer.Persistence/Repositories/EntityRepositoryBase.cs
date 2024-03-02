@@ -135,7 +135,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
         if (cacheEntryOptions is not null)
             await cacheBroker.SetAsync(entity.Id.ToString(), entity, cacheEntryOptions, cancellationToken);
 
-        if (commandOptions.SaveChanges)
+        if (!commandOptions.SkipSaveChanges)
             await DbContext.SaveChangesAsync(cancellationToken);
 
         return entity;
@@ -159,7 +159,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
         if (cacheEntryOptions is not null)
             await cacheBroker.SetAsync(entity.Id.ToString(), entity, cacheEntryOptions, cancellationToken);
 
-        if (commandOptions.SaveChanges)
+        if (!commandOptions.SkipSaveChanges)
             await DbContext.SaveChangesAsync(cancellationToken);
 
         return entity;
@@ -183,7 +183,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
         if (cacheEntryOptions is not null)
             await cacheBroker.DeleteAsync(entity.Id.ToString(), cancellationToken);
 
-        if (commandOptions.SaveChanges)
+        if (!commandOptions.SkipSaveChanges)
             await DbContext.SaveChangesAsync(cancellationToken);
 
         return entity;
@@ -211,7 +211,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
         if (cacheEntryOptions is not null)
             await cacheBroker.DeleteAsync(entity.Id.ToString(), cancellationToken);
 
-        if (commandOptions.SaveChanges)
+        if (!commandOptions.SkipSaveChanges)
             await DbContext.SaveChangesAsync(cancellationToken);
 
         return entity;
