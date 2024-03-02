@@ -3,7 +3,7 @@
     <div
         class="flex theme-input-bg relative rounded-md
         theme-action-layout theme-action-transition theme-action-shadow theme-action-content
-        theme-input-border-round"
+        theme-action-border-round"
          @focusin="focus = true"
          @focusout="focus = false"
          :class="focus ? 'theme-input-border-focus' : 'theme-input-border'"
