@@ -22,7 +22,10 @@ public class ClientService(IClientRepository clientRepository) : IClientService
 
     public ValueTask<Client?> GetByIdAsync(Guid clientId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
         => clientRepository.GetByIdAsync(clientId, queryOptions, cancellationToken);
-    
+
+    public ValueTask<Client> CreateAsync(Client client, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+        => clientRepository.CreateAsync(client, new CommandOptions() { SaveChanges = true }, cancellationToken);
+
     public async ValueTask<Client?> UpdateAsync(Client client, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
     {
         var foundClient = await GetByIdAsync(client.Id, cancellationToken: cancellationToken) ?? throw new InvalidOperationException();

@@ -16,7 +16,7 @@ public class ClientValidator : AbstractValidator<Client>
 
             RuleFor(client => client.EmailAddress).NotEmpty().MaximumLength(128);
             
-            RuleFor(client => client.Password).NotEmpty().MaximumLength(128);
+            RuleFor(client => client.PasswordHash).NotEmpty().MaximumLength(128);
         });
         
         RuleSet(EntityEvent.OnUpdate.ToString(), () => 
@@ -27,7 +27,7 @@ public class ClientValidator : AbstractValidator<Client>
 
             RuleFor(client => client.EmailAddress).NotEmpty().MaximumLength(128);
             
-            RuleFor(client => client.Password).NotEmpty().MaximumLength(128);
+            RuleFor(client => client.PasswordHash).NotEmpty().MaximumLength(128);
         });
     }
 }
