@@ -38,6 +38,7 @@ import {Query} from "@/infrastructure/models/query/Query";
 import {ProductFilter} from "@/modules/products/models/ProductFilter";
 import type {Product} from "@/modules/products/models/Product";
 import {Command} from "@/infrastructure/models/command/Command";
+import {CreateProductCommand} from "@/modules/products/models/CreateProductCommand";
 
 /* Services */
 const insightBoxApiClient = new InsightBoxApiClient();
@@ -95,12 +96,12 @@ const onProductModalSubmit = async(product: Product) => {
  * Creates a product
  */
 const createProductAsync = async (product: Product) => {
-    console.log('create product');
     isSearchBarLoading.value = true;
 
     product.organizationId = '60e6a4de-31e5-4f8b-8e6a-0a8f63f41527';
-    const createProductCommand = new Command(product);
-    const response = await insightBoxApiClient.products.createAsync(createProductCommand);
+    const createProductCommand = new CreateProductCommand(product);
+    const response = await
+        insightBoxApiClient.products.createAsync(createProductCommand);
 
     if (response.response) {
         products.value.push(response.response);
@@ -113,17 +114,7 @@ const createProductAsync = async (product: Product) => {
  * Updates product
  */
 const updateProductAsync = async (product: Product) => {
-    console.log('update product');
-
-    return;
     isSearchBarLoading.value = true;
-
-    const createProductCommand = new Command(product);
-    const response = await insightBoxApiClient.products.createAsync(createProductCommand);
-
-    if (response.response) {
-        products.value.push(response.response);
-    }
 
     isSearchBarLoading.value = false;
 };

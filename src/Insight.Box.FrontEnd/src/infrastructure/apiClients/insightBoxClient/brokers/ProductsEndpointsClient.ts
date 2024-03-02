@@ -4,6 +4,7 @@ import type {ProductFilter} from "@/modules/products/models/ProductFilter";
 import type {Product} from "@/modules/products/models/Product";
 import type {RequestFormatterService} from "@/infrastructure/apiClients/formatters/RequestFormatterService";
 import type {Command} from "@/infrastructure/models/command/Command";
+import {CreateProductCommand} from "@/modules/products/models/CreateProductCommand";
 
 export class ProductsEndpointsClient {
     public client: ApiClientBase;
@@ -19,7 +20,7 @@ export class ProductsEndpointsClient {
         return await this.client.getAsync<Array<Product>>(endpointUrl);
     }
 
-    public async createAsync(command: Command<Product>) {
+    public async createAsync(command: CreateProductCommand) {
         const endpointUrl =  'api/products';
         return await this.client.postAsync<Product>(endpointUrl, command);
     }

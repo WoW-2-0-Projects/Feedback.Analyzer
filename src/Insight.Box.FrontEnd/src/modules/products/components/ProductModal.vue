@@ -78,15 +78,13 @@ const currentValue = ref<Product>(props.product);
 
 const onCloseModal = () => {
     // Reset values
-    if(!props.isCreate)
-        props.product = new Product();
+    if(props.isCreate)
+        currentValue.value = new Product();
 
     emit('closeModal');
 }
 
 const onSubmit = async () => {
-    console.log('test');
-
     emit('submit', props.product);
     emit('closeModal');
 }
