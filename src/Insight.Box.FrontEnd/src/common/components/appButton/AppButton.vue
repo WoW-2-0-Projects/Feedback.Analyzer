@@ -17,11 +17,16 @@
 import {ButtonType} from "@/common/components/appButton/ButtonType";
 import {computed, type PropType} from "vue";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
+import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 
 const props = defineProps({
     type: {
         type: Number as PropType<ButtonType>,
         default: ButtonType.Primary
+    },
+    role: {
+        type: Number as PropType<ButtonRole>,
+        default: ButtonRole.Button
     },
     text: {
         type: String,
@@ -40,7 +45,6 @@ const props = defineProps({
         default: ButtonLayout.Rectangle
     },
 });
-
 
 const componentStyles = computed(() => {
     let styles = ''
