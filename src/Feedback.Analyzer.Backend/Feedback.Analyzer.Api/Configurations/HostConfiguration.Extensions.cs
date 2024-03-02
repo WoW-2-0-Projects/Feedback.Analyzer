@@ -15,6 +15,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.SemanticKernel;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
@@ -94,6 +95,28 @@ public static partial class HostConfiguration
             .AddScoped<IClientService, ClientService>()
             .AddScoped<IOrganizationService, OrganizationService>()
             .AddScoped<IProductService, ProductService>();
+
+        return builder;
+    }
+    
+        
+    /// <summary>
+    /// Configures exposers including controllers
+    /// </summary>
+    /// <param name="builder">Application builder</param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddSemanticKernelInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Create kernel builder
+        var kernelBuilder = Kernel.CreateBuilder();
+
+        // Add OpenAI connector
+        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-3.5-turbo", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
+
+        // Build kernel
+        var kernel = kernelBuilder.Build();
+        
+        builder.Services.AddSingleton(kernel);
 
         return builder;
     }

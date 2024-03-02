@@ -14,11 +14,11 @@ public static partial class HostConfiguration
             .AddMappers()
             .AddPersistence()
             .AddClientInfrastructure()
+            .AddSemanticKernelInfrastructure()
             .AddMediator()
             .AddDevTools()
             .AddExposers();
             
-        
         return new(builder);
     }
 
