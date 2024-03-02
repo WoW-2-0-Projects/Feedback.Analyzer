@@ -1,6 +1,4 @@
-﻿using Feedback.Analyzer.Application.Clients.Commands;
-using Feedback.Analyzer.Application.Clients.Queries;
-using Feedback.Analyzer.Application.CustomerFeedbacks.Commands;
+﻿using Feedback.Analyzer.Application.CustomerFeedbacks.Commands;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -34,20 +32,21 @@ public class CustomerFeedbackController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command, cancellationToken);
         return Ok(result);
     }
-    [HttpPut]
+
+    /*[HttpPut]   We don't use it now 
     public async ValueTask<IActionResult> UpdateCustomerFeedback([FromBody]CustomerFeedbackUpdateCommand customerFeedbackUpdateCommand, 
                                                                  CancellationToken cancellationToken)
     {
         var result = await mediator.Send(customerFeedbackUpdateCommand, cancellationToken);
         return Ok(result);
-    }
-    
+    }*/
+
     [HttpDelete("{customerFeedbackId:guid}")]
-    public async ValueTask<IActionResult> DeleteOrganizationById([FromRoute] Guid customerFeedbackId, 
+    public async ValueTask<IActionResult> DeleteCustomerFeedbackById([FromRoute] Guid customerFeedbackId, 
                                                                  CancellationToken cancellationToken = default)
     {
         var result =  await mediator
             .Send(new CustomerFeedbackDeleteByIdCommand(){ ProductId = customerFeedbackId}, cancellationToken);
-        return  result ? Ok() : BadRequest();
+        return  result ? Ok(result) : BadRequest();
     }
 }

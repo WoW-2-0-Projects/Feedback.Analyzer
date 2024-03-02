@@ -1,5 +1,4 @@
 namespace Feedback.Analyzer.Api.Configurations;
-
 public static partial class HostConfiguration
 {
     /// <summary>
