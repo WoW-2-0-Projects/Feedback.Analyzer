@@ -15,6 +15,11 @@
 
         </infinite-scroll>
 
+        <!-- Organizations gallery -->
+        <div class="mt-4  flex flex-wrap justify-center gap-5">
+            <organization-card v-for="organization in organizations"
+                :organization="organization" :key="organization.id"></organization-card>
+        </div>
     </div>
 
 </template>
@@ -31,6 +36,7 @@ import {NotificationSource} from "@/infrastructure/models/notifications/Action";
 import { Organization } from "../models/Organization";
 import { InsightBoxApiClient } from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import { FilterPagination } from "@/common/FilterPagination";
+import OrganizationCard from "./OrganizationCard.vue";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 const documentService = new DocumentService();
