@@ -8,7 +8,7 @@ namespace Feedback.Analyzer.Application.Products.Models;
 public class ProductFilter : FilterPagination
 {
     /// <summary>
-    /// Initializes a new instance of the ProductFilter class with default pagination values for retrieving all products from the first page.
+    /// Initializes a new instance of the Filter class with default pagination values for retrieving all products from the first page.
     /// </summary>
     public ProductFilter()
     {
@@ -31,7 +31,7 @@ public class ProductFilter : FilterPagination
     }
 
     /// <summary>
-    /// Determines whether the current object is equal to another ProductFilter object.
+    /// Determines whether the current object is equal to another Filter object.
     /// </summary>
     /// <param name="obj">The object to compare with.</param>
     /// <returns>True if the objects are equal, false otherwise.</returns>
