@@ -1,4 +1,5 @@
 using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,18 +10,27 @@ namespace Feedback.Analyzer.Api.Data;
 /// </summary>
 public static class SeedDataExtensions
 {
-    public static async ValueTask InitializeSeedAsync(this IServiceProvider serviceProvider)
+    public static async ValueTask InitializeSeedAsync(
+        this IServiceProvider serviceProvider, 
+        IWebHostEnvironment webHostEnvironment)
     {
         var appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
-        
+
         if (!await appDbContext.Clients.AnyAsync())
             await appDbContext.SeedClientsAsync();
-        
-        if(!await appDbContext.Organizations.AnyAsync())
+
+        if (!await appDbContext.Organizations.AnyAsync())
             await SeedOrganizationAsync(appDbContext);
+
+        if (!await appDbContext.EmailTemplates.AnyAsync())
+            await appDbContext.SeedEmailTemplates(webHostEnvironment);
+
+        if (!await appDbContext.SmsTemplates.AnyAsync())
+            await appDbContext.SeedSmsTemplates();
 
         if (appDbContext.ChangeTracker.HasChanges())
             await appDbContext.SaveChangesAsync();
+
     }
 
     /// <summary>
@@ -88,5 +98,74 @@ public static class SeedDataExtensions
         };
 
         await appDbContext.Organizations.AddRangeAsync(organizations);
-     }
+    }
+
+    private static async ValueTask SeedEmailTemplates(
+        this AppDbContext appDbContext,
+        IWebHostEnvironment webHostEnvironment
+    )
+    {
+        var emailTemplateTypes = new List<NotificationTemplateType>
+        {
+            NotificationTemplateType.WelcomeNotification,
+            NotificationTemplateType.EmailAddressVerificationNotification,
+            NotificationTemplateType.ReferralNotification
+        };
+
+        var emailTemplateContents = await Task.WhenAll(emailTemplateTypes.Select(async templateType =>
+        {
+            var filePath = Path.Combine(webHostEnvironment.ContentRootPath,
+                "Data",
+                "EmailTemplates",
+                Path.ChangeExtension(templateType.ToString(), "html"));
+            return (TemplateType: templateType, TemplateContent: await File.ReadAllTextAsync(filePath));
+        }));
+
+        var emailTemplates = emailTemplateContents.Select(templateContent => templateContent.TemplateType switch
+        {
+            NotificationTemplateType.WelcomeNotification => new EmailTemplate
+            {
+                TemplateType = templateContent.TemplateType,
+                Subject = "Welcome to our service!",
+                Content = templateContent.TemplateContent
+            },
+            NotificationTemplateType.EmailAddressVerificationNotification => new EmailTemplate
+            {
+                TemplateType = templateContent.TemplateType,
+                Subject = "Confirm your email address",
+                Content = templateContent.TemplateContent
+            },
+            NotificationTemplateType.ReferralNotification => new EmailTemplate
+            {
+                TemplateType = templateContent.TemplateType,
+                Subject = "You have been referred!",
+                Content = templateContent.TemplateContent
+            },
+            _ => throw new NotSupportedException("Template type not supported.")
+        });
+
+        await appDbContext.EmailTemplates.AddRangeAsync(emailTemplates);
+    }
+
+    private static async ValueTask SeedSmsTemplates(this AppDbContext appDbContext)
+    {
+        await appDbContext.SmsTemplates.AddRangeAsync(new SmsTemplate
+        {
+            TemplateType = NotificationTemplateType.WelcomeNotification,
+            Content =
+                    "Welcome {{UserName}}! We're thrilled to have you on board. Get ready to explore and enjoy our services"
+        },
+            new SmsTemplate
+            {
+                TemplateType = NotificationTemplateType.PhoneNumberVerificationNotification,
+                Content =
+                    "Hey {{UserName}}. To secure your account, please verify your phone number using this link: {{PhoneNumberVerificationLink}}"
+            },
+            new SmsTemplate
+            {
+                TemplateType = NotificationTemplateType.ReferralNotification,
+                Content =
+                    "You've been invited to join by a friend {{SenderName}}! Sign up today and enjoy exclusive benefits. Use referral code"
+            });
+    }
 }    

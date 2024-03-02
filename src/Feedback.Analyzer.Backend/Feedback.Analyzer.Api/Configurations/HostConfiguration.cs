@@ -14,6 +14,7 @@ public static partial class HostConfiguration
             .AddMappers()
             .AddPersistence()
             .AddClientInfrastructure()
+            .AddNotificationInfrastructure()
             .AddMediator()
             .AddDevTools()
             .AddExposers();
