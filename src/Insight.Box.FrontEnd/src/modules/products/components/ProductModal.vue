@@ -47,10 +47,10 @@
 
 import {defineEmits, type PropType, ref, watch} from 'vue';
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
-import ModalBase from "@/common/components/modalBase/ModalBase.vue";
-import FormInput from "@/common/components/formInput/FormInput.vue";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ButtonType} from "@/common/components/appButton/ButtonType";
+import FormInput from "@/common/components/formInput/FormInput.vue";
+import ModalBase from "@/common/components/modalBase/ModalBase.vue";
 import {Product} from "@/modules/products/models/Product";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 

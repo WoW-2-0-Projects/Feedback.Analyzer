@@ -26,11 +26,10 @@ import {type PropType, defineEmits, ref} from "vue";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ButtonType} from "@/common/components/appButton/ButtonType";
 import FormDropDown from "@/common/components/formDropDown/FormDropDown.vue";
-import FormSearchBar from "@/common/components/formSearchBar/FormSearchBar.vue";
 import {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
+import FormSearchBar from "@/common/components/formSearchBar/FormSearchBar.vue";
 import type {ProductFilter} from "@/modules/products/models/ProductFilter";
 import type {Query} from "@/infrastructure/models/query/Query";
-import {Product} from "@/modules/products/models/Product";
 
 const props = defineProps({
     productsQuery: {
