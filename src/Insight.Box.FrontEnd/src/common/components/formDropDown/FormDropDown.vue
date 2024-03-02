@@ -56,7 +56,7 @@
 <script setup lang="ts">
 
 import {onMounted, type PropType, ref, watch, watchEffect} from "vue";
-import type {DropDownValue} from "@/common/components/forms/dropDown/DropDownValue";
+import type {DropDownValue} from "@/common/components/forms/formDropDown/DropDownValue";
 
 const props = defineProps({
     values: {
@@ -65,8 +65,7 @@ const props = defineProps({
         default: []
     },
     modelValue: {
-        type: Object as () => DropDownValue | null,
-        required: true
+        type: Object as () => DropDownValue | null
     },
     label: {
         type: String,
