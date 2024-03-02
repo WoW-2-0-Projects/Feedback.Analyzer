@@ -20,7 +20,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     public DbSet<CustomerFeedback> Feedbacks => Set<CustomerFeedback>();
 
     #endregion
-    
+
+    #region NotiifcationInfrastructure
+    public DbSet<SmsTemplate> SmsTemplates => Set<SmsTemplate>();
+
+    public DbSet<SmsHistory> SmsHistories => Set<SmsHistory>();
+
+    public DbSet<EmailTemplate> EmailTemplates => Set<EmailTemplate>();
+
+    public DbSet<EmailHistory> EmailHistories => Set<EmailHistory>();
+    #endregion
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
