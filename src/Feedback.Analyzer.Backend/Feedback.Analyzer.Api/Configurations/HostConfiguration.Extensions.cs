@@ -1,8 +1,16 @@
 using System.Reflection;
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
+using Feedback.Analyzer.Application.Common.Caching;
+using Feedback.Analyzer.Application.Common.EventBus.Brokers;
+using Feedback.Analyzer.Application.Common.Identity.Services;
+using Feedback.Analyzer.Application.Common.Settings;
+using Feedback.Analyzer.Application.Serializers;
+using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
+using Feedback.Analyzer.Infrastructure.Serializers;
+using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
@@ -33,6 +41,70 @@ public static partial class HostConfiguration
         return builder;
     }
 
+    /// <summary>
+    /// Adds caching services to the web application builder.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddCaching(this WebApplicationBuilder builder)
+    {
+        // Configure CacheSettings from the app settings.
+        builder.Services.Configure<CacheSettings>(builder.Configuration.GetSection(nameof(CacheSettings)));
+
+        // Configure Redis caching with options from the app settings.
+        builder.Services.AddStackExchangeRedisCache(
+            options =>
+            {
+                options.Configuration = builder.Configuration.GetConnectionString("RedisConnectionString");
+                options.InstanceName = "AirBnb.CacheMemory";
+            });
+
+        // Register the RedisDistributedCacheBroker as a singleton.
+        builder.Services.AddSingleton<ICacheBroker, RedisDistributedCacheBroker>();
+
+        // register authentication handlers
+        var jwtSettings = builder.Configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>() ??
+                          throw new InvalidOperationException("JwtSettings is not configured.");
+
+        // add authentication
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(
+                options =>
+                {
+                    options.RequireHttpsMetadata = false;
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = jwtSettings.ValidateIssuer,
+                        ValidIssuer = jwtSettings.ValidIssuer,
+                        ValidAudience = jwtSettings.ValidAudience,
+                        ValidateAudience = jwtSettings.ValidateAudience,
+                        ValidateLifetime = jwtSettings.ValidateLifetime,
+                        ValidateIssuerSigningKey = jwtSettings.ValidateIssuerSigningKey,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
+                    };
+                }
+            );
+        
+        // Register middlewares
+        builder.Services.AddSingleton<AccessTokenValidationMiddleware>();
+
+        return builder;
+    }
+
+    ///<summary>
+    /// Configures and adds Serializers to web application.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddSerializers(this WebApplicationBuilder builder)
+    {
+        // register json serialization settings
+        builder.Services.AddSingleton<IJsonSerializationSettingsProvider, JsonSerializationSettingsProvider>();
+
+        return builder;
+    }
+    
     /// <summary>
     /// Adds persistence-related services to the web application builder.
     /// </summary>

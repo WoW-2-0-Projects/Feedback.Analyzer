@@ -2,6 +2,7 @@
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
@@ -11,11 +12,9 @@ namespace Feedback.Analyzer.Persistence.Repositories;
 /// Provides data access functionality for Organization entities, 
 /// inheriting core repository logic from EntityRepositoryBase.
 /// </summary>
-public class OrganizationRepository(AppDbContext dbContext) 
+public class OrganizationRepository(AppDbContext dbContext, ICacheBroker cacheBroker) 
     : EntityRepositoryBase
-        <Organization, AppDbContext>(
-        dbContext
-    ), IOrganizationRepository
+        <Organization, AppDbContext>(dbContext, cacheBroker), IOrganizationRepository
 {
     public new IQueryable<Organization> Get(Expression<Func<Organization, bool>>? predicate, QueryOptions queryOptions = default)
         => base.Get(predicate, queryOptions);

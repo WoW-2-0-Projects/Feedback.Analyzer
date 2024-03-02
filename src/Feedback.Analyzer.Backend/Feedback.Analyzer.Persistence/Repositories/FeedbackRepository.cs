@@ -2,6 +2,7 @@
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
@@ -10,8 +11,8 @@ namespace Feedback.Analyzer.Persistence.Repositories;
 /// <summary>
 /// Represents a repository for managing customer feedback entities in the database.
 /// </summary>
-public class FeedbackRepository(AppDbContext dbContext)
-    : EntityRepositoryBase<CustomerFeedback, AppDbContext>(dbContext),IFeedbackRepository
+public class FeedbackRepository(AppDbContext dbContext, ICacheBroker cacheBroker)
+    : EntityRepositoryBase<CustomerFeedback, AppDbContext>(dbContext, cacheBroker),IFeedbackRepository
 {
     public new IQueryable<CustomerFeedback> Get(Expression<Func<CustomerFeedback, bool>>? predicate = default, QueryOptions queryOptions = default)
     {

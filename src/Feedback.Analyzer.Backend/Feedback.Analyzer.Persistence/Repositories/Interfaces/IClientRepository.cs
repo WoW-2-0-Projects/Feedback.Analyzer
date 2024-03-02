@@ -26,6 +26,15 @@ public interface IClientRepository
     /// <param name="cancellationToken">A cancellation token to cancel the asynchronous operation (optional).</param>
     /// <returns>A task representing the asynchronous operation, containing the client entity, or null if not found.</returns>
     ValueTask<Client?> GetByIdAsync(Guid clientId,QueryOptions queryOptions = default, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Asynchronously creates a new client entity with the specified options.
+    /// </summary>
+    /// <param name="client">The client entity to create.</param>
+    /// <param name="commandOptions">Options for customizing the command (optional).</param>
+    /// <param name="cancellationToken">A cancellation token to cancel the asynchronous operation (optional).</param>
+    /// <returns>A task representing the asynchronous operation, containing the created client entity.</returns>
+    ValueTask<Client> CreateAsync(Client client, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Asynchronously updates an existing client entity.

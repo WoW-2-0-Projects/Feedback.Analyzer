@@ -13,6 +13,8 @@ public static partial class HostConfiguration
             .AddMediator()
             .AddPersistence()
             .AddClientInfrastructure()
+            .AddCaching()
+            .AddSerializers()
             .AddValidators()
             .AddMappers()
             .AddExposers()
