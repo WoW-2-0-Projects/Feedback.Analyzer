@@ -27,23 +27,23 @@ public class CustomerFeedbackRepository(AppDbContext dbContext)
         return base.GetByIdsAsync(ids, queryOptions, cancellationToken);
     }
     
-    public new ValueTask<CustomerFeedback> CreateAsync(CustomerFeedback feedback, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+    public new ValueTask<CustomerFeedback> CreateAsync(CustomerFeedback customerFeedback, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
     {
-        return base.CreateAsync(feedback, commandOptions, cancellationToken);
+        return base.CreateAsync(customerFeedback, commandOptions, cancellationToken);
     }
     
-    public new ValueTask<CustomerFeedback> UpdateAsync(CustomerFeedback feedback, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+    public new ValueTask<CustomerFeedback> UpdateAsync(CustomerFeedback customerFeedback, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
     {
-        return base.UpdateAsync(feedback, commandOptions, cancellationToken);
+        return base.UpdateAsync(customerFeedback, commandOptions, cancellationToken);
     }
     
-    public new ValueTask<CustomerFeedback?> DeleteByIdAsync(Guid feedbackId, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+    public new ValueTask<CustomerFeedback?> DeleteByIdAsync(Guid customerFeedbackId, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
     {
-        return base.DeleteByIdAsync(feedbackId, commandOptions, cancellationToken);
+        return base.DeleteByIdAsync(customerFeedbackId, commandOptions, cancellationToken);
     }
     
-    public new ValueTask<CustomerFeedback?> DeleteAsync(CustomerFeedback feedback, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+    public new ValueTask<CustomerFeedback?> DeleteAsync(CustomerFeedback customerFeedback, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
     {
-        return base.DeleteAsync(feedback, commandOptions, cancellationToken);
+        return base.DeleteAsync(customerFeedback, commandOptions, cancellationToken);
     }
 }

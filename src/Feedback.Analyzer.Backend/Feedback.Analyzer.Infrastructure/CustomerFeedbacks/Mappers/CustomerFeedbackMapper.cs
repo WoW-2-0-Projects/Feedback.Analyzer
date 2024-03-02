@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Feedback.Analyzer.Application.Clients.Models;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Models;
 using Feedback.Analyzer.Domain.Entities;
 

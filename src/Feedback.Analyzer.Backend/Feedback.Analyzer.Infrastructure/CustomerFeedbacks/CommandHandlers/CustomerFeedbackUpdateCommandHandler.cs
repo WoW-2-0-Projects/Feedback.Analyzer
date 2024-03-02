@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using Feedback.Analyzer.Application.Clients.Commands;
-using Feedback.Analyzer.Application.Clients.Models;
-using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Commands;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Models;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
@@ -20,7 +17,7 @@ public class CustomerFeedbackUpdateCommandHandler(ICustomerFeedbackService custo
     {
         var customerFeedback = mapper.Map<CustomerFeedback>(request.CustomerFeedback);
         var updateCustomerFeedback = await customerFeedbackService
-            .UpdateAsync(customerFeedback,new CommandOptions(),cancellationToken);
+            .UpdateAsync(customerFeedback, new CommandOptions(),cancellationToken);
 
         return mapper.Map<CustomerFeedbackDto>(updateCustomerFeedback);
     }

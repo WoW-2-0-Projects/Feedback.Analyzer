@@ -33,14 +33,6 @@ public class CustomerFeedbackController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    /*[HttpPut]   We don't use it now 
-    public async ValueTask<IActionResult> UpdateCustomerFeedback([FromBody]CustomerFeedbackUpdateCommand customerFeedbackUpdateCommand, 
-                                                                 CancellationToken cancellationToken)
-    {
-        var result = await mediator.Send(customerFeedbackUpdateCommand, cancellationToken);
-        return Ok(result);
-    }*/
-
     [HttpDelete("{customerFeedbackId:guid}")]
     public async ValueTask<IActionResult> DeleteCustomerFeedbackById([FromRoute] Guid customerFeedbackId, 
                                                                  CancellationToken cancellationToken = default)

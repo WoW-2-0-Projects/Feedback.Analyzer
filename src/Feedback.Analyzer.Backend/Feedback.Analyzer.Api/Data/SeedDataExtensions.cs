@@ -144,7 +144,7 @@ public static class SeedDataExtensions
         List<CustomerFeedback> customersFeedbacks =
         [
             // Positive feedback
-            new CustomerFeedback()
+            new ()
             {
                 ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
                 Comment = "This product is **amazing**! It's **easy to use** and **exceeded my expectations**.",
@@ -152,7 +152,7 @@ public static class SeedDataExtensions
             },
 
             // Neutral feedback
-            new CustomerFeedback()
+            new ()
             {
                 ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
                 Comment = "The product is **functional**. It **meets my basic needs**.",
@@ -160,7 +160,7 @@ public static class SeedDataExtensions
             },
 
              // Negative feedback
-             new CustomerFeedback()
+             new ()
              {
                  ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
                  Comment =
@@ -169,7 +169,7 @@ public static class SeedDataExtensions
              },
 
              // Anonymous feedback with mixed sentiment
-             new CustomerFeedback()
+             new ()
              {
                  ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
                  Comment = "The product has **some great features**, but it also has **some flaws**.",
