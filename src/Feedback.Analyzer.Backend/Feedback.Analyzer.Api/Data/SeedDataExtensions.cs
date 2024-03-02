@@ -1,4 +1,5 @@
-﻿using Feedback.Analyzer.Domain.Entities;
+﻿using Feedback.Analyzer.Application.Common.Identity.Services;
+using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +13,8 @@ public static class SeedDataExtensions
     public static async ValueTask InitializeSeedAsync(this IServiceProvider serviceProvider)
     {
         var appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
-
+        var passwordHash = serviceProvider.GetRequiredService<IPasswordHasherService>();
+        
         if (!await appDbContext.Clients.AnyAsync())
             await appDbContext.SeedClientsAsync();
 
@@ -34,14 +36,14 @@ public static class SeedDataExtensions
                 FirstName = "John",
                 LastName = "Doe",
                 EmailAddress = "example@gmail.com",
-                Password = "abc1234567"
+                PasswordHash = "$2a$12$pHdneNbJGp4SnN1ovHrNqevf6I.k3Gy.7OMJoWWB0RByv0foi4fgy" // qwerty123
             },
             new()
             {
                 FirstName = "Bob",
                 LastName = "Richard",
                 EmailAddress = "tastBobRichard@gmail.com",
-                Password = "asdf1234"
+                PasswordHash = "$2a$12$LxSqe5AE7AtglesHHK5NROFdJQdA1r1XKqhzg4q/tMTZjVEH0PNSK" //asdf1234
             }
         };
 

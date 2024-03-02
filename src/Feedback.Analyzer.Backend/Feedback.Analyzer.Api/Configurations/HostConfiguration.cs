@@ -11,10 +11,13 @@ public static partial class HostConfiguration
     {
         builder
             .AddMediator()
+            .AddEventBus()
             .AddPersistence()
             .AddClientInfrastructure()
             .AddCaching()
             .AddSerializers()
+            .AddIdentityInfrastructure()
+            .AddRequestContextTools()
             .AddValidators()
             .AddMappers()
             .AddExposers()

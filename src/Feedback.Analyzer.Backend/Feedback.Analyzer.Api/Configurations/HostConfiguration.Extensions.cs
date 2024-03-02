@@ -1,5 +1,7 @@
 using System.Reflection;
+using System.Text;
 using Feedback.Analyzer.Api.Data;
+using Feedback.Analyzer.Api.Middlewares;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.Caching;
 using Feedback.Analyzer.Application.Common.EventBus.Brokers;
@@ -7,15 +9,21 @@ using Feedback.Analyzer.Application.Common.Identity.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Serializers;
 using Feedback.Analyzer.Domain.Brokers;
+using Feedback.Analyzer.Domain.Common.Events;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
+using Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
+using Feedback.Analyzer.Infrastructure.Common.Identity.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
+using Feedback.Analyzer.Infrastructure.RequestContexts.Brokers;
 using Feedback.Analyzer.Infrastructure.Serializers;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
@@ -132,6 +140,15 @@ public static partial class HostConfiguration
     }
 
     /// <summary>
+    /// Extension method for adding event bus services to the application.
+    /// </summary>
+    private static WebApplicationBuilder AddEventBus(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<IEventBusBroker, EventBusBroker>();
+        return builder;
+    }
+    
+    /// <summary>
     /// Configures the Dependency Injection container to include validators from referenced assemblies.
     /// </summary>
     /// <param name="builder"></param>
@@ -154,6 +171,34 @@ public static partial class HostConfiguration
     }
 
     /// <summary>
+    /// Configures IdentityInfrastructure including controllers
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddIdentityInfrastructure(this WebApplicationBuilder builder)
+    {
+        //configuration settings
+        builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(nameof(JwtSettings)));
+        builder.Services.Configure<PasswordValidationSettings>(builder.Configuration.GetSection(nameof(PasswordValidationSettings)));
+
+        //register repository
+        builder.Services
+            .AddScoped<IAccessTokenRepository, AccessTokenRepository>()
+            .AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        
+        //register services
+        builder.Services
+            .AddScoped<IAccountService, AccountService>()
+            .AddScoped<IAuthService, AuthService>()
+            .AddScoped<IIdentitySecurityTokenGeneratorService, IdentitySecurityTokenGeneratorService>()
+            .AddScoped<IIdentitySecurityTokenService, IdentitySecurityTokenService>()
+            .AddScoped<IPasswordGeneratorService, PasswordGeneratorService>()
+            .AddScoped<IPasswordHasherService, PasswordHasherService>();
+        
+        return builder;
+    }
+    
+    /// <summary>
     /// Adds client-related infrastructure services to the web application builder.
     /// </summary>
     /// <param name="builder"></param>
@@ -173,6 +218,23 @@ public static partial class HostConfiguration
         return builder;
     }
 
+    /// <summary>
+    /// Configures Request Context tool for the web application.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddRequestContextTools(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddHttpContextAccessor();
+
+        builder.Services.AddScoped<IRequestClientContextProvider, RequestClientContextProvider>();
+
+        builder.Services.Configure<RequestUserContextSettings>(
+            builder.Configuration.GetSection(nameof(RequestUserContextSettings)));
+
+        return builder;
+    }
+    
     /// <summary>
     ///  Configures exposers including controllers and routing.
     /// </summary>
