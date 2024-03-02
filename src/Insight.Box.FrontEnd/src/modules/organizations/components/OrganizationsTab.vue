@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 
-import {onMounted, ref} from "vue";
+import {onBeforeMount, ref} from "vue";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import {OrganizationFilter} from "@/modules/organizations/models/OrganizationFilter";
@@ -33,7 +33,7 @@ const documentService = new DocumentService();
 
 const organizationFilter = ref<OrganizationFilter>({});
 
-onMounted(() => {
+onBeforeMount(() => {
     // Set page title
     documentService.setTitle(LayoutConstants.Organizations);
 });

@@ -57,7 +57,7 @@ const isCreate = ref<boolean>(true);
 
 onBeforeMount(async () => {
     // Set page title
-    documentService.setTitle(LayoutConstants.Organizations);
+    documentService.setTitle(LayoutConstants.Products);
 
     // Load products
     await loadProductsAsync();
