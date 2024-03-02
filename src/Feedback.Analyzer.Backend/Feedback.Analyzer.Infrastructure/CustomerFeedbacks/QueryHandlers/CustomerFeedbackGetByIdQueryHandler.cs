@@ -12,7 +12,7 @@ namespace Feedback.Analyzer.Infrastructure.CustomerFeedbacks.QueryHandlers;
 public class CustomerFeedbackGetByIdQueryHandler(ICustomerFeedbackService customerFeedbackService, IMapper mapper) 
     : IQueryHandler<CustomerFeedbackGetByIdQuery, CustomerFeedbackDto?>
 {
-    public async Task<CustomerFeedbackDto?> Handle(CustomerFeedbackGetByIdQuery request,CancellationToken cancellationToken)
+    public async Task<CustomerFeedbackDto?> Handle(CustomerFeedbackGetByIdQuery request, CancellationToken cancellationToken)
     {
         var foundCustomerFeedback = await customerFeedbackService.GetByIdAsync
         (

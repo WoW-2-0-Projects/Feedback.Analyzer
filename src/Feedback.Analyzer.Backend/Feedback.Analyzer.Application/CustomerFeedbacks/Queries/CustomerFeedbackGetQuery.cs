@@ -6,7 +6,7 @@ namespace Feedback.Analyzer.Application.CustomerFeedbacks.Queries;
 /// <summary>
 /// Represents a query for retrieving a collection of customer feedback data transfer objects.
 /// </summary>
-public class CustomerFeedbackGetQuery : IQuery<ICollection<CustomerFeedbackDto>>
+public record CustomerFeedbackGetQuery : IQuery<ICollection<CustomerFeedbackDto>>
 {
     /// <summary>
     /// Gets the filter to be applied for retrieving customer feedback.

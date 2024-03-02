@@ -29,7 +29,7 @@ public static class SeedDataExtensions
 
         if (!await appDbContext.Feedbacks.AnyAsync())
             await SeedDataCustomerFeedbackAsync(appDbContext);
-        
+
         if (appDbContext.ChangeTracker.HasChanges())
             await appDbContext.SaveChangesAsync();
     }
@@ -139,12 +139,10 @@ public static class SeedDataExtensions
 
     private static async ValueTask SeedDataCustomerFeedbackAsync(AppDbContext appDbContext)
     {
-        #region Intialize customer feedbacks
-
-        List<CustomerFeedback> customersFeedbacks =
-        [
+        var customersFeedbacks = new List<CustomerFeedback>()
+        {
             // Positive feedback
-            new ()
+            new()
             {
                 ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
                 Comment = "This product is **amazing**! It's **easy to use** and **exceeded my expectations**.",
@@ -152,32 +150,30 @@ public static class SeedDataExtensions
             },
 
             // Neutral feedback
-            new ()
+            new()
             {
                 ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
                 Comment = "The product is **functional**. It **meets my basic needs**.",
                 UserName = "Jane Smith",
             },
 
-             // Negative feedback
-             new ()
-             {
-                 ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
-                 Comment =
-                     "I found the product to be **confusing** and **difficult to navigate**. It also **lacked some features** I was hoping for.",
-                 UserName = "Alice Miller",
-             },
+            // Negative feedback
+            new()
+            {
+                ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
+                Comment =
+                    "I found the product to be **confusing** and **difficult to navigate**. It also **lacked some features** I was hoping for.",
+                UserName = "Alice Miller",
+            },
 
-             // Anonymous feedback with mixed sentiment
-             new ()
-             {
-                 ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
-                 Comment = "The product has **some great features**, but it also has **some flaws**.",
-                 UserName = "Joane Miller",
-             }
-        ];
-
-        #endregion
+            // Anonymous feedback with mixed sentiment
+            new()
+            {
+                ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
+                Comment = "The product has **some great features**, but it also has **some flaws**.",
+                UserName = "Joane Miller",
+            }
+        };
         
         await appDbContext.Feedbacks.AddRangeAsync(customersFeedbacks);
     }

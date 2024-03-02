@@ -21,9 +21,4 @@ public class CustomerFeedbackDto
     /// Gets or sets the username of the customer who provided the feedback.
     /// </summary>
     public string UserName { get; set; } = default!;
-    
-    /// <summary>
-    /// Gets or sets the product associated with the feedback.
-    /// </summary>
-    public Product Product { get; set; } = default!;
 }

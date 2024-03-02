@@ -4,14 +4,8 @@ using FluentValidation;
 
 namespace Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Validators;
 
-/// <summary>
-/// Validator for the <see cref="CustomerFeedback"/> entity.
-/// </summary>
 public class CustomerFeedbackValidator : AbstractValidator<CustomerFeedback>
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CustomerFeedbackValidator"/> class.
-    /// </summary>
     public CustomerFeedbackValidator()
     {
         RuleSet(EntityEvent.OnCreate.ToString(), () =>

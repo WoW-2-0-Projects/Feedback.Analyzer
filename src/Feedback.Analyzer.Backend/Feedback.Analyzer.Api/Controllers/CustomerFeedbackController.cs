@@ -22,7 +22,7 @@ public class CustomerFeedbackController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.Send(new CustomerFeedbackGetByIdQuery() { ProductId = customerFeedbackId },
             cancellationToken);
-        return result is not null ? Ok(result) : NoContent();
+        return result is not null ? Ok(result) : NotFound();
     }
 
     [HttpPost]

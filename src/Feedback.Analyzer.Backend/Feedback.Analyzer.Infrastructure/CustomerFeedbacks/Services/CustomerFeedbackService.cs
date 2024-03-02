@@ -13,7 +13,7 @@ using FluentValidation;
 namespace Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
 
 /// <summary>
-/// Initializes a new instance of the <see cref="CustomerFeedbackService"/> class.
+/// Represents a new instance of the <see cref="CustomerFeedbackService"/> class.
 /// </summary>
 /// <param name="customerFeedbackRepository">The repository for accessing customer feedback data.</param>
 /// <param name="customerFeedbackValidator">The validator for validating customer feedback entities.</param>
