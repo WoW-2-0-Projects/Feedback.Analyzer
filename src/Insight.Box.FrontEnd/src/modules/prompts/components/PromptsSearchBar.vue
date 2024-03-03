@@ -2,18 +2,18 @@
 
     <form class="w-full flex gap-10">
 
-        <!-- Add product button -->
-        <app-button :type="ButtonType.Primary" text="Add product" icon="fas fa-plus"/>
+        <!-- Add Prompt button -->
+        <app-button :type="ButtonType.Primary" text="Add prompt" icon="fas fa-plus" @click="emit('addPrompt')"/>
 
-        <!-- Search products input -->
+        <!-- Search Prompts input -->
         <form-search-bar v-model="promptsQuery.filter.searchKeyword" class="flex-grow"
-                         label="Search" placeholder="Search products"
+                         label="Search" placeholder="Search prompts"
         />
 
-        <!-- Filter product drop down -->
+        <!-- Filter prompt drop down -->
         <form-drop-down label="Filter by" v-model="selectedFilter" :values="filterDropDownValues"/>
 
-        <!-- Sort product drop down -->
+        <!-- Sort prompt drop down -->
         <form-drop-down label="Sort by" v-model="selectedFilter" :values="filterDropDownValues"/>
 
     </form>
@@ -22,18 +22,18 @@
 
 <script setup lang="ts">
 
-import {type PropType, ref} from "vue";
+import {type PropType, defineEmits, ref} from "vue";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ButtonType} from "@/common/components/appButton/ButtonType";
 import FormDropDown from "@/common/components/formDropDown/FormDropDown.vue";
-import FormSearchBar from "@/common/components/formSearchBar/FormSearchBar.vue";
 import {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
-import type {ProductFilter} from "@/modules/products/models/ProductFilter";
+import FormSearchBar from "@/common/components/formSearchBar/FormSearchBar.vue";
 import type {Query} from "@/infrastructure/models/query/Query";
+import type {PromptFilter} from "@/modules/prompts/models/PromptFilter";
 
 const props = defineProps({
     promptsQuery: {
-        type: Object as PropType<Query<ProductFilter>>,
+        type: Object as PropType<Query<PromptFilter>>,
         required: true
     },
     isLoading: {
@@ -41,6 +41,10 @@ const props = defineProps({
         default: false
     }
 });
+
+const emit = defineEmits<{
+    (e: 'addPrompt'): void
+}>();
 
 const selectedFilter = ref<DropDownValue | null>(null);
 const filterDropDownValues = ref<Array<DropDownValue>>([
