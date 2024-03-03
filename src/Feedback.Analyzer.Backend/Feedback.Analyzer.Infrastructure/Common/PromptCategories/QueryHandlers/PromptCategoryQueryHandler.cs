@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Feedback.Analyzer.Application.Common.PromptCategories.Models;
 using Feedback.Analyzer.Application.Common.PromptCategories.Queries;
 using Feedback.Analyzer.Application.Common.PromptCategories.Services;
@@ -17,15 +18,18 @@ public class PromptCategoryQueryHandler(IPromptCategoryService promptCategorySer
 {
     public async Task<ICollection<AnalysisPromptCategoryDto>> Handle(PromptCategoryGetQuery request, CancellationToken cancellationToken)
     {
-        var matchedPromptCategories = await promptCategoryService.Get(
+        var matchedPromptCategories = await promptCategoryService
+            .Get(
                 request.Filter,
                 new QueryOptions
                 {
                     AsNoTracking = true
                 }
             )
+            .Include(promptCategory => promptCategory.Prompts)
+            .ProjectTo<AnalysisPromptCategoryDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
-        return mapper.Map<ICollection<AnalysisPromptCategoryDto>>(matchedPromptCategories);
+        return matchedPromptCategories;
     }
 }

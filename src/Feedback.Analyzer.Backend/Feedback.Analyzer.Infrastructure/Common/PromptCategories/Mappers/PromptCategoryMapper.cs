@@ -8,6 +8,8 @@ public class PromptCategoryMapper : Profile
 {
     public PromptCategoryMapper()
     {
-        CreateMap<AnalysisPromptCategory, AnalysisPromptCategoryDto>().ReverseMap();
+        CreateMap<AnalysisPromptCategory, AnalysisPromptCategoryDto>()
+            .ForMember(dest => dest.PromptsCount, opt => opt.MapFrom(src => src.Prompts.Count))
+            .ReverseMap();
     }
 }
