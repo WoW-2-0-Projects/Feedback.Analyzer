@@ -1,4 +1,5 @@
-﻿using Feedback.Analyzer.Domain.Entities;
+﻿using Feedback.Analyzer.Domain.Common.Commands;
+using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.Caching.Models;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
@@ -9,7 +10,7 @@ public class RefreshTokenRepository(ICacheBroker cacheBroker) : IRefreshTokenRep
 {
     public async ValueTask<RefreshToken> CreateAsync(
         RefreshToken refreshToken,
-        bool saveChanges = true,
+        CommandOptions commandOptions,
         CancellationToken cancellationToken = default
     )
     {

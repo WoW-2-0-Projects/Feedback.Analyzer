@@ -1,5 +1,7 @@
 ﻿using Feedback.Analyzer.Application.Common.Identity.Services;
+using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using FluentValidation;
 
@@ -11,23 +13,31 @@ namespace Feedback.Analyzer.Infrastructure.Common.Identity.Services;
 public class IdentitySecurityTokenService(
     IAccessTokenRepository accessTokenRepository, 
     IRefreshTokenRepository refreshTokenRepository,
-    IValidator<RefreshToken> refreshTokenValidator) : IIdentitySecurityTokenService
+    IValidator<RefreshToken> refreshTokenValidator,
+    IValidator<AccessToken> accessTokenValidator) : IIdentitySecurityTokenService
 {
-    public ValueTask<AccessToken> CreateAccessTokenAsync(AccessToken accessToken, bool saveChanges = true, CancellationToken cancellationToken = default)
+    public ValueTask<AccessToken> CreateAccessTokenAsync(AccessToken accessToken, CommandOptions commandOptions, CancellationToken cancellationToken = default)
     {
-        return accessTokenRepository.CreateAsync(accessToken, saveChanges, cancellationToken);
+        var validationResult = accessTokenValidator
+            .Validate(accessToken,
+                options => options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+        
+        return accessTokenRepository.CreateAsync(accessToken, commandOptions, cancellationToken);
     }
 
     public ValueTask<RefreshToken> CreateRefreshTokenAsync(
         RefreshToken refreshToken, 
-        bool saveChanges = true, 
+        CommandOptions commandOptions, 
         CancellationToken cancellationToken = default)
     {
         var validationResult = refreshTokenValidator.Validate(refreshToken);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        return refreshTokenRepository.CreateAsync(refreshToken, saveChanges, cancellationToken);
+        return refreshTokenRepository.CreateAsync(refreshToken, commandOptions, cancellationToken);
     }
 
     public ValueTask<AccessToken?> GetAccessTokenByIdAsync(

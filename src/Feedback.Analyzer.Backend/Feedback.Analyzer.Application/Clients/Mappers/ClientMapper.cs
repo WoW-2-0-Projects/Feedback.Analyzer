@@ -10,7 +10,7 @@ public class ClientMapper : Profile
     public ClientMapper()
     {
         CreateMap<Client, ClientDto>().ReverseMap();
-        CreateMap<Client, SignUpDetails>().ReverseMap();
-        CreateMap<Client, SignInDetails>().ReverseMap();
+        CreateMap<Client, SignUpDetails>();
+        CreateMap<Client, SignInDetails>();
     }
 }

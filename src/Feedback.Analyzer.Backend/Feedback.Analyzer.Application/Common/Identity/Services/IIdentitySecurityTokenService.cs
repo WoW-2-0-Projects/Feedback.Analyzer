@@ -1,4 +1,5 @@
-﻿using Feedback.Analyzer.Domain.Entities;
+﻿using Feedback.Analyzer.Domain.Common.Commands;
+using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Application.Common.Identity.Services;
 
@@ -11,12 +12,12 @@ public interface IIdentitySecurityTokenService
     /// Asynchronously creates a new access token.
     /// </summary>
     /// <param name="accessToken">The access token to create.</param>
-    /// <param name="saveChanges">Indicates whether changes should be saved to the underlying data store (default is true).</param>
+    /// <param name="commandOptions"></param>
     /// <param name="cancellationToken">Cancellation token to stop the operation if needed (default is none).</param>
     /// <returns>A ValueTask representing the asynchronous operation, returning the created AccessToken.</returns>
     ValueTask<AccessToken> CreateAccessTokenAsync(
         AccessToken accessToken, 
-        bool saveChanges = true,
+        CommandOptions commandOptions,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -33,12 +34,12 @@ public interface IIdentitySecurityTokenService
     /// Asynchronously creats refresh token for given user
     /// </summary>
     /// <param name="refreshToken">The refresh token to create</param>
-    /// <param name="saveChanges">Indicates whether changes should be saved to the underlying data store (default is true)</param>
+    /// <param name="commandOptions"></param>
     /// <param name="cancellationToken">Cancellation token to stop the operation if needed (default is none)</param>
     /// <returns>A ValueTask representing the asynchronous operation, returning the created RefreshToken</returns>
     ValueTask<RefreshToken> CreateRefreshTokenAsync(
         RefreshToken refreshToken,
-        bool saveChanges = true,
+        CommandOptions commandOptions,
         CancellationToken cancellationToken = default);
 
     /// <summary>

@@ -12,6 +12,6 @@ public class SignInCommand : ICommand<(AccessToken accessToken, RefreshToken ref
     /// <summary>
     /// Sign in by email method
     /// </summary>
-    public SignInDetails? SignInDetails { get; set; }   
-   
+    public SignInDetails SignInDetails { get; set; } = default!;
+
 }

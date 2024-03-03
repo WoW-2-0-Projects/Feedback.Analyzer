@@ -1,4 +1,5 @@
-﻿using Feedback.Analyzer.Domain.Entities;
+﻿using Feedback.Analyzer.Domain.Common.Commands;
+using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
@@ -11,12 +12,12 @@ public interface IRefreshTokenRepository
     /// Asynchronously creates a new RefreshToken entity.
     /// </summary>
     /// <param name="refreshToken">The RefreshToken entity to be created</param>
-    /// <param name="saveChanges">Indicates whether changes should be saved to the underlying data store (default is true)</param>
+    /// <param name="commandOptions"></param>
     /// <param name="cancellationToken">Cancellation token to stop the operation if needed (default is none)</param>
     /// <returns>A ValueTask representing the asynchronous operation, returning the created RefreshToken</returns>
     ValueTask<RefreshToken> CreateAsync(
         RefreshToken refreshToken, 
-        bool saveChanges = true, 
+        CommandOptions commandOptions, 
         CancellationToken cancellationToken = default);
 
     /// <summary>

@@ -79,30 +79,6 @@ public static partial class HostConfiguration
 
         // Register the RedisDistributedCacheBroker as a singleton.
         builder.Services.AddSingleton<ICacheBroker, RedisDistributedCacheBroker>();
-
-        // register authentication handlers
-        var jwtSettings = builder.Configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>() ??
-                          throw new InvalidOperationException("JwtSettings is not configured.");
-
-        // add authentication
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(
-                options =>
-                {
-                    options.RequireHttpsMetadata = false;
-
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = jwtSettings.ValidateIssuer,
-                        ValidIssuer = jwtSettings.ValidIssuer,
-                        ValidAudience = jwtSettings.ValidAudience,
-                        ValidateAudience = jwtSettings.ValidateAudience,
-                        ValidateLifetime = jwtSettings.ValidateLifetime,
-                        ValidateIssuerSigningKey = jwtSettings.ValidateIssuerSigningKey,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
-                    };
-                }
-            );
         
         // Register middlewares
         builder.Services.AddSingleton<AccessTokenValidationMiddleware>();
@@ -227,6 +203,30 @@ public static partial class HostConfiguration
             .AddScoped<IPasswordGeneratorService, PasswordGeneratorService>()
             .AddScoped<IPasswordHasherService, PasswordHasherService>();
         
+        // register authentication handlers
+        var jwtSettings = builder.Configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>() ??
+                          throw new InvalidOperationException("JwtSettings is not configured.");
+        
+        // add authentication
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(
+                options =>
+                {
+                    options.RequireHttpsMetadata = false;
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = jwtSettings.ValidateIssuer,
+                        ValidIssuer = jwtSettings.ValidIssuer,
+                        ValidAudience = jwtSettings.ValidAudience,
+                        ValidateAudience = jwtSettings.ValidateAudience,
+                        ValidateLifetime = jwtSettings.ValidateLifetime,
+                        ValidateIssuerSigningKey = jwtSettings.ValidateIssuerSigningKey,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
+                    };
+                }
+            );
+        
         return builder;
     }
     
@@ -254,8 +254,8 @@ public static partial class HostConfiguration
 
         builder.Services.AddScoped<IRequestClientContextProvider, RequestClientContextProvider>();
 
-        builder.Services.Configure<RequestUserContextSettings>(
-            builder.Configuration.GetSection(nameof(RequestUserContextSettings)));
+        builder.Services.Configure<RequestClientContextSettings>(
+            builder.Configuration.GetSection(nameof(RequestClientContextSettings)));
 
         return builder;
     }

@@ -4,6 +4,7 @@ using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.Identity.Models;
 using Feedback.Analyzer.Application.Common.Identity.Services;
 using Feedback.Analyzer.Domain.Brokers;
+using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -136,7 +137,7 @@ public class AuthService(
         // Generate access token
         var newAccessToken = identitySecurityTokenGeneratorService.GenerateAccessToken(foundUser);
 
-        return await identitySecurityTokenService.CreateAccessTokenAsync(newAccessToken, cancellationToken: cancellationToken);
+        return await identitySecurityTokenService.CreateAccessTokenAsync(newAccessToken, new CommandOptions(), cancellationToken);
     }
 
     private async Task<(AccessToken AccessToken, RefreshToken RefreshToken)> CreateTokens(Client user, CancellationToken cancellationToken = default)
@@ -145,7 +146,7 @@ public class AuthService(
 
         var refreshToken = identitySecurityTokenGeneratorService.GenerateRefreshToken(user);
 
-        return (await identitySecurityTokenService.CreateAccessTokenAsync(accessToken, cancellationToken: cancellationToken),
-            await identitySecurityTokenService.CreateRefreshTokenAsync(refreshToken, cancellationToken: cancellationToken));
+        return (await identitySecurityTokenService.CreateAccessTokenAsync(accessToken, new CommandOptions(), cancellationToken),
+            await identitySecurityTokenService.CreateRefreshTokenAsync(refreshToken, new CommandOptions(), cancellationToken));
     }
 }

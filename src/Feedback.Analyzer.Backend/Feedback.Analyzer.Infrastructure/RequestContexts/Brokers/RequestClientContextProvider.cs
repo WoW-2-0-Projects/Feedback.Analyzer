@@ -15,10 +15,10 @@ namespace Feedback.Analyzer.Infrastructure.RequestContexts.Brokers;
 /// </summary>
 public class RequestClientContextProvider(
     IHttpContextAccessor httpContextAccessor, 
-    IOptions<RequestUserContextSettings> userContextProvider)
+    IOptions<RequestClientContextSettings> userContextProvider)
     : IRequestClientContextProvider
 {
-    private readonly RequestUserContextSettings _requestUserContextSettings = userContextProvider.Value;
+    private readonly RequestClientContextSettings _requestClientContextSettings = userContextProvider.Value;
 
     public string? GetAccessToken()
     {

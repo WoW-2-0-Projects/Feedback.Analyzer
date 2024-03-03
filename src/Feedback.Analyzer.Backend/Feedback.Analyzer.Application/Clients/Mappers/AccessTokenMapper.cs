@@ -2,7 +2,7 @@
 using Feedback.Analyzer.Application.Common.Identity.Models;
 using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Api.Mappers;
+namespace Feedback.Analyzer.Application.Clients.Mappers;
 
 
 public class AccessTokenMapper : Profile

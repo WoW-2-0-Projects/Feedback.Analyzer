@@ -1,4 +1,5 @@
-﻿using Feedback.Analyzer.Domain.Entities;
+﻿using Feedback.Analyzer.Domain.Common.Commands;
+using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.Caching.Models;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
@@ -17,9 +18,10 @@ public class AccessTokenRepository(ICacheBroker cacheBroker) : IAccessTokenRepos
     /// </summary>
     /// <param name="accessToken">The AccessToken entity to be created and stored.</param>
     /// <param name="saveChanges">Indicates whether changes should be saved to the underlying data store (default is true).</param>
+    /// <param name="commandOptions"></param>
     /// <param name="cancellationToken">Cancellation token to stop the operation if needed (default is none).</param>
     /// <returns>A ValueTask representing the asynchronous operation, returning the created AccessToken.</returns>
-    public async ValueTask<AccessToken> CreateAsync(AccessToken accessToken, bool saveChanges = true, CancellationToken cancellationToken = default)
+    public async ValueTask<AccessToken> CreateAsync(AccessToken accessToken, CommandOptions commandOptions, CancellationToken cancellationToken = default)
     {
         // Set cache entry with expiration based on AccessToken's ExpiryTime.
         var cacheEntryOptions = new CacheEntryOptions(accessToken.ExpiryTime - DateTimeOffset.UtcNow, null);

@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
 using Feedback.Analyzer.Application.Common.Identity.Models;
+using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Api.Mappers;
+namespace Feedback.Analyzer.Application.Clients.Mappers;
 
 public class IdentityTokenMapper : Profile
 {
     public IdentityTokenMapper()
     {
-        CreateMap<Feedback.Analyzer.Domain.Entities.AccessToken, AccessTokenDto>();
+        CreateMap<AccessToken, AccessTokenDto>();
 
-        CreateMap<(Feedback.Analyzer.Domain.Entities.AccessToken AccessToken, Feedback.Analyzer.Domain.Entities.RefreshToken RefreshToken), IdentityTokenDto>()
+        CreateMap<(AccessToken AccessToken, RefreshToken RefreshToken), IdentityTokenDto>()
             .ForMember(dest => dest.AccessToken, opt => opt.MapFrom(src => src.AccessToken.Token))
             .ForMember(dest => dest.RefreshToken, opt => opt.MapFrom(src => src.RefreshToken.Token));
     }
