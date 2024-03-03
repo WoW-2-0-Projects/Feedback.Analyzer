@@ -21,6 +21,7 @@ using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.RequestContexts.Brokers;
 using Feedback.Analyzer.Infrastructure.Serializers;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
+using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
@@ -178,6 +179,37 @@ public static partial class HostConfiguration
         
         return builder;
     }
+    
+    /// <summary>
+    /// Configures CORS for the web application.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddCors(this WebApplicationBuilder builder)
+    {
+        // Register settings
+        builder.Services.Configure<CorsSettings>(builder.Configuration.GetSection(nameof(CorsSettings)));
+        var corsSettings = builder.Configuration.GetSection(nameof(CorsSettings)).Get<CorsSettings>()
+            ?? throw new ApplicationException("Cors settings are not configured");
+        
+        builder.Services.AddCors(options => options.AddPolicy("AllowSpecificOrigin",
+            policy =>
+            {
+                policy.WithOrigins(corsSettings.AllowedOrigins);
+                    
+                if(corsSettings.AllowAnyHeaders)
+                   policy.AllowAnyHeader();
+                
+                if(corsSettings.AllowAnyMethods)
+                    policy.AllowAnyMethod();
+                
+                if(corsSettings.AllowCredentials)
+                    policy.AllowCredentials();
+            }
+        ));
+
+        return builder;
+    }
 
     /// <summary>
     /// Configures devTools including controllers
@@ -269,12 +301,15 @@ public static partial class HostConfiguration
     /// <returns>Application builder</returns>
     private static WebApplicationBuilder AddExposers(this WebApplicationBuilder builder)
     {
-        builder.Services.Configure<ApiBehaviorOptions>(options =>
-        {
-            options.SuppressModelStateInvalidFilter = true;
-        });
+        builder.Services.Configure<ApiBehaviorOptions>(
+            options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            }
+        );
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
-        builder.Services.AddControllers();
+        builder.Services.AddControllers().AddNewtonsoftJson();
+        
         return builder;
     }
     
@@ -301,6 +336,18 @@ public static partial class HostConfiguration
     {
         var serviceScope = app.Services.CreateScope();
         await serviceScope.ServiceProvider.InitializeSeedAsync();
+
+        return app;
+    }
+    
+    /// <summary>
+    /// Enables CORS middleware in the web application pipeline.
+    /// </summary>
+    /// <param name="app"></param>
+    /// <returns></returns>
+    private static WebApplication UseCors(this WebApplication app)
+    {
+        app.UseCors("AllowSpecificOrigin");
 
         return app;
     }
