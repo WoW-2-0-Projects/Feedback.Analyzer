@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace Feedback.Analyzer.Domain.Enums;
 
 /// <summary>
@@ -8,25 +10,25 @@ public enum FeedbackAnalysisPromptType
     /// <summary>
     /// Refers to the content safety analysis
     /// </summary>
-    ContentSafetyAnalysis,
-    
+    [Description("Content Safety Analysis")] ContentSafetyAnalysis,
+
     /// <summary>
     /// Refers to the language recognition
     /// </summary>
-    RecognizeLanguages,
-    
+    [Description("Language Recognition")] LanguageRecognition,
+
     /// <summary>
     /// Refers to the relevance analysis
     /// </summary>
-    RelevanceAnalysis,
-    
+    [Description("Relevance Analysis")] RelevanceAnalysis,
+
     /// <summary>
     /// Refers to the extraction of relevant content
     /// </summary>
-    ExtractRelevantContent,
-    
+    [Description("Extract Relevant Content")] ExtractRelevantContent,
+
     /// <summary>
     /// Refers to the redaction of personal information
     /// </summary>
-    RedactPersonalInformation
+    [Description("Redact Personal Information")] RedactPersonalInformation
 }

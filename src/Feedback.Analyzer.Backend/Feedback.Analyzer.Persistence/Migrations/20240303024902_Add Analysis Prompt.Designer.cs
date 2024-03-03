@@ -40,10 +40,10 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("MajorVersion")
+                    b.Property<int>("Version")
                         .HasColumnType("integer");
 
-                    b.Property<int>("MinorVersion")
+                    b.Property<int>("Revision")
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset?>("ModifiedTime")
