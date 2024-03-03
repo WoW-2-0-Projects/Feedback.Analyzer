@@ -1,11 +1,13 @@
 using System.Reflection;
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
+using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
+using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
@@ -118,6 +120,22 @@ public static partial class HostConfiguration
         var kernel = kernelBuilder.Build();
         
         builder.Services.AddSingleton(kernel);
+
+        return builder;
+    }
+    
+    /// <summary>
+    /// Configures exposers including controllers
+    /// </summary>
+    /// <param name="builder">Application builder</param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddPromptAnalysisInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Register repositories
+        builder.Services.AddScoped<IPromptRepository, PromptRepository>();
+        
+        // Register services
+        builder.Services.AddScoped<IPromptService, PromptService>();
 
         return builder;
     }

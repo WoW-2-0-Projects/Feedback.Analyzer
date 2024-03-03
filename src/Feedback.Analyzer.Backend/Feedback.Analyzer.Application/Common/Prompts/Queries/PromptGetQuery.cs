@@ -7,7 +7,7 @@ namespace Feedback.Analyzer.Application.Common.Prompts.Queries;
 /// <summary>
 ///  Represents a query to retrieve a collection of organizations.
 /// </summary>
-public record PromptGetQuery : IQuery<ICollection<OrganizationDto>>, IQuery<ICollection<AnalysisPromptDto>>
+public record PromptGetQuery : IQuery<ICollection<AnalysisPromptDto>>
 {
     /// <summary>
     ///  Gets or sets the filter to apply when retrieving organizations.
