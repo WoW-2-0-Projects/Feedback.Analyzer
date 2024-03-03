@@ -7,6 +7,10 @@ using System.Linq.Expressions;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
+/// <summary>
+/// Repository implementation for managing sms template entities
+/// </summary>
+/// <param name="dbContext"></param>
 public class SmsTemplateRepository(AppDbContext dbContext) : 
     EntityRepositoryBase<SmsTemplate, AppDbContext>(dbContext),
     ISmsTemplateRepository

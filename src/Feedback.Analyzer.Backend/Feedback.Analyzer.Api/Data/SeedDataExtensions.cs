@@ -10,9 +10,7 @@ namespace Feedback.Analyzer.Api.Data;
 /// </summary>
 public static class SeedDataExtensions
 {
-    public static async ValueTask InitializeSeedAsync(
-        this IServiceProvider serviceProvider, 
-        IWebHostEnvironment webHostEnvironment)
+    public static async ValueTask InitializeSeedAsync(this IServiceProvider serviceProvider)
     {
         var appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
 
@@ -23,7 +21,7 @@ public static class SeedDataExtensions
             await SeedOrganizationAsync(appDbContext);
 
         if (!await appDbContext.EmailTemplates.AnyAsync())
-            await appDbContext.SeedEmailTemplates(webHostEnvironment);
+            await appDbContext.SeedEmailTemplates(serviceProvider.GetRequiredService<IWebHostEnvironment>());
 
         if (!await appDbContext.SmsTemplates.AnyAsync())
             await appDbContext.SeedSmsTemplates();

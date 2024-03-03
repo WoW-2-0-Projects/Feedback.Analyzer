@@ -7,6 +7,10 @@ using System.Linq.Expressions;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
+/// <summary>
+/// Repository implementation for managing email template entities
+/// </summary>
+/// <param name="dbContext"></param>
 public class EmailTemplateRepository(AppDbContext dbContext) : 
     EntityRepositoryBase<EmailTemplate, AppDbContext>(dbContext),
     IEmailTemplateRepository

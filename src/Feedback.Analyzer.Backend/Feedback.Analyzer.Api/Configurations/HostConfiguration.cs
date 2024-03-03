@@ -13,8 +13,8 @@ public static partial class HostConfiguration
             .AddValidators()
             .AddMappers()
             .AddPersistence()
-            .AddClientInfrastructure()
             .AddNotificationInfrastructure()
+            .AddClientInfrastructure()
             .AddMediator()
             .AddDevTools()
             .AddExposers();

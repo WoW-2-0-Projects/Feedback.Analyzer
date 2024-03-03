@@ -186,9 +186,7 @@ public static partial class HostConfiguration
     private static async ValueTask<WebApplication> SeedDataAsync(this WebApplication app)
     {
         var serviceScope = app.Services.CreateScope();
-        await serviceScope.ServiceProvider.InitializeSeedAsync(
-            serviceScope.ServiceProvider
-            .GetRequiredService<IWebHostEnvironment>());
+        await serviceScope.ServiceProvider.InitializeSeedAsync();
 
         return app;
     }
