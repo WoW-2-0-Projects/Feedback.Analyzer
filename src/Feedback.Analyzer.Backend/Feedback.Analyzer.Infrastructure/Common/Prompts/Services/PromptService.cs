@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 
-public class PromptService(IPromptRepository promptRepository, IValidator<AnalysisPrompt> promptValidator) : IPromptService
+public class PromptService(IPromptRepository promptRepository, IValidator<AnalysisPrompt> promptValidator, IPromptRepository repo) : IPromptService
 {
     public IQueryable<AnalysisPrompt> Get(Expression<Func<AnalysisPrompt, bool>>? predicate = default, QueryOptions queryOptions = default) =>
         promptRepository.Get(predicate, queryOptions);
@@ -22,28 +22,32 @@ public class PromptService(IPromptRepository promptRepository, IValidator<Analys
 
     public ValueTask<AnalysisPrompt?> GetByIdAsync(Guid promptId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
         => promptRepository.GetByIdAsync(promptId, queryOptions, cancellationToken);
+    
     public async ValueTask<AnalysisPrompt> CreateAsync(
         AnalysisPrompt prompt,
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default
     )
     {
+        var test = promptRepository;
+        
         var validationResult = promptValidator.Validate(prompt,
             options => options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        // Get latest prompt major version
+        // Get latest prompt version
         var latestPromptMajorVersion = await promptRepository
             .Get()
-            .OrderByDescending(p => p.MajorVersion)
-            .Where(existingPrompt => existingPrompt.Type == prompt.Type)
-            .Select(existingPrompt => existingPrompt.MajorVersion)
+            .Include(existingPrompt => existingPrompt.Category)
+            .OrderByDescending(p => p.Version)
+            .Where(existingPrompt => existingPrompt.Category.Type == prompt.Category.Type)
+            .Select(existingPrompt => existingPrompt.Revision)
             .FirstOrDefaultAsync(_ => true, cancellationToken);
         
-        // Increment major version
-        prompt.MajorVersion = latestPromptMajorVersion + 1;
+        // Increment version
+        prompt.Version = latestPromptMajorVersion + 1;
 
         return await promptRepository.CreateAsync(prompt, commandOptions, cancellationToken);
     }
@@ -60,21 +64,22 @@ public class PromptService(IPromptRepository promptRepository, IValidator<Analys
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
         
-        // Get latest prompt minor version
+        // Get latest prompt revision
         var latestMinorVersion = await promptRepository
             .Get()
-            .OrderByDescending(p => p.MinorVersion)
-            .Where(existingPrompt => existingPrompt.Type == prompt.Type)
-            .Select(existingPrompt => existingPrompt.MinorVersion)
+            .Include(existingPrompt => existingPrompt.Category)
+            .OrderByDescending(p => p.Revision)
+            .Where(existingPrompt => existingPrompt.Category.Type == prompt.Category.Type)
+            .Select(existingPrompt => existingPrompt.Revision)
             .FirstOrDefaultAsync(_ => true, cancellationToken);
         
         // Clone the prompt
         var clonedPrompt = prompt.Clone();
         
         // Increment minor version
-        prompt.MinorVersion = latestMinorVersion + 1;
+        clonedPrompt.Revision = latestMinorVersion + 1;
 
-        return await promptRepository.CreateAsync(prompt, commandOptions, cancellationToken);
+        return await promptRepository.CreateAsync(clonedPrompt, commandOptions, cancellationToken);
     }
 
     public ValueTask<AnalysisPrompt?> DeleteAsync(

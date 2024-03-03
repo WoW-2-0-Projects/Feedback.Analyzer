@@ -1,4 +1,5 @@
 using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,9 @@ public static class SeedDataExtensions
 
         if (!await appDbContext.Products.AnyAsync())
             await SeedProductsAsync(appDbContext);
+        
+        if (!await appDbContext.PromptCategories.AnyAsync())
+            await SeedPromptCategoriesAsync(appDbContext);
         
         if (appDbContext.ChangeTracker.HasChanges())
             await appDbContext.SaveChangesAsync();
@@ -123,5 +127,34 @@ public static class SeedDataExtensions
         };
     
         await appDbContext.Products.AddRangeAsync(products);
+    }
+    
+    /// <summary>
+    /// Seeds prompt categories
+    /// </summary>
+    /// <param name="appDbContext"></param>
+    private static async ValueTask SeedPromptCategoriesAsync(AppDbContext appDbContext)
+    {
+        var promptCategories = new List<AnalysisPromptCategory>
+        {
+            new()
+            {
+                Type = FeedbackAnalysisPromptType.ContentSafetyAnalysis,
+            },
+            new()
+            {
+                Type = FeedbackAnalysisPromptType.LanguageRecognition,
+            },
+            new()
+            {
+                Type = FeedbackAnalysisPromptType.RelevanceAnalysis,
+            },
+            new()
+            {
+                Type = FeedbackAnalysisPromptType.ExtractRelevantContent,
+            }
+        };
+    
+        await appDbContext.PromptCategories.AddRangeAsync(promptCategories);
     }
 }    
