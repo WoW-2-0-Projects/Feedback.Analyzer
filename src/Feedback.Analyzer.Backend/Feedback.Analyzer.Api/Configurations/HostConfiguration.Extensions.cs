@@ -1,12 +1,16 @@
 using System.Reflection;
+using System.Text;
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
+using Feedback.Analyzer.Application.Common.PromptCategories.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Organizations.Services;
+using Feedback.Analyzer.Application.Products.Commands;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
+using Feedback.Analyzer.Infrastructure.Common.PromptCategories.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
@@ -15,10 +19,10 @@ using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.SemanticKernel;
+using Newtonsoft.Json;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
@@ -41,7 +45,7 @@ public static partial class HostConfiguration
     {
         builder.Services.Configure<ValidationSettings>(builder.Configuration.GetSection(nameof(ValidationSettings)));
 
-        builder.Services.AddValidatorsFromAssemblies(Assemblies).AddFluentValidationAutoValidation();
+        builder.Services.AddValidatorsFromAssemblies(Assemblies);
         
         return builder;
     }
@@ -75,6 +79,7 @@ public static partial class HostConfiguration
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
             options.UseNpgsql(dbConnectionString);
+            options.EnableSensitiveDataLogging();
         });
 
         return builder;
@@ -132,10 +137,14 @@ public static partial class HostConfiguration
     private static WebApplicationBuilder AddPromptAnalysisInfrastructure(this WebApplicationBuilder builder)
     {
         // Register repositories
-        builder.Services.AddScoped<IPromptRepository, PromptRepository>();
+        builder.Services
+            .AddScoped<IPromptRepository, PromptRepository>()
+            .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>();
         
         // Register services
-        builder.Services.AddScoped<IPromptService, PromptService>();
+        builder.Services
+            .AddScoped<IPromptService, PromptService>()
+            .AddScoped<IPromptCategoryService, PromptCategoryService>();
 
         return builder;
     }
