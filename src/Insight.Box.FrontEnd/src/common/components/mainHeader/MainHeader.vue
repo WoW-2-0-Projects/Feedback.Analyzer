@@ -13,10 +13,11 @@
         <!-- Site navigation -->
         <div class="flex gap-10 text-md text-textColorSecondary">
 
-            <span>Dashboard</span>
-            <span>Organizations</span>
-            <span>Products</span>
-            <span>Workflows</span>
+            <router-link :to="RouteName.Organizations">Dashboard</router-link>
+            <router-link :to="RouteName.Prompts">Prompts</router-link>
+            <router-link :to="RouteName.Organizations">Organizations</router-link>
+            <router-link :to="RouteName.Products">Products</router-link>
+            <router-link :to="RouteName.Organizations">Workflows</router-link>
 
         </div>
 
@@ -27,3 +28,6 @@
     </div>
 
 </template>
+<script setup lang="ts">
+import {RouteName} from "@/infrastructure/router/RouteName.js";
+</script>

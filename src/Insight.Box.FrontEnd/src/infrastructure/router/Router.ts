@@ -10,6 +10,11 @@ const router = createRouter({
             component: () => import('../../common/views/HomeView.vue')
         },
         {
+            path: '/prompts',
+            name: RouteName.Prompts,
+            component: () => import('../../modules/prompts/components/PromptsTab.vue')
+        },
+        {
             path: '/organizations',
             name: RouteName.Organizations,
             component: () => import('../../modules/organizations/components/OrganizationsTab.vue')

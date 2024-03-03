@@ -8,6 +8,11 @@ export enum RouteName {
     Home = 'home',
 
     /*
+     * Refers to the prompts route
+     */
+    Prompts = 'prompts',
+
+    /*
      * Refers to the "organizations" route
      */
     Organizations = 'organizations',
