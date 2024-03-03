@@ -1,3 +1,4 @@
+using Feedback.Analyzer.Application.Common.PromptCategories.Queries;
 using Feedback.Analyzer.Application.Common.Prompts.Commands;
 using Feedback.Analyzer.Application.Common.Prompts.Queries;
 using MediatR;
@@ -9,6 +10,13 @@ namespace Feedback.Analyzer.Api.Controllers;
 [Route("api/[controller]")]
 public class PromptsController(IMediator mediator) : ControllerBase
 {
+    [HttpGet("categories")]
+    public async ValueTask<IActionResult> GetPromptCategories([FromQuery] PromptCategoryGetQuery query, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(query, cancellationToken);
+        return result.Any() ? Ok(result) : NotFound();
+    }
+    
     [HttpGet]
     public async ValueTask<IActionResult> GetPrompts([FromQuery] PromptGetQuery query, CancellationToken cancellationToken)
     {
