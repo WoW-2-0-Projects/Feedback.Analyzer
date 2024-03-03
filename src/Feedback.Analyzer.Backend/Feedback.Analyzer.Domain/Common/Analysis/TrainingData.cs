@@ -1,4 +1,4 @@
-namespace Feedback.Prompt.Analyzer.Domain.Common.Analysis;
+namespace Feedback.Analyzer.Domain.Common.Analysis;
 
 /// <summary>
 /// Represents generic training data

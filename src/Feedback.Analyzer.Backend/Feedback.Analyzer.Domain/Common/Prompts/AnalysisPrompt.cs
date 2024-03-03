@@ -1,8 +1,12 @@
-namespace Feedback.Prompt.Analyzer.Domain.Common.Prompts;
+using Feedback.Analyzer.Domain.Common.Entities;
 
-public abstract class AnalysisPrompt
+namespace Feedback.Analyzer.Domain.Common.Prompts;
+
+public class AnalysisPrompt : AuditableEntity
 {
     public string Prompt { get; set; } = default!;
     
-    public int Version { get; set; }
+    public int MajorVersion { get; set; }
+    
+    public int MinorVersion { get; set; }
 }

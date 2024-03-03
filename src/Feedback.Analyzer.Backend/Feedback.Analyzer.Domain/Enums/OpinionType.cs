@@ -1,4 +1,4 @@
-namespace Feedback.Prompt.Analyzer.Domain.Enums;
+namespace Feedback.Analyzer.Domain.Enums;
 
 /// <summary>
 /// Represents opinion type

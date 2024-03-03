@@ -4,7 +4,7 @@
     <div class="tab pt-10">
 
         <!-- Products search bar -->
-        <prompts-search-bar :productsQuery="productsQuery"/>
+        <prompts-search-bar :promptsQuery="promptsQuery"/>
 
         <!-- Products gallery -->
         <infinite-scroll @onScroll="onScroll"
@@ -39,7 +39,7 @@ const documentService = new DocumentService();
 
 /* States */
 const isLoading = ref<boolean>(false);
-const productsQuery = ref<Query>(new Query(new ProductFilter()));
+const promptsQuery = ref<Query>(new Query(new ProductFilter()));
 const products = ref<Array<Product>>([]);
 const noProductsFound = ref<boolean>(false);
 const productsChangeSource = ref<NotificationSource>(new NotificationSource());
@@ -58,7 +58,7 @@ onBeforeMount(async () => {
 const loadProductsAsync = async () => {
     isLoading.value = true;
 
-    const response = await insightBoxApiClient.products.getAsync(productsQuery.value);
+    const response = await insightBoxApiClient.products.getAsync(promptsQuery.value);
 
     if (response.response) {
         products.value.push(...response.response);

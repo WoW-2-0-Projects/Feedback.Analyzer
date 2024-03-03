@@ -1,4 +1,4 @@
-namespace Feedback.Prompt.Analyzer.Domain.Common.Feedbacks;
+namespace Feedback.Analyzer.Domain.Common.Feedbacks;
 
 /// <summary>
 /// Determines feedback analysis result properties

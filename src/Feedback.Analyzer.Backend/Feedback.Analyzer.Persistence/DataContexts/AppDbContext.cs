@@ -1,4 +1,5 @@
 using System.Reflection;
+using Feedback.Analyzer.Domain.Common.Prompts;
 using Feedback.Analyzer.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +18,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     #endregion
 
     #region FeedbackInfrastructure
+    
     public DbSet<CustomerFeedback> Feedbacks => Set<CustomerFeedback>();
+
+    public DbSet<AnalysisPrompt> Prompts => Set<AnalysisPrompt>();
 
     #endregion
     
