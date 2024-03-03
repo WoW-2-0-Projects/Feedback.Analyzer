@@ -54,10 +54,7 @@ const loadOrganizationsAsync = async () => {
     const organizationsResponse = await insightBoxApiClient.organizations.getAsync(organizationsFilter.value);
     if(organizationsResponse.isSuccess) {
         const data = organizationsResponse.response as Organization[];
-        console.log(data);
         organizations.value.push(...data);
-    } else{
-        console.log("Something is wrong");
     }
 };
 
