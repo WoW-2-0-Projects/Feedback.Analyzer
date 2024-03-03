@@ -3,10 +3,11 @@
     <Teleport to="body">
 
         <!-- Modal background -->
-        <div :class="isActive ? 'modal-bg-overlay-blur' : ''" @click="emit('closeModal')">
+        <div v-show="isActiveInternal" :class="isActive ? 'transition duration-1000 modal-bg-overlay-blur' : '' "
+             @click="emit('closeModal')">
 
             <!-- Modal container -->
-            <div :class="isActive ? ' absolute-y-center' : ' opacity-0'"
+            <div :class="isActive ? 'absolute-y-center' : 'opacity-0' "
                  class="fixed h-fit transform top-1/2 w-fit absolute-x-center theme-modal-transition
                      theme-modal-bg modal-border-round theme-modal-border inset-0 z-30 overflow-auto no-scrollbar">
 
@@ -35,6 +36,8 @@
 <script setup lang="ts">
 
 import CloseButton from "@/common/components/buttons/CloseButton.vue";
+import {ref, watch} from "vue";
+import {TimerService} from "@/infrastructure/services/timer/TimerService";
 
 const props = defineProps({
     isActive: {
@@ -43,7 +46,21 @@ const props = defineProps({
     }
 });
 
+const timerService = new TimerService();
+const isActiveInternal = ref<boolean>(props.isActive);
+const timer = ref<number | null>(null);
+
+watch(() => props.isActive, (isActive) => {
+    if (isActive) {
+        timer.value = timerService.clearTimer(timer.value);
+        timer.value = timerService.setTimer(() => isActiveInternal.value = true, 0);
+    } else {
+        timer.value = timerService.clearTimer(timer.value);
+        timer.value = timerService.setTimer(() => isActiveInternal.value = false, 200);
+    }
+});
 
 const emit = defineEmits(['closeModal']);
+
 
 </script>

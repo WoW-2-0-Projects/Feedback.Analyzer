@@ -1,0 +1,15 @@
+.card {
+  @apply overflow-hidden;
+}
+
+.card-round {
+  @apply rounded-lg;
+}
+
+.card-bg {
+  @apply bg-primaryColor;
+}
+
+.card-shadow {
+  @apply shadow-lg;
+}

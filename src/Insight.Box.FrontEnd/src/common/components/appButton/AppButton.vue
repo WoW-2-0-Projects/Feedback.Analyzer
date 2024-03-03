@@ -61,10 +61,16 @@ const componentStyles = computed(() => {
             break;
     }
 
+    console.log(props.layout);
+
     if (props.layout === ButtonLayout.Rectangle)
-        styles += 'theme-action-border-round theme-action-layout';
+        styles += ' theme-action-border-round theme-action-layout';
+    else if (props.layout === ButtonLayout.Square)
+        styles += ' theme-action-border-round theme-action-square-layout';
     else if (props.layout === ButtonLayout.Circle)
         styles += ' flex items-center justify-center theme-action-circle-layout';
+
+    console.log(styles);
 
     return styles;
 });
@@ -74,8 +80,10 @@ const contentStyles = computed(() => {
 
     if (props.layout === ButtonLayout.Rectangle)
         styles += ' theme-action-padding justify-around ';
+    else if (props.layout === ButtonLayout.Square)
+        styles += ' justify-center ';
     else if (props.layout === ButtonLayout.Circle)
-        styles += 'justify-center ';
+        styles += ' justify-center ';
 
     if (props.icon)
         styles += ' gap-2';

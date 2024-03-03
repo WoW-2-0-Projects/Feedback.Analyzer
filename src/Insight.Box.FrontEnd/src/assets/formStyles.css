@@ -10,6 +10,10 @@
   @apply h-[60px];
 }
 
+.theme-action-square-layout {
+  @apply h-[40px] w-[40px]
+}
+
 .theme-action-circle-layout {
   @apply h-[40px] w-[40px] rounded-full;
 }

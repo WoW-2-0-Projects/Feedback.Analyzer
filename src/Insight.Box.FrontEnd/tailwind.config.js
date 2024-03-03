@@ -17,6 +17,7 @@ export default {
         accentPrimaryColor: '#A07C7F',
         accentSecondaryColor: '#656a80',
         primaryContentColor: '#f5f5f5',
+        secondaryContentColor: '#b5b5b5',
         dangerColor: '#E63946',
         successColor: '#2A9D8F',
 

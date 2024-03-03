@@ -22,7 +22,7 @@ body {
 
 /* Theme styles */
 
-.theme-view-bg {
+.theme-gradient-bg {
   @apply bg-gradient-to-br from-30% from-secondaryColor to-primaryColor;
 }
 
