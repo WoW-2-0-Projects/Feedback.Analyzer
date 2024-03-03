@@ -18,8 +18,14 @@ public class PromptRepository(AppDbContext dbContext) : EntityRepositoryBase<Ana
     public new ValueTask<AnalysisPrompt?> GetByIdAsync(Guid promptId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
      => base.GetByIdAsync(promptId, queryOptions, cancellationToken);
 
+    public new ValueTask<AnalysisPrompt> CreateAsync(AnalysisPrompt prompt, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+    => base.CreateAsync(prompt, commandOptions, cancellationToken);
+
     public new ValueTask<AnalysisPrompt> UpdateAsync(AnalysisPrompt prompt, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
      => base.UpdateAsync(prompt, commandOptions, cancellationToken);
+
+    public new ValueTask<AnalysisPrompt?> DeleteAsync(AnalysisPrompt prompt, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+    => base.DeleteAsync(prompt, commandOptions, cancellationToken);
 
     public new ValueTask<AnalysisPrompt?> DeleteByIdAsync(Guid promptId, CommandOptions commandOptions, CancellationToken cancellationToken = default)
     => base.DeleteByIdAsync(promptId, commandOptions, cancellationToken);
