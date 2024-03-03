@@ -25,13 +25,11 @@ public class ProductsController(IMediator mediator) : ControllerBase
         return result is not null ? Ok(result) : NotFound();
     }
 
-    [HttpPost("{organizationId:guid}/products")]
-    public async ValueTask<IActionResult> CreateProduct([FromRoute] Guid organizationId ,[FromBody] ProductCreateCommand productCreateCommand,
+    [HttpPost]
+    public async ValueTask<IActionResult> CreateProduct([FromBody] ProductCreateCommand productCreateCommand,
         CancellationToken cancellationToken = default)
     {
-        productCreateCommand.Product.OrganizationId = organizationId;
         var result = await mediator.Send(productCreateCommand, cancellationToken);
-        
         return Ok(result);
     }
 
