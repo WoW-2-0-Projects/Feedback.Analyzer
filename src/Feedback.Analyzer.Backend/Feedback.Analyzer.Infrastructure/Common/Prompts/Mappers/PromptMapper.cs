@@ -2,7 +2,7 @@
 using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Domain.Common.Prompts;
 
-namespace Feedback.Analyzer.Application.Common.Prompts.Mappers;
+namespace Feedback.Analyzer.Infrastructure.Common.Prompts.Mappers;
 
 public class PromptMapper : Profile
 {

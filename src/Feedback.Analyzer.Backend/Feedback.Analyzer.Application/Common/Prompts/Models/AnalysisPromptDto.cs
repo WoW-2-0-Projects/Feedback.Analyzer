@@ -12,7 +12,7 @@ public class AnalysisPromptDto
     
     public int MajorVersion { get; set; }
     
-    public int MinorVersion { get; set; }
+    public int Revision { get; set; }
     
     public DateTimeOffset CreatedTime { get; set; }
     
