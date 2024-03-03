@@ -6,7 +6,7 @@ namespace Feedback.Analyzer.Application.Organizations.Queries;
 /// <summary>
 ///  Represents a query to retrieve a collection of organizations.
 /// </summary>
-public class OrganizationGetQuery : IQuery<ICollection<OrganizationDto>>
+public record OrganizationGetQuery : IQuery<ICollection<OrganizationDto>>
 {
     /// <summary>
     ///  Gets or sets the filter to apply when retrieving organizations.

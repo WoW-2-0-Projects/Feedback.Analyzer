@@ -1,0 +1,3 @@
+.theme-modal-shadow {
+  @apply drop-shadow-2xl;
+}

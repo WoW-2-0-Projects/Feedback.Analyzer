@@ -1,0 +1,75 @@
+.theme-action-overlay {
+  @apply relative overflow-hidden after:absolute after:top-0 after:left-0 after:h-full after:w-full
+  after:bg-opacity-0
+  focus:after:bg-opacity-20 focus:after:bg-black
+  active:after:bg-opacity-40 active:after:bg-black
+  hover:after:bg-opacity-10 hover:after:bg-white
+}
+
+.theme-action-layout {
+  @apply h-[60px];
+}
+
+.theme-action-padding {
+  @apply px-4;
+}
+
+.theme-action-style {
+  @apply focus:outline-none appearance-none;
+}
+
+.theme-action-shadow {
+  @apply drop-shadow-sm;
+}
+
+.theme-action-content {
+  @apply text-primaryContentColor;
+}
+
+.theme-focus-content {
+  @apply text-opacity-50 focus:text-opacity-100;
+}
+
+.theme-action-transition {
+  @apply transition duration-300;
+}
+
+.theme-input-text {
+  @apply text-primaryContentColor;
+}
+
+.theme-input-bg {
+  @apply bg-primaryColor;
+}
+
+.theme-input-border {
+  @apply border border-accentSecondaryColor focus:border-tertiaryColor;
+}
+
+.theme-input-border-focus {
+  @apply border focus:border-tertiaryColor;
+}
+
+.theme-input-border-round {
+  @apply rounded-lg;
+}
+
+.theme-input-label {
+  @apply text-tertiaryColor;
+}
+
+.theme-input-placeholder {
+  @apply placeholder-transparent focus:placeholder-tertiaryColor
+}
+
+.theme-transition {
+  @apply transition duration-300;
+}
+
+.theme-btn-bg-primary {
+  @apply bg-accentPrimaryColor;
+}
+
+.theme-btn-bg-secondary {
+  @apply bg-accentSecondaryColor;
+}

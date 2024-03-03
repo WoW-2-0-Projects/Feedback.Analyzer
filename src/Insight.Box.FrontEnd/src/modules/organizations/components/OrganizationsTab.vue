@@ -1,0 +1,52 @@
+<template>
+
+    <!-- Organization tab content -->
+    <div class="tab pt-10">
+
+        <!-- Organizations search bar -->
+        <organizations-search-bar/>
+
+        <!-- Organizations gallery -->
+        <infinite-scroll @onScroll="onScroll"
+                         :contentChangeSource="organizationsChangeSource"
+                         class="grid w-full px-20 gap-x-5 gap-y-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 theme-bg-primary">
+
+            <!-- Listing card -->
+
+        </infinite-scroll>
+
+    </div>
+
+</template>
+
+<script setup lang="ts">
+
+import {onMounted, ref} from "vue";
+import {DocumentService} from "@/infrastructure/services/document/DocumentService";
+import {LayoutConstants} from "@/common/constants/LayoutConstants";
+import {OrganizationFilter} from "@/modules/organizations/models/OrganizationFilter";
+import OrganizationsSearchBar from "@/modules/organizations/components/OrganizationsSearchBar.vue";
+import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
+import {NotificationSource} from "@/infrastructure/models/notifications/Action";
+
+const documentService = new DocumentService();
+
+const organizationFilter = ref<OrganizationFilter>({});
+
+onMounted(() => {
+    // Set page title
+    documentService.setTitle(LayoutConstants.Organizations);
+});
+
+/*
+ * Change source of organizations to re-calculate layout
+ */
+const organizationsChangeSource = ref<NotificationSource>(new NotificationSource());
+
+/*
+ * Scroll event handler
+ */
+const onScroll = async () => {
+};
+
+</script>
