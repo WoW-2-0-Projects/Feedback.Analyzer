@@ -36,7 +36,7 @@ import {Query} from "@/infrastructure/models/query/Query";
 import PromptModal from "@/modules/prompts/components/PromptModal.vue";
 import PromptsSearchBar from "@/modules/prompts/components/PromptsSearchBar.vue";
 import {PromptFilter} from "@/modules/prompts/models/PromptFilter";
-import type {FeedbackAnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
+import type {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 import {CreatePromptCommand} from "@/modules/prompts/models/CreatePromptCommand";
 
 /* Services */
@@ -46,7 +46,7 @@ const documentService = new DocumentService();
 /* States */
 const isLoading = ref<boolean>(false);
 const promptsQuery = ref<Query>(new Query(new PromptFilter()));
-const prompts = ref<Array<FeedbackAnalysisPrompt>>([]);
+const promptsCategoryQuery = ref<Query>(new Query(new PromptCategoryFilter()));
 const noPromptsFound = ref<boolean>(false);
 const promptsChangeSource = ref<NotificationSource>(new NotificationSource());
 const promptModalActive = ref<boolean>(false);
@@ -83,7 +83,7 @@ const loadPromptsAsync = async () => {
 /*
  * Handles prompt modal submit
  */
-const onPromptModalSubmit = async(prompt: FeedbackAnalysisPrompt) => {
+const onPromptModalSubmit = async(prompt: AnalysisPrompt) => {
     if(isCreate.value) {
         await createPromptAsync(prompt);
     } else {
@@ -94,7 +94,7 @@ const onPromptModalSubmit = async(prompt: FeedbackAnalysisPrompt) => {
 /*
  * Creates a prompt
  */
-const createPromptAsync = async (prompt: FeedbackAnalysisPrompt) => {
+const createPromptAsync = async (prompt: AnalysisPrompt) => {
     isSearchBarLoading.value = true;
 
     prompt.organizationId = '60e6a4de-31e5-4f8b-8e6a-0a8f63f41527';
@@ -112,13 +112,13 @@ const createPromptAsync = async (prompt: FeedbackAnalysisPrompt) => {
 /*
  * Updates prompt
  */
-const updatePromptAsync = async (prompt: FeedbackAnalysisPrompt) => {
+const updatePromptAsync = async (prompt: AnalysisPrompt) => {
     isSearchBarLoading.value = true;
 
     isSearchBarLoading.value = false;
 };
 
-const openPromptModal = (prompt: FeedbackAnalysisPrompt | null) => {
+const openPromptModal = (prompt: AnalysisPrompt | null) => {
     isCreate.value = prompt === null || prompt === undefined;
     promptModalActive.value = true;
 };

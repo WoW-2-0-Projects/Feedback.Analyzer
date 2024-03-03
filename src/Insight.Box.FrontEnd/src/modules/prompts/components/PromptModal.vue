@@ -49,12 +49,12 @@ import {ButtonType} from "@/common/components/appButton/ButtonType";
 import FormInput from "@/common/components/formInput/FormInput.vue";
 import ModalBase from "@/common/components/modalBase/ModalBase.vue";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
-import {FeedbackAnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
+import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 
 const props = defineProps({
     prompt: {
-        type: Object as PropType<FeedbackAnalysisPrompt>,
-        default: new FeedbackAnalysisPrompt()
+        type: Object as PropType<AnalysisPrompt>,
+        default: new AnalysisPrompt()
     },
     isActive: {
         type: Boolean,
@@ -68,15 +68,15 @@ const props = defineProps({
 
 const emit = defineEmits<{
     (e: 'closeModal'): void
-    (e: 'submit', prompt: FeedbackAnalysisPrompt): void
+    (e: 'submit', prompt: AnalysisPrompt): void
 }>();
 
-const currentValue = ref<FeedbackAnalysisPrompt>(props.prompt);
+const currentValue = ref<AnalysisPrompt>(props.prompt);
 
 const onCloseModal = () => {
     // Reset values
     if(props.isCreate)
-        currentValue.value = new FeedbackAnalysisPrompt();
+        currentValue.value = new AnalysisPrompt();
 
     emit('closeModal');
 }

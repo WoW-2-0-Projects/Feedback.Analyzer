@@ -1,5 +1,5 @@
 import {Command} from "@/infrastructure/models/command/Command";
-import type {FeedbackAnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
+import type {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 
 /*
  * Represents create product model
@@ -9,9 +9,9 @@ export class CreatePromptCommand extends Command {
     /*
      * Product to be created
      */
-    public prompt: FeedbackAnalysisPrompt;
+    public prompt: AnalysisPrompt;
 
-    constructor(prompt: FeedbackAnalysisPrompt) {
+    constructor(prompt: AnalysisPrompt) {
         super();
 
         this.prompt = prompt;

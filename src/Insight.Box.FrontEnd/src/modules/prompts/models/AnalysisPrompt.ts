@@ -1,6 +1,6 @@
 import type {FeedbackAnalysisPromptType} from "@/modules/prompts/models/FeedbackAnalysisPromptType";
 
-export class FeedbackAnalysisPrompt {
+export class AnalysisPrompt {
     id: string;
     type: FeedbackAnalysisPromptType;
     prompt: string;
