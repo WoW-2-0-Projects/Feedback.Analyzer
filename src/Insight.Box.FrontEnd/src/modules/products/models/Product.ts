@@ -24,8 +24,8 @@ export class Product {
 
     constructor(id: string, name: string, description: string, organizationId: number) {
         this.id = id;
-        this.name = name;
-        this.description = description;
-        this.organizationId = price;
+        this.name = name ?? '';
+        this.description = description ?? '';
+        this.organizationId = organizationId;
     }
 }
