@@ -13,6 +13,11 @@ export enum RouteName {
     Organizations = 'organizations',
 
     /*
+     * Refers to the "products" route
+     */
+    Products = 'products',
+
+    /*
      * Refers to the "about" route
      */
     About = 'about',

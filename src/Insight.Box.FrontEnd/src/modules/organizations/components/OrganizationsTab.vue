@@ -1,6 +1,6 @@
 <template>
 
-    <!-- Organization view content -->
+    <!-- Organization tab content -->
     <div class="tab pt-10">
 
         <!-- Organizations search bar -->

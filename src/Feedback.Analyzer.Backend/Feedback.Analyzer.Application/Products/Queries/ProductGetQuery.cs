@@ -11,5 +11,5 @@ public record ProductGetQuery : IQuery<ICollection<ProductDto>>
     /// <summary>
     /// Optional filter criteria for retrieving products.
     /// </summary>
-    public ProductFilter ProductFilter { get; set; } = default!;
+    public ProductFilter Filter { get; set; } = default!;
 }

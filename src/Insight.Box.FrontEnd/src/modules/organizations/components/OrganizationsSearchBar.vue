@@ -22,11 +22,11 @@
 <script setup lang="ts">
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ButtonType} from "@/common/components/appButton/ButtonType";
-import SearchBarInput from "@/common/components/searchBar/FormSearchBar.vue";
+import SearchBarInput from "@/common/components/formSearchBar/FormSearchBar.vue";
 import {OrganizationFilter} from "@/modules/organizations/models/OrganizationFilter";
 import {ref} from "vue";
-import FormDropDown from "@/common/components/dropDown/FormDropDown.vue";
-import {DropDownValue} from "@/common/components/dropDown/DropDownValue";
+import FormDropDown from "@/common/components/formDropDown/FormDropDown.vue";
+import {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
 
 const organizationFilter = ref<OrganizationFilter>(new OrganizationFilter());
 
