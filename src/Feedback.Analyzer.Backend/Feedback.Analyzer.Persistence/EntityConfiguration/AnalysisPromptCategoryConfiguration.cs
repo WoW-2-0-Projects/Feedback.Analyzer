@@ -10,18 +10,12 @@ public class AnalysisPromptCategoryConfiguration : IEntityTypeConfiguration<Anal
     public void Configure(EntityTypeBuilder<AnalysisPromptCategory> builder)
     {
         builder
-            .Property(category => category.ExecutionOrder)
-            .IsRequired();
-        
-        builder
             .Property(category => category.Type)
+            .HasConversion<string>()
             .IsRequired();
 
         builder
             .HasIndex(category => category.Type);
-        
-        builder
-            .HasIndex(category => category.ExecutionOrder);
         
         builder
             .HasOne<AnalysisPrompt>()

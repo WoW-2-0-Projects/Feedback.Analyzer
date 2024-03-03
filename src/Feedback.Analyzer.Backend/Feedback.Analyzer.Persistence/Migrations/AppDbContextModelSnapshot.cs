@@ -40,12 +40,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Revision")
-                        .HasColumnType("integer");
-
                     b.Property<DateTimeOffset?>("ModifiedTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -53,6 +47,12 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(32768)
                         .HasColumnType("character varying(32768)");
+
+                    b.Property<int>("Revision")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -67,18 +67,14 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("ExecutionOrder")
-                        .HasColumnType("integer");
-
                     b.Property<Guid?>("SelectedPromptId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ExecutionOrder");
 
                     b.HasIndex("SelectedPromptId")
                         .IsUnique();

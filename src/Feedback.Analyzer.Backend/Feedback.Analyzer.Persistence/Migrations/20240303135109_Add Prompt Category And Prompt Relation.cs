@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddPromptCategoryAndPromptRelationship : Migration
+    public partial class AddPromptCategoryAndPromptRelation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,8 +27,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ExecutionOrder = table.Column<int>(type: "integer", nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false),
                     SelectedPromptId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -45,11 +44,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 name: "IX_Prompts_CategoryId",
                 table: "Prompts",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PromptCategories_ExecutionOrder",
-                table: "PromptCategories",
-                column: "ExecutionOrder");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PromptCategories_SelectedPromptId",
