@@ -70,7 +70,7 @@ onBeforeMount(async () => {
 const loadProductsAsync = async () => {
     isLoading.value = true;
 
-    const response = await insightBoxApiClient.products.getAsync(productsQuery.value);
+    const response = await insightBoxApiClient.prompts.getAsync(productsQuery.value);
 
     if (response.response) {
         products.value.push(...response.response);
@@ -101,7 +101,7 @@ const createProductAsync = async (product: Product) => {
     product.organizationId = '60e6a4de-31e5-4f8b-8e6a-0a8f63f41527';
     const createProductCommand = new CreateProductCommand(product);
     const response = await
-        insightBoxApiClient.products.createAsync(createProductCommand);
+        insightBoxApiClient.prompts.createAsync(createProductCommand);
 
     if (response.response) {
         products.value.push(response.response);

@@ -69,7 +69,7 @@ onBeforeMount(async () => {
 const loadPromptsAsync = async () => {
     isLoading.value = true;
 
-    const response = await insightBoxApiClient.products.getAsync(promptsQuery.value);
+    const response = await insightBoxApiClient.prompts.getAsync(promptsQuery.value);
 
     if (response.response) {
         prompts.value.push(...response.response);
@@ -100,7 +100,7 @@ const createPromptAsync = async (prompt: FeedbackAnalysisPrompt) => {
     prompt.organizationId = '60e6a4de-31e5-4f8b-8e6a-0a8f63f41527';
     const createPromptCommand = new CreatePromptCommand(prompt);
     const response = await
-        insightBoxApiClient.products.createAsync(createPromptCommand);
+        insightBoxApiClient.prompts.createAsync(createPromptCommand);
 
     if (response.response) {
         prompts.value.push(response.response);

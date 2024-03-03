@@ -1,6 +1,7 @@
 import ApiClientBase from "@/infrastructure/apiClients/apiClientBase/ApiClientBase";
 import {ProductsEndpointsClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/ProductsEndpointsClient";
 import {RequestFormatterService} from "@/infrastructure/apiClients/formatters/RequestFormatterService";
+import {PromptsEndpointsClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/PromptsEndpointsClient";
 
 /*
  * Represents Insight-Box API client
@@ -36,7 +37,9 @@ export class InsightBoxApiClient {
 
         // Initialize endpoint clients
         this.products = new ProductsEndpointsClient(this.client, this.requestFormatterService);
+        this.prompts = new PromptsEndpointsClient(this.client, this.requestFormatterService);
     }
 
     public products: ProductsEndpointsClient;
+    public prompts: PromptsEndpointsClient;
 }

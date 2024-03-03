@@ -20,7 +20,7 @@
                 <form class="flex flex-col gap-10" @submit.prevent="onSubmit">
 
                     <!-- Modal inputs -->
-                    <form-input v-model="currentValue.name" :label="LayoutConstants.Prompt"
+                    <form-input v-model="currentValue.prompt" :label="LayoutConstants.Prompt"
                                 :placeholder="LayoutConstants.EnterPrompt"/>
 
                     <!-- Modal actions -->
