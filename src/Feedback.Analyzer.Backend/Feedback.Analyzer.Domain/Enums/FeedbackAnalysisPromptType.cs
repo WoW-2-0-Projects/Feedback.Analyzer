@@ -3,7 +3,7 @@ namespace Feedback.Analyzer.Domain.Enums;
 /// <summary>
 /// Represents feedback relevance analysis process
 /// </summary>
-public enum FeedbackRelevanceAnalysisProcess
+public enum FeedbackAnalysisPromptType
 {
     /// <summary>
     /// Refers to the content safety analysis

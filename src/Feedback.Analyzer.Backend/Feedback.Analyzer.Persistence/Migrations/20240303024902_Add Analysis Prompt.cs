@@ -16,6 +16,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false),
                     Prompt = table.Column<string>(type: "character varying(32768)", maxLength: 32768, nullable: false),
                     MajorVersion = table.Column<int>(type: "integer", nullable: false),
                     MinorVersion = table.Column<int>(type: "integer", nullable: false),

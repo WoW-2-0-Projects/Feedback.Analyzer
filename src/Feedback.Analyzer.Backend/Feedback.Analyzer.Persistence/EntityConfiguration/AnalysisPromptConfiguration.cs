@@ -8,6 +8,6 @@ public class AnalysisPromptConfiguration : IEntityTypeConfiguration<AnalysisProm
 {
     public void Configure(EntityTypeBuilder<AnalysisPrompt> builder)
     {
-        builder.Property(prompt => prompt.Prompt).HasMaxLength(32768).IsRequired();
+        builder.Property(prompt => prompt.Prompt).HasMaxLength(32768).IsRequired().HasConversion<string>();
     }
 }
