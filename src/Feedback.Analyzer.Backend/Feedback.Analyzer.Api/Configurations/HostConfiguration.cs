@@ -1,7 +1,6 @@
 using System.Text;
 using Feedback.Analyzer.Application.Products.Commands;
 namespace Feedback.Analyzer.Api.Configurations;
-
 public static partial class HostConfiguration
 {
     /// <summary>
@@ -16,11 +15,11 @@ public static partial class HostConfiguration
             .AddMappers()
             .AddPersistence()
             .AddClientInfrastructure()
+            .AddFeedbackInfrastructure()
             .AddMediator()
             .AddCors()
             .AddDevTools()
             .AddExposers();
-            
         
         return new(builder);
     }

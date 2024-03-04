@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Feedback.Analyzer.Application.Clients.Commands;
 using Feedback.Analyzer.Application.Clients.Models;
 using Feedback.Analyzer.Application.Clients.Services;
