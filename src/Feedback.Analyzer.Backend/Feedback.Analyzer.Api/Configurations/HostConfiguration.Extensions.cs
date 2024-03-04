@@ -2,11 +2,16 @@ using System.Reflection;
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.Settings;
+using Feedback.Analyzer.Application.Notifications.Brokers;
+using Feedback.Analyzer.Application.Notifications.Services;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
+using Feedback.Analyzer.Infrastructure.Notifications.Brokers;
+using Feedback.Analyzer.Infrastructure.Notifications.Services;
+using Feedback.Analyzer.Infrastructure.Notifications.Settings;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
@@ -18,6 +23,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
@@ -100,7 +106,29 @@ public static partial class HostConfiguration
 
         return builder;
     }
-    
+
+    /// <summary>
+    /// Adds notification-related infrastructure services to the web application builder.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddNotificationInfrastructure(this WebApplicationBuilder builder)
+    {
+        //register repositories
+        builder
+            .Services
+            .AddScoped<IEmailTemplateRepository, EmailTemplateRepository>()
+            .AddScoped<ISmsTemplateRepository, SmsTemplateRepository>();
+
+        // register data access foundation services
+        builder
+            .Services
+            .AddScoped<ISmsTemplateService, SmsTemplateService>()
+            .AddScoped<IEmailTemplateService, EmailTemplateService>();
+            
+        return builder;
+    }
+
     /// <summary>
     /// Adds MediatR services to the application with custom service registrations.
     /// </summary>
