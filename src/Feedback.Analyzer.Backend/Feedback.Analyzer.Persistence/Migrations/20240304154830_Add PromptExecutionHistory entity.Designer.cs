@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240304152237_Add PromtExecutionHistory entity")]
-    partial class AddPromtExecutionHistoryentity
+    [Migration("20240304154830_Add PromptExecutionHistory entity")]
+    partial class AddPromptExecutionHistoryentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
