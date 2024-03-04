@@ -25,6 +25,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     public DbSet<AnalysisPromptCategory> PromptCategories => Set<AnalysisPromptCategory>();
 
     #endregion
+
+    #region PromptsInfrastructure
+
+    public DbSet<PromptExecutionHistory> PromptExecutionHistories => Set<PromptExecutionHistory>();
+    
+
+    #endregion
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
