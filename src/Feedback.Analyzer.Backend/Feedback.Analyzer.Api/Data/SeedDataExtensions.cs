@@ -29,6 +29,9 @@ public static class SeedDataExtensions
 
         if (!await appDbContext.Feedbacks.AnyAsync())
             await SeedDataCustomerFeedbackAsync(appDbContext);
+        
+        if (!await appDbContext.Prompts.AnyAsync())
+            await SeedAnalysisPromptAsync(appDbContext);
 
         if (appDbContext.ChangeTracker.HasChanges())
             await appDbContext.SaveChangesAsync();
@@ -174,7 +177,166 @@ public static class SeedDataExtensions
                 UserName = "Joane Miller",
             }
         };
-        
+
         await appDbContext.Feedbacks.AddRangeAsync(customersFeedbacks);
+    }
+
+    /// <summary>
+    /// Seeds prompt categories
+    /// </summary>
+    /// <param name="appDbContext"></param>
+    private static async ValueTask SeedAnalysisPromptAsync(AppDbContext appDbContext)
+    {
+        var analysisPrompts = new List<AnalysisPrompt>()
+        {
+            new()
+            {
+                Id = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
+                Prompt = """
+                         ## Instructions"
+
+                         Analyze user feedback and provide a relevance with the service in true or false format
+
+                         Conditions :
+                         1. feedback must include at least 1 sentence about the service
+                         2. even feedbacks that have non-related content counts if the rule 1 is satisfied
+
+                         ## Data
+
+                         {{$productDescription}}
+
+                         ## Input
+
+                         {{$customerFeedback}}
+
+                         ## Result
+
+                         """,
+                Version = 0,
+                Revision = 1,
+            },
+            new()
+            {
+                Id = Guid.Parse("3ca01475-d736-4ac3-a326-a2580110ee0c"),
+                Prompt = """
+                         ## Instructions"
+
+                         Extract only relevant parts of the customer feedback for the product
+
+                         Requirements :
+                         1. if feedback contains relevant content in different parts of the feedback, all relevant parts must be extracted and appended
+                         2. try to extract as a readable sentence, not just words
+
+                         ## Data
+
+                         {{$productDescription}}
+
+                         ## Input
+
+                         {{$customerFeedback}}
+
+                         ## Result
+
+                         """,
+                Version = 1,
+                Revision = 2,
+            },
+            new()
+            {
+                Id = Guid.Parse("4ca01475-d036-4ac3-a326-a2580110ee0c"),
+                Prompt = """
+                         ## Instructions"
+
+                         Redact personal information from the customer feedback
+
+                         Requirements :
+                         1. redact only words that is considered as personal information, not the whole sentence
+                         2. replace the redacted words with asterisks
+                         3. make sure sentences are still readable
+
+                         ## Data
+
+                         {{$productDescription}}
+
+                         ## Input
+
+                         {{$customerFeedback}}
+
+                         ## Result
+
+                         """,
+                Version = 2,
+                Revision = 3,
+            },
+            new()
+            {
+                Id = Guid.Parse("2ba01475-d636-4ac3-a326-a2580112ee0c"),
+                Prompt = """
+                         ## Instructions"
+
+                         Recognize languages from the customer feedback
+
+                         Requirements :
+                         1. list language if something readable or like a sentence written in it, not just a word
+                         2. list all languages feedback contains multiple languages
+
+                         ## Data
+
+                         {{$productDescription}}
+
+                         ## Input
+
+                         {{$customerFeedback}}
+
+                         ## Result
+
+                         """,
+                Version = 3,
+                Revision = 4,
+            },
+            new()
+            {
+                Id = Guid.Parse("551d1c24-24c2-45aa-9eba-383de543b24b"),
+                Prompt = """
+                         ## Instructions"
+
+                         Extract positive and  negative opinion points from the user feedback.
+
+                         Requirements :
+                         1. extract positive and negative opinion points from the user feedback.
+                         2. don't include neutral opinion points
+                         3. only extract opinion points that are related to the product
+                         4. only extract the section that contains opinion itself not the whole sentence
+                         5. don't include any points from product description
+                         6. be aware of mixed complex sentences that might contain turning points
+                         7. exclude actionable opinions because we want exact source of positive and negative experience not solutions
+                         8. analyze and exclude sentences with opinions that you are not sure whether it is about this product
+                         9. separate points if there are multiple points in a single sentence or in a conjunction
+
+                         ## Examples
+
+                         These examples contain turning points
+
+                         - Overall I think the Viper is a good mouse, but I can't afford but - positive
+                         - Overall I think the Viper is a good mouse, but not for me - neutral
+                         - Overall Viper is a good mouse, they said, but nope - negative
+
+                         ## Product Description:
+
+                         {{$productDescription}}
+
+                         ## Customer feedback :
+
+                         {{$customerFeedback}}
+
+                         ## Result
+
+                         """,
+                Version = 4,
+                Revision = 5,
+            }
+        };
+
+        await appDbContext.Prompts.AddRangeAsync(analysisPrompts);
     }
 }
