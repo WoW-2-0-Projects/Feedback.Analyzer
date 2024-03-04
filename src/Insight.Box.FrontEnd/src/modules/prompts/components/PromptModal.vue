@@ -67,10 +67,6 @@ const props = defineProps({
     }
 });
 
-watch(() => props.promptCategory, (newValue) => {
-    console.log('category', props.promptCategory);
-});
-
 const emit = defineEmits<{
     (e: 'closeModal'): void
     (e: 'submit', prompt: AnalysisPrompt): void

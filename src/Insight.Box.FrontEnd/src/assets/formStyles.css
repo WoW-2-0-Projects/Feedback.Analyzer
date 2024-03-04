@@ -10,8 +10,12 @@
   @apply h-[60px];
 }
 
-.action-mini-layout {
+.action-small-layout {
   @apply h-[45px];
+}
+
+.action-extra-small-layout {
+  @apply h-[35px];
 }
 
 /*.action-square-layout {*/

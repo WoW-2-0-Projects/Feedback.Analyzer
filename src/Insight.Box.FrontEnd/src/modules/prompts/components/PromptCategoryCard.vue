@@ -11,48 +11,22 @@
                 <h5 class="mt-5 text-sm"> {{ LayoutConstants.Versions }} : {{ promptCategory.promptsCount }}</h5>
 
                 <app-button :type="ButtonType.Primary" :layout="ButtonLayout.Square" icon="fas fa-plus"
-                    :size="ActionComponentSize.Mini" @click="emit('addPrompt', (promptCategory.id))" />
+                            :size="ActionComponentSize.Small" @click="emit('addPrompt', (promptCategory.id))"/>
             </div>
         </div>
 
-        <vertical-divider :type="DividerType.ContentLength" />
+        <vertical-divider :type="DividerType.ContentLength"/>
 
         <!-- Prompt selection -->
-        <div class="w-full p-5 flex flex-col">
+        <div class="w-full p-2 flex flex-col">
 
-
-            <div class="overflow-y-scroll">
-                <table class="table-auto">
-                    <thead >
-                    <tr>
-                        <th class="p-2">Version</th>
-                        <th class="p-2">Avg Exc time</th>
-                        <th class="p-2">Avg Acc</th>
-                        <th class="p-2">Exc count</th>
-                        <th class="p-2">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="hover:bg-gray-500" v-for="executionResult in promptExecutionResults" :key="executionResult.promptId">
-                        <td class="p-2">{{ executionResult.version }}.{{ executionResult.revision }}</td>
-                        <td class="p-2">{{ executionResult.averageExecutionTime }}</td>
-                        <td>{{ executionResult.averageAccuracy }}%</td>
-                        <td>{{ executionResult.executionsCount }}%</td>
-                        <td>
-                            <app-button :type="ButtonType.Danger" :layout="ButtonLayout.Square" icon="fas fa-edit"
-                                        :size="ActionComponentSize.Mini" @click="emit('editPrompt',
-                                        executionResult.promptId)"/>
-
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="overflow-y-scroll no-scrollbar">
+                <app-table :data="promptResultsTableData"/>
             </div>
-
 
         </div>
 
-        <vertical-divider :type="DividerType.ContentLength" />
+        <vertical-divider :type="DividerType.ContentLength"/>
 
         <!-- Prompt execution result -->
         <div class="w-full p-5 flex flex-col">
@@ -66,9 +40,9 @@
                 </tr>
                 </thead>
                 <tbody class="hover:bg-gray-500">
-                    <td class="pl-8">1s</td>
-                    <td class="pl-8">2s</td>
-                    <td class="pl-8">97%</td>
+                <td class="pl-8">1s</td>
+                <td class="pl-8">2s</td>
+                <td class="pl-8">97%</td>
 
                 </tbody>
             </table>
@@ -80,20 +54,24 @@
 
 <script setup lang="ts">
 
-import { onBeforeMount, type PropType, ref } from "vue";
-import type { AnalysisPromptCategory } from "@/modules/prompts/models/AnalysisPromptCategory";
-import { ButtonType } from "@/common/components/appButton/ButtonType";
+import {onBeforeMount, type PropType, ref} from "vue";
+import type {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisPromptCategory";
+import {ButtonType} from "@/common/components/appButton/ButtonType";
 import AppButton from "@/common/components/appButton/AppButton.vue";
-import { ButtonLayout } from "@/common/components/appButton/ButtonLayout";
+import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import VerticalDivider from "@/common/components/divider/VerticalDivider.vue";
-import { DividerType } from "@/common/components/divider/DividerType";
-import { DropDownValue } from "@/common/components/formDropDown/DropDownValue";
-import { ActionComponentSize } from "@/common/components/formInput/ActionComponentSize";
-import { InsightBoxApiClient } from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
-import { LayoutConstants } from "../../../common/constants/LayoutConstants";
-import { Query } from "@/infrastructure/models/query/Query";
-import { PromptExecutionResultFilter } from "@/modules/prompts/models/PromptExecutionResultFilter";
-import type { PromptExecutionResult } from "@/modules/prompts/models/PromptExecutionResult";
+import {DividerType} from "@/common/components/divider/DividerType";
+import {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
+import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
+import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
+import {Query} from "@/infrastructure/models/query/Query";
+import {PromptExecutionResultFilter} from "@/modules/prompts/models/PromptExecutionResultFilter";
+import type {PromptExecutionResult} from "@/modules/prompts/models/PromptExecutionResult";
+import AppTable from "@/common/components/appTable/AppTable.vue";
+import {TableData} from "@/common/components/appTable/TableData";
+import {LayoutConstants} from "../../../common/constants/LayoutConstants";
+import {TableRowData} from "@/common/components/appTable/TableRowData";
+import {TableAction} from "@/common/components/appTable/TableAction";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 
@@ -112,9 +90,16 @@ const emit = defineEmits<{
     (e: 'editPrompt', promptId: string): void
 }>();
 
-onBeforeMount(async () => {
-    console.log('test');
+const promptResultsTableData = ref<TableData>(new TableData([
+        "V",
+        "AET",
+        "AA",
+        "EC",
+        "Actions",
+    ],[]
+));
 
+onBeforeMount(async () => {
     await loadAllPromptVersionResults();
 });
 
@@ -123,14 +108,41 @@ const loadAllPromptVersionResults = async () => {
 
     if (response.response) {
         promptExecutionResults.value = response.response;
+        promptResultsTableData.value.rows = promptExecutionResults.value.map(result => convertResultToTableRowData(result));
     }
 };
 
+const convertResultToTableRowData = (result: PromptExecutionResult) => {
+    return new TableRowData([
+            `${result.version}.${result.revision}`,
+            result.averageExecutionTime,
+            result.averageAccuracy,
+            result.executionsCount,  // Comma added here
+        ],
+        [
+            new TableAction(() => emit('editPrompt', result.promptId), ButtonType.Danger, 'fas fa-edit')
+        ]
+    );
+};
+
+// const convertResultToTableRowData = (result: PromptExecutionResult) => {
+//     return new TableRowData([
+//         $`{result.version}.${result.revision}`,
+//         result.averageExecutionTime,
+//         result.averageAccuracy,
+//         result.executionsCount
+//         ],
+//         [
+//             new TableAction(() => emit('editPrompt', result.promptId))
+//         ]
+//     ]
+// };
+
 const selectedFilter = ref<DropDownValue | null>(null);
 const filterDropDownValues = ref<Array<DropDownValue>>([
-    { key: 'All', value: 'All' },
-    { key: 'Active', value: 'Active' },
-    { key: 'Inactive', value: 'Inactive' }
+    {key: 'All', value: 'All'},
+    {key: 'Active', value: 'Active'},
+    {key: 'Inactive', value: 'Inactive'}
 ]);
 
 </script>

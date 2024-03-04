@@ -48,7 +48,7 @@ const props = defineProps({
     },
     size: {
         type: Number as PropType<ActionComponentSize>,
-        default: ActionComponentSize.Full
+        default: ActionComponentSize.Medium
     }
 });
 
@@ -86,11 +86,14 @@ const componentStyles = computed(() => {
 
     // Add button size styles
     switch (props.size) {
-        case ActionComponentSize.Full:
+        case ActionComponentSize.Medium:
             styles += ' action-layout';
             break;
-        case ActionComponentSize.Mini:
-            styles += ' action-mini-layout';
+        case ActionComponentSize.Small:
+            styles += ' action-small-layout';
+            break;
+        case ActionComponentSize.ExtraSmall:
+            styles += ' action-extra-small-layout';
             break;
     }
 

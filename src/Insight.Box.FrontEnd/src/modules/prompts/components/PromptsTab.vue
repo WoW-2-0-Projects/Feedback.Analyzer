@@ -163,8 +163,6 @@ const openPromptModal = async(promptId: string | null, promptCategoryId: string 
     if(promptId) {
         const response = await insightBoxApiClient.prompts.getByIdAsync(promptId!);
 
-        console.log('update prompt', response.response);
-
         if (response.isSuccess){
             editingPrompt.value = response.response!;
             isCreate.value = false;

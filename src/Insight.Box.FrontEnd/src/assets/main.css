@@ -6,10 +6,13 @@
 
 body {
   @apply font-poppins;
+  /*overflow-y: auto; !* Ensure scrollbar is visible *!*/
+  /*scrollbar-width: thin; !* Might work in some browsers *!*/
+  /*scrollbar-color: blue gray-400; !* Might work in some browsers *!*/
 }
 
 .view {
-  @apply w-screen;
+  @apply min-h-screen w-screen;
 }
 
 .tab {
@@ -47,3 +50,21 @@ body {
     scrollbar-width: none; /* Firefox */
   }
 }
+
+/* Base scrollbar styling with Tailwind classes (if needed) */
+body {
+
+}
+
+/*!* WebKit customization *!*/
+/*::-webkit-scrollbar {*/
+/*  width: 12px;*/
+/*  background-color: hsl(0, 0%, 90%); !* Tailwind color *!*/
+/*}*/
+
+/*::-webkit-scrollbar-thumb {*/
+/*  background: hsl(220, 50%, 50%); !* Tailwind color *!*/
+/*  border-radius: 6px;*/
+/*}*/
+
+

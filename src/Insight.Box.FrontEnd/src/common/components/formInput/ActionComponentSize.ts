@@ -1,5 +1,7 @@
 export enum ActionComponentSize {
-    Full,
+    Medium,
 
-    Mini
+    Small,
+
+    ExtraSmall
 }
