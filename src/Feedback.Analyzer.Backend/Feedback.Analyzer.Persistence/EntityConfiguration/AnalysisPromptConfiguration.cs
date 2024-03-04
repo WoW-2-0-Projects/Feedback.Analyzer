@@ -9,5 +9,11 @@ public class AnalysisPromptConfiguration : IEntityTypeConfiguration<AnalysisProm
     public void Configure(EntityTypeBuilder<AnalysisPrompt> builder)
     {
         builder.Property(analysisPrompt => analysisPrompt.Prompt).HasMaxLength(32768).IsRequired();
+        
+        builder
+            .HasOne(prompt => prompt.Category)
+            .WithMany(category => category.Prompts)
+            .HasForeignKey(prompt => prompt.CategoryId);
+        
     }
 }
