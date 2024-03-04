@@ -11,5 +11,5 @@ public record CustomerFeedbackGetQuery : IQuery<ICollection<CustomerFeedbackDto>
     /// <summary>
     /// Gets the filter to be applied for retrieving customer feedback.
     /// </summary>
-    public CustomerFeedbackFilter CustomerFeedbackFilter { get; set; } = default!;
+    public CustomerFeedbackFilter Filter { get; set; } = default!;
 }
