@@ -21,6 +21,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
 
     #endregion
     
+    #region Prompt infrastructure
+    DbSet<AnalysisPrompt> Prompts => Set<AnalysisPrompt>();
+    #endregion
+    
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
