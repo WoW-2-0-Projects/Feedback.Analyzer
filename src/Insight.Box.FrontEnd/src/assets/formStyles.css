@@ -6,15 +6,23 @@
   hover:after:bg-opacity-10 hover:after:bg-white
 }
 
-.theme-action-layout {
+.action-layout {
   @apply h-[60px];
 }
 
-.theme-action-square-layout {
-  @apply h-[40px] w-[40px]
+.action-mini-layout {
+  @apply h-[45px];
 }
 
-.theme-action-circle-layout {
+/*.action-square-layout {*/
+/*  @apply h-[40px] w-[40px];*/
+/*}*/
+
+/*.theme-action-square-mini-layout {*/
+/*  @apply h-[40px] w-[40px]*/
+/*}*/
+
+.action-circle-layout {
   @apply h-[40px] w-[40px] rounded-full;
 }
 

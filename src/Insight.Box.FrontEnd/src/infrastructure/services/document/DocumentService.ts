@@ -113,4 +113,13 @@ export class DocumentService {
         const threshold = document.body.scrollHeight - (minimumSpace || 0);
         return scrollPosition >= threshold;
     }
+
+    // region Layout
+
+    public setEqualWidth(element: HTMLElement) {
+        const height = element.offsetHeight;
+        element.style.width = `${height}px`;
+    }
+
+    // endregion
 }

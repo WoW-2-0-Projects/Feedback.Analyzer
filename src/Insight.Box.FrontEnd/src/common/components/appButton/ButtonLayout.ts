@@ -12,6 +12,8 @@ export enum ButtonLayout {
      */
     Square,
 
+    // SquareMini,
+
     /*
      * Refers to the circle layout
      */

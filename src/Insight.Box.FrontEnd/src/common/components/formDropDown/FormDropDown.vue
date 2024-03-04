@@ -1,24 +1,25 @@
-    <template>
+<template>
 
-    <div class="relative" @focusin="onFocusIn" @focusout="onFocusOut">
+    <div class="relative h-fit w-fit" @focusin="onFocusIn" @focusout="onFocusOut">
 
         <input type="text" name="input" v-model="searchValue"
-               class="w-full rounded-md peer text-md theme-action-layout theme-action-padding theme-input-bg theme-action-style theme-input-placeholder
+               :class="size === ActionComponentSize.Full ? 'action-layout text-md' : 'action-mini-layout text-sm'"
+               class="w-full rounded-md peer  theme-action-padding theme-input-bg theme-action-style theme-input-placeholder
                  theme-action-transition theme-action-border-round theme-input-border theme-action-content"
                :placeholder="placeholder"/>
 
         <!-- Form input label -->
-        <label for="input" class="absolute top-4 z-10 transform
-                -translate-y-4 scale-75 origin-[0] start-2.5
+        <label for="input" :class="labelStyles" class="absolute z-10 transform scale-75 origin-[0] start-2.5
                     peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto
                     peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
-                    text-sm theme-input-label theme-action-transition">
+                     theme-input-label theme-action-transition">
             {{ label }}
         </label>
 
         <!-- Expand / Collapse icon -->
         <svg :class="{ 'rotate-180': isOpen, 'transition-transform': true }"
-             class="theme-action-content theme-focus-content theme-action-transition absolute top-1/2 right-4 z-10 text-sm theme-text-secondary transform -translate-y-1/2"
+             class="right-4 z-10 h-full text-sm absolute top-1/2 -translate-y-1/2 theme-action-transition
+                    theme-action-content theme-focus-content theme-text-secondary"
              xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 32 32"
              aria-hidden="true"
@@ -35,8 +36,10 @@
         </svg>
 
         <!-- Drop down options -->
-        <div v-show="isOpen"
-             class="absolute mt-2 w-full focus:outline-none appearance-none rounded-md theme-modal-shadow  theme-bg-secondary theme-input-border-focus z-10 overflow-hidden theme-input">
+        <div class="absolute mt-2 w-full focus:outline-none appearance-none rounded-md
+                    theme-modal-shadow  theme-bg-secondary theme-input-border-focus z-10 overflow-hidden theme-input"
+              v-show="isOpen"
+            >
             <ul>
                 <li v-for="(value, index) in searchedOptions" :key="index" @mousedown="onSelected(value)"
                     class="px-4 py-4 cursor-pointer theme-input-hover"
@@ -55,14 +58,19 @@
 
 <script setup lang="ts">
 
-import {onMounted, type PropType, ref, watch, watchEffect} from "vue";
-import type {DropDownValue} from "@/common/components/forms/formDropDown/DropDownValue";
+import {computed, onMounted, type PropType, ref, watch} from "vue";
+import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
+import type {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
 
 const props = defineProps({
     values: {
-        type: Array as () => PropType<Array<DropDownValue>>,
+        type: Array as PropType<Array<DropDownValue>>,
         required: true,
         default: []
+    },
+    size: {
+        type: Number as PropType<ActionComponentSize>,
+        default: ActionComponentSize.Full
     },
     modelValue: {
         type: Object as () => DropDownValue | null
@@ -75,6 +83,21 @@ const props = defineProps({
         type: String,
         default: ''
     }
+});
+
+const labelStyles = computed(() => {
+    let styles = '';
+
+    switch (props.size) {
+        case ActionComponentSize.Full:
+            styles += ' text-md top-4 -translate-y-4 peer-focus:-translate-y-4';
+            break;
+        case ActionComponentSize.Mini:
+            styles += ' text-sm top-3 -translate-y-3 peer-focus:-translate-y-[14px]';
+            break;
+    }
+
+    return styles;
 });
 
 const emit = defineEmits(['update:modelValue']);

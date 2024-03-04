@@ -2,7 +2,7 @@
 
     <div
         class="flex theme-input-bg relative rounded-md
-        theme-action-layout theme-action-transition theme-action-shadow theme-action-content
+        action-layout theme-action-transition theme-action-shadow theme-action-content
         theme-action-border-round"
          @focusin="focus = true"
          @focusout="focus = false"
