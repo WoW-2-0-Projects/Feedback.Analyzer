@@ -4,8 +4,8 @@ export class AnalysisPrompt {
     id: string | null;
     type: FeedbackAnalysisPromptType;
     prompt: string;
-    majorVersion: number;
-    minorVersion: number;
+    version: number;
+    revision: number;
     categoryId: string;
     createdTime: Date;
     modifiedTime: Date;
@@ -13,8 +13,8 @@ export class AnalysisPrompt {
     constructor(type: FeedbackAnalysisPromptType, prompt: string) {
         this.type = type;
         this.prompt = prompt ?? '';
-        this.majorVersion = 0;
-        this.minorVersion = 0;
+        this.version = 0;
+        this.revision = 0;
         this.createdTime = new Date();
         this.modifiedTime = new Date();
     }

@@ -67,7 +67,7 @@ public class PromptService(IPromptRepository promptRepository, IValidator<Analys
         var latestMinorVersion = await promptRepository
             .Get()
             .OrderByDescending(p => p.Revision)
-            .Where(existingPrompt => existingPrompt.CategoryId == prompt.CategoryId)
+            .Where(existingPrompt => existingPrompt.CategoryId == prompt.CategoryId && existingPrompt.Version == prompt.Version)
             .Select(existingPrompt => existingPrompt.Revision)
             .FirstOrDefaultAsync(_ => true, cancellationToken);
         
