@@ -4,20 +4,24 @@
     <div class="tab pt-10">
 
         <!-- Prompts search bar -->
-        <prompts-search-bar :promptsQuery="promptsQuery" @addPrompt="openPromptModal"/>
+        <prompts-search-bar :promptsQuery="promptsCategoryQuery"/>
 
         <!-- Prompts gallery -->
         <infinite-scroll @onScroll="onScroll"
                          :contentChangeSource="promptsChangeSource"
-                         class="grid w-full px-20 gap-x-5 gap-y-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 theme-bg-primary">
+                         class="mt-10 flex flex-col gap-y-5">
 
             <!-- Prompts card -->
+            <prompt-category-accordion-card v-for="promptCategory in promptCategories" :key="promptCategory.id"
+                                            :promptCategory="promptCategory"
+                                            @addPrompt="openPromptModal(null)"
+            />
 
         </infinite-scroll>
 
         <!-- Prompts create / edit modal -->
         <prompt-modal :isActive="promptModalActive" @closeModal="closePromptModal"
-                      @submit="createPromptAsync($event)" :isCreate="isCreate"
+                      @submit="createPromptAsync($event)" :isCreate="isCreate" :prompt="editingPrompt"
         />
 
     </div>
@@ -38,6 +42,10 @@ import PromptsSearchBar from "@/modules/prompts/components/PromptsSearchBar.vue"
 import {PromptFilter} from "@/modules/prompts/models/PromptFilter";
 import type {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 import {CreatePromptCommand} from "@/modules/prompts/models/CreatePromptCommand";
+import PromptAccordionCard from "@/modules/prompts/components/PromptCategoryAccordionCard.vue";
+import PromptCategoryAccordionCard from "@/modules/prompts/components/PromptCategoryAccordionCard.vue";
+import {PromptCategoryFilter} from "@/modules/prompts/models/PromptCategoryFilter";
+import type {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisPromptCategory";
 
 /* Services */
 const insightBoxApiClient = new InsightBoxApiClient();
@@ -47,9 +55,12 @@ const documentService = new DocumentService();
 const isLoading = ref<boolean>(false);
 const promptsQuery = ref<Query>(new Query(new PromptFilter()));
 const promptsCategoryQuery = ref<Query>(new Query(new PromptCategoryFilter()));
-const noPromptsFound = ref<boolean>(false);
+const prompts = ref<Array<AnalysisPrompt>>([]);
+const promptCategories = ref<Array<AnalysisPromptCategory>>([]);
+const noPromptCategoriesFound = ref<boolean>(false);
 const promptsChangeSource = ref<NotificationSource>(new NotificationSource());
 const promptModalActive = ref<boolean>(false);
+const editingPrompt = ref<AnalysisPrompt | null>(null);
 
 /* Search bar states */
 const isSearchBarLoading = ref<boolean>(false);
@@ -59,22 +70,38 @@ onBeforeMount(async () => {
     // Set page title
     documentService.setTitle(LayoutConstants.Prompts);
 
-    // Load prompts
-    await loadPromptsAsync();
+    // Load prompt categories
+    await loadPromptCategoriesAsync();
+    // await loadPromptsAsync();
 });
+
+/*
+ * Loads prompt categories
+ */
+const loadPromptCategoriesAsync = async () => {
+    isLoading.value = true;
+
+    const response = await insightBoxApiClient.prompts.getCategoriesAsync(promptsCategoryQuery.value);
+
+    if (response.response) {
+        promptCategories.value.push(...response.response);
+    } else if (response.status == 404 || response.status == 204) {
+        noPromptCategoriesFound.value = true;
+    }
+
+    isLoading.value = false;
+};
 
 /*
  * Loads prompts
  */
-const loadPromptsAsync = async () => {
+const loadPromptsAsync = async (categoryId: string) => {
     isLoading.value = true;
 
     const response = await insightBoxApiClient.prompts.getAsync(promptsQuery.value);
 
     if (response.response) {
-        prompts.value.push(...response.response);
-    } else if (response.status == 404 || response.status == 204) {
-        noPromptsFound.value = true;
+        promptCategories.value.find(category => category.id === categoryId)?.prompts.push(...response.response);
     }
 
     isLoading.value = false;
@@ -83,8 +110,8 @@ const loadPromptsAsync = async () => {
 /*
  * Handles prompt modal submit
  */
-const onPromptModalSubmit = async(prompt: AnalysisPrompt) => {
-    if(isCreate.value) {
+const onPromptModalSubmit = async (prompt: AnalysisPrompt) => {
+    if (isCreate.value) {
         await createPromptAsync(prompt);
     } else {
         await updatePromptAsync(prompt);
@@ -119,7 +146,16 @@ const updatePromptAsync = async (prompt: AnalysisPrompt) => {
 };
 
 const openPromptModal = (prompt: AnalysisPrompt | null) => {
-    isCreate.value = prompt === null || prompt === undefined;
+    if(prompt) {
+        editingPrompt.value = prompt;
+        isCreate.value = false;
+    }
+    else {
+        editingPrompt.value = null;
+        isCreate.value = true;
+    }
+
+    // isCreate.value = prompt === null || prompt === undefined;
     promptModalActive.value = true;
 };
 

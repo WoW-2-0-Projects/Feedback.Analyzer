@@ -2,9 +2,6 @@
 
     <form class="w-full flex gap-10">
 
-        <!-- Add Prompt button -->
-        <app-button :type="ButtonType.Primary" text="Add prompt" icon="fas fa-plus" @click="emit('addPrompt')"/>
-
         <!-- Search Prompts input -->
         <form-search-bar v-model="promptsQuery.filter.searchKeyword" class="flex-grow"
                          label="Search" placeholder="Search prompts"
@@ -41,10 +38,6 @@ const props = defineProps({
         default: false
     }
 });
-
-const emit = defineEmits<{
-    (e: 'addPrompt'): void
-}>();
 
 const selectedFilter = ref<DropDownValue | null>(null);
 const filterDropDownValues = ref<Array<DropDownValue>>([

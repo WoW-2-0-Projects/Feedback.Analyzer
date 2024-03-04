@@ -21,6 +21,7 @@ export class LayoutConstants {
     public static readonly EditPrompt = 'Edit prompt';
     public static readonly Prompt = 'Prompt';
     public static readonly EnterPrompt = 'Enter prompt';
+    public static readonly Versions = 'Versions';
 
     /* Forms */
     public static readonly Submit = 'Submit';
