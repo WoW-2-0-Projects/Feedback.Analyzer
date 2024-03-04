@@ -16,6 +16,7 @@ public static partial class HostConfiguration
             .AddPersistence()
             .AddClientInfrastructure()
             .AddFeedbackInfrastructure()
+            .AddPromptAnalysisInfrastructure()
             .AddMediator()
             .AddCors()
             .AddDevTools()

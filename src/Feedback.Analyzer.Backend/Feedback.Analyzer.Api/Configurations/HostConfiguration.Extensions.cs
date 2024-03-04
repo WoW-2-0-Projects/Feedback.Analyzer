@@ -1,12 +1,14 @@
 using System.Reflection;
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
+using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
+using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
@@ -79,27 +81,7 @@ public static partial class HostConfiguration
         return builder;
     }
     
-    /// <summary>
-    /// Adds client-related infrastructure services to the web application builder.
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <returns> </returns>
-    private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
-    {
-        // Register repositories
-        builder.Services
-            .AddScoped<IClientRepository, ClientRepository>()
-            .AddScoped<IOrganizationRepository, OrganizationRepository>()
-            .AddScoped<IProductRepository, ProductRepository>();
-        
-        // Register services
-        builder.Services
-            .AddScoped<IClientService, ClientService>()
-            .AddScoped<IOrganizationService, OrganizationService>()
-            .AddScoped<IProductService, ProductService>();
-
-        return builder;
-    }
+   
     
     /// <summary>
     /// Adds MediatR services to the application with custom service registrations.
@@ -157,6 +139,27 @@ public static partial class HostConfiguration
         return builder;
     }
     
+        /// <summary>
+        /// Adds client-related infrastructure services to the web application builder.
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns> </returns>
+        private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
+        {
+            // Register repositories
+            builder.Services
+                .AddScoped<IClientRepository, ClientRepository>()
+                .AddScoped<IOrganizationRepository, OrganizationRepository>()
+                .AddScoped<IProductRepository, ProductRepository>();
+            
+            // Register services
+            builder.Services
+                .AddScoped<IClientService, ClientService>()
+                .AddScoped<IOrganizationService, OrganizationService>()
+                .AddScoped<IProductService, ProductService>();
+    
+            return builder;
+        }
     /// <summary>
     /// Adds feedback-related infrastructure services to the web application builder.
     /// </summary>
@@ -175,6 +178,18 @@ public static partial class HostConfiguration
         return builder;
     }
 
+    private static WebApplicationBuilder AddPromptAnalysisInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Register repositories
+        builder.Services
+               .AddScoped<IPromptRepository, PromptRepository>();
+        
+        // Register services
+        builder.Services
+               .AddScoped<IPromptService, PromptService>();
+
+        return builder;
+    }
     /// <summary>
     ///  Configures exposers including controllers and routing.
     /// </summary>
