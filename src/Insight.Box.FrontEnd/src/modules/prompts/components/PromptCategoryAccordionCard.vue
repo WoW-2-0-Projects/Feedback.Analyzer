@@ -25,8 +25,9 @@
                                 :size="ActionComponentSize.Mini"
                 />
 
-                <app-button :type="ButtonType.Primary" :layout="ButtonLayout.Square" icon="fas fa-plus" :size="ActionComponentSize.Mini"
-                            @click="emit('addPrompt')"/>
+                <!-- Add prompt button -->
+                <app-button :type="ButtonType.Primary" :layout="ButtonLayout.Square" icon="fas fa-plus"
+                            :size="ActionComponentSize.Mini" @click="emit('addPrompt', promptCategory)"/>
 
             </div>
 
@@ -66,7 +67,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-    (e: 'addPrompt'): void
+    (e: 'addPrompt', promptCategory: AnalysisPromptCategory): void
 }>();
 
 onBeforeMount(() => {

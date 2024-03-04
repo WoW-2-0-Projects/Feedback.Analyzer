@@ -20,7 +20,7 @@
                 <form class="flex flex-col gap-10" @submit.prevent="onSubmit">
 
                     <!-- Modal inputs -->
-                    <form-input v-model="currentValue.prompt" :label="LayoutConstants.Prompt"
+                    <form-input v-model="prompt.prompt" :label="LayoutConstants.Prompt"
                                 :placeholder="LayoutConstants.EnterPrompt"/>
 
                     <!-- Modal actions -->
@@ -57,10 +57,6 @@ const props = defineProps({
         type: Object as PropType<AnalysisPrompt>,
         default: new AnalysisPrompt()
     },
-    promptCategory: {
-        type: Object as PropType<AnalysisPromptCategory>,
-        required: true
-    },
     isActive: {
         type: Boolean,
         default: false
@@ -71,17 +67,21 @@ const props = defineProps({
     }
 });
 
+watch(() => props.promptCategory, (newValue) => {
+    console.log('category', props.promptCategory);
+});
+
 const emit = defineEmits<{
     (e: 'closeModal'): void
     (e: 'submit', prompt: AnalysisPrompt): void
 }>();
 
-const currentValue = ref<AnalysisPrompt>(props.prompt ?? new AnalysisPrompt());
+// const currentValue = ref<AnalysisPrompt>(props.prompt ?? new AnalysisPrompt());
 
 const onCloseModal = () => {
     // Reset values
-    if(props.isCreate)
-        currentValue.value = new AnalysisPrompt();
+    // if(props.isCreate)
+    //     currentValue.value = new AnalysisPrompt();
 
     emit('closeModal');
 }
@@ -91,8 +91,8 @@ const onSubmit = async () => {
     emit('closeModal');
 }
 
-watch(() => props.prompt, (newValue) => {
-    currentValue.value = newValue;
-});
+// watch(() => props.prompt, (newValue) => {
+//     currentValue.value = newValue;
+// });
 
 </script>

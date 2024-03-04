@@ -6,6 +6,7 @@ export class AnalysisPrompt {
     prompt: string;
     majorVersion: number;
     minorVersion: number;
+    categoryId: string;
     createdTime: Date;
     modifiedTime: Date;
 

@@ -14,6 +14,8 @@ public class AnalysisPromptDto
     
     public int Revision { get; set; }
     
+    public Guid CategoryId { get; set; }
+    
     public DateTimeOffset CreatedTime { get; set; }
     
     public DateTimeOffset ModifiedTime { get; set; }

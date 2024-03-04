@@ -14,7 +14,7 @@
             <!-- Prompts card -->
             <prompt-category-accordion-card v-for="promptCategory in promptCategories" :key="promptCategory.id"
                                             :promptCategory="promptCategory"
-                                            @addPrompt="openPromptModal(null)"
+                                            @addPrompt="category => openPromptModal(null, category)"
             />
 
         </infinite-scroll>
@@ -40,9 +40,8 @@ import {Query} from "@/infrastructure/models/query/Query";
 import PromptModal from "@/modules/prompts/components/PromptModal.vue";
 import PromptsSearchBar from "@/modules/prompts/components/PromptsSearchBar.vue";
 import {PromptFilter} from "@/modules/prompts/models/PromptFilter";
-import type {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
+import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 import {CreatePromptCommand} from "@/modules/prompts/models/CreatePromptCommand";
-import PromptAccordionCard from "@/modules/prompts/components/PromptCategoryAccordionCard.vue";
 import PromptCategoryAccordionCard from "@/modules/prompts/components/PromptCategoryAccordionCard.vue";
 import {PromptCategoryFilter} from "@/modules/prompts/models/PromptCategoryFilter";
 import type {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisPromptCategory";
@@ -58,13 +57,17 @@ const promptsCategoryQuery = ref<Query>(new Query(new PromptCategoryFilter()));
 const prompts = ref<Array<AnalysisPrompt>>([]);
 const promptCategories = ref<Array<AnalysisPromptCategory>>([]);
 const noPromptCategoriesFound = ref<boolean>(false);
+
+/* Infinite scroll states */
 const promptsChangeSource = ref<NotificationSource>(new NotificationSource());
+
+/* Prompt modal states */
 const promptModalActive = ref<boolean>(false);
-const editingPrompt = ref<AnalysisPrompt | null>(null);
+const isCreate = ref<boolean>(true);
+const editingPrompt = ref<AnalysisPrompt>(new AnalysisPrompt());
 
 /* Search bar states */
 const isSearchBarLoading = ref<boolean>(false);
-const isCreate = ref<boolean>(true);
 
 onBeforeMount(async () => {
     // Set page title
@@ -72,7 +75,6 @@ onBeforeMount(async () => {
 
     // Load prompt categories
     await loadPromptCategoriesAsync();
-    // await loadPromptsAsync();
 });
 
 /*
@@ -145,17 +147,18 @@ const updatePromptAsync = async (prompt: AnalysisPrompt) => {
     isSearchBarLoading.value = false;
 };
 
-const openPromptModal = (prompt: AnalysisPrompt | null) => {
+const openPromptModal = (prompt: AnalysisPrompt | null, promptCategory: AnalysisPromptCategory) => {
+
     if(prompt) {
         editingPrompt.value = prompt;
         isCreate.value = false;
     }
     else {
-        editingPrompt.value = null;
+        editingPrompt.value = new AnalysisPrompt();
+        editingPrompt.value.categoryId = promptCategory.id;
         isCreate.value = true;
     }
 
-    // isCreate.value = prompt === null || prompt === undefined;
     promptModalActive.value = true;
 };
 
