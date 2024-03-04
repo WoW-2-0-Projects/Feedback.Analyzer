@@ -27,6 +27,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
 
     public DbSet<FeedbackAnalysisResult> FeedbackAnalysisResults => Set<FeedbackAnalysisResult>();
 
+    public DbSet<FeedbackExecutionWorkflow> FeedbackExecutionWorkflows => Set<FeedbackExecutionWorkflow>();
+
     #endregion
 
     #region PromptsInfrastructure
