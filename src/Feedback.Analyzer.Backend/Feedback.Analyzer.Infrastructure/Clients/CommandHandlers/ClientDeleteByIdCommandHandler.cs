@@ -5,7 +5,7 @@ using Feedback.Analyzer.Domain.Common.Commands;
 namespace Feedback.Analyzer.Infrastructure.Clients.CommandHandlers;
 
 /// <summary>
-/// Command handler for deleting a client by their unique identifier.
+/// Commands handler for deleting a client by their unique identifier.
 /// </summary>
 public class ClientDeleteByIdCommandHandler(IClientService clientService) : ICommandHandler<ClientDeleteByIdCommand, bool>
 {

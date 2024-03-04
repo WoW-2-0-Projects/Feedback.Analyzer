@@ -7,7 +7,7 @@ using Feedback.Analyzer.Domain.Common.Queries;
 namespace Feedback.Analyzer.Infrastructure.Clients.QueryHandlers;
 
 /// <summary>
-/// Command handler for retrieving a client by their unique identifier.
+/// Commands handler for retrieving a client by their unique identifier.
 /// </summary>
 public class ClientGetByIdQueryHandler(IClientService clientService, IMapper mapper) : IQueryHandler<ClientGetByIdQuery, ClientDto?>
 {

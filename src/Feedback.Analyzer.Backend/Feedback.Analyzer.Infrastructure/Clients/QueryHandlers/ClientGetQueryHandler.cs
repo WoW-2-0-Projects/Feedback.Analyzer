@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Feedback.Analyzer.Infrastructure.Clients.QueryHandlers;
 
 /// <summary>
-/// Command handler for retrieving a collection of clients based on specified criteria.
+/// Commands handler for retrieving a collection of clients based on specified criteria.
 /// </summary>
 public class ClientGetQueryHandler(IClientService clientService, IMapper mapper) : IQueryHandler<ClientGetQuery, ICollection<ClientDto>>
 {
