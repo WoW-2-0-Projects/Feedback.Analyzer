@@ -1,7 +1,9 @@
 using Feedback.Analyzer.Application.Common.PromptCategories.Queries;
 using Feedback.Analyzer.Application.Common.Prompts.Commands;
 using Feedback.Analyzer.Application.Common.Prompts.Queries;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Feedback.Analyzer.Api.Controllers;
@@ -16,7 +18,7 @@ public class PromptsController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(query, cancellationToken);
         return result.Any() ? Ok(result) : NotFound();
     }
-    
+
     [HttpGet]
     public async ValueTask<IActionResult> GetPrompts([FromQuery] PromptGetQuery query, CancellationToken cancellationToken)
     {
@@ -63,9 +65,9 @@ public class PromptsController(IMediator mediator) : ControllerBase
         );
         return result ? Ok() : BadRequest();
     }
-    
+
     #region Prompt Results 
-    
+
     [HttpGet("results/{categoryId:guid}")]
     public async ValueTask<IActionResult> GetPromptResultById([FromRoute] Guid categoryId, CancellationToken cancellationToken = default)
     {
@@ -78,10 +80,10 @@ public class PromptsController(IMediator mediator) : ControllerBase
         );
         return result is not null ? Ok(result) : NotFound();
     }
-    
-    #endregion 
-    
+
+    #endregion
+
     #region Execution history 
-    
+
     #endregion
 }

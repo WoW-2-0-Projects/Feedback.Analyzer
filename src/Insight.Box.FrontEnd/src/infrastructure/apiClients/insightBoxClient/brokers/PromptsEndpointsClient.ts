@@ -23,6 +23,12 @@ export class PromptsEndpointsClient {
         return await this.client.getAsync<Array<AnalysisPrompt>>(endpointUrl);
     }
 
+    public async getByIdAsync(id: string) {
+        const endpointUrl = `api/prompts/${id}`;
+
+        return await this.client.getAsync<AnalysisPrompt>(endpointUrl);
+    }
+
     public async getCategoriesAsync(query: Query<PromptCategoryFilter>) {
         const endpointUrl = this.requestFormatterService.addQueryParams('api/prompts/categories', query);
         return await this.client.getAsync<Array<AnalysisPromptCategory>>(endpointUrl);
@@ -36,5 +42,10 @@ export class PromptsEndpointsClient {
     public async createAsync(command: CreatePromptCommand) {
         const endpointUrl =  'api/prompts';
         return await this.client.postAsync<AnalysisPrompt>(endpointUrl, command);
+    }
+
+    public async updateAsync(command: CreatePromptCommand) {
+        const endpointUrl =  'api/prompts';
+        return await this.client.putAsync<AnalysisPrompt>(endpointUrl, command);
     }
 }

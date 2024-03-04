@@ -22,6 +22,7 @@ public class AnalysisPrompt : AuditableEntity, ICloneable<AnalysisPrompt>
             Prompt = Prompt,
             Version = Version,
             Revision = Revision,
+            CategoryId = CategoryId
         };
     }
 }

@@ -1,7 +1,7 @@
 import type {FeedbackAnalysisPromptType} from "@/modules/prompts/models/FeedbackAnalysisPromptType";
 
 export class AnalysisPrompt {
-    id: string;
+    id: string | null;
     type: FeedbackAnalysisPromptType;
     prompt: string;
     majorVersion: number;

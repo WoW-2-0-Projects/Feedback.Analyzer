@@ -1,12 +1,13 @@
 using System.Reflection;
 using System.Text;
+
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.PromptCategories.Services;
+using Feedback.Analyzer.Application.Common.Prompts.Commands;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Organizations.Services;
-using Feedback.Analyzer.Application.Products.Commands;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
@@ -18,10 +19,13 @@ using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
+
 using FluentValidation;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.SemanticKernel;
+
 using Newtonsoft.Json;
 
 namespace Feedback.Analyzer.Api.Configurations;
@@ -46,7 +50,7 @@ public static partial class HostConfiguration
         builder.Services.Configure<ValidationSettings>(builder.Configuration.GetSection(nameof(ValidationSettings)));
 
         builder.Services.AddValidatorsFromAssemblies(Assemblies);
-        
+
         return builder;
     }
 
@@ -60,7 +64,7 @@ public static partial class HostConfiguration
         builder.Services.AddAutoMapper(Assemblies);
         return builder;
     }
-    
+
     /// <summary>
     /// Adds persistence-related services to the web application builder.
     /// </summary>
@@ -72,7 +76,7 @@ public static partial class HostConfiguration
         var dbConnectionString = builder.Environment.IsProduction()
             ? Environment.GetEnvironmentVariable(DataAccessConstants.DbConnectionString)
             : builder.Configuration.GetConnectionString(DataAccessConstants.DbConnectionString);
-        
+
         // register ef interceptors
 
         //register db context
@@ -84,7 +88,7 @@ public static partial class HostConfiguration
 
         return builder;
     }
-    
+
     /// <summary>
     /// Adds client-related infrastructure services to the web application builder.
     /// </summary>
@@ -97,7 +101,7 @@ public static partial class HostConfiguration
             .AddScoped<IClientRepository, ClientRepository>()
             .AddScoped<IOrganizationRepository, OrganizationRepository>()
             .AddScoped<IProductRepository, ProductRepository>();
-        
+
         // Register services
         builder.Services
             .AddScoped<IClientService, ClientService>()
@@ -106,8 +110,8 @@ public static partial class HostConfiguration
 
         return builder;
     }
-    
-        
+
+
     /// <summary>
     /// Configures exposers including controllers
     /// </summary>
@@ -123,12 +127,12 @@ public static partial class HostConfiguration
 
         // Build kernel
         var kernel = kernelBuilder.Build();
-        
+
         builder.Services.AddSingleton(kernel);
 
         return builder;
     }
-    
+
     /// <summary>
     /// Configures exposers including controllers
     /// </summary>
@@ -140,7 +144,7 @@ public static partial class HostConfiguration
         builder.Services
             .AddScoped<IPromptRepository, PromptRepository>()
             .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>();
-        
+
         // Register services
         builder.Services
             .AddScoped<IPromptService, PromptService>()
@@ -148,7 +152,7 @@ public static partial class HostConfiguration
 
         return builder;
     }
-    
+
     /// <summary>
     /// Adds MediatR services to the application with custom service registrations.
     /// </summary>
@@ -156,11 +160,11 @@ public static partial class HostConfiguration
     /// <returns></returns>
     private static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
     {
-        builder.Services.AddMediatR(conf => {conf.RegisterServicesFromAssemblies(Assemblies.ToArray());});
-        
+        builder.Services.AddMediatR(conf => { conf.RegisterServicesFromAssemblies(Assemblies.ToArray()); });
+
         return builder;
     }
-    
+
     /// <summary>
     /// Configures CORS for the web application.
     /// </summary>
@@ -172,19 +176,19 @@ public static partial class HostConfiguration
         builder.Services.Configure<CorsSettings>(builder.Configuration.GetSection(nameof(CorsSettings)));
         var corsSettings = builder.Configuration.GetSection(nameof(CorsSettings)).Get<CorsSettings>()
             ?? throw new ApplicationException("Cors settings are not configured");
-        
+
         builder.Services.AddCors(options => options.AddPolicy("AllowSpecificOrigin",
             policy =>
             {
                 policy.WithOrigins(corsSettings.AllowedOrigins);
-                    
-                if(corsSettings.AllowAnyHeaders)
-                   policy.AllowAnyHeader();
-                
-                if(corsSettings.AllowAnyMethods)
+
+                if (corsSettings.AllowAnyHeaders)
+                    policy.AllowAnyHeader();
+
+                if (corsSettings.AllowAnyMethods)
                     policy.AllowAnyMethod();
-                
-                if(corsSettings.AllowCredentials)
+
+                if (corsSettings.AllowCredentials)
                     policy.AllowCredentials();
             }
         ));
@@ -212,6 +216,7 @@ public static partial class HostConfiguration
     /// <returns>Application builder</returns>
     private static WebApplicationBuilder AddExposers(this WebApplicationBuilder builder)
     {
+        builder.Services.AddTransient<RawBodyReader>();
         builder.Services.Configure<ApiBehaviorOptions>(
             options =>
             {
@@ -220,10 +225,10 @@ public static partial class HostConfiguration
         );
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
         builder.Services.AddControllers().AddNewtonsoftJson();
-        
+
         return builder;
     }
-    
+
     /// <summary>
     /// Asynchronously migrates database schemas associated with the application.
     /// </summary>
@@ -232,12 +237,12 @@ public static partial class HostConfiguration
     private static async ValueTask<WebApplication> MigrateDataBaseSchemasAsync(this WebApplication app)
     {
         var serviceScopeFactory = app.Services.GetRequiredKeyedService<IServiceScopeFactory>(null);
-        
+
         await serviceScopeFactory.MigrateAsync<AppDbContext>();
-        
+
         return app;
     }
-    
+
     /// <summary>
     /// Seeds data into the application's database by creating a service scope and initializing the seed operation.
     /// </summary>
@@ -250,7 +255,7 @@ public static partial class HostConfiguration
 
         return app;
     }
-    
+
     /// <summary>
     /// Enables CORS middleware in the web application pipeline.
     /// </summary>
@@ -275,7 +280,7 @@ public static partial class HostConfiguration
 
         return app;
     }
-    
+
     /// <summary>
     /// Add Controller middleWhere
     /// </summary>
@@ -283,8 +288,27 @@ public static partial class HostConfiguration
     /// <returns>Application host</returns>
     private static WebApplication UseExposers(this WebApplication app)
     {
+        app.UseMiddleware<RawBodyReader>();
         app.MapControllers();
 
         return app;
+    }
+}
+
+public class RawBodyReader : IMiddleware
+{
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    {
+        if (context.Request.Method == "POST" || context.Request.Method == "PUT")
+        {
+            context.Request.EnableBuffering();
+            using var reader = new StreamReader(context.Request.Body, Encoding.UTF8, true, 1024, true);
+            var body = await reader.ReadToEndAsync();
+            context.Request.Body.Position = 0;
+            var test = JsonConvert.DeserializeObject<PromptCreateCommand>(body);
+
+        }
+
+        await next(context);
     }
 }

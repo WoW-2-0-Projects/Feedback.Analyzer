@@ -14,14 +14,15 @@
             <!-- Prompts card -->
             <prompt-category-accordion-card v-for="promptCategory in promptCategories" :key="promptCategory.id"
                                             :promptCategory="promptCategory"
-                                            @addPrompt="category => openPromptModal(null, category)"
+                                            @addPrompt="categoryId => openPromptModal(null, categoryId)"
+                                            @editPrompt="promptId=> openPromptModal(promptId, null)"
             />
 
         </infinite-scroll>
 
         <!-- Prompts create / edit modal -->
         <prompt-modal :isActive="promptModalActive" @closeModal="closePromptModal"
-                      @submit="createPromptAsync($event)" :isCreate="isCreate" :prompt="editingPrompt"
+                      @submit="onPromptModalSubmit($event)" :isCreate="isCreate" :prompt="editingPrompt"
         />
 
     </div>
@@ -126,8 +127,8 @@ const onPromptModalSubmit = async (prompt: AnalysisPrompt) => {
 const createPromptAsync = async (prompt: AnalysisPrompt) => {
     isSearchBarLoading.value = true;
 
-    prompt.organizationId = '60e6a4de-31e5-4f8b-8e6a-0a8f63f41527';
     const createPromptCommand = new CreatePromptCommand(prompt);
+
     const response = await
         insightBoxApiClient.prompts.createAsync(createPromptCommand);
 
@@ -144,18 +145,33 @@ const createPromptAsync = async (prompt: AnalysisPrompt) => {
 const updatePromptAsync = async (prompt: AnalysisPrompt) => {
     isSearchBarLoading.value = true;
 
+    prompt.organizationId = '60e6a4de-31e5-4f8b-8e6a-0a8f63f41527';
+    const createPromptCommand = new CreatePromptCommand(prompt);
+
+    const response = await
+        insightBoxApiClient.prompts.updateAsync(createPromptCommand);
+
+    if (response.response) {
+        prompts.value.push(response.response);
+    }
+
     isSearchBarLoading.value = false;
 };
 
-const openPromptModal = (prompt: AnalysisPrompt | null, promptCategory: AnalysisPromptCategory) => {
+const openPromptModal = async(promptId: string | null, promptCategoryId: string | null) => {
 
-    if(prompt) {
-        editingPrompt.value = prompt;
+    if(promptId) {
+        const response = await insightBoxApiClient.prompts.getByIdAsync(promptId!);
+
+        if (response.isSuccess){
+            editingPrompt.value = response.response!;
+        }
+
         isCreate.value = false;
     }
     else {
         editingPrompt.value = new AnalysisPrompt();
-        editingPrompt.value.categoryId = promptCategory.id;
+        editingPrompt.value.categoryId = promptCategoryId!;
         isCreate.value = true;
     }
 

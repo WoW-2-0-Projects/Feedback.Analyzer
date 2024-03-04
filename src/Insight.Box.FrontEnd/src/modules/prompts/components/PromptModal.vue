@@ -55,7 +55,7 @@ import type {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisProm
 const props = defineProps({
     prompt: {
         type: Object as PropType<AnalysisPrompt>,
-        default: new AnalysisPrompt()
+        required: true
     },
     isActive: {
         type: Boolean,
