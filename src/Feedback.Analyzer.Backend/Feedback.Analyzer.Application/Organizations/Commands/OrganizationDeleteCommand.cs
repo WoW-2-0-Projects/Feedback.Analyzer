@@ -10,5 +10,5 @@ public record OrganizationDeleteByIdCommand : ICommand<bool>
     /// <summary>
     /// The unique identifier of the organization to be deleted.
     /// </summary>
-    public Guid OrganizationId { get; set; } = default!;
+    public Guid OrganizationId { get; set; }
 }

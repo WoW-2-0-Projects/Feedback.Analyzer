@@ -2,7 +2,7 @@
 using Feedback.Analyzer.Application.Organizations.Models;
 using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Application.Organizations.Mappers;
+namespace Feedback.Analyzer.Infrastructure.Organizations.Mappers;
 
 public class OrganizationMapper : Profile
 {

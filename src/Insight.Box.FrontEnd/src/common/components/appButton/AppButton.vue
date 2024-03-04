@@ -1,11 +1,13 @@
 <template>
 
-    <button type="button"
-            class="theme-input-border-round text-md
-            theme-action theme-action-padding theme-action-overlay theme-btn-bg-primary
-            theme-action-content theme-action-shadow theme-action-transition">
-        <i v-if="icon" :class="icon"></i>
-        {{ text }}
+    <button type="button" :class="componentStyles"
+            class="text-md text-nowrap overflow-hidden
+                   theme-action-content theme-action-shadow">
+        <span class="h-full w-full inline-flex items-center theme-action-overlay theme-action-transition"
+              :class="contentStyles">
+            <i v-if="icon" :class="icon"></i>
+            {{ text }}
+        </span>
     </button>
 
 </template>
@@ -14,12 +16,17 @@
 
 import {ButtonType} from "@/common/components/appButton/ButtonType";
 import {computed, type PropType} from "vue";
+import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
+import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 
 const props = defineProps({
     type: {
         type: Number as PropType<ButtonType>,
-        required: true,
         default: ButtonType.Primary
+    },
+    role: {
+        type: Number as PropType<ButtonRole>,
+        default: ButtonRole.Button
     },
     text: {
         type: String,
@@ -32,28 +39,48 @@ const props = defineProps({
     icon: {
         type: String,
         default: ''
-    }
+    },
+    layout: {
+        type: Number as PropType<ButtonLayout>,
+        default: ButtonLayout.Rectangle
+    },
 });
 
-// onMounted(() => {
-//     component.value?.classList.remove()
-// });
+const componentStyles = computed(() => {
+    let styles = ''
 
-const componentClass = computed(() => {
     switch (props.type) {
         case ButtonType.Primary:
-            return 'bg-accentPrimaryColor';
+            styles += 'theme-btn-bg-primary ';
+            break;
         case ButtonType.Secondary:
-            return 'bg-accentSecondaryColor';
-        case ButtonType.Tertiary:
-            return 'bg-gray-200';
+            styles += 'theme-btn-bg-secondary ';
+            break;
+        case ButtonType.Danger :
+            styles += 'theme-btn-bg-danger ';
+            break;
     }
 
-    if (props.disabled) {
-        return 'bg-gray-400';
-    }
+    if (props.layout === ButtonLayout.Rectangle)
+        styles += 'theme-action-border-round theme-action-layout';
+    else if (props.layout === ButtonLayout.Circle)
+        styles += ' flex items-center justify-center theme-action-circle-layout';
 
-    return classes.join(' ');
+    return styles;
+});
+
+const contentStyles = computed(() => {
+    let styles = ' ';
+
+    if (props.layout === ButtonLayout.Rectangle)
+        styles += ' theme-action-padding justify-around ';
+    else if (props.layout === ButtonLayout.Circle)
+        styles += 'justify-center ';
+
+    if (props.icon)
+        styles += ' gap-2';
+
+    return styles;
 });
 
 </script>
