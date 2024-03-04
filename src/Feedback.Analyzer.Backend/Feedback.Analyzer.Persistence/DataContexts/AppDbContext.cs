@@ -20,6 +20,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     public DbSet<CustomerFeedback> Feedbacks => Set<CustomerFeedback>();
 
     #endregion
+
+    #region PromptsInfrastructure
+
+    public DbSet<PromptExecutionHistory> PromptExecutionHistories => Set<PromptExecutionHistory>();
+
+    #endregion
     
     #region Prompt infrastructure
     public DbSet<AnalysisPrompt> Prompts => Set<AnalysisPrompt>();
