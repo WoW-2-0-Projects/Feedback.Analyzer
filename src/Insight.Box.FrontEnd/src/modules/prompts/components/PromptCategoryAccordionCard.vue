@@ -23,27 +23,27 @@
 
             <div class="overflow-y-scroll">
                 <table class="table-auto">
-                    <thead>
-                        <tr>
-                            <th class="p-2">Version</th>
-                            <th class="p-2">Avg Exc time</th>
-                            <th class="p-2">Avg Acc</th>
-                            <th class="p-2">Exc count</th>
-                            <th class="p-2">Actions</th>
-                        </tr>
+                    <thead >
+                    <tr>
+                        <th class="p-2">Version</th>
+                        <th class="p-2">Avg Exc time</th>
+                        <th class="p-2">Avg Acc</th>
+                        <th class="p-2">Exc count</th>
+                        <th class="p-2">Actions</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="executionResult in promptExecutionResults" :key="executionResult.promptId">
-                            <td class="p-2">{{ executionResult.version }}.{{ executionResult.revision }}</td>
-                            <td class="p-2">{{ executionResult.averageExecutionTime }}</td>
-                            <td>{{ executionResult.averageAccuracy }}%</td>
-                            <td>{{ executionResult.executionsCount }}%</td>
-                            <td>
-                                <app-button :type="ButtonType.Danger" :layout="ButtonLayout.Square" icon="fas fa-minus"
-                                    :size="ActionComponentSize.Mini"
-                                    @click="emit('editPrompt', executionResult.promptId)" />
-                            </td>
-                        </tr>
+                    <tr class="hover:bg-gray-500" v-for="executionResult in promptExecutionResults" :key="executionResult.promptId">
+                        <td class="p-2">{{ executionResult.version }}.{{ executionResult.revision }}</td>
+                        <td class="p-2">{{ executionResult.averageExecutionTime }}</td>
+                        <td>{{ executionResult.averageAccuracy }}%</td>
+                        <td>{{ executionResult.executionsCount }}%</td>
+                        <td>
+                            <app-button :type="ButtonType.Danger" :layout="ButtonLayout.Square" icon="fas fa-edit"
+                                        :size="ActionComponentSize.Mini" @click="emit('addPrompt', promptCategory)"/>
+
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -54,9 +54,23 @@
         <vertical-divider :type="DividerType.ContentLength" />
 
         <!-- Prompt execution result -->
-        <div class="w-full">
+        <div class="w-full p-5 flex flex-col">
 
+            <table class="table-auto">
+                <thead>
+                <tr>
+                    <th class="p-2"> Exc time</th>
+                    <th class="p-2"> Exc Dur</th>
+                    <th class="p-2"> Exc Acc</th>
+                </tr>
+                </thead>
+                <tbody class="hover:bg-gray-500">
+                    <td class="pl-8">1s</td>
+                    <td class="pl-8">2s</td>
+                    <td class="pl-8">97%</td>
 
+                </tbody>
+            </table>
         </div>
 
     </div>
@@ -93,8 +107,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-    (e: 'addPrompt', promptCategoryId: string): void,
-    (e: 'editPrompt', promptId: string): void,
+    (e: 'addPrompt', promptCategory: AnalysisPromptCategory): void
 }>();
 
 onBeforeMount(async () => {
