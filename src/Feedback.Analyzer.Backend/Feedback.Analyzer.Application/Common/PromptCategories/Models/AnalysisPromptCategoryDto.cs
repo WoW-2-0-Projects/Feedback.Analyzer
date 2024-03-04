@@ -1,3 +1,4 @@
+using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Domain.Extensions;
 
@@ -13,5 +14,7 @@ public class AnalysisPromptCategoryDto
     
     public int PromptsCount { get; set; }
     
-    public Guid SelectedPromptId { get; set; }
+    public Guid? SelectedPromptId { get; set; }
+    
+    public AnalysisPromptDto? SelectedPrompt { get; set; }
 }

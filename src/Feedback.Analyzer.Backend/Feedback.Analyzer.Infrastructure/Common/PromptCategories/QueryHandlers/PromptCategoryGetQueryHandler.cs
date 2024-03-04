@@ -13,7 +13,7 @@ namespace Feedback.Analyzer.Infrastructure.Common.PromptCategories.QueryHandlers
 /// Handles the execution of the <see cref="PromptGetQuery"/>.
 /// Responsible for retrieving a specific prompt based on filter
 /// </summary>
-public class PromptCategoryQueryHandler(IPromptCategoryService promptCategoryService, IMapper mapper)
+public class PromptCategoryGetQueryHandler(IPromptCategoryService promptCategoryService, IMapper mapper)
     : IQueryHandler<PromptCategoryGetQuery, ICollection<AnalysisPromptCategoryDto>>
 {
     public async Task<ICollection<AnalysisPromptCategoryDto>> Handle(PromptCategoryGetQuery request, CancellationToken cancellationToken)

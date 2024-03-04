@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240303135109_Add Prompt Category And Prompt Relation")]
+    [Migration("20240304005037_Add Prompt Category And Prompt Relation")]
     partial class AddPromptCategoryAndPromptRelation
     {
         /// <inheritdoc />
@@ -251,9 +251,11 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", b =>
                 {
-                    b.HasOne("Feedback.Analyzer.Domain.Common.Prompts.AnalysisPrompt", null)
+                    b.HasOne("Feedback.Analyzer.Domain.Common.Prompts.AnalysisPrompt", "SelectedPrompt")
                         .WithOne()
                         .HasForeignKey("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", "SelectedPromptId");
+
+                    b.Navigation("SelectedPrompt");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.CustomerFeedback", b =>

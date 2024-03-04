@@ -1,4 +1,3 @@
-using Feedback.Analyzer.Domain.Common.Prompts;
 using Feedback.Analyzer.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -18,7 +17,7 @@ public class AnalysisPromptCategoryConfiguration : IEntityTypeConfiguration<Anal
             .HasIndex(category => category.Type);
         
         builder
-            .HasOne<AnalysisPrompt>()
+            .HasOne(category => category.SelectedPrompt)
             .WithOne()
             .HasForeignKey<AnalysisPromptCategory>(category => category.SelectedPromptId)
             .IsRequired(false);

@@ -10,5 +10,7 @@ public class AnalysisPromptCategory : Entity
     
     public Guid? SelectedPromptId { get; set; }
     
+    public AnalysisPrompt? SelectedPrompt { get; set; }
+    
     public ICollection<AnalysisPrompt> Prompts { get; set; } = new List<AnalysisPrompt>();
 }
