@@ -6,7 +6,7 @@ using Feedback.Analyzer.Domain.Common.Queries;
 
 namespace Feedback.Analyzer.Infrastructure.PromptsHistory.QueryHandlers;
 
-public record PromptsHistoryGetByPromptIdQueryHandler(IPromptExecutionHistoryService PromptExecutionHistoryService, IMapper mapper) : IQueryHandler<PromptExecutionHistoryGetByPromptIdQuery, IList<PromptExecutionHistoryDto>>
+public record PromptExecutionHistoryGetByPromptIdQueryHandler(IPromptExecutionHistoryService PromptExecutionHistoryService, IMapper mapper) : IQueryHandler<PromptExecutionHistoryGetByPromptIdQuery, IList<PromptExecutionHistoryDto>>
 {
     public async Task<IList<PromptExecutionHistoryDto>> Handle(PromptExecutionHistoryGetByPromptIdQuery request, CancellationToken cancellationToken)
     {

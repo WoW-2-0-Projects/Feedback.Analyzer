@@ -4,9 +4,9 @@ using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Infrastructure.PromptsHistory.Mappers;
 
-public class PromptsExecutionHistoriesMapper : Profile
+public class PromptExecutionHistoriesMapper : Profile
 {
-    public PromptsExecutionHistoriesMapper()
+    public PromptExecutionHistoriesMapper()
     {
 
         CreateMap<PromptExecutionHistoryDto, PromptExecutionHistory>()

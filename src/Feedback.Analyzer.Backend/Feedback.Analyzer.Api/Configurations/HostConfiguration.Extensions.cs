@@ -6,6 +6,7 @@ using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
+using Feedback.Analyzer.Application.PromptsHistory.Services;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
@@ -13,6 +14,7 @@ using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
+using Feedback.Analyzer.Infrastructure.PromptsHistory.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
@@ -182,11 +184,13 @@ public static partial class HostConfiguration
     {
         // Register repositories
         builder.Services
-               .AddScoped<IPromptRepository, PromptRepository>();
+               .AddScoped<IPromptRepository, PromptRepository>()
+               .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>();
         
         // Register services
         builder.Services
-               .AddScoped<IPromptService, PromptService>();
+               .AddScoped<IPromptService, PromptService>()
+               .AddScoped<IPromptExecutionHistoryService, PromptExecutionHistoryService>();
 
         return builder;
     }
