@@ -3,7 +3,7 @@ using MediatR;
 namespace Feedback.Analyzer.Domain.Common.Queries;
 
 /// <summary>
-/// Represents a query in a CQRS (Command Query Responsibility Segregation) architecture.
+/// Represents a query in a CQRS (Commands Query Responsibility Segregation) architecture.
 /// </summary>
 /// <typeparam name="TResult">The type of result returned by the query.</typeparam>
 public interface IQuery<out TResult> : IRequest<TResult>, IQuery

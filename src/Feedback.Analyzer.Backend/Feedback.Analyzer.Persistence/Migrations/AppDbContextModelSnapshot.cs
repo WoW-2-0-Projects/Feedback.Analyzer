@@ -276,8 +276,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<TimeSpan>("ExecutionDuration")
                         .HasColumnType("interval");
 
-                    b.Property<TimeSpan>("ExecutionTime")
-                        .HasColumnType("interval");
+                    b.Property<DateTime>("ExecutionTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("PromptId")
                         .HasColumnType("uuid");

@@ -6,13 +6,16 @@ using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.PromptCategories.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Commands;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
+using Feedback.Analyzer.Application.Common.PromptsHistory.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Constants;
+using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.PromptCategories.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
+using Feedback.Analyzer.Infrastructure.Common.PromptsHistory.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
@@ -143,12 +146,14 @@ public static partial class HostConfiguration
         // Register repositories
         builder.Services
             .AddScoped<IPromptRepository, PromptRepository>()
-            .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>();
+            .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>()
+            .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>();
 
         // Register services
         builder.Services
             .AddScoped<IPromptService, PromptService>()
-            .AddScoped<IPromptCategoryService, PromptCategoryService>();
+            .AddScoped<IPromptCategoryService, PromptCategoryService>()
+            .AddScoped<IPromptsExecutionHistoryService, PromptExecutionHistoryService>();
 
         return builder;
     }
@@ -216,7 +221,7 @@ public static partial class HostConfiguration
     /// <returns>Application builder</returns>
     private static WebApplicationBuilder AddExposers(this WebApplicationBuilder builder)
     {
-        builder.Services.AddTransient<RawBodyReader>();
+        // builder.Services.AddTransient<RawBodyReader>();
         builder.Services.Configure<ApiBehaviorOptions>(
             options =>
             {
@@ -288,7 +293,7 @@ public static partial class HostConfiguration
     /// <returns>Application host</returns>
     private static WebApplication UseExposers(this WebApplication app)
     {
-        app.UseMiddleware<RawBodyReader>();
+        // app.UseMiddleware<RawBodyReader>();
         app.MapControllers();
 
         return app;
