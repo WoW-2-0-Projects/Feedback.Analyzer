@@ -221,7 +221,7 @@ public static partial class HostConfiguration
     /// <returns>Application builder</returns>
     private static WebApplicationBuilder AddExposers(this WebApplicationBuilder builder)
     {
-        builder.Services.AddTransient<RawBodyReader>();
+        // builder.Services.AddTransient<RawBodyReader>();
         builder.Services.Configure<ApiBehaviorOptions>(
             options =>
             {
@@ -293,7 +293,7 @@ public static partial class HostConfiguration
     /// <returns>Application host</returns>
     private static WebApplication UseExposers(this WebApplication app)
     {
-        app.UseMiddleware<RawBodyReader>();
+        // app.UseMiddleware<RawBodyReader>();
         app.MapControllers();
 
         return app;
