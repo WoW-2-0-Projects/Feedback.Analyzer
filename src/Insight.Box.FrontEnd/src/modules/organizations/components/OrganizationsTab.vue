@@ -34,14 +34,14 @@ import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vu
 import {NotificationSource} from "@/infrastructure/models/notifications/Action";
 import { Organization } from "../models/Organization";
 import { InsightBoxApiClient } from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
-import { FilterPagination } from "@/common/FilterPagination";
 import OrganizationCard from "./OrganizationCard.vue";
+import {Query} from "@/infrastructure/models/query/Query";
+import {OrganizationFilter} from "@/modules/organizations/models/OrganizationFilter";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 const documentService = new DocumentService();
 const organizations = ref<Array<Organization>>([]);
-const organizationsFilter = ref<FilterPagination>(new FilterPagination());
-
+const organizationsQuery = ref<Query>(new Query(new OrganizationFilter()));
 
 onBeforeMount(async () => {
     // Set page title
@@ -50,7 +50,7 @@ onBeforeMount(async () => {
 });
 
 const loadOrganizationsAsync = async () => {
-    const organizationsResponse = await insightBoxApiClient.organizations.getAsync(organizationsFilter.value);
+    const organizationsResponse = await insightBoxApiClient.organizations.getAsync(organizationsQuery.value);
     if(organizationsResponse.isSuccess) {
         const data = organizationsResponse.response as Organization[];
         organizations.value.push(...data);
