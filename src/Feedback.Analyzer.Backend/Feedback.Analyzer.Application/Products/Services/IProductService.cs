@@ -12,7 +12,7 @@ namespace Feedback.Analyzer.Application.Products.Services;
 public interface IProductService
 {
     /// <summary>
-    /// Retrieves a collection of products optionally filtered by a predicate or a ProductFilter.
+    /// Retrieves a collection of products optionally filtered by a predicate or a Filter.
     /// </summary>
     /// <param name="predicate">An optional expression used to filter products (null for no filtering).</param>
     /// <param name="queryOptions">Optional options for customizing the query behavior (e.g., sorting, data selection).</param>
@@ -20,9 +20,9 @@ public interface IProductService
     IQueryable<Product> Get(Expression<Func<Product, bool>>? predicate = default, QueryOptions queryOptions = default);
 
     /// <summary>
-    /// Retrieves a collection of products filtered by the provided ProductFilter.
+    /// Retrieves a collection of products filtered by the provided Filter.
     /// </summary>
-    /// <param name="productFilter">An instance of ProductFilter containing the filtering criteria.</param>
+    /// <param name="productFilter">An instance of Filter containing the filtering criteria.</param>
     /// <param name="queryOptions">Optional options for customizing the query behavior (e.g., sorting, data selection).</param>
     /// <returns>An IQueryable of Product objects representing the filtered product data.</returns>
     IQueryable<Product> Get(ProductFilter productFilter, QueryOptions queryOptions = default);

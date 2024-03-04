@@ -17,7 +17,7 @@ public class ProductGetQueryHandler(IProductService productService, IMapper mapp
     public async Task<ICollection<ProductDto>> Handle(ProductGetQuery request, CancellationToken cancellationToken)
     {
         var matchedProducts = await productService
-            .Get(request.ProductFilter, new QueryOptions() { AsNoTracking = true }).ToListAsync(cancellationToken);
+            .Get(request.Filter, new QueryOptions() { AsNoTracking = true }).ToListAsync(cancellationToken);
 
         return mapper.Map<ICollection<ProductDto>>(matchedProducts);
     }

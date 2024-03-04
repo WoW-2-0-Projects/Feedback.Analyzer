@@ -4,7 +4,7 @@
 
         <input type="text" name="input" v-model="searchValue"
                class="w-full rounded-md peer text-md theme-action-layout theme-action-padding theme-input-bg theme-action-style theme-input-placeholder
-                 theme-action-transition theme-input-border-round theme-input-border theme-action-content"
+                 theme-action-transition theme-action-border-round theme-input-border theme-action-content"
                :placeholder="placeholder"/>
 
         <!-- Form input label -->
@@ -56,7 +56,7 @@
 <script setup lang="ts">
 
 import {onMounted, type PropType, ref, watch, watchEffect} from "vue";
-import type {DropDownValue} from "@/common/components/forms/dropDown/DropDownValue";
+import type {DropDownValue} from "@/common/components/forms/formDropDown/DropDownValue";
 
 const props = defineProps({
     values: {
@@ -65,8 +65,7 @@ const props = defineProps({
         default: []
     },
     modelValue: {
-        type: Object as () => DropDownValue | null,
-        required: true
+        type: Object as () => DropDownValue | null
     },
     label: {
         type: String,

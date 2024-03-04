@@ -1,6 +1,6 @@
 <template>
 
-    <!-- Organization view content -->
+    <!-- Organization tab content -->
     <div class="tab pt-10">
 
         <!-- Organizations search bar -->
@@ -26,10 +26,9 @@
 
 <script setup lang="ts">
 
-import {onMounted, onBeforeMount, ref} from "vue";
+import {onBeforeMount, ref} from "vue";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
-import {OrganizationFilter} from "@/modules/organizations/models/OrganizationFilter";
 import OrganizationsSearchBar from "@/modules/organizations/components/OrganizationsSearchBar.vue";
 import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
 import {NotificationSource} from "@/infrastructure/models/notifications/Action";
