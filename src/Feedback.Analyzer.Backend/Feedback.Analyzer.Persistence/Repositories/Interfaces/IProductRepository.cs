@@ -45,7 +45,7 @@ public interface IProductRepository
     /// Asynchronously creates a new product in the repository.
     /// </summary>
     /// <param name="product">The product to be created.</param>
-    /// <param name="commandOptions">Command options for the creation operation.</param>
+    /// <param name="commandOptions">Commands options for the creation operation.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task representing the asynchronous operation that yields the created product.</returns>
     ValueTask<Product> CreateAsync(Product product,
@@ -56,7 +56,7 @@ public interface IProductRepository
     /// Asynchronously updates an existing product in the repository.
     /// </summary>
     /// <param name="product">The product to be updated.</param>
-    /// <param name="commandOptions">Command options for the update operation.</param>
+    /// <param name="commandOptions">Commands options for the update operation.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task representing the asynchronous operation that yields the updated product.</returns>
     ValueTask<Product> UpdateAsync(Product product,
@@ -67,7 +67,7 @@ public interface IProductRepository
     /// Asynchronously deletes a product from the repository by its unique identifier.
     /// </summary>
     /// <param name="productId">The unique identifier of the product to be deleted.</param>
-    /// <param name="commandOptions">Command options for the deletion operation.</param>
+    /// <param name="commandOptions">Commands options for the deletion operation.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task representing the asynchronous operation that yields the deleted product, or null if not found.</returns>
     ValueTask<Product?> DeleteByIdAsync(Guid productId,
@@ -78,7 +78,7 @@ public interface IProductRepository
     /// Asynchronously deletes a product from the repository.
     /// </summary>
     /// <param name="product">The product to be deleted.</param>
-    /// <param name="commandOptions">Command options for the deletion operation.</param>
+    /// <param name="commandOptions">Commands options for the deletion operation.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task representing the asynchronous operation that yields the deleted product, or null if not found.</returns>
     ValueTask<Product?> DeleteAsync(Product product,

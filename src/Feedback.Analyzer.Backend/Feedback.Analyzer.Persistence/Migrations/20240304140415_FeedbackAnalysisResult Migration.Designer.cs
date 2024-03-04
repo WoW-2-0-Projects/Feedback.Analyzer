@@ -3,6 +3,7 @@ using System;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240304140415_FeedbackAnalysisResult Migration")]
+    partial class FeedbackAnalysisResultMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,8 +59,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId", "Version", "Revision")
-                        .IsUnique();
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Prompts");
                 });
@@ -277,8 +279,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<TimeSpan>("ExecutionDuration")
                         .HasColumnType("interval");
 
-                    b.Property<DateTime>("ExecutionTime")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<TimeSpan>("ExecutionTime")
+                        .HasColumnType("interval");
 
                     b.Property<Guid>("PromptId")
                         .HasColumnType("uuid");

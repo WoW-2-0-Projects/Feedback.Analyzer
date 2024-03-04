@@ -11,8 +11,7 @@ public class PromptExecutionHistory : Entity
 
     public string? Exception { get; set; } 
     
-    public TimeSpan ExecutionTime { get; set; } 
+    public DateTime ExecutionTime { get; set; } 
     
     public TimeSpan ExecutionDuration { get; set; }
-    
 }

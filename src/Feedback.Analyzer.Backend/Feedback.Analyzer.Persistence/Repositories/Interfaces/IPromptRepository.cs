@@ -28,7 +28,7 @@ public interface IPromptRepository
     /// Asynchronously creates a new prompt in the repository.
     /// </summary>
     /// <param name="prompt">The prompt to be created.</param>
-    /// <param name="commandOptions">Command options for the creation operation.</param>
+    /// <param name="commandOptions">Commands options for the creation operation.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task representing the asynchronous operation that yields the created prompt.</returns>
     ValueTask<AnalysisPrompt> CreateAsync(AnalysisPrompt prompt,

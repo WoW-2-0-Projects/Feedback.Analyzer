@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240304071906_Add PromptExecution History")]
-    partial class AddPromptExecutionHistory
+    [Migration("20240304140222_Add PromptExecutionHistory entity")]
+    partial class AddPromptExecutionHistoryentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -250,8 +250,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<TimeSpan>("ExecutionDuration")
                         .HasColumnType("interval");
 
-                    b.Property<TimeSpan>("ExecutionTime")
-                        .HasColumnType("interval");
+                    b.Property<DateTime>("ExecutionTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("PromptId")
                         .HasColumnType("uuid");

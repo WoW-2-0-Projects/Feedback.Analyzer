@@ -15,7 +15,7 @@ namespace Feedback.Analyzer.Infrastructure.Common.Prompts.CommandHandlers;
 public class PromptCreateCommandHandler(IMapper mapper, IPromptService promptService) : ICommandHandler<PromptCreateCommand, AnalysisPromptDto>
 {
     public async Task<AnalysisPromptDto> Handle(PromptCreateCommand request, CancellationToken cancellationToken)
-    {
+        {
         // Conversion to domain entity cancellationToken
         var prompt = mapper.Map<AnalysisPrompt>(request.Prompt);
 

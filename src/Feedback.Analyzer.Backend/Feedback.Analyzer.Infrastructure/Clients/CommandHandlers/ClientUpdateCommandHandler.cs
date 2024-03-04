@@ -8,7 +8,7 @@ using Feedback.Analyzer.Domain.Entities;
 namespace Feedback.Analyzer.Infrastructure.Clients.CommandHandlers;
 
 /// <summary>
-/// Command handler for updating a client entity.
+/// Commands handler for updating a client entity.
 /// </summary>
 public class ClientUpdateCommandHandler(IClientService clientService, IMapper mapper) : ICommandHandler<ClientUpdateCommand, ClientDto>
 {

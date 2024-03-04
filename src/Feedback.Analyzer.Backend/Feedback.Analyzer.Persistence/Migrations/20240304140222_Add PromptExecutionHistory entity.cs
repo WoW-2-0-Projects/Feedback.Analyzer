@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddPromptExecutionHistory : Migration
+    public partial class AddPromptExecutionHistoryentity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     PromptId = table.Column<Guid>(type: "uuid", nullable: false),
                     Result = table.Column<string>(type: "text", nullable: true),
                     Exception = table.Column<string>(type: "text", nullable: true),
-                    ExecutionTime = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    ExecutionTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ExecutionDuration = table.Column<TimeSpan>(type: "interval", nullable: false)
                 },
                 constraints: table =>
