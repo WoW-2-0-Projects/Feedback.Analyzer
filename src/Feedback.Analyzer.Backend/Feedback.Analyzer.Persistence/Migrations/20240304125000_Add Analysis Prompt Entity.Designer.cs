@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240304102357_Add Analysis Prompt Entity")]
+    [Migration("20240304125000_Add Analysis Prompt Entity")]
     partial class AddAnalysisPromptEntity
     {
         /// <inheritdoc />

@@ -22,7 +22,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     #endregion
     
     #region Prompt infrastructure
-    DbSet<AnalysisPrompt> Prompts => Set<AnalysisPrompt>();
+    public DbSet<AnalysisPrompt> Prompts => Set<AnalysisPrompt>();
+    
+    
+    
+    
     #endregion
     
     
