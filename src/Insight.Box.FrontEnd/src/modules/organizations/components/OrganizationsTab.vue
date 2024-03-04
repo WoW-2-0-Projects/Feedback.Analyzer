@@ -15,6 +15,11 @@
 
         </infinite-scroll>
 
+        <!-- Organizations gallery -->
+        <div class="mt-4  flex flex-wrap justify-center gap-5">
+            <organization-card v-for="organization in organizations"
+                :organization="organization" :key="organization.id"></organization-card>
+        </div>
     </div>
 
 </template>
@@ -24,28 +29,36 @@
 import {onBeforeMount, ref} from "vue";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
-import {OrganizationFilter} from "@/modules/organizations/models/OrganizationFilter";
 import OrganizationsSearchBar from "@/modules/organizations/components/OrganizationsSearchBar.vue";
 import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
 import {NotificationSource} from "@/infrastructure/models/notifications/Action";
+import { Organization } from "../models/Organization";
+import { InsightBoxApiClient } from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
+import OrganizationCard from "./OrganizationCard.vue";
+import {Query} from "@/infrastructure/models/query/Query";
+import {OrganizationFilter} from "@/modules/organizations/models/OrganizationFilter";
 
+const insightBoxApiClient = new InsightBoxApiClient();
 const documentService = new DocumentService();
+const organizations = ref<Array<Organization>>([]);
+const organizationsQuery = ref<Query>(new Query(new OrganizationFilter()));
 
-const organizationFilter = ref<OrganizationFilter>({});
-
-onBeforeMount(() => {
+onBeforeMount(async () => {
     // Set page title
     documentService.setTitle(LayoutConstants.Organizations);
+    await loadOrganizationsAsync();
 });
 
-/*
- * Change source of organizations to re-calculate layout
- */
+const loadOrganizationsAsync = async () => {
+    const organizationsResponse = await insightBoxApiClient.organizations.getAsync(organizationsQuery.value);
+    if(organizationsResponse.isSuccess) {
+        const data = organizationsResponse.response as Organization[];
+        organizations.value.push(...data);
+    }
+};
+
 const organizationsChangeSource = ref<NotificationSource>(new NotificationSource());
 
-/*
- * Scroll event handler
- */
 const onScroll = async () => {
 };
 

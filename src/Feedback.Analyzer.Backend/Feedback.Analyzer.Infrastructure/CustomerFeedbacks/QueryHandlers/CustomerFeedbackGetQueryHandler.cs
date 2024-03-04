@@ -17,7 +17,7 @@ public class CustomerFeedbackGetQueryHandler(ICustomerFeedbackService customerFe
     {
         var matchedCustomerFeedback = 
             await customerFeedbackService
-                  .Get(request.CustomerFeedbackFilter, 
+                  .Get(request.Filter, 
                       new QueryOptions() { AsNoTracking = true }).ToListAsync(cancellationToken);
         
         return mapper.Map<ICollection<CustomerFeedbackDto>>(matchedCustomerFeedback);

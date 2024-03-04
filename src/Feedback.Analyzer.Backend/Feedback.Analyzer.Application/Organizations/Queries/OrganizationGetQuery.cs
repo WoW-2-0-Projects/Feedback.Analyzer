@@ -11,5 +11,5 @@ public record OrganizationGetQuery : IQuery<ICollection<OrganizationDto>>
     /// <summary>
     ///  Gets or sets the filter to apply when retrieving organizations.
     /// </summary>
-    public OrganizationFilter OrganizationFilter { get; set; } = default!;
+    public OrganizationFilter Filter { get; set; } = default!;
 }
