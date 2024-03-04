@@ -5,7 +5,7 @@ using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Application.PromptsHistory.Services;
 
-public interface IPromptsExecutionHistoryService
+public interface IPromptExecutionHistoryService
 {
     IQueryable<PromptExecutionHistory> Get(Expression<Func<PromptExecutionHistory, bool>>? predicate,
         QueryOptions queryOptions);
