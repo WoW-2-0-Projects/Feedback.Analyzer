@@ -9,7 +9,7 @@ body {
 }
 
 .view {
-  @apply h-screen w-screen;
+  @apply w-screen;
 }
 
 .tab {
