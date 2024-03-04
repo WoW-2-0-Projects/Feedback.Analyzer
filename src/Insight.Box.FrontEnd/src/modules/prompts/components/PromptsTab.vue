@@ -12,7 +12,7 @@
                          class="mt-10 flex flex-col gap-y-5">
 
             <!-- Prompts card -->
-            <prompt-category-accordion-card v-for="promptCategory in promptCategories" :key="promptCategory.id"
+            <prompt-category-card v-for="promptCategory in promptCategories" :key="promptCategory.id"
                                             :promptCategory="promptCategory"
                                             @addPrompt="categoryId => openPromptModal(null, categoryId)"
                                             @editPrompt="promptId=> openPromptModal(promptId, null)"
@@ -43,9 +43,9 @@ import PromptsSearchBar from "@/modules/prompts/components/PromptsSearchBar.vue"
 import {PromptFilter} from "@/modules/prompts/models/PromptFilter";
 import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 import {CreatePromptCommand} from "@/modules/prompts/models/CreatePromptCommand";
-import PromptCategoryAccordionCard from "@/modules/prompts/components/PromptCategoryAccordionCard.vue";
 import {PromptCategoryFilter} from "@/modules/prompts/models/PromptCategoryFilter";
 import type {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisPromptCategory";
+import PromptCategoryCard from "@/modules/prompts/components/PromptCategoryCard.vue";
 
 /* Services */
 const insightBoxApiClient = new InsightBoxApiClient();
@@ -163,19 +163,21 @@ const openPromptModal = async(promptId: string | null, promptCategoryId: string 
     if(promptId) {
         const response = await insightBoxApiClient.prompts.getByIdAsync(promptId!);
 
+        console.log('update prompt', response.response);
+
         if (response.isSuccess){
             editingPrompt.value = response.response!;
+            isCreate.value = false;
+            promptModalActive.value = true;
         }
-
-        isCreate.value = false;
     }
     else {
         editingPrompt.value = new AnalysisPrompt();
         editingPrompt.value.categoryId = promptCategoryId!;
         isCreate.value = true;
+        promptModalActive.value = true;
     }
 
-    promptModalActive.value = true;
 };
 
 const closePromptModal = () => {

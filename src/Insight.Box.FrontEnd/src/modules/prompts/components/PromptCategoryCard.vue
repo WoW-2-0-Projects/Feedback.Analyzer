@@ -40,7 +40,8 @@
                         <td>{{ executionResult.executionsCount }}%</td>
                         <td>
                             <app-button :type="ButtonType.Danger" :layout="ButtonLayout.Square" icon="fas fa-edit"
-                                        :size="ActionComponentSize.Mini" @click="emit('addPrompt', promptCategory)"/>
+                                        :size="ActionComponentSize.Mini" @click="emit('editPrompt',
+                                        executionResult.promptId)"/>
 
                         </td>
                     </tr>
@@ -107,7 +108,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-    (e: 'addPrompt', promptCategory: AnalysisPromptCategory): void
+    (e: 'addPrompt', promptCategoryId: string): void
+    (e: 'editPrompt', promptId: string): void
 }>();
 
 onBeforeMount(async () => {

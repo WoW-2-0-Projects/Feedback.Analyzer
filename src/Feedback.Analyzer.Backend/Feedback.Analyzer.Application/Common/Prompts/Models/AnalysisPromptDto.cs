@@ -10,7 +10,7 @@ public class AnalysisPromptDto
     
     public string Prompt { get; set; } = default!;
     
-    public int MajorVersion { get; set; }
+    public int Version { get; set; }
     
     public int Revision { get; set; }
     
