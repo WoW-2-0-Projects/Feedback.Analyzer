@@ -6,6 +6,8 @@ import type {CreatePromptCommand} from "@/modules/prompts/models/CreatePromptCom
 import type {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 import {PromptCategoryFilter} from "@/modules/prompts/models/PromptCategoryFilter";
 import type {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisPromptCategory";
+import {PromptExecutionResultFilter} from "@/modules/prompts/models/PromptExecutionResultFilter";
+import type {PromptExecutionResult} from "@/modules/prompts/models/PromptExecutionResult";
 
 export class PromptsEndpointsClient {
     public client: ApiClientBase;
@@ -24,6 +26,11 @@ export class PromptsEndpointsClient {
     public async getCategoriesAsync(query: Query<PromptCategoryFilter>) {
         const endpointUrl = this.requestFormatterService.addQueryParams('api/prompts/categories', query);
         return await this.client.getAsync<Array<AnalysisPromptCategory>>(endpointUrl);
+    }
+
+    public async getPromptExecutionResults(categoryId: string) {
+        const endpointUrl = `api/prompts/results/${categoryId}`;
+        return await this.client.getAsync<Array<PromptExecutionResult>>(endpointUrl);
     }
 
     public async createAsync(command: CreatePromptCommand) {

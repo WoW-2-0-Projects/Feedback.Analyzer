@@ -70,7 +70,7 @@ public class PromptsController(IMediator mediator) : ControllerBase
     public async ValueTask<IActionResult> GetPromptResultById([FromRoute] Guid categoryId, CancellationToken cancellationToken = default)
     {
         var result = await mediator.Send(
-            new PromptResultGetByCategoryIdQuery()
+            new PromptResultGetByCategoryIdQuery
             {
                 CategoryId = categoryId
             },

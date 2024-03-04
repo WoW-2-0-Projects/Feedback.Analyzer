@@ -42,7 +42,7 @@ public class PromptService(IPromptRepository promptRepository, IValidator<Analys
             .Get()
             .OrderByDescending(p => p.Version)
             .Where(existingPrompt => existingPrompt.CategoryId == prompt.CategoryId)
-            .Select(existingPrompt => existingPrompt.Revision)
+            .Select(existingPrompt => existingPrompt.Version)
             .FirstOrDefaultAsync(_ => true, cancellationToken);
         
         // Increment version
