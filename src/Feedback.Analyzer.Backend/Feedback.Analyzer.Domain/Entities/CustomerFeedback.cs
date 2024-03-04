@@ -26,4 +26,6 @@ public class CustomerFeedback : AuditableEntity
     /// Gets or sets the product associated with this feedback.
     /// </summary>
     public Product Product { get; set; } = default!;
+
+    public FeedbackAnalysisResult FeedbackAnalysisResult { get; set; }
 }
