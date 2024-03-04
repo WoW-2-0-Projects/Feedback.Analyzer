@@ -7,7 +7,10 @@ using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Infrastructure.PromptsHistory.CommandHandlers;
 
-public record PromptExecutionHistoryCreateCommandHandler(
+/// <summary>
+/// Command handler for creating prompt execution history records.
+/// </summary>
+public class PromptExecutionHistoryCreateCommandHandler(
     IMapper Mapper,
     IPromptExecutionHistoryService PromptExecutionHistoryService
     ) : ICommandHandler<PromptExecutionHistoryCreateCommand, PromptExecutionHistoryDto>

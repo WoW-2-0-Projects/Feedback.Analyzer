@@ -4,6 +4,9 @@ using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Infrastructure.PromptsHistory.Mappers;
 
+/// <summary>
+/// Mapper profile for mapping between <see cref="PromptExecutionHistory"/> and <see cref="PromptExecutionHistoryDto"/>.
+/// </summary>
 public class PromptExecutionHistoriesMapper : Profile
 {
     public PromptExecutionHistoriesMapper()

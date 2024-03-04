@@ -4,6 +4,9 @@ using FluentValidation;
 
 namespace Feedback.Analyzer.Infrastructure.PromptsHistory.Validators;
 
+/// <summary>
+/// Validator for the <see cref="PromptExecutionHistory"/> entity.
+/// </summary>
 public class PromptsExecutionHistoryValidator : AbstractValidator<PromptExecutionHistory>
 {
     public PromptsExecutionHistoryValidator()

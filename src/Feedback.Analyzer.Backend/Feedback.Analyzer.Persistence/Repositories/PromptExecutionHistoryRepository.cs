@@ -7,6 +7,9 @@ using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
+/// <summary>
+/// Repository for managing prompt execution history records.
+/// </summary>
 public class PromptExecutionHistoryRepository(AppDbContext dbContext) : 
     EntityRepositoryBase<PromptExecutionHistory, AppDbContext>(dbContext), IPromptExecutionHistoryRepository
 {

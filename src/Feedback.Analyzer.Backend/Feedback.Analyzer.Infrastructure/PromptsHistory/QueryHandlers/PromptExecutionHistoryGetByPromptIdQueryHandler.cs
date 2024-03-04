@@ -6,7 +6,10 @@ using Feedback.Analyzer.Domain.Common.Queries;
 
 namespace Feedback.Analyzer.Infrastructure.PromptsHistory.QueryHandlers;
 
-public record PromptExecutionHistoryGetByPromptIdQueryHandler(IPromptExecutionHistoryService PromptExecutionHistoryService, IMapper mapper) : IQueryHandler<PromptExecutionHistoryGetByPromptIdQuery, IList<PromptExecutionHistoryDto>>
+/// <summary>
+/// Handles the query to retrieve prompt execution history records by prompt ID.
+/// </summary>
+public class PromptExecutionHistoryGetByPromptIdQueryHandler(IPromptExecutionHistoryService PromptExecutionHistoryService, IMapper mapper) : IQueryHandler<PromptExecutionHistoryGetByPromptIdQuery, IList<PromptExecutionHistoryDto>>
 {
     public async Task<IList<PromptExecutionHistoryDto>> Handle(PromptExecutionHistoryGetByPromptIdQuery request, CancellationToken cancellationToken)
     {

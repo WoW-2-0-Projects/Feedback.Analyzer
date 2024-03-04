@@ -10,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.PromptsHistory.Services;
 
+/// <summary>
+/// Service for managing prompt execution history records.
+/// </summary>
 public class PromptExecutionHistoryService(
     IPromptExecutionHistoryRepository promptExecutionHistoryRepository,
     IValidator<PromptExecutionHistory> validator
