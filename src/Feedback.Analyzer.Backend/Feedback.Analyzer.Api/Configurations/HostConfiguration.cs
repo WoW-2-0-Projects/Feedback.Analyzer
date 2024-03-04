@@ -1,5 +1,6 @@
+using System.Text;
+using Feedback.Analyzer.Application.Products.Commands;
 namespace Feedback.Analyzer.Api.Configurations;
-
 public static partial class HostConfiguration
 {
     /// <summary>
@@ -15,10 +16,11 @@ public static partial class HostConfiguration
             .AddPersistence()
             .AddNotificationInfrastructure()
             .AddClientInfrastructure()
+            .AddFeedbackInfrastructure()
             .AddMediator()
+            .AddCors()
             .AddDevTools()
             .AddExposers();
-            
         
         return new(builder);
     }
@@ -32,6 +34,7 @@ public static partial class HostConfiguration
     {
         await app.MigrateDataBaseSchemasAsync();
         await app.SeedDataAsync();
+        app.UseCors();
         app
             .UseDevTools()
             .UseExposers();

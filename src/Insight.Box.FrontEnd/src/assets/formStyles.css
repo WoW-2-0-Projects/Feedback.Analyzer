@@ -10,6 +10,10 @@
   @apply h-[60px];
 }
 
+.theme-action-circle-layout {
+  @apply h-[40px] w-[40px] rounded-full;
+}
+
 .theme-action-padding {
   @apply px-4;
 }
@@ -50,7 +54,7 @@
   @apply border focus:border-tertiaryColor;
 }
 
-.theme-input-border-round {
+.theme-action-border-round {
   @apply rounded-lg;
 }
 
@@ -72,4 +76,8 @@
 
 .theme-btn-bg-secondary {
   @apply bg-accentSecondaryColor;
+}
+
+.theme-btn-bg-danger {
+  @apply bg-dangerColor;
 }

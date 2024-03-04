@@ -49,8 +49,7 @@ public class OrganizationService(
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
-        
-       return organizationRepository.CreateAsync(organization, commandOptions, cancellationToken);
+        return organizationRepository.CreateAsync(organization, commandOptions, cancellationToken);
     }
 
     public async ValueTask<Organization> UpdateAsync(

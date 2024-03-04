@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240227100945_Add Feedback and Product Migration")]
+    [Migration("20240228081143_Add Feedback and Product Migration")]
     partial class AddFeedbackandProductMigration
     {
         /// <inheritdoc />
@@ -37,7 +37,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<DateTimeOffset?>("DeletedTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");

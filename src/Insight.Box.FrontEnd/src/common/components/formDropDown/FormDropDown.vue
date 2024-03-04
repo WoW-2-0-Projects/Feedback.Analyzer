@@ -4,7 +4,7 @@
 
         <input type="text" name="input" v-model="searchValue"
                class="w-full rounded-md peer text-md theme-action-layout theme-action-padding theme-input-bg theme-action-style theme-input-placeholder
-                 theme-action-transition theme-input-border-round theme-input-border theme-action-content"
+                 theme-action-transition theme-action-border-round theme-input-border theme-action-content"
                :placeholder="placeholder"/>
 
         <!-- Form input label -->

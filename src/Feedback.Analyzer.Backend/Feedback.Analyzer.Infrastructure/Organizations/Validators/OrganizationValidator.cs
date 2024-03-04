@@ -17,8 +17,6 @@ public class OrganizationValidator : AbstractValidator<Organization>
     /// <param name="validationSettings"></param>
     public OrganizationValidator(IOptions<ValidationSettings> validationSettings)
     {
-        var validationSettingsValue = validationSettings.Value;
-
         // Rule set for creating a new organization
         RuleSet(
             EntityEvent.OnCreate.ToString(),

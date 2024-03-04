@@ -10,6 +10,11 @@ namespace Feedback.Analyzer.Api.Data;
 /// </summary>
 public static class SeedDataExtensions
 {
+    /// <summary>
+    /// Initializes the seed data asynchronously.
+    /// </summary>
+    /// <param name="serviceProvider">The service provider.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public static async ValueTask InitializeSeedAsync(this IServiceProvider serviceProvider)
     {
         var appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
@@ -28,7 +33,10 @@ public static class SeedDataExtensions
 
         if (!await appDbContext.Products.AnyAsync())
             await SeedProductsAsync(appDbContext);
-        
+
+        if (!await appDbContext.Feedbacks.AnyAsync())
+            await SeedDataCustomerFeedbackAsync(appDbContext);
+
         if (appDbContext.ChangeTracker.HasChanges())
             await appDbContext.SaveChangesAsync();
 
@@ -44,7 +52,7 @@ public static class SeedDataExtensions
         var clients = new List<Client>
         {
             new()
-            {  
+            {
                 Id = Guid.Parse("54e16318-d140-4453-80c9-1a117dbe75fd"),
                 FirstName = "John",
                 LastName = "Doe",
@@ -72,21 +80,23 @@ public static class SeedDataExtensions
     {
         var organizations = new List<Organization>
         {
-            new ()
+            new()
             {
                 Id = Guid.Parse("c2fe1019-1180-4f3e-b477-413a9b33bbd1"),
                 Name = "Najot Ta'lim",
-                Description = "Ushbu tashkilot o'z a'zolariga yangi texnologiyalar va dasturlash tillari bo'yicha sifatli ta'lim beradi. Maqsadimiz har bir o'quvchiga amaliy ko'nikmalar va chuqur bilim berish.",
+                Description =
+                    "Ushbu tashkilot o'z a'zolariga yangi texnologiyalar va dasturlash tillari bo'yicha sifatli ta'lim beradi. Maqsadimiz har bir o'quvchiga amaliy ko'nikmalar va chuqur bilim berish.",
                 ClientId = Guid.Parse("54e16318-d140-4453-80c9-1a117dbe75fd"),
             },
-            new ()
+            new()
             {
                 Id = Guid.Parse("e57f81a1-1aeb-4f1c-aae0-9f0e1dcb92c4"),
                 Name = "TechnoPark",
-                Description = "TechnoPark yosh innovatorlar va texnologiya ishqibozlari uchun mo'ljallangan markazdir Biz startaplar va texnologik loyihalar uchun qo'llab-quvvatlash va resurslar taqdim etamiz.",
+                Description =
+                    "TechnoPark yosh innovatorlar va texnologiya ishqibozlari uchun mo'ljallangan markazdir Biz startaplar va texnologik loyihalar uchun qo'llab-quvvatlash va resurslar taqdim etamiz.",
                 ClientId = Guid.Parse("54e16318-d140-4453-80c9-1a117dbe75fd"),
             },
-            new ()
+            new()
             {
                 Id = Guid.Parse("9d2aa9e2-362b-47f2-a46a-f328a0712d3d"),
                 Name = "EduCenter",
@@ -94,7 +104,7 @@ public static class SeedDataExtensions
                     "EduCenter butun umr davomida ta'lim olishni qo'llab-quvvatlaydi.Biz turli yoshdagi odamlarga ko'nikmalarini oshirish va yangi sohalarni o'rganish imkoniyatini beramiz.",
                 ClientId = Guid.Parse("5edbb0fe-7263-4f75-bad8-c9f3d422dd1d"),
             },
-            new ()
+            new()
             {
                 Id = Guid.Parse("60e6a4de-31e5-4f8b-8e6a-0a8f63f41527"),
                 Name = "InnoCity",
@@ -184,6 +194,7 @@ public static class SeedDataExtensions
             });
      }
 
+
     /// <summary>
     /// Seeds product data asynchronously.
     /// </summary>
@@ -194,19 +205,62 @@ public static class SeedDataExtensions
         {
             new()
             {
+                Id = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
+                OrganizationId = Guid.Parse("c2fe1019-1180-4f3e-b477-413a9b33bbd1"),
                 Name = "iPhone",
                 Description = "iPhone is very famous and expensive smart phone in the world. It made by Apple.",
-                OrganizationId = Guid.Parse("c2fe1019-1180-4f3e-b477-413a9b33bbd1")
             },
             new()
             {
+                Id = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
+                OrganizationId = Guid.Parse("e57f81a1-1aeb-4f1c-aae0-9f0e1dcb92c4"),
                 Name = "Macbook",
                 Description =
                     "Macbook is suitable for software developers, designer and etc. It is so expensive but people love it.",
-                OrganizationId = Guid.Parse("e57f81a1-1aeb-4f1c-aae0-9f0e1dcb92c4")
             }
         };
-    
+
         await appDbContext.Products.AddRangeAsync(products);
     }
-}    
+
+    private static async ValueTask SeedDataCustomerFeedbackAsync(AppDbContext appDbContext)
+    {
+        var customersFeedbacks = new List<CustomerFeedback>()
+        {
+            // Positive feedback
+            new()
+            {
+                ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
+                Comment = "This product is **amazing**! It's **easy to use** and **exceeded my expectations**.",
+                UserName = "John Doe",
+            },
+
+            // Neutral feedback
+            new()
+            {
+                ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
+                Comment = "The product is **functional**. It **meets my basic needs**.",
+                UserName = "Jane Smith",
+            },
+
+            // Negative feedback
+            new()
+            {
+                ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
+                Comment =
+                    "I found the product to be **confusing** and **difficult to navigate**. It also **lacked some features** I was hoping for.",
+                UserName = "Alice Miller",
+            },
+
+            // Anonymous feedback with mixed sentiment
+            new()
+            {
+                ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
+                Comment = "The product has **some great features**, but it also has **some flaws**.",
+                UserName = "Joane Miller",
+            }
+        };
+        
+        await appDbContext.Feedbacks.AddRangeAsync(customersFeedbacks);
+    }
+}
