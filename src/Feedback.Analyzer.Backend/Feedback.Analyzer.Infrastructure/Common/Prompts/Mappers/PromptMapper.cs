@@ -9,5 +9,8 @@ public class PromptMapper : Profile
     public PromptMapper()
     {
         CreateMap<AnalysisPrompt, AnalysisPromptDto>().ReverseMap();
+        
+        CreateMap<AnalysisPrompt, PromptResultDto>()
+            .ForMember(dest => dest.PromptId, opt => opt.MapFrom(src => src.Id));
     }
 }

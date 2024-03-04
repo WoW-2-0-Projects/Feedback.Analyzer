@@ -55,7 +55,7 @@ public class PromptsController(IMediator mediator) : ControllerBase
     public async ValueTask<IActionResult> DeletePromptById([FromRoute] Guid promptId, CancellationToken cancellationToken = default)
     {
         var result = await mediator.Send(
-            new PromptDeleteByIdCommand()
+            new PromptDeleteByIdCommand
             {
                 PromptId = promptId
             },
@@ -63,4 +63,25 @@ public class PromptsController(IMediator mediator) : ControllerBase
         );
         return result ? Ok() : BadRequest();
     }
+    
+    #region Prompt Results 
+    
+    [HttpGet("results/{categoryId:guid}")]
+    public async ValueTask<IActionResult> GetPromptResultById([FromRoute] Guid categoryId, CancellationToken cancellationToken = default)
+    {
+        var result = await mediator.Send(
+            new PromptResultGetByCategoryIdQuery()
+            {
+                CategoryId = categoryId
+            },
+            cancellationToken
+        );
+        return result is not null ? Ok(result) : NotFound();
+    }
+    
+    #endregion 
+    
+    #region Execution history 
+    
+    #endregion
 }

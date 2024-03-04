@@ -1,9 +1,9 @@
 <template>
 
-    <div class="w-full h-[200px] flex card card-bg card-round card-shadow">
+    <div class="w-full h-[200px] flex card card-bg card-round card-shadow text-secondaryContentColor">
 
         <!-- Prompt category details -->
-        <div class="flex flex-col items-center justify-center w-full text-secondaryContentColor">
+        <div class="flex flex-col items-center justify-center w-full">
             <h5 class="text-xl">{{ promptCategory.typeDisplayName }}</h5>
             <h5 class="mt-5 text-sm"> {{ LayoutConstants.Versions }} : {{ promptCategory.promptsCount }}</h5>
         </div>
@@ -11,7 +11,7 @@
         <vertical-divider :type="DividerType.ContentLength"/>
 
         <!-- Prompt selection -->
-        <div class="w-full p-5">
+        <div class="w-full p-5 flex flex-col">
 
             <div class="flex gap-2">
 
@@ -29,6 +29,25 @@
                 <app-button :type="ButtonType.Primary" :layout="ButtonLayout.Square" icon="fas fa-plus"
                             :size="ActionComponentSize.Mini" @click="emit('addPrompt', promptCategory)"/>
 
+            </div>
+
+            <div>
+                <table class="table-auto">
+                    <thead>
+                    <tr>
+                        <th class="p-2">Version</th>
+                        <th class="p-2">Exc time</th>
+                        <th class="p-2">Accuracy</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="p-2">2.1</td>
+                        <td class="p-2">10s</td>
+                        <td >68%</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
 
 
@@ -72,6 +91,10 @@ const emit = defineEmits<{
 
 onBeforeMount(() => {
 
+});
+
+const loadAllPromptVersionResults = (() => {
+    console.log();
 });
 
 const selectedFilter = ref<DropDownValue | null>(null);
