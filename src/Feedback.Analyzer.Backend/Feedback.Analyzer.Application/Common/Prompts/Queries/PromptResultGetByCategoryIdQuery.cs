@@ -3,6 +3,9 @@ using Feedback.Analyzer.Domain.Common.Queries;
 
 namespace Feedback.Analyzer.Application.Common.Prompts.Queries;
 
+/// <summary>
+/// Represents a query to retrieve prompt results by category ID.
+/// </summary>
 public record PromptResultGetByCategoryIdQuery : IQuery<ICollection<PromptResultDto>>
 {
     public Guid CategoryId { get; set; }

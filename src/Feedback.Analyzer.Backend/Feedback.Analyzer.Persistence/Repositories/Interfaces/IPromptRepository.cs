@@ -5,6 +5,9 @@ using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
+/// <summary>
+/// Interface for managing prompt entities in the repository.
+/// </summary>
 public interface IPromptRepository
 {
     /// <summary>

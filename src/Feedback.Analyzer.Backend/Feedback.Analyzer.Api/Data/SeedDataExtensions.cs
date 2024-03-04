@@ -212,8 +212,8 @@ public static class SeedDataExtensions
                          ## Result
 
                          """,
-                Version = 0,
-                Revision = 1,
+                Version = 1,
+                Revision = 0,
             },
             new()
             {
@@ -238,8 +238,8 @@ public static class SeedDataExtensions
                          ## Result
 
                          """,
-                Version = 1,
-                Revision = 2,
+                Version = 2,
+                Revision = 0,
             },
             new()
             {
@@ -265,8 +265,8 @@ public static class SeedDataExtensions
                          ## Result
 
                          """,
-                Version = 2,
-                Revision = 3,
+                Version = 3,
+                Revision = 0,
             },
             new()
             {
@@ -291,8 +291,8 @@ public static class SeedDataExtensions
                          ## Result
 
                          """,
-                Version = 3,
-                Revision = 4,
+                Version = 4,
+                Revision = 0,
             },
             new()
             {
@@ -332,8 +332,8 @@ public static class SeedDataExtensions
                          ## Result
 
                          """,
-                Version = 4,
-                Revision = 5,
+                Version = 5,
+                Revision = 0,
             }
         };
 

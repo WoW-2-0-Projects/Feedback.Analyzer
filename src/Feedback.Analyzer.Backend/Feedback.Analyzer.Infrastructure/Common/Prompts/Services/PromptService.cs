@@ -12,6 +12,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 
+/// <summary>
+/// Represents a service for managing prompts.
+/// </summary>
 public class PromptService(IPromptRepository promptRepository, IValidator<AnalysisPrompt> promptValidator, IPromptRepository repo) : IPromptService
 {
     public IQueryable<AnalysisPrompt> Get(Expression<Func<AnalysisPrompt, bool>>? predicate = default, QueryOptions queryOptions = default) =>

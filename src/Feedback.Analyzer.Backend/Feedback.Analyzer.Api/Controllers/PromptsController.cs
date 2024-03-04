@@ -54,7 +54,7 @@ public class PromptsController(IMediator mediator) : ControllerBase
             },
             cancellationToken
         );
-        return result ? Ok() : BadRequest();
+        return result ? Ok(result) : BadRequest();
     }
 
     #region Execution history 
