@@ -57,14 +57,8 @@ const loadOrganizationsAsync = async () => {
     }
 };
 
-/*
- * Change source of organizations to re-calculate layout
- */
 const organizationsChangeSource = ref<NotificationSource>(new NotificationSource());
 
-/*
- * Scroll event handler
- */
 const onScroll = async () => {
 };
 

@@ -6,7 +6,7 @@ import {
 } from "@/infrastructure/apiClients/insightBoxClient/brokers/OrganizationsEndpoints";
 
 /*
- * Represents Insight-Box API client
+ * Provides Insight Box API client functionality
  */
 export class InsightBoxApiClient {
     /*

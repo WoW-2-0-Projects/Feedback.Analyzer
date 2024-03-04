@@ -3,6 +3,9 @@
  */
 import {FilterPagination} from "@/common/FilterPagination";
 
+/*
+ * Represents organization filter
+ */
 export class OrganizationFilter extends  FilterPagination {
 
     /*
