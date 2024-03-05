@@ -77,11 +77,10 @@ import {FeedbackExecutionWorkflow} from "@/modules/prompts/models/FeedbackExecut
 import FormDropDown from "@/common/components/formDropDown/FormDropDown.vue";
 import {TableAction} from "@/common/components/appTable/TableAction";
 import type {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecutionHistory";
-import {Query} from "@/infrastructure/models/query/Query";
-import {PromptExecutionResultFilter} from "@/modules/prompts/models/PromptExecutionResultFilter";
-import {ExecuteSinglePromptCommand} from "@/modules/prompts/models/ExecuteSinglePromptCommand";
+import {DateTimeFormatterService} from "@/infrastructure/services/dateTime/DateTimeFormatterService";
 
 const insightBoxApiClient = new InsightBoxApiClient();
+const dateTimeFormatterService = new DateTimeFormatterService();
 
 const promptExecutionResults = ref<Array<PromptExecutionResult>>([]);
 const promptExecutionHistories = ref<Array<PromptsExecutionHistory>>([]);
@@ -110,18 +109,18 @@ const emit = defineEmits<{
 }>();
 
 const promptResultsTableData = ref<TableData>(new TableData([
-        "Version",
-        "Avg Execution Time",
-        "Average Accuracy",
-        "Executions Count",
+        "V",
+        "AED",
+        "AA",
+        "EC",
         "Actions",
     ], []
 ));
 
 const promptHistoriesTableData = ref<TableData>(new TableData([
-        "Execution Time",
-        "Execution Duration",
-        "Result",
+        "ET",
+        "ED",
+        "A",
         "Actions",
     ], []
 ));
@@ -137,8 +136,7 @@ const loadAllPromptVersionResults = async () => {
 
     if (response.response) {
         promptExecutionResults.value = response.response;
-        promptResultsTableData.value.rows = promptExecutionResults.value.map(result =>
-        {
+        promptResultsTableData.value.rows = promptExecutionResults.value.map(result => {
             return convertResultToTableRowData(result);
         })
     }
@@ -158,23 +156,27 @@ const convertResultToTableRowData = (result: PromptExecutionResult) => {
 };
 
 const loadPromptExecutionHistoryAsync = async () => {
-    if(!props.promptCategory?.selectedPromptId) return;
+    if (!props.promptCategory?.selectedPromptId) return;
 
     const response = await insightBoxApiClient.executionHistories.getByPromptIdAsync(props.promptCategory?.selectedPromptId);
 
     if (response.response) {
         promptExecutionHistories.value = response.response;
-        promptHistoriesTableData.value.rows = promptExecutionResults.value.map(result =>
-        {
+
+        console.log('history', promptExecutionHistories.value);
+
+        promptHistoriesTableData.value.rows = promptExecutionHistories.value.map(result => {
             return convertHistoryToTableRowData(result);
-        })
+        });
     }
 };
 
 const convertHistoryToTableRowData = (result: PromptsExecutionHistory) => {
+    console.log('history data', result);
+
     return new TableRowData([
-            result.executionTime,
-            result.executionDurationInSeconds,
+            dateTimeFormatterService.formatHumanize(result.executionTime),
+            result.executionDurationInMilliseconds,
             result.result !== null
         ],
         [
@@ -183,12 +185,15 @@ const convertHistoryToTableRowData = (result: PromptsExecutionHistory) => {
     );
 };
 
-const onTriggerWorkflow = () => {
-    const executeSinglePromptCommand = new ExecuteSinglePromptCommand();
-    executeSinglePromptCommand.workflowId = selectedWorkflow.value?.value?.id!;
-    executeSinglePromptCommand.promptId = props.promptCategory?.selectedPromptId!;
+const onTriggerWorkflow = async () => {
+    if (!selectedWorkflow.value?.value?.id || !props.promptCategory?.selectedPromptId)
+        return;
 
-    console.log(executeSinglePromptCommand);
+    // const executeSinglePromptCommand = new ExecuteSinglePromptCommand();
+    const response = await insightBoxApiClient.workflows
+        .executeSinglePrompt(selectedWorkflow.value?.value?.id!, props.promptCategory?.selectedPromptId!);
+
+    // console.log(executeSinglePromptCommand);
 }
 
 

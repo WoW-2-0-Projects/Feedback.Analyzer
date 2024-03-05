@@ -14,16 +14,18 @@ public class FeedbackExecutionWorkflowConfiguration : IEntityTypeConfiguration<F
             .IsRequired();
         
         builder
-            .HasOne<Product>()
+            .HasOne(workflow => workflow.Product)
             .WithMany()
             .HasForeignKey(workflow => workflow.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(workflow => workflow.StartingExecutionOption)
+        builder
+            .HasOne(workflow => workflow.StartingExecutionOption)
             .WithOne(executionOptions => executionOptions.FeedbackExecutionWorkflow)
             .HasForeignKey<FeedbackExecutionWorkflow>(promptCategory => promptCategory.StartingExecutionOptionId);
 
-        builder.HasIndex(
+        builder
+            .HasIndex(
                 workflow => new
                 {
                     workflow.Name,

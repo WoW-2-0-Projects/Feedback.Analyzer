@@ -13,7 +13,7 @@ public class PromptsHistoryGetQueryHandler(IPromptsExecutionHistoryService promp
     public async Task<ICollection<PromptsExecutionHistoryDto>> Handle(PromptsHistoryGetQuery request, CancellationToken cancellationToken)
     {
         var result = await promptsExecutionHistoryService.Get(
-                history => history.Id == request.Filter.PromptId,
+                history => history.PromptId == request.Filter.PromptId,
                 new QueryOptions
                 {
                     AsNoTracking = true

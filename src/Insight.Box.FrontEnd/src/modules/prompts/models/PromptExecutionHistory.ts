@@ -5,7 +5,7 @@ export interface PromptsExecutionHistory {
     /**
      * Unique identifier of the prompt execution history record.
      */
-    promptsExecutionHistoryId: string; // Use 'string' for GUIDs in TypeScript
+    id: string; // Use 'string' for GUIDs in TypeScript
 
     /**
      * Unique identifier of the associated prompt.
@@ -30,5 +30,5 @@ export interface PromptsExecutionHistory {
     /**
      * The duration of the prompt execution in seconds.
      */
-    executionDurationInSeconds: number;
+    executionDurationInMilliseconds: number;
 }

@@ -17,4 +17,10 @@ export class WorkflowsEndpointsClient {
         const endpointUrl = this.requestFormatterService.addQueryParams('api/workflows', query);
         return await this.client.getAsync<Array<FeedbackExecutionWorkflow>>(endpointUrl);
     }
+
+    public async executeSinglePrompt(workflowId: string, promptId: string) {
+        const endpointUrl = `api/workflows/${workflowId}/execute/${promptId}`;
+        return await this.client.postAsync(endpointUrl);
+    }
+
 }

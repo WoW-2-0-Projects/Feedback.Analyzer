@@ -225,6 +225,13 @@ public static class SeedDataExtensions
                 ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
                 Comment = "The product has **some great features**, but it also has **some flaws**.",
                 UserName = "Joane Miller",
+            },
+            
+            new()
+            {
+                ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
+                Comment = "I laid my hands on the Viper in a local store and on the spot it felt rather flat. I think I prefer something with more hump and side area to grip onto. right now I have a basilisk v2 and think it's definetely more comfy, but that grip could still be better.\n\nThe Synapse software is extremely greedy though. 300MB HD space and about 200MB RAM is ludicrous for a gloryfied mouse driver.",
+                UserName = "Silvarspark"
             }
         };
 

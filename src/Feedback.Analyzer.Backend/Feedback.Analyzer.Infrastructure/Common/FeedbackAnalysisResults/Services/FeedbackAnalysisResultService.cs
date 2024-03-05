@@ -12,24 +12,26 @@ namespace Feedback.Analyzer.Infrastructure.Common.FeedbackAnalysisResults.Servic
 /// Represents a service for managing feedback analysis results.
 /// </summary>
 /// <param name="feedbackAnalysisResultRepository"></param>
-public class FeedbackAnalysisResultService(
-    IFeedbackAnalysisResultRepository feedbackAnalysisResultRepository): IFeedbackAnalysisResultService
+public class FeedbackAnalysisResultService(IFeedbackAnalysisResultRepository feedbackAnalysisResultRepository) : IFeedbackAnalysisResultService
 {
-    public IQueryable<FeedbackAnalysisResult> Get(Expression<Func<FeedbackAnalysisResult, bool>>? predicate = default,
-        QueryOptions queryOptions = default)
+    public IQueryable<FeedbackAnalysisResult> Get(
+        Expression<Func<FeedbackAnalysisResult, bool>>? predicate = default,
+        QueryOptions queryOptions = default
+    )
     {
         return feedbackAnalysisResultRepository.Get(predicate, queryOptions);
     }
-    
+
     public IQueryable<FeedbackAnalysisResult> Get(FeedbackAnalysisResultFilter feedbackAnalysisResultFilter, QueryOptions queryOptions = default)
     {
-        return feedbackAnalysisResultRepository.Get(queryOptions: queryOptions)
-            .ApplyPagination(feedbackAnalysisResultFilter);
+        return feedbackAnalysisResultRepository.Get(queryOptions: queryOptions).ApplyPagination(feedbackAnalysisResultFilter);
     }
 
-    public ValueTask<FeedbackAnalysisResult?> GetByIdAsync(Guid feedbackAnalysisResultId, 
+    public ValueTask<FeedbackAnalysisResult?> GetByIdAsync(
+        Guid feedbackAnalysisResultId,
         QueryOptions queryOptions = default,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         return feedbackAnalysisResultRepository.GetByIdAsync(feedbackAnalysisResultId, queryOptions, cancellationToken);
     }

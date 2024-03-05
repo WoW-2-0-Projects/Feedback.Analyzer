@@ -20,7 +20,7 @@
                 <form class="flex flex-col gap-10" @submit.prevent="onSubmit">
 
                     <!-- Modal inputs -->
-                    <form-input v-model="prompt.prompt" :label="LayoutConstants.Prompt"
+                    <form-text-area v-model="prompt.prompt" :label="LayoutConstants.Prompt"
                                 :placeholder="LayoutConstants.EnterPrompt"/>
 
                     <!-- Modal actions -->
@@ -42,15 +42,14 @@
 
 <script setup lang="ts">
 
-import {defineEmits, type PropType, ref, watch} from 'vue';
+import {defineEmits, type PropType} from 'vue';
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ButtonType} from "@/common/components/appButton/ButtonType";
-import FormInput from "@/common/components/formInput/FormInput.vue";
 import ModalBase from "@/common/components/modalBase/ModalBase.vue";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
-import type {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisPromptCategory";
+import FormTextArea from "@/common/components/formTextArea/FormTextArea.vue";
 
 const props = defineProps({
     prompt: {

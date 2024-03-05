@@ -104,7 +104,7 @@ public class FeedbackPromptExecutionOrchestrationService(
     {
         throw new NotImplementedException();
     }
-
+    
     private PromptExecutionHistory MapToHistory(Guid promptId, FuncResult<string?> result, double elapsed)
     {
         return new PromptExecutionHistory

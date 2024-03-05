@@ -2,7 +2,7 @@
 
 public class PromptsExecutionHistoryDto
 { 
-    public Guid PromptsExecutionHistoryId { get; set; } 
+    public Guid Id { get; set; } 
     
     public Guid PromptId { get; set; }
 
@@ -12,5 +12,5 @@ public class PromptsExecutionHistoryDto
     
     public DateTime ExecutionTime { get; set; } 
     
-    public int ExecutionDurationInSeconds { get; set; }
+    public int ExecutionDurationInMilliseconds { get; set; }
 }

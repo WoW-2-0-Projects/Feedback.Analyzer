@@ -191,6 +191,10 @@ public static partial class HostConfiguration
             .AddScoped<IFeedbackAnalysisResultService, FeedbackAnalysisResultService>()
             .AddScoped<IFeedbackExecutionWorkflowService, FeedbackExecutionWorkflowService>();
         
+        // Register processing services
+        builder.Services
+            .AddScoped<IPromptExecutionProcessingService, PromptExecutionProcessingService>();
+        
         // Register orchestration services
         builder.Services
             .AddScoped<IFeedbackPromptExecutionOrchestrationService, FeedbackPromptExecutionOrchestrationService>();
