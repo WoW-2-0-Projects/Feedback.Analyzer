@@ -8,14 +8,5 @@ public class FeedbackExecutionWorkflowConfiguration : IEntityTypeConfiguration<F
 {
     public void Configure(EntityTypeBuilder<FeedbackExecutionWorkflow> builder)
     {
-        builder
-            .HasMany<AnalysisPromptCategory>(workflow => workflow.AnalysisPromptCategories)
-            .WithMany(analysis => analysis.FeedbackExecutionWorkflows)
-            .UsingEntity<WorkflowPromptCategoryExecutionOptions>(self =>
-            {
-                self.HasKey(relation => new
-                    { relation.FeedbackExecutionWorkflowId, relation.AnalysisPromptCategoryId });
-                self.ToTable($"{nameof(WorkflowPromptCategoryExecutionOptions)}");
-            });
     }
 }

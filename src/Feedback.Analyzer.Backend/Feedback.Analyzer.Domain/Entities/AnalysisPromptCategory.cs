@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Feedback.Analyzer.Domain.Common.Entities;
 using Feedback.Analyzer.Domain.Common.Prompts;
 using Feedback.Analyzer.Domain.Enums;
@@ -13,6 +14,6 @@ public class AnalysisPromptCategory : Entity
     public AnalysisPrompt? SelectedPrompt { get; set; }
     
     public ICollection<AnalysisPrompt> Prompts { get; set; } = new List<AnalysisPrompt>();
-
-    public List<FeedbackExecutionWorkflow> FeedbackExecutionWorkflows { get; set; }
+    
+    public List<WorkflowPromptCategoryExecutionOptions> FeedbackWorkflowExecutionOptions { get; set; }
 }

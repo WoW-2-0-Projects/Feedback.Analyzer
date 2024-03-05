@@ -6,15 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddPromptCategoryAndPromptRelation : Migration
+    public partial class Add_AnalysisPromptCategory_And_AnalysisPrompt_Relation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Type",
-                table: "Prompts");
-
             migrationBuilder.AddColumn<Guid>(
                 name: "CategoryId",
                 table: "Prompts",
@@ -41,9 +37,10 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prompts_CategoryId",
+                name: "IX_Prompts_CategoryId_Version_Revision",
                 table: "Prompts",
-                column: "CategoryId");
+                columns: new[] { "CategoryId", "Version", "Revision" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PromptCategories_SelectedPromptId",
@@ -76,19 +73,12 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 name: "PromptCategories");
 
             migrationBuilder.DropIndex(
-                name: "IX_Prompts_CategoryId",
+                name: "IX_Prompts_CategoryId_Version_Revision",
                 table: "Prompts");
 
             migrationBuilder.DropColumn(
                 name: "CategoryId",
                 table: "Prompts");
-
-            migrationBuilder.AddColumn<int>(
-                name: "Type",
-                table: "Prompts",
-                type: "integer",
-                nullable: false,
-                defaultValue: 0);
         }
     }
 }

@@ -1,6 +1,5 @@
 using Feedback.Analyzer.Domain.Common.Prompts;
 using Feedback.Analyzer.Domain.Entities;
-using Feedback.Analyzer.Persistence.EntityConfiguration;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Persistence.DataContexts;
@@ -21,31 +20,21 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     
     public DbSet<CustomerFeedback> Feedbacks => Set<CustomerFeedback>();
 
+    #endregion
+
+    #region Prompts Infrastructure
+    
     public DbSet<AnalysisPrompt> Prompts => Set<AnalysisPrompt>();
     
     public DbSet<AnalysisPromptCategory> PromptCategories => Set<AnalysisPromptCategory>();
-
+    
     public DbSet<FeedbackAnalysisResult> FeedbackAnalysisResults => Set<FeedbackAnalysisResult>();
-
+    
     public DbSet<FeedbackExecutionWorkflow> FeedbackExecutionWorkflows => Set<FeedbackExecutionWorkflow>();
-
-    #endregion
-
-    #region PromptsInfrastructure
-
+    
     public DbSet<PromptExecutionHistory> PromptExecutionHistories => Set<PromptExecutionHistory>();
     
-
     #endregion
-    
-    #region Prompt infrastructure
-    public DbSet<AnalysisPrompt> Prompts => Set<AnalysisPrompt>();
-    
-    
-    
-    
-    #endregion
-    
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

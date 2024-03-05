@@ -23,4 +23,16 @@
       <PackageReference Include="Microsoft.SemanticKernel" Version="1.5.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Feedback.Analyzer.Persistence">
+        <HintPath>..\Feedback.Analyzer.Api\bin\Debug\net8.0\Feedback.Analyzer.Persistence.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Feedback.Analyzer.Persistence">
+        <HintPath>..\Feedback.Analyzer.Api\bin\Debug\net8.0\Feedback.Analyzer.Persistence.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

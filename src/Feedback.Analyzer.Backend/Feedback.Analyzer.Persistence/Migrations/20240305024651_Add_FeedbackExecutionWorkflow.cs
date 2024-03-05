@@ -6,19 +6,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAnalysisPromptEntity : Migration
+    public partial class Add_FeedbackExecutionWorkflow : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Prompts",
+                name: "FeedbackExecutionWorkflows",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Prompt = table.Column<string>(type: "character varying(32768)", maxLength: 32768, nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false),
-                    Revision = table.Column<int>(type: "integer", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     CreatedTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -26,7 +24,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Prompts", x => x.Id);
+                    table.PrimaryKey("PK_FeedbackExecutionWorkflows", x => x.Id);
                 });
         }
 
@@ -34,7 +32,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Prompts");
+                name: "FeedbackExecutionWorkflows");
         }
     }
 }

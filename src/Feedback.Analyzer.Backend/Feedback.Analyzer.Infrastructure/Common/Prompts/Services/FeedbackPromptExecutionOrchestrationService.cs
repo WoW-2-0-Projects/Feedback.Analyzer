@@ -4,6 +4,7 @@ using Feedback.Analyzer.Application.Common.Prompts.Brokers;
 using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.PromptsHistory.Services;
+using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Exceptions;
@@ -16,7 +17,7 @@ namespace Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 
 public class FeedbackPromptExecutionOrchestrationService(
     IPromptService promptService,
-    IFeedbackRepository feedbackRepository,
+    ICustomerFeedbackService customerFeedbackService,
     IProductService productService,
     IPromptExecutionBroker promptExecutionBroker,
     IPromptsExecutionHistoryService promptsExecutionHistoryService
@@ -24,7 +25,7 @@ public class FeedbackPromptExecutionOrchestrationService(
 {
     public async ValueTask ExecuteAsync(FeedbackExecutionContext feedbackExecutionContext, CancellationToken cancellationToken = default)
     {
-        var feedback = await feedbackRepository.GetByIdAsync(feedbackExecutionContext.FeedbackId, cancellationToken: cancellationToken) ??
+        var feedback = await customerFeedbackService.GetByIdAsync(feedbackExecutionContext.FeedbackId, cancellationToken: cancellationToken) ??
                        throw new InvalidOperationException(
                            $"Could not execute prompt, feedback with id {feedbackExecutionContext.FeedbackId} not found."
                        );

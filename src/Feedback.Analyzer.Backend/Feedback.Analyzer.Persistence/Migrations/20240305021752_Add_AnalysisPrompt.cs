@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAnalysisPrompt : Migration
+    public partial class Add_AnalysisPrompt : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false),
                     Prompt = table.Column<string>(type: "character varying(32768)", maxLength: 32768, nullable: false),
                     Version = table.Column<int>(type: "integer", nullable: false),
                     Revision = table.Column<int>(type: "integer", nullable: false),

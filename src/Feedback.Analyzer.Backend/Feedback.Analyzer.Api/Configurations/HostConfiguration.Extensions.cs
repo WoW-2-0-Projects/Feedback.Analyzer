@@ -119,7 +119,24 @@ public static partial class HostConfiguration
 
         return builder;
     }
+    
+    /// <summary>
+    /// Adds feedback-related infrastructure services to the web application builder.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddFeedbackInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Register repositories
+        builder.Services
+            .AddScoped<ICustomerFeedbackRepository, CustomerFeedbackRepository>();
+        
+        // Register services
+        builder.Services
+            .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>();
 
+        return builder;
+    }
 
     /// <summary>
     /// Configures exposers including controllers
@@ -227,58 +244,7 @@ public static partial class HostConfiguration
 
         return builder;
     }
-    
-        /// <summary>
-        /// Adds client-related infrastructure services to the web application builder.
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <returns> </returns>
-        private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
-        {
-            // Register repositories
-            builder.Services
-                .AddScoped<IClientRepository, ClientRepository>()
-                .AddScoped<IOrganizationRepository, OrganizationRepository>()
-                .AddScoped<IProductRepository, ProductRepository>();
-            
-            // Register services
-            builder.Services
-                .AddScoped<IClientService, ClientService>()
-                .AddScoped<IOrganizationService, OrganizationService>()
-                .AddScoped<IProductService, ProductService>();
-    
-            return builder;
-        }
-    /// <summary>
-    /// Adds feedback-related infrastructure services to the web application builder.
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <returns></returns>
-    private static WebApplicationBuilder AddFeedbackInfrastructure(this WebApplicationBuilder builder)
-    {
-        // Register repositories
-        builder.Services
-               .AddScoped<ICustomerFeedbackRepository, CustomerFeedbackRepository>();
-        
-        // Register services
-        builder.Services
-               .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>();
 
-        return builder;
-    }
-
-    private static WebApplicationBuilder AddPromptAnalysisInfrastructure(this WebApplicationBuilder builder)
-    {
-        // Register repositories
-        builder.Services
-               .AddScoped<IPromptRepository, PromptRepository>();
-        
-        // Register services
-        builder.Services
-               .AddScoped<IPromptService, PromptService>();
-
-        return builder;
-    }
     /// <summary>
     ///  Configures exposers including controllers and routing.
     /// </summary>

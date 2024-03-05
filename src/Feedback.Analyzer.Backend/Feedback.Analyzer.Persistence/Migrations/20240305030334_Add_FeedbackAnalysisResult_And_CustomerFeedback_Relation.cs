@@ -1,13 +1,12 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class FeedbackAnalysisResultMigration : Migration
+    public partial class Add_FeedbackAnalysisResult_And_CustomerFeedback_Relation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +32,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     FeedbackMetrics_Nps = table.Column<float>(type: "real", nullable: false),
                     FeedbackMetrics_Csat = table.Column<float>(type: "real", nullable: false),
                     FeedbackMetrics_Ces = table.Column<float>(type: "real", nullable: false),
+                    CategorizedOpinions = table.Column<string>(type: "json", nullable: false),
+                    EntityIdentifications = table.Column<string>(type: "json", nullable: false),
                     CustomerFeedbackId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
@@ -50,49 +51,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "CategorizedOpinions",
-                columns: table => new
-                {
-                    FeedbackAnalysisResultId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Category = table.Column<string>(type: "text", nullable: false),
-                    Opinions = table.Column<string[]>(type: "text[]", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategorizedOpinions", x => new { x.FeedbackAnalysisResultId, x.Id });
-                    table.ForeignKey(
-                        name: "FK_CategorizedOpinions_FeedbackAnalysisResults_FeedbackAnalysi~",
-                        column: x => x.FeedbackAnalysisResultId,
-                        principalTable: "FeedbackAnalysisResults",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EntityIdentification",
-                columns: table => new
-                {
-                    FeedbackAnalysisResultId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FeedbackId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Key = table.Column<string>(type: "text", nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EntityIdentification", x => new { x.FeedbackAnalysisResultId, x.Id });
-                    table.ForeignKey(
-                        name: "FK_EntityIdentification_FeedbackAnalysisResults_FeedbackAnalys~",
-                        column: x => x.FeedbackAnalysisResultId,
-                        principalTable: "FeedbackAnalysisResults",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_FeedbackAnalysisResults_CustomerFeedbackId",
                 table: "FeedbackAnalysisResults",
@@ -103,12 +61,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "CategorizedOpinions");
-
-            migrationBuilder.DropTable(
-                name: "EntityIdentification");
-
             migrationBuilder.DropTable(
                 name: "FeedbackAnalysisResults");
         }

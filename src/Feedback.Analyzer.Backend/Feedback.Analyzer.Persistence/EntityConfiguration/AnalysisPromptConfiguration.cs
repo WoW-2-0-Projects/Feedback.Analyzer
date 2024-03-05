@@ -1,4 +1,5 @@
 using Feedback.Analyzer.Domain.Common.Prompts;
+using Feedback.Analyzer.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
