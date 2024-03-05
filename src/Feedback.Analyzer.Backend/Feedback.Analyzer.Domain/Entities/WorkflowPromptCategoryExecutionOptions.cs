@@ -2,8 +2,7 @@ using Feedback.Analyzer.Domain.Common.Entities;
 
 namespace Feedback.Analyzer.Domain.Entities;
 
-public class WorkflowPromptCategoryExecutionOptions : Entity,
-    IParameterizedCloneable<FeedbackExecutionWorkflow, WorkflowPromptCategoryExecutionOptions>
+public class WorkflowPromptCategoryExecutionOptions : Entity, IParameterizedCloneable<FeedbackExecutionWorkflow, WorkflowPromptCategoryExecutionOptions>
 {
     public Guid AnalysisPromptCategoryId { get; set; }
 
@@ -12,6 +11,8 @@ public class WorkflowPromptCategoryExecutionOptions : Entity,
     public AnalysisPromptCategory AnalysisPromptCategory { get; set; } = default!;
 
     public FeedbackExecutionWorkflow FeedbackExecutionWorkflow { get; set; } = default!;
+    
+    public Guid? ParentId { get; set; }
 
     public List<WorkflowPromptCategoryExecutionOptions> ChildExecutionOptions { get; set; } = default!;
 

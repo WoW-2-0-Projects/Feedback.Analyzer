@@ -91,6 +91,7 @@ public static partial class HostConfiguration
         //register db context
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
+            options.EnableDetailedErrors();
             options.UseNpgsql(dbConnectionString);
             options.EnableSensitiveDataLogging();
         });

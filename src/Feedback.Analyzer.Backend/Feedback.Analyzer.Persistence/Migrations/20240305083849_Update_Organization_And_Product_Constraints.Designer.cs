@@ -3,6 +3,7 @@ using System;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240305083849_Update_Organization_And_Product_Constraints")]
+    partial class Update_Organization_And_Product_Constraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -335,26 +338,15 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowPromptCategoryExecutionOptions", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("AnalysisPromptCategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("FeedbackExecutionWorkflowId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnalysisPromptCategoryId");
+                    b.HasKey("AnalysisPromptCategoryId", "FeedbackExecutionWorkflowId");
 
                     b.HasIndex("FeedbackExecutionWorkflowId");
-
-                    b.HasIndex("ParentId");
 
                     b.ToTable("WorkflowPromptCategoryExecutionOptions");
                 });
@@ -589,7 +581,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasOne("Feedback.Analyzer.Domain.Entities.WorkflowPromptCategoryExecutionOptions", null)
                         .WithMany("ChildExecutionOptions")
-                        .HasForeignKey("ParentId");
+                        .HasForeignKey("AnalysisPromptCategoryId", "FeedbackExecutionWorkflowId");
 
                     b.Navigation("AnalysisPromptCategory");
 

@@ -8,15 +8,13 @@ public class WorkflowPromptCategoryExecutionOptionsConfigurations : IEntityTypeC
 {
     public void Configure(EntityTypeBuilder<WorkflowPromptCategoryExecutionOptions> builder)
     {
-        builder.Ignore(executionOptions => executionOptions.Id);
-        
-        builder.HasKey(
-            executionOptions => new
-            {
-                executionOptions.AnalysisPromptCategoryId,
-                executionOptions.FeedbackExecutionWorkflowId
-            }
-        );
+        // builder.HasKey(
+        //     executionOptions => new
+        //     {
+        //         executionOptions.AnalysisPromptCategoryId,
+        //         executionOptions.FeedbackExecutionWorkflowId
+        //     }
+        // );
 
         builder.HasOne(executionOptions => executionOptions.AnalysisPromptCategory)
             .WithMany(promptCategory => promptCategory.FeedbackWorkflowExecutionOptions)
@@ -28,13 +26,13 @@ public class WorkflowPromptCategoryExecutionOptionsConfigurations : IEntityTypeC
 
         builder.HasOne<WorkflowPromptCategoryExecutionOptions>()
             .WithMany(executionOptions => executionOptions.ChildExecutionOptions)
-            .HasForeignKey(
-                executionOptions => new
-                {
-                    executionOptions.AnalysisPromptCategoryId,
-                    executionOptions.FeedbackExecutionWorkflowId
-                }
-            )
+            .HasForeignKey(executionOptions => executionOptions.ParentId)
+            //     executionOptions => new
+            //     { 
+            //         executionOptions.AnalysisPromptCategoryId,
+            //         executionOptions.FeedbackExecutionWorkflowId
+            //     }
+            // )
             .IsRequired(false);
     }
 }

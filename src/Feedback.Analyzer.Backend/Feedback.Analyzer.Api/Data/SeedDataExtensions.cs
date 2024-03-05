@@ -2,6 +2,7 @@ using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.WebEncoders.Testing;
 
 namespace Feedback.Analyzer.Api.Data;
 
@@ -39,10 +40,10 @@ public static class SeedDataExtensions
 
         // if (!await appDbContext.PromptExecutionHistories.AnyAsync())
         //     await SeedAnalysisPromptAsync(appDbContext);
-        
+
         if (!await appDbContext.FeedbackExecutionWorkflows.AnyAsync())
             await SeedAnalysisWorkflows(appDbContext);
- 
+
         if (appDbContext.ChangeTracker.HasChanges())
             await appDbContext.SaveChangesAsync();
     }
@@ -296,6 +297,7 @@ public static class SeedDataExtensions
         };
 
         await appDbContext.PromptCategories.AddRangeAsync(promptCategories);
+        await appDbContext.SaveChangesAsync();
     }
 
     /// <summary>
@@ -483,13 +485,13 @@ public static class SeedDataExtensions
             ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
             Type = WorkflowType.Template,
         };
-        
+
         await appDbContext.FeedbackExecutionWorkflows.AddAsync(templateWorkflow);
-        
+
         // Add template workflow execution options
-        templateWorkflow.FeedbackWorkflowExecutionOptions =
-        [
-            new WorkflowPromptCategoryExecutionOptions
+        var executionOptions = new List<WorkflowPromptCategoryExecutionOptions>
+        {
+            new()
             {
                 FeedbackExecutionWorkflowId = templateWorkflow.Id,
                 AnalysisPromptCategoryId = Guid.Parse("15072FC8-63C7-49EC-BF4F-3FD2A8479CF4"),
@@ -562,16 +564,30 @@ public static class SeedDataExtensions
                     }
                 ]
             }
-        ];
-        
-        // Validation
-        await appDbContext.WorkflowPromptCategoryExecutionOptions.AddRangeAsync(templateWorkflow.FeedbackWorkflowExecutionOptions);
+        };
 
-        // Add workflow
+        appDbContext.WorkflowPromptCategoryExecutionOptions.AddRange(executionOptions);
 
+        await appDbContext.SaveChangesAsync();
+    }
 
-        // Add training workflow
-        var trainingWorkflow = templateWorkflow.Clone();
-        await appDbContext.FeedbackExecutionWorkflows.AddAsync(trainingWorkflow);
+    public static List<WorkflowPromptCategoryExecutionOptions> AddOptionsRecursively(
+        List<WorkflowPromptCategoryExecutionOptions> list,
+        WorkflowPromptCategoryExecutionOptions root
+    )
+    {
+        list.Add(root);
+        root.ChildExecutionOptions?.ForEach(childOptions => AddOptionsRecursively(list, childOptions));
+
+        return list;
+    }
+
+    public static async Task AddChildren(AppDbContext dbContext, WorkflowPromptCategoryExecutionOptions root)
+    {
+        await dbContext.WorkflowPromptCategoryExecutionOptions.AddAsync(root);
+        // list.Add(root);
+        root.ChildExecutionOptions?.ForEach(childOptions => dbContext.AddRangeAsync(childOptions));
+
+        // return list;
     }
 }
