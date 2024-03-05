@@ -1,10 +1,10 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Feedback.Analyzer.Application.Common.Prompts.Commands;
 using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Organizations.Commands;
 using Feedback.Analyzer.Domain.Common.Commands;
-using Feedback.Analyzer.Domain.Common.Prompts;
+using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Prompts.CommandHandlers;
 
@@ -15,7 +15,7 @@ namespace Feedback.Analyzer.Infrastructure.Common.Prompts.CommandHandlers;
 public class PromptCreateCommandHandler(IMapper mapper, IPromptService promptService) : ICommandHandler<PromptCreateCommand, AnalysisPromptDto>
 {
     public async Task<AnalysisPromptDto> Handle(PromptCreateCommand request, CancellationToken cancellationToken)
-        {
+    {
         // Conversion to domain entity cancellationToken
         var prompt = mapper.Map<AnalysisPrompt>(request.Prompt);
 

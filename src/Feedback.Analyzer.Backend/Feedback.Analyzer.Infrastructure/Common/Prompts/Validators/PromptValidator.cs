@@ -1,4 +1,4 @@
-using Feedback.Analyzer.Domain.Common.Prompts;
+using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using FluentValidation;
 

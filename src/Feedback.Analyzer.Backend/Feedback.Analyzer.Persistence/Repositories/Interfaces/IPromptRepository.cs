@@ -1,10 +1,13 @@
 using System.Linq.Expressions;
 using Feedback.Analyzer.Domain.Common.Commands;
-using Feedback.Analyzer.Domain.Common.Prompts;
 using Feedback.Analyzer.Domain.Common.Queries;
+using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
+/// <summary>
+/// Interface for managing prompt entities in the repository.
+/// </summary>
 public interface IPromptRepository
 {
     /// <summary>
@@ -28,7 +31,7 @@ public interface IPromptRepository
     /// Asynchronously creates a new prompt in the repository.
     /// </summary>
     /// <param name="prompt">The prompt to be created.</param>
-    /// <param name="commandOptions">Commands options for the creation operation.</param>
+    /// <param name="commandOptions">Command options for the creation operation.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task representing the asynchronous operation that yields the created prompt.</returns>
     ValueTask<AnalysisPrompt> CreateAsync(AnalysisPrompt prompt,

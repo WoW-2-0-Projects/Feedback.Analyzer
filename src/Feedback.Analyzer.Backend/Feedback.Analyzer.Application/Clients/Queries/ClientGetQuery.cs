@@ -8,5 +8,5 @@ namespace Feedback.Analyzer.Application.Clients.Queries;
 /// </summary>
 public record ClientGetQuery : IQuery<ICollection<ClientDto>>
 {    
-     public ClientFilter ClientFilter { get; init; } = default!;
+     public ClientFilter Filter { get; init; } = default!;
 }
