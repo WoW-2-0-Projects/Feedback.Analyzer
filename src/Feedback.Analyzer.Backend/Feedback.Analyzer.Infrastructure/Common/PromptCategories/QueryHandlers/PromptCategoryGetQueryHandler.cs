@@ -27,9 +27,8 @@ public class PromptCategoryGetQueryHandler(IPromptCategoryService promptCategory
                 }
             )
             .Include(promptCategory => promptCategory.Prompts)
-            .ProjectTo<AnalysisPromptCategoryDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
-        return matchedPromptCategories;
+        return mapper.Map<ICollection<AnalysisPromptCategoryDto>>(matchedPromptCategories);
     }
 }

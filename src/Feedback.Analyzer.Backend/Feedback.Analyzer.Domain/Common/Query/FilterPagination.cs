@@ -16,20 +16,6 @@ public class FilterPagination
     public uint PageToken { get; set; } = 1;
 
     /// <summary>
-    ///  Initializes a new instance of the <see cref="FilterPagination"/> class with specified page size and page token.
-    /// </summary>
-    /// <param name="pageSize"></param>
-    /// <param name="pageToken"></param>
-    public FilterPagination(uint pageSize, uint pageToken)
-    {
-        PageSize = pageSize;
-        PageToken = pageToken;
-    }
-
-    public FilterPagination()
-    {
-    }
-    /// <summary>
     /// Gets the hash code for the current <see cref="FilterPagination"/> instance.
     /// </summary>
     /// <returns></returns>

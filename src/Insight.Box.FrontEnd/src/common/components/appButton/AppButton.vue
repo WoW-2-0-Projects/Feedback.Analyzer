@@ -66,13 +66,16 @@ const componentStyles = computed(() => {
     // Add button type styles
     switch (props.type) {
         case ButtonType.Primary:
-            styles += 'theme-btn-bg-primary ';
+            styles += ' theme-action-primary';
             break;
         case ButtonType.Secondary:
-            styles += 'theme-btn-bg-secondary ';
+            styles += ' theme-action-secondary';
             break;
         case ButtonType.Danger :
-            styles += 'theme-btn-bg-danger ';
+            styles += ' theme-action-danger';
+            break;
+        case ButtonType.Success :
+            styles += ' theme-action-success';
             break;
     }
 

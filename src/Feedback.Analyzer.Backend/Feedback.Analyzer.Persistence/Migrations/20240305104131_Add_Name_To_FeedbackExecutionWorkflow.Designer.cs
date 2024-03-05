@@ -3,6 +3,7 @@ using System;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240305104131_Add_Name_To_FeedbackExecutionWorkflow")]
+    partial class Add_Name_To_FeedbackExecutionWorkflow
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +62,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.HasIndex("CategoryId", "Version", "Revision")
                         .IsUnique();
 
-                    b.ToTable("Prompts", (string)null);
+                    b.ToTable("Prompts");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", b =>
@@ -70,8 +73,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("text");
 
                     b.Property<Guid?>("SelectedPromptId")
                         .HasColumnType("uuid");
@@ -86,7 +88,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.HasIndex("SelectedPromptId")
                         .IsUnique();
 
-                    b.ToTable("PromptCategories", (string)null);
+                    b.ToTable("PromptCategories");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Client", b =>
@@ -129,7 +131,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.CustomerFeedback", b =>
@@ -167,7 +169,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Feedbacks", (string)null);
+                    b.ToTable("Feedbacks");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult", b =>
@@ -204,7 +206,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.HasIndex("CustomerFeedbackId")
                         .IsUnique();
 
-                    b.ToTable("FeedbackAnalysisResults", (string)null);
+                    b.ToTable("FeedbackAnalysisResults");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackExecutionWorkflow", b =>
@@ -247,7 +249,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.HasIndex("Name", "ProductId")
                         .IsUnique();
 
-                    b.ToTable("FeedbackExecutionWorkflows", (string)null);
+                    b.ToTable("FeedbackExecutionWorkflows");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>
@@ -279,7 +281,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Organizations", (string)null);
+                    b.ToTable("Organizations");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Product", b =>
@@ -317,7 +319,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("OrganizationId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.PromptExecutionHistory", b =>
@@ -345,7 +347,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("PromptId");
 
-                    b.ToTable("PromptExecutionHistories", (string)null);
+                    b.ToTable("PromptExecutionHistories");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowPromptCategoryExecutionOptions", b =>
@@ -366,7 +368,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("WorkflowPromptCategoryExecutionOptions", (string)null);
+                    b.ToTable("WorkflowPromptCategoryExecutionOptions");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", b =>
@@ -408,7 +410,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult.FeedbackActionablePoints#Feedback.Analyzer.Domain.Entities.FeedbackActionablePoints", "FeedbackActionablePoints", b1 =>
+                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackActionablePoints", "FeedbackActionablePoints", b1 =>
                         {
                             b1.Property<Guid>("FeedbackAnalysisResultId")
                                 .HasColumnType("uuid");
@@ -431,13 +433,13 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                             b1.HasKey("FeedbackAnalysisResultId");
 
-                            b1.ToTable("FeedbackAnalysisResults", (string)null);
+                            b1.ToTable("FeedbackAnalysisResults");
 
                             b1.WithOwner()
                                 .HasForeignKey("FeedbackAnalysisResultId");
                         });
 
-                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult.FeedbackEntities#Feedback.Analyzer.Domain.Entities.FeedbackEntities", "FeedbackEntities", b1 =>
+                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackEntities", "FeedbackEntities", b1 =>
                         {
                             b1.Property<Guid>("FeedbackAnalysisResultId")
                                 .HasColumnType("uuid");
@@ -452,13 +454,13 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                             b1.HasKey("FeedbackAnalysisResultId");
 
-                            b1.ToTable("FeedbackAnalysisResults", (string)null);
+                            b1.ToTable("FeedbackAnalysisResults");
 
                             b1.WithOwner()
                                 .HasForeignKey("FeedbackAnalysisResultId");
                         });
 
-                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult.FeedbackMetrics#Feedback.Analyzer.Domain.Entities.FeedbackMetrics", "FeedbackMetrics", b1 =>
+                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackMetrics", "FeedbackMetrics", b1 =>
                         {
                             b1.Property<Guid>("FeedbackAnalysisResultId")
                                 .HasColumnType("uuid");
@@ -474,13 +476,13 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                             b1.HasKey("FeedbackAnalysisResultId");
 
-                            b1.ToTable("FeedbackAnalysisResults", (string)null);
+                            b1.ToTable("FeedbackAnalysisResults");
 
                             b1.WithOwner()
                                 .HasForeignKey("FeedbackAnalysisResultId");
                         });
 
-                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult.FeedbackOpinion#Feedback.Analyzer.Domain.Entities.FeedbackOpinion", "FeedbackOpinion", b1 =>
+                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackOpinion", "FeedbackOpinion", b1 =>
                         {
                             b1.Property<Guid>("FeedbackAnalysisResultId")
                                 .HasColumnType("uuid");
@@ -498,13 +500,13 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                             b1.HasKey("FeedbackAnalysisResultId");
 
-                            b1.ToTable("FeedbackAnalysisResults", (string)null);
+                            b1.ToTable("FeedbackAnalysisResults");
 
                             b1.WithOwner()
                                 .HasForeignKey("FeedbackAnalysisResultId");
                         });
 
-                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult.FeedbackRelevance#Feedback.Analyzer.Domain.Entities.FeedbackRelevance", "FeedbackRelevance", b1 =>
+                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackRelevance", "FeedbackRelevance", b1 =>
                         {
                             b1.Property<Guid>("FeedbackAnalysisResultId")
                                 .HasColumnType("uuid");
@@ -526,7 +528,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                             b1.HasKey("FeedbackAnalysisResultId");
 
-                            b1.ToTable("FeedbackAnalysisResults", (string)null);
+                            b1.ToTable("FeedbackAnalysisResults");
 
                             b1.WithOwner()
                                 .HasForeignKey("FeedbackAnalysisResultId");

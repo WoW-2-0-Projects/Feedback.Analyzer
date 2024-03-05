@@ -50,21 +50,3 @@ body {
     scrollbar-width: none; /* Firefox */
   }
 }
-
-/* Base scrollbar styling with Tailwind classes (if needed) */
-body {
-
-}
-
-/*!* WebKit customization *!*/
-/*::-webkit-scrollbar {*/
-/*  width: 12px;*/
-/*  background-color: hsl(0, 0%, 90%); !* Tailwind color *!*/
-/*}*/
-
-/*::-webkit-scrollbar-thumb {*/
-/*  background: hsl(220, 50%, 50%); !* Tailwind color *!*/
-/*  border-radius: 6px;*/
-/*}*/
-
-

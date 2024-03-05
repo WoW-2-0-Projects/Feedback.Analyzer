@@ -8,9 +8,9 @@ public class AnalysisPromptCategoryDto
 {
     public Guid Id { get; set; }
     
-    public FeedbackAnalysisPromptCategory Type { get; set; }
+    public FeedbackAnalysisPromptCategory Category { get; set; }
 
-    public string TypeDisplayName => Type.GetDisplayName(); 
+    public string TypeDisplayName => Category.GetDisplayName(); 
     
     public int PromptsCount { get; set; }
     

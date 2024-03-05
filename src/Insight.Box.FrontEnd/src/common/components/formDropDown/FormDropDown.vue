@@ -38,8 +38,8 @@
         <!-- Drop down options -->
         <div class="absolute mt-2 w-full focus:outline-none appearance-none rounded-md
                     theme-modal-shadow  theme-bg-secondary theme-input-border-focus z-10 overflow-hidden theme-input"
-              v-show="isOpen"
-            >
+             v-show="isOpen"
+        >
             <ul>
                 <li v-for="(value, index) in searchedOptions" :key="index" @mousedown="onSelected(value)"
                     class="px-4 py-4 cursor-pointer theme-input-hover"
@@ -112,17 +112,17 @@ onMounted(() => {
 });
 
 // Watcher for search value
-watch(searchValue, (newValue) => {
-    if (!newValue || newValue === '')
-        searchedOptions.value = props.values;
-    else
-        searchOption(newValue);
-});
+watch(() => [searchValue, props.values], () => searchOption());
 
 // Filters the options based on the search value
-const searchOption = (key: string) => {
-    searchedOptions.value = props.values.filter((value) => {
-        return value.key.toLowerCase().includes(key.toLowerCase());
+const searchOption = () => {
+    if (!searchValue.value || searchValue.value === '') {
+        searchedOptions.value = props.values;
+        return;
+    }
+
+    searchedOptions.value = props.values.filter((option) => {
+        return option.key.toLowerCase().includes(searchValue.value.toLowerCase());
     });
 };
 

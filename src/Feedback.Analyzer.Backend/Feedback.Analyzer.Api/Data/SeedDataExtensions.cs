@@ -549,6 +549,7 @@ public static class SeedDataExtensions
         // Add template workflow
         var templateWorkflow = new FeedbackExecutionWorkflow
         {
+            Name = "Base Workflow",
             ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
             Type = WorkflowType.Template,
             StartingExecutionOption = executionOptions.First()
@@ -557,6 +558,9 @@ public static class SeedDataExtensions
         appDbContext.FeedbackExecutionWorkflows.Add(templateWorkflow);
 
         var trainingWorkflow = templateWorkflow.Clone();
+        trainingWorkflow.Name = "Training Workflow";
+        trainingWorkflow.Type = WorkflowType.Training;
+        trainingWorkflow.ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D");
 
         appDbContext.FeedbackExecutionWorkflows.Add(trainingWorkflow);
 

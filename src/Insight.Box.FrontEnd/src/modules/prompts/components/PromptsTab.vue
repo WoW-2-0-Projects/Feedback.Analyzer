@@ -13,7 +13,7 @@
 
             <!-- Prompts card -->
             <prompt-category-card v-for="promptCategory in promptCategories" :key="promptCategory.id"
-                                            :promptCategory="promptCategory"
+                                            :promptCategory="promptCategory" :workflows="trainingWorkflows"
                                             @addPrompt="categoryId => openPromptModal(null, categoryId)"
                                             @editPrompt="promptId=> openPromptModal(promptId, null)"
             />
@@ -46,12 +46,15 @@ import {CreatePromptCommand} from "@/modules/prompts/models/CreatePromptCommand"
 import {PromptCategoryFilter} from "@/modules/prompts/models/PromptCategoryFilter";
 import type {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisPromptCategory";
 import PromptCategoryCard from "@/modules/prompts/components/PromptCategoryCard.vue";
+import {FeedbackExecutionWorkflowFilter} from "@/modules/prompts/models/FeedbackExecutionWorkflowFilter";
+import {WorkflowType} from "@/modules/prompts/models/WorkflowType";
+import {FeedbackExecutionWorkflow} from "@/modules/prompts/models/FeedbackExecutionWorkflow";
 
-/* Services */
+// Services
 const insightBoxApiClient = new InsightBoxApiClient();
 const documentService = new DocumentService();
 
-/* States */
+// States
 const isLoading = ref<boolean>(false);
 const promptsQuery = ref<Query>(new Query(new PromptFilter()));
 const promptsCategoryQuery = ref<Query>(new Query(new PromptCategoryFilter()));
@@ -59,23 +62,28 @@ const prompts = ref<Array<AnalysisPrompt>>([]);
 const promptCategories = ref<Array<AnalysisPromptCategory>>([]);
 const noPromptCategoriesFound = ref<boolean>(false);
 
-/* Infinite scroll states */
+// Infinite scroll states
 const promptsChangeSource = ref<NotificationSource>(new NotificationSource());
 
-/* Prompt modal states */
+// Prompt modal states
 const promptModalActive = ref<boolean>(false);
 const isCreate = ref<boolean>(true);
 const editingPrompt = ref<AnalysisPrompt>(new AnalysisPrompt());
 
-/* Search bar states */
+// Search bar states
 const isSearchBarLoading = ref<boolean>(false);
+
+// Workflow states
+const workflowQuery = ref<Query<FeedbackExecutionWorkflowFilter>>(new Query<FeedbackExecutionWorkflowFilter>(new
+FeedbackExecutionWorkflowFilter(WorkflowType.Training)));
+const trainingWorkflows = ref<Array<FeedbackExecutionWorkflow>>([]);
 
 onBeforeMount(async () => {
     // Set page title
     documentService.setTitle(LayoutConstants.Prompts);
 
-    // Load prompt categories
     await loadPromptCategoriesAsync();
+    await loadWorkflowsAsync();
 });
 
 /*
@@ -95,20 +103,17 @@ const loadPromptCategoriesAsync = async () => {
     isLoading.value = false;
 };
 
-/*
- * Loads prompts
- */
-const loadPromptsAsync = async (categoryId: string) => {
+const loadWorkflowsAsync = async () => {
     isLoading.value = true;
 
-    const response = await insightBoxApiClient.prompts.getAsync(promptsQuery.value);
+    const response = await insightBoxApiClient.workflows.getAsync(workflowQuery.value);
 
     if (response.response) {
-        promptCategories.value.find(category => category.id === categoryId)?.prompts.push(...response.response);
+        trainingWorkflows.value.push(...response.response);
     }
 
     isLoading.value = false;
-};
+}
 
 /*
  * Handles prompt modal submit

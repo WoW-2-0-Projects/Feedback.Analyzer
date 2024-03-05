@@ -86,14 +86,18 @@
   @apply transition duration-300;
 }
 
-.theme-btn-bg-primary {
+.theme-action-primary {
   @apply bg-accentPrimaryColor;
 }
 
-.theme-btn-bg-secondary {
+.theme-action-secondary {
   @apply bg-accentSecondaryColor;
 }
 
-.theme-btn-bg-danger {
+.theme-action-danger {
   @apply bg-dangerColor;
+}
+
+.theme-action-success {
+  @apply bg-successColor;
 }

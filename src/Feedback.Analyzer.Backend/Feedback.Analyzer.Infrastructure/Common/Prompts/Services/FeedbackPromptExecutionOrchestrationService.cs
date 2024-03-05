@@ -9,7 +9,6 @@ using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Exceptions;
 using Feedback.Analyzer.Domain.Entities;
-using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using Microsoft.SemanticKernel;
 using Newtonsoft.Json;
 

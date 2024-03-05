@@ -18,9 +18,13 @@
             <!-- Training workflows -->
             <div class="mt-20">
                 <h5 class="text-center">Training workflows</h5>
-                <form-drop-down label="Filter by" model-value="selectedFilter" values="filterDropDownValues"
+                <form-drop-down label="Filter by" v-model="selectedWorkflow" :values="workflowDropDownValues"
                                 :size="ActionComponentSize.Small"/>
             </div>
+
+            <app-button :type="ButtonType.Success" :layout="ButtonLayout.Rectangle" icon="fas fa-play"
+                        text="Trigger"
+                        :size="ActionComponentSize.ExtraSmall" @click="emit('addPrompt', (promptCategory.id))"/>
 
         </div>
 
@@ -54,7 +58,7 @@
 
 <script setup lang="ts">
 
-import {onBeforeMount, type PropType, ref} from "vue";
+import {onBeforeMount, type PropType, ref, watch} from "vue";
 import type {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisPromptCategory";
 import {ButtonType} from "@/common/components/appButton/ButtonType";
 import AppButton from "@/common/components/appButton/AppButton.vue";
@@ -64,8 +68,6 @@ import {DividerType} from "@/common/components/divider/DividerType";
 import {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
-import {Query} from "@/infrastructure/models/query/Query";
-import {PromptExecutionResultFilter} from "@/modules/prompts/models/PromptExecutionResultFilter";
 import type {PromptExecutionResult} from "@/modules/prompts/models/PromptExecutionResult";
 import AppTable from "@/common/components/appTable/AppTable.vue";
 import {TableData} from "@/common/components/appTable/TableData";
@@ -73,18 +75,29 @@ import {LayoutConstants} from "../../../common/constants/LayoutConstants";
 import {TableRowData} from "@/common/components/appTable/TableRowData";
 import {TableAction} from "@/common/components/appTable/TableAction";
 import FormDropDown from "@/common/components/formDropDown/FormDropDown.vue";
+import type {FeedbackExecutionWorkflow} from "@/modules/prompts/models/FeedbackExecutionWorkflow";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 
-const promptExecutionResultQuery = ref<Query>(new Query(new PromptExecutionResultFilter()));
 const promptExecutionResults = ref<Array<PromptExecutionResult>>([]);
 
 const props = defineProps({
     promptCategory: {
         type: Object as PropType<AnalysisPromptCategory>,
         required: true
+    },
+    workflows: {
+        type: Array as PropType<Array<FeedbackExecutionWorkflow>>,
+        required: true
     }
 });
+
+const selectedWorkflow = ref<DropDownValue<string, FeedbackExecutionWorkflow> | null>(null);
+const workflowDropDownValues = ref<Array<DropDownValue<string, FeedbackExecutionWorkflow>>>();
+
+watch(() => props.workflows, async () => {
+    loadWorkflowOptions();
+}, {deep: true});
 
 const emit = defineEmits<{
     (e: 'addPrompt', promptCategoryId: string): void
@@ -97,7 +110,7 @@ const promptResultsTableData = ref<TableData>(new TableData([
         "AA",
         "EC",
         "Actions",
-    ],[]
+    ], []
 ));
 
 const promptHistoriesTableData = ref<TableData>(new TableData([
@@ -106,10 +119,11 @@ const promptHistoriesTableData = ref<TableData>(new TableData([
         "AA",
         "EC",
         "Actions",
-    ],[]
+    ], []
 ));
 
 onBeforeMount(async () => {
+    loadWorkflowOptions();
     await loadAllPromptVersionResults();
 });
 
@@ -135,24 +149,27 @@ const convertResultToTableRowData = (result: PromptExecutionResult) => {
     );
 };
 
-// const convertResultToTableRowData = (result: PromptExecutionResult) => {
-//     return new TableRowData([
-//         $`{result.version}.${result.revision}`,
-//         result.averageExecutionTime,
-//         result.averageAccuracy,
-//         result.executionsCount
-//         ],
-//         [
-//             new TableAction(() => emit('editPrompt', result.promptId))
-//         ]
-//     ]
-// };
+const convertHistoryToTableRowData = (result: ) => {
+    return new TableRowData([
+            `${result.version}.${result.revision}`,
+            result.averageExecutionTime,
+            result.averageAccuracy,
+            result.executionsCount,  // Comma added here
+        ],
+        [
+            new TableAction(() => emit('editPrompt', result.promptId), ButtonType.Secondary, 'fas fa-edit')
+        ]
+    );
+};
 
-const selectedFilter = ref<DropDownValue | null>(null);
-const filterDropDownValues = ref<Array<DropDownValue>>([
-    {key: 'All', value: 'All'},
-    {key: 'Active', value: 'Active'},
-    {key: 'Inactive', value: 'Inactive'}
-]);
+const loadWorkflowOptions = () => {
+    console.log('test', props.workflows);
+
+    workflowDropDownValues.value = props.workflows?.map(workflow => {
+        return new DropDownValue(workflow.name, workflow);
+    });
+
+    console.log('drop', workflowDropDownValues.value);
+};
 
 </script>

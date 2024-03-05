@@ -1,6 +1,9 @@
+using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Domain.Enums;
+
 namespace Feedback.Analyzer.Application.Common.Prompts.Models;
 
-public abstract class FeedbackExecutionContext
+public class FeedbackExecutionContext
 {
     public Guid FeedbackId { get; set; }
 
@@ -8,4 +11,7 @@ public abstract class FeedbackExecutionContext
 
     public uint ExecutionCount { get; set; }
     
+    public FeedbackAnalysisResult AnalysisResult { get; set; } = default!;
+    
+    public List<PromptExecutionHistory> Histories { get; set; }
 }

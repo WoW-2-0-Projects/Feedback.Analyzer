@@ -10,6 +10,7 @@ using Feedback.Analyzer.Application.Common.Prompts.Commands;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.PromptsHistory.Services;
 using Feedback.Analyzer.Application.Common.Settings;
+using Feedback.Analyzer.Application.Common.Workflows.Services;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
@@ -22,6 +23,7 @@ using Feedback.Analyzer.Infrastructure.Common.Prompts.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.PromptsHistory.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
+using Feedback.Analyzer.Infrastructure.Common.Workflows.Services;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
@@ -175,13 +177,15 @@ public static partial class HostConfiguration
         builder.Services
             .AddScoped<IPromptRepository, PromptRepository>()
             .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>()
-            .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>();
-
+            .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>()
+            .AddScoped<IFeedbackExecutionWorkflowRepository, FeedbackExecutionWorkflowRepository>();
+        
         // Register foundation services
         builder.Services
             .AddScoped<IPromptService, PromptService>()
             .AddScoped<IPromptCategoryService, PromptCategoryService>()
-            .AddScoped<IPromptsExecutionHistoryService, PromptExecutionHistoryService>();
+            .AddScoped<IPromptsExecutionHistoryService, PromptExecutionHistoryService>()
+            .AddScoped<IFeedbackExecutionWorkflowService, FeedbackExecutionWorkflowService>();
         
         // Register orchestration services
         builder.Services
