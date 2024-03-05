@@ -1,25 +1,35 @@
 <template>
 
-    <div class="w-full h-[200px] flex card card-bg card-round card-shadow text-secondaryContentColor">
+    <div class="w-full h-[400px] flex card card-bg card-round card-shadow text-secondaryContentColor">
 
         <!-- Prompt category details -->
         <div class="flex flex-col items-center justify-center w-full">
             <h5 class="text-xl">{{ promptCategory.typeDisplayName }}</h5>
 
             <!-- Add prompt button -->
-            <div class="flex gap-2">
+            <div class="flex gap-2 items-center justify-center">
                 <h5 class="mt-5 text-sm"> {{ LayoutConstants.Versions }} : {{ promptCategory.promptsCount }}</h5>
 
-                <app-button :type="ButtonType.Primary" :layout="ButtonLayout.Square" icon="fas fa-plus"
-                            :size="ActionComponentSize.Small" @click="emit('addPrompt', (promptCategory.id))"/>
+                <app-button :type="ButtonType.Primary" :layout="ButtonLayout.Rectangle" icon="fas fa-plus"
+                            text="Add Prompt"
+                            :size="ActionComponentSize.ExtraSmall" @click="emit('addPrompt', (promptCategory.id))"/>
             </div>
+
+            <!-- Training workflows -->
+            <div class="mt-20">
+                <h5 class="text-center">Training workflows</h5>
+                <form-drop-down label="Filter by" model-value="selectedFilter" values="filterDropDownValues"
+                                :size="ActionComponentSize.Small"/>
+            </div>
+
         </div>
 
         <vertical-divider :type="DividerType.ContentLength"/>
 
         <!-- Prompt selection -->
-        <div class="w-full p-2 flex flex-col">
+        <div class="w-full p-2 py-5 flex flex-col item-center">
 
+            <h5 class="text-center">Prompts</h5>
             <div class="overflow-y-scroll no-scrollbar">
                 <app-table :data="promptResultsTableData"/>
             </div>
@@ -29,8 +39,9 @@
         <vertical-divider :type="DividerType.ContentLength"/>
 
         <!-- Prompt execution result -->
-        <div class="w-full p-2 flex flex-col">
+        <div class="w-full p-2 py-5 flex flex-col">
 
+            <h5 class="text-center">Execution histories</h5>
             <div class="overflow-y-scroll no-scrollbar">
                 <app-table :data="promptResultsTableData"/>
             </div>
@@ -61,6 +72,7 @@ import {TableData} from "@/common/components/appTable/TableData";
 import {LayoutConstants} from "../../../common/constants/LayoutConstants";
 import {TableRowData} from "@/common/components/appTable/TableRowData";
 import {TableAction} from "@/common/components/appTable/TableAction";
+import FormDropDown from "@/common/components/formDropDown/FormDropDown.vue";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 
@@ -118,7 +130,7 @@ const convertResultToTableRowData = (result: PromptExecutionResult) => {
             result.executionsCount,  // Comma added here
         ],
         [
-            new TableAction(() => emit('editPrompt', result.promptId), ButtonType.Danger, 'fas fa-edit')
+            new TableAction(() => emit('editPrompt', result.promptId), ButtonType.Secondary, 'fas fa-edit')
         ]
     );
 };

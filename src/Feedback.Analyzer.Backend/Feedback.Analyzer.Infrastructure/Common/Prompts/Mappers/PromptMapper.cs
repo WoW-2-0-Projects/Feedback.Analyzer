@@ -9,8 +9,17 @@ public class PromptMapper : Profile
     public PromptMapper()
     {
         CreateMap<AnalysisPrompt, AnalysisPromptDto>().ReverseMap();
-        
+
         CreateMap<AnalysisPrompt, PromptResultDto>()
-            .ForMember(dest => dest.PromptId, opt => opt.MapFrom(src => src.Id));
+            .ForMember(dest => dest.PromptId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.ExecutionsCount, opt => opt.MapFrom(src => src.ExecutionHistories.Count()))
+            .ForMember(
+                dest => dest.AverageExecutionTimeInSeconds,
+                opt =>
+                {
+                    opt.PreCondition(src => src.ExecutionHistories.Any());
+                    opt.MapFrom(src => new TimeSpan((long)src.ExecutionHistories.Select(history => history.ExecutionTime.Ticks).Average()).Seconds);
+                }
+            );
     }
 }

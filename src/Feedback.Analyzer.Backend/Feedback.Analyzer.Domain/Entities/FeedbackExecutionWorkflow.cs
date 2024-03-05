@@ -7,5 +7,7 @@ public class FeedbackExecutionWorkflow : AuditableEntity
 {
     public Guid ProductId { get; set; }
     
+    public bool IsTrainingWorkflow { get; set; }
+    
     public List<WorkflowPromptCategoryExecutionOptions> FeedbackWorkflowExecutionOptions { get; set; } = default!;
 }

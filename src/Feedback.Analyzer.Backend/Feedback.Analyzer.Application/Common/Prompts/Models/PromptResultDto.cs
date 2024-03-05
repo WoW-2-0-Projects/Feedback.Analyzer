@@ -28,7 +28,7 @@ public record PromptResultDto
     /// <summary>
     /// Gets or sets the average execution time for the prompt.
     /// </summary>
-    public TimeSpan AverageExecutionTime { get; set; }
+    public int AverageExecutionTimeInSeconds { get; set; }
     
     /// <summary>
     /// Gets or sets the average accuracy for the prompt.

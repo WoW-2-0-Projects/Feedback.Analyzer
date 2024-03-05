@@ -22,13 +22,13 @@ public class PromptResultGetByCategoryIdQueryHandler(IMapper mapper, IPromptServ
                     AsNoTracking = true
                 }
             )
-            .ProjectTo<PromptResultDto>(mapper.ConfigurationProvider)
+            .Include(prompt => prompt.ExecutionHistories)
+            // .ProjectTo<PromptResultDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken: cancellationToken);
         
         // Aggregate history results
-        // var executionHistories = await ex
         
 
-        return matchedPrompts;
+        return mapper.Map<ICollection<PromptResultDto>>(matchedPrompts);
     }
 }
