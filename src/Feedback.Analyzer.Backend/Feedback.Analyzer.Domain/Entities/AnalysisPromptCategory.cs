@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using Feedback.Analyzer.Domain.Common.Entities;
 using Feedback.Analyzer.Domain.Enums;
 
@@ -6,7 +5,9 @@ namespace Feedback.Analyzer.Domain.Entities;
 
 public class AnalysisPromptCategory : Entity
 {
-    public FeedbackAnalysisPromptCategory Type { get; set; }
+    public FeedbackAnalysisPromptCategory Category { get; set; }
+    
+    public PromptType Type { get; set; }
     
     public Guid? SelectedPromptId { get; set; }
     

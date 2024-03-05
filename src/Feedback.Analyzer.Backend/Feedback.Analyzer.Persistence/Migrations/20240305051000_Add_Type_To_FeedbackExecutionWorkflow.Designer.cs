@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240305034937_Add_TrainingWorfkowIndicator_To_FeedbackExecutionWorkflow")]
-    partial class Add_TrainingWorfkowIndicator_To_FeedbackExecutionWorkflow
+    [Migration("20240305051000_Add_Type_To_FeedbackExecutionWorkflow")]
+    partial class Add_Type_To_FeedbackExecutionWorkflow
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,7 +74,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<Guid?>("SelectedPromptId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -83,7 +83,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.HasIndex("SelectedPromptId")
                         .IsUnique();
 
-                    b.HasIndex("Type");
+                    b.HasIndex("Category");
 
                     b.ToTable("PromptCategories");
                 });
@@ -221,14 +221,14 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("IsTrainingWorkflow")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTimeOffset?>("ModifiedTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

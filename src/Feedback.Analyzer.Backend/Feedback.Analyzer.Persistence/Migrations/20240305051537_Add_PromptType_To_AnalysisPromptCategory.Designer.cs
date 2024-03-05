@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240305032533_Add_PromptExecutionHistory_And_AnalysisPrompt_Relation")]
-    partial class Add_PromptExecutionHistory_And_AnalysisPrompt_Relation
+    [Migration("20240305051537_Add_PromptType_To_AnalysisPromptCategory")]
+    partial class Add_PromptType_To_AnalysisPromptCategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,19 +71,22 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("SelectedPromptId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("SelectedPromptId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Category");
 
                     b.HasIndex("SelectedPromptId")
                         .IsUnique();
-
-                    b.HasIndex("Category");
 
                     b.ToTable("PromptCategories");
                 });
@@ -226,6 +229,9 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

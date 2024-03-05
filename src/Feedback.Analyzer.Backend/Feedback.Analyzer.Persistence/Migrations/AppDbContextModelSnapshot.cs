@@ -68,19 +68,22 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("SelectedPromptId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Type")
+                    b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("SelectedPromptId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Category");
 
                     b.HasIndex("SelectedPromptId")
                         .IsUnique();
-
-                    b.HasIndex("Type");
 
                     b.ToTable("PromptCategories");
                 });
@@ -218,14 +221,14 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("IsTrainingWorkflow")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTimeOffset?>("ModifiedTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

@@ -5,24 +5,24 @@
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Add_TrainingWorfkowIndicator_To_FeedbackExecutionWorkflow : Migration
+    public partial class Add_Type_To_FeedbackExecutionWorkflow : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "IsTrainingWorkflow",
+            migrationBuilder.AddColumn<int>(
+                name: "Type",
                 table: "FeedbackExecutionWorkflows",
-                type: "boolean",
+                type: "integer",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: 0);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsTrainingWorkflow",
+                name: "Type",
                 table: "FeedbackExecutionWorkflows");
         }
     }

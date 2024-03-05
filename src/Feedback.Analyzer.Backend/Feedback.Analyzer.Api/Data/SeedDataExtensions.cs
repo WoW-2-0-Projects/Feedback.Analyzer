@@ -154,32 +154,32 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("15072FC8-63C7-49EC-BF4F-3FD2A8479CF4"),
-                Type = FeedbackAnalysisPromptCategory.ContentSafetyAnalysis,
+                Category = FeedbackAnalysisPromptCategory.ContentSafetyAnalysis,
             },
             new()
             {
                 Id = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
-                Type = FeedbackAnalysisPromptCategory.LanguageRecognition,
+                Category = FeedbackAnalysisPromptCategory.LanguageRecognition,
             },
             new()
             {
                 Id = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
-                Type = FeedbackAnalysisPromptCategory.RelevanceAnalysis,
+                Category = FeedbackAnalysisPromptCategory.RelevanceAnalysis,
             },
             new()
             {
                 Id = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
-                Type = FeedbackAnalysisPromptCategory.RelevantContentExtraction,
+                Category = FeedbackAnalysisPromptCategory.RelevantContentExtraction,
             },
             new()
             {
                 Id = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
-                Type = FeedbackAnalysisPromptCategory.PersonalInformationRedaction,
+                Category = FeedbackAnalysisPromptCategory.PersonalInformationRedaction,
             },
             new()
             {
                 Id = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
-                Type = FeedbackAnalysisPromptCategory.OpinionPointsExtraction,
+                Category = FeedbackAnalysisPromptCategory.OpinionPointsExtraction,
             }
         };
 
@@ -386,7 +386,20 @@ public static class SeedDataExtensions
                 Revision = 0,
             }
         };
-
+        
         await appDbContext.Prompts.AddRangeAsync(analysisPrompts);
+
+        var categories = appDbContext.PromptCategories.ToList();
+        categories.ForEach(
+            category =>
+            {
+                var prompt = analysisPrompts.FirstOrDefault(prompt => prompt.CategoryId == category.Id);
+
+                if (prompt is not null)
+                    category.SelectedPromptId = prompt.Id;
+            }
+        );
+
+        appDbContext.PromptCategories.UpdateRange(categories);
     }
 }

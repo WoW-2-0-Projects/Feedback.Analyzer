@@ -23,7 +23,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Type = table.Column<string>(type: "text", nullable: false),
+                    Category = table.Column<string>(type: "text", nullable: false),
                     SelectedPromptId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -49,9 +49,9 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_PromptCategories_Type",
+                name: "IX_PromptCategories_Category",
                 table: "PromptCategories",
-                column: "Type");
+                column: "Category");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Prompts_PromptCategories_CategoryId",

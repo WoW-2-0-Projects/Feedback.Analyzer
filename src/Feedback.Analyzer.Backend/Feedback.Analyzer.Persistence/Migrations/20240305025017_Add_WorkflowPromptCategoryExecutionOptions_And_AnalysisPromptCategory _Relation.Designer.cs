@@ -74,7 +74,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<Guid?>("SelectedPromptId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -83,7 +83,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.HasIndex("SelectedPromptId")
                         .IsUnique();
 
-                    b.HasIndex("Type");
+                    b.HasIndex("Category");
 
                     b.ToTable("PromptCategories");
                 });
