@@ -31,4 +31,9 @@ public class PromptExecutionHistory : Entity
     /// Gets or sets the duration of the prompt execution.
     /// </summary>
     public TimeSpan ExecutionDuration { get; set; }
+
+    /// <summary>
+    /// Gets or sets the AnalysisPrompt object used for prompting analysis.
+    /// </summary>
+    public AnalysisPrompt Prompt { get; set; } = default!;
 }

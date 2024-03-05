@@ -11,6 +11,9 @@ public class PromptExecutionHistoryConfiguration : IEntityTypeConfiguration<Prom
 {
     public void Configure(EntityTypeBuilder<PromptExecutionHistory> builder)
     {
-        builder.HasOne<AnalysisPrompt>().WithMany().HasForeignKey(entity => entity.PromptId);
+        builder
+            .HasOne(history => history.Prompt)
+            .WithMany(prompt => prompt.ExecutionHistories)
+            .HasForeignKey(entity => entity.PromptId);
     }
 }

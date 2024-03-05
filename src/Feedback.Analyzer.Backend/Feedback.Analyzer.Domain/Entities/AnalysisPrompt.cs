@@ -23,6 +23,11 @@ public class AnalysisPrompt : AuditableEntity, ICloneable<AnalysisPrompt>
     public int Revision { get; set; }
 
     /// <summary>
+    /// Gets or sets the collection of PromptExecutionHistory objects representing the execution histories.
+    /// </summary>
+    public IEnumerable<PromptExecutionHistory> ExecutionHistories { get; set; } = default!;
+    
+    /// <summary>
     /// Creates a deep clone of the analysis prompt.
     /// </summary>
     public AnalysisPrompt Clone()
