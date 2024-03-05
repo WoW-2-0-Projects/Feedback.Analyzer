@@ -1,9 +1,9 @@
 using Feedback.Analyzer.Application.Common.PromptCategories.Queries;
 using Feedback.Analyzer.Application.Common.Prompts.Commands;
+using Feedback.Analyzer.Application.Common.Prompts.Events;
+using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Application.Common.Prompts.Queries;
-
 using MediatR;
-
 using Microsoft.AspNetCore.Mvc;
 
 namespace Feedback.Analyzer.Api.Controllers;
@@ -12,6 +12,8 @@ namespace Feedback.Analyzer.Api.Controllers;
 [Route("api/[controller]")]
 public class PromptsController(IMediator mediator) : ControllerBase
 {
+    #region Prompts
+
     [HttpGet("categories")]
     public async ValueTask<IActionResult> GetPromptCategories([FromQuery] PromptCategoryGetQuery query, CancellationToken cancellationToken)
     {
@@ -66,7 +68,9 @@ public class PromptsController(IMediator mediator) : ControllerBase
         return result ? Ok() : BadRequest();
     }
 
-    #region Prompt Results 
+    #endregion
+
+    #region Prompt Results
 
     [HttpGet("results/{categoryId:guid}")]
     public async ValueTask<IActionResult> GetPromptResultById([FromRoute] Guid categoryId, CancellationToken cancellationToken = default)
@@ -78,12 +82,33 @@ public class PromptsController(IMediator mediator) : ControllerBase
             },
             cancellationToken
         );
-        return result is not null ? Ok(result) : NotFound();
+        return result.Any() ? Ok(result) : NoContent();
     }
 
     #endregion
 
-    #region Execution history 
+    #region Prompt execution
+
+    [HttpPost("{promptId:guid}/execute/{feedbackId:guid}")]
+    public async ValueTask<IActionResult> GetPromptResultById(
+        [FromRoute] Guid promptId,
+        [FromRoute] Guid feedbackId,
+        CancellationToken cancellationToken
+    )
+    {
+        var executePromptEvent = new ExecutePromptEvent
+        {
+            ExecutionContext = new FeedbackSingleExecutionContext
+            {
+                PromptId = promptId,
+                FeedbackId = feedbackId,
+                ExecutionCount = 1
+            }
+        };
+        await mediator.Publish(executePromptEvent, cancellationToken);
+
+        return Accepted(executePromptEvent.Id);
+    }
 
     #endregion
 }

@@ -1,5 +1,4 @@
 ﻿using Feedback.Analyzer.Application.Common.PromptsHistory.Commands;
-using Feedback.Analyzer.Application.Common.PromptsHistory.Models;
 using Feedback.Analyzer.Application.Common.PromptsHistory.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

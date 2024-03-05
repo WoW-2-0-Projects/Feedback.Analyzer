@@ -1,5 +1,4 @@
 ﻿using Feedback.Analyzer.Domain.Common.Entities;
-using Feedback.Analyzer.Domain.Common.Exeptions;
 
 namespace Feedback.Analyzer.Domain.Entities;
 

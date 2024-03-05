@@ -29,23 +29,12 @@
         <vertical-divider :type="DividerType.ContentLength"/>
 
         <!-- Prompt execution result -->
-        <div class="w-full p-5 flex flex-col">
+        <div class="w-full p-2 flex flex-col">
 
-            <table class="table-auto">
-                <thead>
-                <tr>
-                    <th class="p-2"> Exc time</th>
-                    <th class="p-2"> Exc Dur</th>
-                    <th class="p-2"> Exc Acc</th>
-                </tr>
-                </thead>
-                <tbody class="hover:bg-gray-500">
-                <td class="pl-8">1s</td>
-                <td class="pl-8">2s</td>
-                <td class="pl-8">97%</td>
+            <div class="overflow-y-scroll no-scrollbar">
+                <app-table :data="promptResultsTableData"/>
+            </div>
 
-                </tbody>
-            </table>
         </div>
 
     </div>
@@ -92,6 +81,15 @@ const emit = defineEmits<{
 
 const promptResultsTableData = ref<TableData>(new TableData([
         "V",
+        "AET",
+        "AA",
+        "EC",
+        "Actions",
+    ],[]
+));
+
+const promptHistoriesTableData = ref<TableData>(new TableData([
+        "",
         "AET",
         "AA",
         "EC",
