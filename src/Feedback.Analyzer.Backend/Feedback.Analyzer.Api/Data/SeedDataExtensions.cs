@@ -37,6 +37,12 @@ public static class SeedDataExtensions
         if (!await appDbContext.Prompts.AnyAsync())
             await SeedAnalysisPromptAsync(appDbContext);
 
+        // if (!await appDbContext.PromptExecutionHistories.AnyAsync())
+        //     await SeedAnalysisPromptAsync(appDbContext);
+        
+        if (!await appDbContext.FeedbackExecutionWorkflows.AnyAsync())
+            await SeedAnalysisWorkflows(appDbContext);
+ 
         if (appDbContext.ChangeTracker.HasChanges())
             await appDbContext.SaveChangesAsync();
     }
@@ -64,6 +70,14 @@ public static class SeedDataExtensions
                 FirstName = "Bob",
                 LastName = "Richard",
                 EmailAddress = "tastBobRichard@gmail.com",
+                Password = "asdf1234"
+            },
+            new()
+            {
+                Id = Guid.Parse("18C7ACA8-6592-4E81-8AFF-F36FA596CC5A"),
+                FirstName = "Sarah",
+                LastName = "Func",
+                EmailAddress = "test@gmail.com",
                 Password = "asdf1234"
             }
         };
@@ -110,6 +124,14 @@ public static class SeedDataExtensions
                 Description =
                     "InnoCity innovatsiya va tadbirkorlikni qo'llab-quvvatlaydigan shahar bo'lib, yosh tadbirkorlarga o'sish uchun zarur bo'lgan barcha sharoitlarni yaratadi.Biznes inkubatsiya dasturlari va moliyaviy yordam bizning asosiy xizmatlarimizdan biridir.",
                 ClientId = Guid.Parse("5edbb0fe-7263-4f75-bad8-c9f3d422dd1d"),
+            },
+            new()
+            {
+                Id = Guid.Parse("9DF2560B-17A0-456A-B858-B3C67ECCAEB2"),
+                Name = "Razer Inc.",
+                Description =
+                    "Razer Inc is a multinational technology company specializing in the design, development, and distribution of gamer-focused hardware, software, and services. Headquartered in Singapore and California, Razer has established a strong global presence with a reputation for innovation and a dedication to the gaming community. Beyond its iconic gaming peripherals, the company offers powerful Blade laptops, immersive software solutions, and even participates in fintech services for youth and millennials.",
+                ClientId = Guid.Parse("18C7ACA8-6592-4E81-8AFF-F36FA596CC5A"),
             }
         };
 
@@ -137,53 +159,35 @@ public static class SeedDataExtensions
                 OrganizationId = Guid.Parse("e57f81a1-1aeb-4f1c-aae0-9f0e1dcb92c4"),
                 Name = "Macbook",
                 Description = "Macbook is suitable for software developers, designer and etc. It is so expensive but people love it.",
+            },
+            new()
+            {
+                Id = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
+                OrganizationId = Guid.Parse("9DF2560B-17A0-456A-B858-B3C67ECCAEB2"),
+                Name = "Razer Viper Ultimate",
+                Description = """
+                              Razor Viper Ultimate - wireless gaming mouse
+                                                  
+                                                  Sensitivity: 20,000DPI
+                                                  Tracking Speed : 650IPS
+                                                  Resolution accuracy : 99.6%
+                                                  
+                                                  74G LIGHTWEIGHT DESIGN
+                                                  Enjoy faster and smoother control with a lightweight wireless mouse designed for esports. Weighing just 74g, it achieves its weight without compromising on the build strength of its ambidextrous form factor.
+                                                  
+                                                  70 HOURS OF BATTERY LIFE
+                                                  Improved wireless power efficiency keeps it running at peak performance for up to 70 continuous hours—charge it just once a week to power 10 hours of daily gameplay.
+                                                  
+                                                  5 ON-BOARD MEMORY PROFILES
+                                                  Bring your settings anywhere and be match-ready in no time. Activate up to 5 profile configurations from its onboard memory or custom settings via cloud storage.
+                                                  
+                                                  8 PROGRAMMABLE BUTTONS
+                                                  Fully configurable via Razer Synapse 3, the 8 programmable buttons let you access macros and secondary functions so you can execute extended moves with ease.,
+                              """
             }
         };
 
         await appDbContext.Products.AddRangeAsync(products);
-    }
-
-    /// <summary>
-    /// Seeds prompt categories
-    /// </summary>
-    /// <param name="appDbContext"></param>
-    private static async ValueTask SeedPromptCategoriesAsync(AppDbContext appDbContext)
-    {
-        var promptCategories = new List<AnalysisPromptCategory>
-        {
-            new()
-            {
-                Id = Guid.Parse("15072FC8-63C7-49EC-BF4F-3FD2A8479CF4"),
-                Category = FeedbackAnalysisPromptCategory.ContentSafetyAnalysis,
-            },
-            new()
-            {
-                Id = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
-                Category = FeedbackAnalysisPromptCategory.LanguageRecognition,
-            },
-            new()
-            {
-                Id = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
-                Category = FeedbackAnalysisPromptCategory.RelevanceAnalysis,
-            },
-            new()
-            {
-                Id = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
-                Category = FeedbackAnalysisPromptCategory.RelevantContentExtraction,
-            },
-            new()
-            {
-                Id = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
-                Category = FeedbackAnalysisPromptCategory.PersonalInformationRedaction,
-            },
-            new()
-            {
-                Id = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
-                Category = FeedbackAnalysisPromptCategory.OpinionPointsExtraction,
-            }
-        };
-
-        await appDbContext.PromptCategories.AddRangeAsync(promptCategories);
     }
 
     private static async ValueTask SeedDataCustomerFeedbackAsync(AppDbContext appDbContext)
@@ -230,13 +234,81 @@ public static class SeedDataExtensions
     /// Seeds prompt categories
     /// </summary>
     /// <param name="appDbContext"></param>
+    private static async ValueTask SeedPromptCategoriesAsync(AppDbContext appDbContext)
+    {
+        var promptCategories = new List<AnalysisPromptCategory>
+        {
+            new()
+            {
+                Id = Guid.Parse("15072FC8-63C7-49EC-BF4F-3FD2A8479CF4"),
+                Category = FeedbackAnalysisPromptCategory.ContentSafetyAnalysis,
+            },
+            new()
+            {
+                Id = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
+                Category = FeedbackAnalysisPromptCategory.RelevanceAnalysis,
+            },
+            new()
+            {
+                Id = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
+                Category = FeedbackAnalysisPromptCategory.LanguageRecognition,
+            },
+            new()
+            {
+                Id = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
+                Category = FeedbackAnalysisPromptCategory.RelevantContentExtraction,
+            },
+            new()
+            {
+                Id = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
+                Category = FeedbackAnalysisPromptCategory.EntityIdentification,
+            },
+            new()
+            {
+                Id = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
+                Category = FeedbackAnalysisPromptCategory.PersonalInformationRedaction,
+            },
+            new()
+            {
+                Id = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
+                Category = FeedbackAnalysisPromptCategory.OpinionMining,
+            },
+            new()
+            {
+                Id = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
+                Category = FeedbackAnalysisPromptCategory.OpinionPointsExtraction,
+            },
+            new()
+            {
+                Id = Guid.Parse("6F1FDE2A-CAFC-4C4D-B909-655414C8C76E"),
+                Category = FeedbackAnalysisPromptCategory.ActionableOpinionsAnalysis,
+            },
+            new()
+            {
+                Id = Guid.Parse("33CCCA43-E803-4FA2-AFC7-7C202DE5EA0C"),
+                Category = FeedbackAnalysisPromptCategory.QuestionPointsExtraction,
+            },
+            new()
+            {
+                Id = Guid.Parse("2EF85588-0B12-4FB8-9027-80D45CC38EC1"),
+                Category = FeedbackAnalysisPromptCategory.ActionableQuestionsAnalysis,
+            }
+        };
+
+        await appDbContext.PromptCategories.AddRangeAsync(promptCategories);
+    }
+
+    /// <summary>
+    /// Seeds prompt categories
+    /// </summary>
+    /// <param name="appDbContext"></param>
     private static async ValueTask SeedAnalysisPromptAsync(AppDbContext appDbContext)
     {
         var analysisPrompts = new List<AnalysisPrompt>()
         {
             new()
             {
-                Id = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
+                Id = Guid.Parse("42204C3B-0E3E-4360-9059-94A011C29608"),
                 CategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                 Prompt = """
                          ## Instructions"
@@ -386,7 +458,7 @@ public static class SeedDataExtensions
                 Revision = 0,
             }
         };
-        
+
         await appDbContext.Prompts.AddRangeAsync(analysisPrompts);
 
         var categories = appDbContext.PromptCategories.ToList();
@@ -401,5 +473,105 @@ public static class SeedDataExtensions
         );
 
         appDbContext.PromptCategories.UpdateRange(categories);
+    }
+
+    private static async ValueTask SeedAnalysisWorkflows(AppDbContext appDbContext)
+    {
+        // Add template workflow
+        var templateWorkflow = new FeedbackExecutionWorkflow
+        {
+            ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
+            Type = WorkflowType.Template,
+        };
+        
+        await appDbContext.FeedbackExecutionWorkflows.AddAsync(templateWorkflow);
+        
+        // Add template workflow execution options
+        templateWorkflow.FeedbackWorkflowExecutionOptions =
+        [
+            new WorkflowPromptCategoryExecutionOptions
+            {
+                FeedbackExecutionWorkflowId = templateWorkflow.Id,
+                AnalysisPromptCategoryId = Guid.Parse("15072FC8-63C7-49EC-BF4F-3FD2A8479CF4"),
+                ChildExecutionOptions =
+                [
+                    new WorkflowPromptCategoryExecutionOptions
+                    {
+                        FeedbackExecutionWorkflowId = templateWorkflow.Id,
+                        AnalysisPromptCategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
+                        ChildExecutionOptions =
+                        [
+                            new WorkflowPromptCategoryExecutionOptions
+                            {
+                                FeedbackExecutionWorkflowId = templateWorkflow.Id,
+                                AnalysisPromptCategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
+                            },
+                            new WorkflowPromptCategoryExecutionOptions
+                            {
+                                FeedbackExecutionWorkflowId = templateWorkflow.Id,
+                                AnalysisPromptCategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
+                                ChildExecutionOptions =
+                                [
+                                    new WorkflowPromptCategoryExecutionOptions
+                                    {
+                                        FeedbackExecutionWorkflowId = templateWorkflow.Id,
+                                        AnalysisPromptCategoryId = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
+                                        ChildExecutionOptions =
+                                        [
+                                            new WorkflowPromptCategoryExecutionOptions
+                                            {
+                                                FeedbackExecutionWorkflowId = templateWorkflow.Id,
+                                                AnalysisPromptCategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
+                                            },
+                                            new WorkflowPromptCategoryExecutionOptions
+                                            {
+                                                FeedbackExecutionWorkflowId = templateWorkflow.Id,
+                                                AnalysisPromptCategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
+                                                ChildExecutionOptions =
+                                                [
+                                                    new WorkflowPromptCategoryExecutionOptions
+                                                    {
+                                                        FeedbackExecutionWorkflowId = templateWorkflow.Id,
+                                                        AnalysisPromptCategoryId = Guid.Parse("6F1FDE2A-CAFC-4C4D-B909-655414C8C76E"),
+                                                    },
+                                                ]
+                                            },
+                                            new WorkflowPromptCategoryExecutionOptions
+                                            {
+                                                FeedbackExecutionWorkflowId = templateWorkflow.Id,
+                                                AnalysisPromptCategoryId = Guid.Parse("33CCCA43-E803-4FA2-AFC7-7C202DE5EA0C"),
+                                                ChildExecutionOptions =
+                                                [
+                                                    new WorkflowPromptCategoryExecutionOptions
+                                                    {
+                                                        FeedbackExecutionWorkflowId = templateWorkflow.Id,
+                                                        AnalysisPromptCategoryId = Guid.Parse("2EF85588-0B12-4FB8-9027-80D45CC38EC1"),
+                                                    },
+                                                ]
+                                            },
+                                        ]
+                                    },
+                                ]
+                            },
+                            new WorkflowPromptCategoryExecutionOptions
+                            {
+                                FeedbackExecutionWorkflowId = templateWorkflow.Id,
+                                AnalysisPromptCategoryId = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
+                            },
+                        ]
+                    }
+                ]
+            }
+        ];
+        
+        // Validation
+        await appDbContext.WorkflowPromptCategoryExecutionOptions.AddRangeAsync(templateWorkflow.FeedbackWorkflowExecutionOptions);
+
+        // Add workflow
+
+
+        // Add training workflow
+        var trainingWorkflow = templateWorkflow.Clone();
+        await appDbContext.FeedbackExecutionWorkflows.AddAsync(trainingWorkflow);
     }
 }
