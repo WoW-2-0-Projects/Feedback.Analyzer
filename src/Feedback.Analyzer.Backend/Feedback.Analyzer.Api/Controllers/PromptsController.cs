@@ -3,6 +3,9 @@ using Feedback.Analyzer.Application.Common.Prompts.Commands;
 using Feedback.Analyzer.Application.Common.Prompts.Events;
 using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Application.Common.Prompts.Queries;
+using Feedback.Analyzer.Application.Common.PromptsHistory.Commands;
+using Feedback.Analyzer.Application.Common.PromptsHistory.Models;
+using Feedback.Analyzer.Application.Common.PromptsHistory.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,13 +16,6 @@ namespace Feedback.Analyzer.Api.Controllers;
 public class PromptsController(IMediator mediator) : ControllerBase
 {
     #region Prompts
-
-    [HttpGet("categories")]
-    public async ValueTask<IActionResult> GetPromptCategories([FromQuery] PromptCategoryGetQuery query, CancellationToken cancellationToken)
-    {
-        var result = await mediator.Send(query, cancellationToken);
-        return result.Any() ? Ok(result) : NotFound();
-    }
 
     [HttpGet]
     public async ValueTask<IActionResult> GetPrompts([FromQuery] PromptGetQuery query, CancellationToken cancellationToken)
@@ -70,6 +66,17 @@ public class PromptsController(IMediator mediator) : ControllerBase
 
     #endregion
 
+    #region Prompt categories
+
+    [HttpGet("categories")]
+    public async ValueTask<IActionResult> GetPromptCategories([FromQuery] PromptCategoryGetQuery query, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(query, cancellationToken);
+        return result.Any() ? Ok(result) : NotFound();
+    }
+
+    #endregion
+
     #region Prompt Results
 
     [HttpGet("results/{categoryId:guid}")]
@@ -87,28 +94,29 @@ public class PromptsController(IMediator mediator) : ControllerBase
 
     #endregion
 
-    #region Prompt execution
+    [HttpGet("{promptId:guid}/histories")]
+    public async ValueTask<IActionResult> GetPromptExecutionHistory([FromRoute] Guid promptId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new PromptsHistoryGetQuery
+            {
+                Filter = new PromptsHistoryFilter
+                {
+                    PromptId = promptId
+                }
+            },
+            cancellationToken
+        );
+        return result.Any() ? Ok(result) : NoContent();
+    }
 
-    [HttpPost("{promptId:guid}/execute/{feedbackId:guid}")]
-    public async ValueTask<IActionResult> GetPromptResultById(
-        [FromRoute] Guid promptId,
-        [FromRoute] Guid feedbackId,
+    [HttpPost("histories")]
+    public async ValueTask<IActionResult> Create(
+        [FromBody] PromptsHistoryCreateCommand promptsHistoryCreateCommand,
         CancellationToken cancellationToken
     )
     {
-        var executePromptEvent = new ExecutePromptEvent
-        {
-            ExecutionContext = new FeedbackSingleExecutionContext
-            {
-                PromptId = promptId,
-                FeedbackId = feedbackId,
-                ExecutionCount = 1
-            }
-        };
-        await mediator.Publish(executePromptEvent, cancellationToken);
-
-        return Accepted(executePromptEvent.Id);
+        var result = await mediator.Send(promptsHistoryCreateCommand, cancellationToken);
+        return Ok(result);
     }
-
-    #endregion
 }

@@ -23,8 +23,8 @@
             </div>
 
             <app-button :type="ButtonType.Success" :layout="ButtonLayout.Rectangle" icon="fas fa-play"
-                        text="Trigger"
-                        :size="ActionComponentSize.ExtraSmall" @click="emit('addPrompt', (promptCategory.id))"/>
+                        text="Trigger" :disabled="selectedWorkflow === null || promptCategory.selectedPromptId === null"
+                        :size="ActionComponentSize.ExtraSmall" @click="onTriggerWorkflow"/>
 
         </div>
 
@@ -47,7 +47,7 @@
 
             <h5 class="text-center">Execution histories</h5>
             <div class="overflow-y-scroll no-scrollbar">
-                <app-table :data="promptResultsTableData"/>
+                <app-table :data="promptHistoriesTableData"/>
             </div>
 
         </div>
@@ -68,18 +68,23 @@ import {DividerType} from "@/common/components/divider/DividerType";
 import {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
-import type {PromptExecutionResult} from "@/modules/prompts/models/PromptExecutionResult";
+import {PromptExecutionResult} from "@/modules/prompts/models/PromptExecutionResult";
 import AppTable from "@/common/components/appTable/AppTable.vue";
 import {TableData} from "@/common/components/appTable/TableData";
 import {LayoutConstants} from "../../../common/constants/LayoutConstants";
 import {TableRowData} from "@/common/components/appTable/TableRowData";
-import {TableAction} from "@/common/components/appTable/TableAction";
+import {FeedbackExecutionWorkflow} from "@/modules/prompts/models/FeedbackExecutionWorkflow";
 import FormDropDown from "@/common/components/formDropDown/FormDropDown.vue";
-import type {FeedbackExecutionWorkflow} from "@/modules/prompts/models/FeedbackExecutionWorkflow";
+import {TableAction} from "@/common/components/appTable/TableAction";
+import type {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecutionHistory";
+import {Query} from "@/infrastructure/models/query/Query";
+import {PromptExecutionResultFilter} from "@/modules/prompts/models/PromptExecutionResultFilter";
+import {ExecuteSinglePromptCommand} from "@/modules/prompts/models/ExecuteSinglePromptCommand";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 
 const promptExecutionResults = ref<Array<PromptExecutionResult>>([]);
+const promptExecutionHistories = ref<Array<PromptsExecutionHistory>>([]);
 
 const props = defineProps({
     promptCategory: {
@@ -105,19 +110,18 @@ const emit = defineEmits<{
 }>();
 
 const promptResultsTableData = ref<TableData>(new TableData([
-        "V",
-        "AET",
-        "AA",
-        "EC",
+        "Version",
+        "Avg Execution Time",
+        "Average Accuracy",
+        "Executions Count",
         "Actions",
     ], []
 ));
 
 const promptHistoriesTableData = ref<TableData>(new TableData([
-        "",
-        "AET",
-        "AA",
-        "EC",
+        "Execution Time",
+        "Execution Duration",
+        "Result",
         "Actions",
     ], []
 ));
@@ -125,6 +129,7 @@ const promptHistoriesTableData = ref<TableData>(new TableData([
 onBeforeMount(async () => {
     loadWorkflowOptions();
     await loadAllPromptVersionResults();
+    await loadPromptExecutionHistoryAsync();
 });
 
 const loadAllPromptVersionResults = async () => {
@@ -132,7 +137,10 @@ const loadAllPromptVersionResults = async () => {
 
     if (response.response) {
         promptExecutionResults.value = response.response;
-        promptResultsTableData.value.rows = promptExecutionResults.value.map(result => convertResultToTableRowData(result));
+        promptResultsTableData.value.rows = promptExecutionResults.value.map(result =>
+        {
+            return convertResultToTableRowData(result);
+        })
     }
 };
 
@@ -149,12 +157,25 @@ const convertResultToTableRowData = (result: PromptExecutionResult) => {
     );
 };
 
-const convertHistoryToTableRowData = (result: ) => {
+const loadPromptExecutionHistoryAsync = async () => {
+    if(!props.promptCategory?.selectedPromptId) return;
+
+    const response = await insightBoxApiClient.executionHistories.getByPromptIdAsync(props.promptCategory?.selectedPromptId);
+
+    if (response.response) {
+        promptExecutionHistories.value = response.response;
+        promptHistoriesTableData.value.rows = promptExecutionResults.value.map(result =>
+        {
+            return convertHistoryToTableRowData(result);
+        })
+    }
+};
+
+const convertHistoryToTableRowData = (result: PromptsExecutionHistory) => {
     return new TableRowData([
-            `${result.version}.${result.revision}`,
-            result.averageExecutionTime,
-            result.averageAccuracy,
-            result.executionsCount,  // Comma added here
+            result.executionTime,
+            result.executionDurationInSeconds,
+            result.result !== null
         ],
         [
             new TableAction(() => emit('editPrompt', result.promptId), ButtonType.Secondary, 'fas fa-edit')
@@ -162,14 +183,19 @@ const convertHistoryToTableRowData = (result: ) => {
     );
 };
 
-const loadWorkflowOptions = () => {
-    console.log('test', props.workflows);
+const onTriggerWorkflow = () => {
+    const executeSinglePromptCommand = new ExecuteSinglePromptCommand();
+    executeSinglePromptCommand.workflowId = selectedWorkflow.value?.value?.id!;
+    executeSinglePromptCommand.promptId = props.promptCategory?.selectedPromptId!;
 
+    console.log(executeSinglePromptCommand);
+}
+
+
+const loadWorkflowOptions = () => {
     workflowDropDownValues.value = props.workflows?.map(workflow => {
         return new DropDownValue(workflow.name, workflow);
     });
-
-    console.log('drop', workflowDropDownValues.value);
 };
 
 </script>

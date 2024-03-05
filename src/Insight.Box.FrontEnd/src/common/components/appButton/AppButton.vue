@@ -1,6 +1,6 @@
 <template>
 
-    <button ref="component" type="button" :class="componentStyles"
+    <button ref="component" type="button" :class="componentStyles" :disabled="disabled"
             class="text-md text-nowrap overflow-hidden
                    theme-action-content theme-action-shadow">
         <span class="h-full w-full inline-flex items-center theme-action-overlay theme-action-transition"
@@ -64,20 +64,23 @@ const componentStyles = computed(() => {
     let styles = ''
 
     // Add button type styles
-    switch (props.type) {
-        case ButtonType.Primary:
-            styles += ' theme-action-primary';
-            break;
-        case ButtonType.Secondary:
-            styles += ' theme-action-secondary';
-            break;
-        case ButtonType.Danger :
-            styles += ' theme-action-danger';
-            break;
-        case ButtonType.Success :
-            styles += ' theme-action-success';
-            break;
-    }
+    if (props.disabled) {
+        styles += ' theme-action-disabled';
+    } else
+        switch (props.type) {
+            case ButtonType.Primary:
+                styles += ' theme-action-primary';
+                break;
+            case ButtonType.Secondary:
+                styles += ' theme-action-secondary';
+                break;
+            case ButtonType.Danger :
+                styles += ' theme-action-danger';
+                break;
+            case ButtonType.Success :
+                styles += ' theme-action-success';
+                break;
+        }
 
     //  Add button layout styles
     if (props.layout === ButtonLayout.Rectangle)

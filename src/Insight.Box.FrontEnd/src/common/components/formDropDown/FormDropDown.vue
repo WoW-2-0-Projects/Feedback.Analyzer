@@ -2,7 +2,7 @@
 
     <div class="relative h-fit w-fit" @focusin="onFocusIn" @focusout="onFocusOut">
 
-        <input type="text" name="input" v-model="searchValue"
+        <input type="text" name="input" v-model="searchValue" autocomplete="off"
                :class="size === ActionComponentSize.Medium ? 'action-layout text-md' : 'action-small-layout text-sm'"
                class="w-full rounded-md peer  theme-action-padding theme-input-bg theme-action-style theme-input-placeholder
                  theme-action-transition theme-action-border-round theme-input-border theme-action-content"
@@ -37,7 +37,7 @@
 
         <!-- Drop down options -->
         <div class="absolute mt-2 w-full focus:outline-none appearance-none rounded-md
-                    theme-modal-shadow  theme-bg-secondary theme-input-border-focus z-10 overflow-hidden theme-input"
+                    theme-modal-shadow theme-action-secondary theme-input-border-focus z-50 overflow-hidden theme-input"
              v-show="isOpen"
         >
             <ul>

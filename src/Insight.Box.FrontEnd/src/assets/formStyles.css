@@ -101,3 +101,7 @@
 .theme-action-success {
   @apply bg-successColor;
 }
+
+.theme-action-disabled {
+  @apply bg-accentSecondaryColor;
+}

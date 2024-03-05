@@ -9,18 +9,5 @@ namespace Feedback.Analyzer.Api.Controllers;
 [Route("api/[controller]")]
 public class PromptsHistoryController(IMediator mediator) : ControllerBase
 {
-    [HttpGet("{promptId:guid}")]
-    public async ValueTask<IActionResult> GetPromptExecutionHistory([FromRoute] Guid promptId, CancellationToken cancellationToken)
-    {
-        var result = await mediator.Send(new PromptsHistoryGetByPromptIdQuery() { PromptId = promptId }, cancellationToken);
-        return result.Any() ? Ok(result) : NoContent();
-    }
-
-    [HttpPost]
-    public async ValueTask<IActionResult> Create([FromBody] PromptsHistoryCreateCommand promptsHistoryCreateCommand, CancellationToken cancellationToken)
-    {
-        var result = await mediator.Send(promptsHistoryCreateCommand, cancellationToken);
-        return Ok(result);
-    }
 
 }

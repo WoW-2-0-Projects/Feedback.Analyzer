@@ -36,7 +36,11 @@ export class PromptsEndpointsClient {
 
     public async getPromptExecutionResults(categoryId: string) {
         const endpointUrl = `api/prompts/results/${categoryId}`;
-        return await this.client.getAsync<Array<PromptExecutionResult>>(endpointUrl);
+        const test = await this.client.getAsync<Array<PromptExecutionResult>>(endpointUrl);
+        const test2 = JSON.stringify(test);
+        const test3 = JSON.parse(test2);
+
+        return test3;
     }
 
     public async createAsync(command: CreatePromptCommand) {

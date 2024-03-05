@@ -82,6 +82,7 @@ onBeforeMount(async () => {
     // Set page title
     documentService.setTitle(LayoutConstants.Prompts);
 
+
     await loadPromptCategoriesAsync();
     await loadWorkflowsAsync();
 });
