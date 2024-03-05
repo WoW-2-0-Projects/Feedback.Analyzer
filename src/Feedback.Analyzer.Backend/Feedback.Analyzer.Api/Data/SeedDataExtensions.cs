@@ -479,74 +479,55 @@ public static class SeedDataExtensions
 
     private static async ValueTask SeedAnalysisWorkflows(AppDbContext appDbContext)
     {
-        // Add template workflow
-        var templateWorkflow = new FeedbackExecutionWorkflow
-        {
-            ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
-            Type = WorkflowType.Template,
-        };
-
-        await appDbContext.FeedbackExecutionWorkflows.AddAsync(templateWorkflow);
-
         // Add template workflow execution options
         var executionOptions = new List<WorkflowPromptCategoryExecutionOptions>
         {
             new()
             {
-                FeedbackExecutionWorkflowId = templateWorkflow.Id,
                 AnalysisPromptCategoryId = Guid.Parse("15072FC8-63C7-49EC-BF4F-3FD2A8479CF4"),
                 ChildExecutionOptions =
                 [
                     new WorkflowPromptCategoryExecutionOptions
                     {
-                        FeedbackExecutionWorkflowId = templateWorkflow.Id,
                         AnalysisPromptCategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                         ChildExecutionOptions =
                         [
                             new WorkflowPromptCategoryExecutionOptions
                             {
-                                FeedbackExecutionWorkflowId = templateWorkflow.Id,
                                 AnalysisPromptCategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
                             },
                             new WorkflowPromptCategoryExecutionOptions
                             {
-                                FeedbackExecutionWorkflowId = templateWorkflow.Id,
                                 AnalysisPromptCategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
                                 ChildExecutionOptions =
                                 [
                                     new WorkflowPromptCategoryExecutionOptions
                                     {
-                                        FeedbackExecutionWorkflowId = templateWorkflow.Id,
                                         AnalysisPromptCategoryId = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
                                         ChildExecutionOptions =
                                         [
                                             new WorkflowPromptCategoryExecutionOptions
                                             {
-                                                FeedbackExecutionWorkflowId = templateWorkflow.Id,
                                                 AnalysisPromptCategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
                                             },
                                             new WorkflowPromptCategoryExecutionOptions
                                             {
-                                                FeedbackExecutionWorkflowId = templateWorkflow.Id,
                                                 AnalysisPromptCategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
                                                 ChildExecutionOptions =
                                                 [
                                                     new WorkflowPromptCategoryExecutionOptions
                                                     {
-                                                        FeedbackExecutionWorkflowId = templateWorkflow.Id,
                                                         AnalysisPromptCategoryId = Guid.Parse("6F1FDE2A-CAFC-4C4D-B909-655414C8C76E"),
                                                     },
                                                 ]
                                             },
                                             new WorkflowPromptCategoryExecutionOptions
                                             {
-                                                FeedbackExecutionWorkflowId = templateWorkflow.Id,
                                                 AnalysisPromptCategoryId = Guid.Parse("33CCCA43-E803-4FA2-AFC7-7C202DE5EA0C"),
                                                 ChildExecutionOptions =
                                                 [
                                                     new WorkflowPromptCategoryExecutionOptions
                                                     {
-                                                        FeedbackExecutionWorkflowId = templateWorkflow.Id,
                                                         AnalysisPromptCategoryId = Guid.Parse("2EF85588-0B12-4FB8-9027-80D45CC38EC1"),
                                                     },
                                                 ]
@@ -557,7 +538,6 @@ public static class SeedDataExtensions
                             },
                             new WorkflowPromptCategoryExecutionOptions
                             {
-                                FeedbackExecutionWorkflowId = templateWorkflow.Id,
                                 AnalysisPromptCategoryId = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
                             },
                         ]
@@ -566,28 +546,20 @@ public static class SeedDataExtensions
             }
         };
 
-        appDbContext.WorkflowPromptCategoryExecutionOptions.AddRange(executionOptions);
+        // Add template workflow
+        var templateWorkflow = new FeedbackExecutionWorkflow
+        {
+            ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
+            Type = WorkflowType.Template,
+            StartingExecutionOption = executionOptions.First()
+        };
+
+        appDbContext.FeedbackExecutionWorkflows.Add(templateWorkflow);
+
+        var trainingWorkflow = templateWorkflow.Clone();
+
+        appDbContext.FeedbackExecutionWorkflows.Add(trainingWorkflow);
 
         await appDbContext.SaveChangesAsync();
-    }
-
-    public static List<WorkflowPromptCategoryExecutionOptions> AddOptionsRecursively(
-        List<WorkflowPromptCategoryExecutionOptions> list,
-        WorkflowPromptCategoryExecutionOptions root
-    )
-    {
-        list.Add(root);
-        root.ChildExecutionOptions?.ForEach(childOptions => AddOptionsRecursively(list, childOptions));
-
-        return list;
-    }
-
-    public static async Task AddChildren(AppDbContext dbContext, WorkflowPromptCategoryExecutionOptions root)
-    {
-        await dbContext.WorkflowPromptCategoryExecutionOptions.AddAsync(root);
-        // list.Add(root);
-        root.ChildExecutionOptions?.ForEach(childOptions => dbContext.AddRangeAsync(childOptions));
-
-        // return list;
     }
 }

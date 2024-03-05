@@ -9,14 +9,21 @@ public class FeedbackExecutionWorkflow : AuditableEntity, ICloneable<FeedbackExe
 
     public WorkflowType Type { get; set; }
 
-    public List<WorkflowPromptCategoryExecutionOptions> FeedbackWorkflowExecutionOptions { get; set; } = default!;
+    // public List<WorkflowPromptCategoryExecutionOptions> FeedbackWorkflowExecutionOptions { get; set; } = default!;
+
+    public Guid StartingExecutionOptionId { get; set; }
+    
+    public WorkflowPromptCategoryExecutionOptions StartingExecutionOption { get; set; } = default!;
 
     public FeedbackExecutionWorkflow Clone()
     {
-        return new FeedbackExecutionWorkflow
+        var clonedWorkflow = new FeedbackExecutionWorkflow
         {
             Type = Type,
-            FeedbackWorkflowExecutionOptions = FeedbackWorkflowExecutionOptions.Select(options => options.Clone(this)).ToList()
         };
+
+        clonedWorkflow.StartingExecutionOption = StartingExecutionOption.Clone(clonedWorkflow);
+
+        return clonedWorkflow;
     }
 }

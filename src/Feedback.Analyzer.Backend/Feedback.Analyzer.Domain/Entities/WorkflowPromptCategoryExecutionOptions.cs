@@ -6,7 +6,7 @@ public class WorkflowPromptCategoryExecutionOptions : Entity, IParameterizedClon
 {
     public Guid AnalysisPromptCategoryId { get; set; }
 
-    public Guid FeedbackExecutionWorkflowId { get; set; }
+    // public Guid FeedbackExecutionWorkflowId { get; set; }
 
     public AnalysisPromptCategory AnalysisPromptCategory { get; set; } = default!;
 
@@ -22,7 +22,7 @@ public class WorkflowPromptCategoryExecutionOptions : Entity, IParameterizedClon
         {
             AnalysisPromptCategoryId = AnalysisPromptCategoryId,
             FeedbackExecutionWorkflow = args,
-            ChildExecutionOptions = ChildExecutionOptions.Select(options => options.Clone(args)).ToList()
+            ChildExecutionOptions = ChildExecutionOptions?.Select(options => options.Clone(args)).ToList()
         };
     }
 }

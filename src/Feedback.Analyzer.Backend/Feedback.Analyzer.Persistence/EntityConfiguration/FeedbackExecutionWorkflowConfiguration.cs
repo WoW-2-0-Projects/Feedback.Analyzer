@@ -8,5 +8,8 @@ public class FeedbackExecutionWorkflowConfiguration : IEntityTypeConfiguration<F
 {
     public void Configure(EntityTypeBuilder<FeedbackExecutionWorkflow> builder)
     {
+        builder.HasOne(promptCategory => promptCategory.StartingExecutionOption)
+            .WithOne(executionOptions => executionOptions.FeedbackExecutionWorkflow)
+            .HasForeignKey<FeedbackExecutionWorkflow>(promptCategory => promptCategory.StartingExecutionOptionId);
     }
 }
