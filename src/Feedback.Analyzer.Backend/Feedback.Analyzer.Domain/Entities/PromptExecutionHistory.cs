@@ -13,4 +13,6 @@ public class PromptExecutionHistory : Entity
     public DateTime ExecutionTime { get; set; } 
     
     public TimeSpan ExecutionDuration { get; set; }
+    
+    public AnalysisPrompt Prompt { get; set; } = default!;
 }

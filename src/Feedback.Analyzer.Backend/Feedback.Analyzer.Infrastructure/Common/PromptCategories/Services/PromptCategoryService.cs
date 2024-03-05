@@ -1,7 +1,6 @@
 using System.Linq.Expressions;
 using Feedback.Analyzer.Application.Common.PromptCategories.Models;
 using Feedback.Analyzer.Application.Common.PromptCategories.Services;
-using Feedback.Analyzer.Domain.Common.Prompts;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.Extensions;

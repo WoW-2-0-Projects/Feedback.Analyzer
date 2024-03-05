@@ -4,6 +4,7 @@ import {RequestFormatterService} from "@/infrastructure/apiClients/formatters/Re
 import {
     OrganizationsEndpointsClient
 } from "@/infrastructure/apiClients/insightBoxClient/brokers/OrganizationsEndpoints";
+import {PromptsEndpointsClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/PromptsEndpointsClient";
 
 /*
  * Provides Insight Box API client functionality

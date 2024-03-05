@@ -2,12 +2,13 @@ using System.Linq.Expressions;
 using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
-using Feedback.Analyzer.Domain.Common.Prompts;
 using Feedback.Analyzer.Domain.Common.Queries;
+using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Persistence.Extensions;
-using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using FluentValidation;
+using Feedback.Analyzer.Persistence.Repositories;
+using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Prompts.Services;

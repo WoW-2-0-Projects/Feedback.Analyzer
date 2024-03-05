@@ -22,7 +22,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Common.Prompts.AnalysisPrompt", b =>
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -345,7 +345,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.ToTable("WorkflowPromptCategoryExecutionOptions");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Common.Prompts.AnalysisPrompt", b =>
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", "Category")
                         .WithMany("Prompts")
@@ -358,7 +358,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", b =>
                 {
-                    b.HasOne("Feedback.Analyzer.Domain.Common.Prompts.AnalysisPrompt", "SelectedPrompt")
+                    b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", "SelectedPrompt")
                         .WithOne()
                         .HasForeignKey("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", "SelectedPromptId");
 
@@ -550,11 +550,13 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.PromptExecutionHistory", b =>
                 {
-                    b.HasOne("Feedback.Analyzer.Domain.Common.Prompts.AnalysisPrompt", null)
-                        .WithMany()
+                    b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", "Prompt")
+                        .WithMany("ExecutionHistories")
                         .HasForeignKey("PromptId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Prompt");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowPromptCategoryExecutionOptions", b =>
@@ -574,6 +576,11 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("AnalysisPromptCategory");
 
                     b.Navigation("FeedbackExecutionWorkflow");
+                });
+
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", b =>
+                {
+                    b.Navigation("ExecutionHistories");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", b =>

@@ -30,10 +30,10 @@ public static class SeedDataExtensions
 
         if (!await appDbContext.Feedbacks.AnyAsync())
             await SeedDataCustomerFeedbackAsync(appDbContext);
-        
+
         if (!await appDbContext.PromptCategories.AnyAsync())
             await SeedPromptCategoriesAsync(appDbContext);
-        
+
         if (!await appDbContext.Prompts.AnyAsync())
             await SeedAnalysisPromptAsync(appDbContext);
 
@@ -136,14 +136,13 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
                 OrganizationId = Guid.Parse("e57f81a1-1aeb-4f1c-aae0-9f0e1dcb92c4"),
                 Name = "Macbook",
-                Description =
-                    "Macbook is suitable for software developers, designer and etc. It is so expensive but people love it.",
+                Description = "Macbook is suitable for software developers, designer and etc. It is so expensive but people love it.",
             }
         };
 
         await appDbContext.Products.AddRangeAsync(products);
     }
-    
+
     /// <summary>
     /// Seeds prompt categories
     /// </summary>
@@ -154,25 +153,38 @@ public static class SeedDataExtensions
         {
             new()
             {
+                Id = Guid.Parse("15072FC8-63C7-49EC-BF4F-3FD2A8479CF4"),
                 Type = FeedbackAnalysisPromptType.ContentSafetyAnalysis,
             },
             new()
             {
+                Id = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
                 Type = FeedbackAnalysisPromptType.LanguageRecognition,
             },
             new()
             {
+                Id = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                 Type = FeedbackAnalysisPromptType.RelevanceAnalysis,
             },
             new()
             {
-                Type = FeedbackAnalysisPromptType.ExtractRelevantContent,
+                Id = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
+                Type = FeedbackAnalysisPromptType.RelevantContentExtraction,
+            },
+            new()
+            {
+                Id = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
+                Type = FeedbackAnalysisPromptType.PersonalInformationRedaction,
+            },
+            new()
+            {
+                Id = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
+                Type = FeedbackAnalysisPromptType.OpinionPointsExtraction,
             }
         };
-    
+
         await appDbContext.PromptCategories.AddRangeAsync(promptCategories);
     }
-}    
 
     private static async ValueTask SeedDataCustomerFeedbackAsync(AppDbContext appDbContext)
     {
@@ -198,8 +210,7 @@ public static class SeedDataExtensions
             new()
             {
                 ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
-                Comment =
-                    "I found the product to be **confusing** and **difficult to navigate**. It also **lacked some features** I was hoping for.",
+                Comment = "I found the product to be **confusing** and **difficult to navigate**. It also **lacked some features** I was hoping for.",
                 UserName = "Alice Miller",
             },
 
@@ -226,6 +237,7 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
+                CategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                 Prompt = """
                          ## Instructions"
 
@@ -252,6 +264,7 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("3ca01475-d736-4ac3-a326-a2580110ee0c"),
+                CategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
                 Prompt = """
                          ## Instructions"
 
@@ -278,6 +291,7 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("4ca01475-d036-4ac3-a326-a2580110ee0c"),
+                CategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
                 Prompt = """
                          ## Instructions"
 
@@ -305,6 +319,7 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("2ba01475-d636-4ac3-a326-a2580112ee0c"),
+                CategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
                 Prompt = """
                          ## Instructions"
 
@@ -331,6 +346,7 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("551d1c24-24c2-45aa-9eba-383de543b24b"),
+                CategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
                 Prompt = """
                          ## Instructions"
 

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Feedback.Analyzer.Application.Common.Prompts.Models;
-using Feedback.Analyzer.Domain.Common.Prompts;
 using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Prompts.Mappers;

@@ -25,10 +25,15 @@ public enum FeedbackAnalysisPromptType
     /// <summary>
     /// Refers to the extraction of relevant content
     /// </summary>
-    [Description("Extract Relevant Content")] ExtractRelevantContent,
+    [Description("Extract Relevant Content")] RelevantContentExtraction,
 
     /// <summary>
     /// Refers to the redaction of personal information
     /// </summary>
-    [Description("Redact Personal Information")] RedactPersonalInformation
+    [Description("Redact Personal Information")] PersonalInformationRedaction,
+    
+    /// <summary>
+    /// Refers to the extraction of opinion points
+    /// </summary>
+    [Description("Redact Personal Information")] OpinionPointsExtraction
 }

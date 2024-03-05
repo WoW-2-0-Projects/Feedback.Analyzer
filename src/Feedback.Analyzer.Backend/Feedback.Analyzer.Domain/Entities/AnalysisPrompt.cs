@@ -1,7 +1,6 @@
 using Feedback.Analyzer.Domain.Common.Entities;
-using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Domain.Common.Prompts;
+namespace Feedback.Analyzer.Domain.Entities;
 
 public class AnalysisPrompt : AuditableEntity, ICloneable<AnalysisPrompt>
 {
@@ -14,6 +13,8 @@ public class AnalysisPrompt : AuditableEntity, ICloneable<AnalysisPrompt>
     public Guid CategoryId { get; set; }
 
     public AnalysisPromptCategory Category { get; set; } = default!;
+
+    public IEnumerable<PromptExecutionHistory> ExecutionHistories { get; set; } = default!;
 
     public AnalysisPrompt Clone()
     {

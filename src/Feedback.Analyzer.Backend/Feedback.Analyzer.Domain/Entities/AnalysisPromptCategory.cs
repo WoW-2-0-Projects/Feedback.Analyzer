@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Feedback.Analyzer.Domain.Common.Entities;
-using Feedback.Analyzer.Domain.Common.Prompts;
 using Feedback.Analyzer.Domain.Enums;
 
 namespace Feedback.Analyzer.Domain.Entities;

@@ -4,7 +4,6 @@ using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Organizations.Commands;
 using Feedback.Analyzer.Domain.Common.Commands;
-using Feedback.Analyzer.Domain.Common.Prompts;
 using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Prompts.CommandHandlers;
