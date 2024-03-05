@@ -6,7 +6,7 @@ namespace Feedback.Analyzer.Domain.Entities;
 
 public class AnalysisPromptCategory : Entity
 {
-    public FeedbackAnalysisPromptType Type { get; set; }
+    public FeedbackAnalysisPromptCategory Type { get; set; }
     
     public Guid? SelectedPromptId { get; set; }
     

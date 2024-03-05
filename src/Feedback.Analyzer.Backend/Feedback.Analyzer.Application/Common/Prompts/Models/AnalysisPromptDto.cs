@@ -6,7 +6,7 @@ public class AnalysisPromptDto
 {
     public Guid Id { get; set; }
     
-    public FeedbackAnalysisPromptType Type { get; set; }
+    public FeedbackAnalysisPromptCategory Type { get; set; }
     
     public string Prompt { get; set; } = default!;
     

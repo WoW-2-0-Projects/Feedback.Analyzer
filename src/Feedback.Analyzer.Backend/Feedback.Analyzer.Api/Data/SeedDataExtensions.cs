@@ -154,32 +154,32 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("15072FC8-63C7-49EC-BF4F-3FD2A8479CF4"),
-                Type = FeedbackAnalysisPromptType.ContentSafetyAnalysis,
+                Type = FeedbackAnalysisPromptCategory.ContentSafetyAnalysis,
             },
             new()
             {
                 Id = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
-                Type = FeedbackAnalysisPromptType.LanguageRecognition,
+                Type = FeedbackAnalysisPromptCategory.LanguageRecognition,
             },
             new()
             {
                 Id = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
-                Type = FeedbackAnalysisPromptType.RelevanceAnalysis,
+                Type = FeedbackAnalysisPromptCategory.RelevanceAnalysis,
             },
             new()
             {
                 Id = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
-                Type = FeedbackAnalysisPromptType.RelevantContentExtraction,
+                Type = FeedbackAnalysisPromptCategory.RelevantContentExtraction,
             },
             new()
             {
                 Id = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
-                Type = FeedbackAnalysisPromptType.PersonalInformationRedaction,
+                Type = FeedbackAnalysisPromptCategory.PersonalInformationRedaction,
             },
             new()
             {
                 Id = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
-                Type = FeedbackAnalysisPromptType.OpinionPointsExtraction,
+                Type = FeedbackAnalysisPromptCategory.OpinionPointsExtraction,
             }
         };
 
