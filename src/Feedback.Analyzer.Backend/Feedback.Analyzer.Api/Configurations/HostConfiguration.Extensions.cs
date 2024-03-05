@@ -3,6 +3,7 @@ using System.Text;
 
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
+using Feedback.Analyzer.Application.Common.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.PromptCategories.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Brokers;
@@ -17,6 +18,7 @@ using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
+using Feedback.Analyzer.Infrastructure.Common.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.PromptCategories.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Brokers;
@@ -178,13 +180,15 @@ public static partial class HostConfiguration
             .AddScoped<IPromptRepository, PromptRepository>()
             .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>()
             .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>()
-            .AddScoped<IFeedbackExecutionWorkflowRepository, FeedbackExecutionWorkflowRepository>();
-        
+            .AddScoped<IFeedbackExecutionWorkflowRepository, FeedbackExecutionWorkflowRepository>()
+            .AddScoped<IFeedbackAnalysisResultRepository, FeedbackAnalysisResultRepository>();
+
         // Register foundation services
         builder.Services
             .AddScoped<IPromptService, PromptService>()
             .AddScoped<IPromptCategoryService, PromptCategoryService>()
             .AddScoped<IPromptsExecutionHistoryService, PromptExecutionHistoryService>()
+            .AddScoped<IFeedbackAnalysisResultService, FeedbackAnalysisResultService>()
             .AddScoped<IFeedbackExecutionWorkflowService, FeedbackExecutionWorkflowService>();
         
         // Register orchestration services
