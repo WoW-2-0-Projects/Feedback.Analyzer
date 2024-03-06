@@ -2,8 +2,12 @@ using System.ComponentModel;
 
 namespace Feedback.Analyzer.Domain.Extensions;
 
+/// <summary>
+/// Contains extension methods related to enums.
+/// </summary>
 public static class EnumExtensions
 {
+    // Extension method to get the display name of an enum value
     public static string GetDisplayName(this Enum value)
     {
         var type = value.GetType();
