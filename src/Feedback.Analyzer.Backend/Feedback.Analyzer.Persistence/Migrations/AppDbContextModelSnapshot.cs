@@ -116,6 +116,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .HasColumnType("character varying(128)");
 
                     b.Property<int>("Type")
+                        .HasMaxLength(128)
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
