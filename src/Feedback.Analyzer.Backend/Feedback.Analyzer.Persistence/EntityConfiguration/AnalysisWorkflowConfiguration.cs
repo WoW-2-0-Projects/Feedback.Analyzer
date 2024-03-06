@@ -10,11 +10,11 @@ public class AnalysisWorkflowConfiguration : IEntityTypeConfiguration<AnalysisWo
     {
         builder.Property(analysisWorkflow => analysisWorkflow.Name)
             .HasMaxLength(128)
-            .IsRequired();
         
+            .IsRequired();
         builder.Property(analysisWorkflow => analysisWorkflow.Type)
-            .HasMaxLength(128)
             .HasConversion<string>()
+            .HasMaxLength(128)
             .IsRequired();
     }
 }
