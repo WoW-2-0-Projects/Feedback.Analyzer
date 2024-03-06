@@ -30,8 +30,8 @@ public static class SeedDataExtensions
         if (!await appDbContext.Feedbacks.AnyAsync())
             await SeedDataCustomerFeedbackAsync(appDbContext);
         
-        if (!await appDbContext.Prompts.AnyAsync())
-            await SeedAnalysisPromptAsync(appDbContext);
+        // if (!await appDbContext.Prompts.AnyAsync())
+        //     await SeedAnalysisPromptAsync(appDbContext);
 
         if (appDbContext.ChangeTracker.HasChanges())
             await appDbContext.SaveChangesAsync();
