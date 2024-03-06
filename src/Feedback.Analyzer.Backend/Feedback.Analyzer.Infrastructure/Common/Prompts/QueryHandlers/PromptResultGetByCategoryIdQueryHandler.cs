@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Prompts.QueryHandlers;
 
+/// <summary>
+/// Query handler for getting a collection of <see cref="PromptResultDto"/> by <see cref="Prompt.CategoryId"/>
+/// </summary>
 public class PromptResultGetByCategoryIdQueryHandler(IMapper mapper, IPromptService promptService) 
     : IQueryHandler<PromptResultGetByCategoryIdQuery, ICollection<PromptResultDto>>
 {

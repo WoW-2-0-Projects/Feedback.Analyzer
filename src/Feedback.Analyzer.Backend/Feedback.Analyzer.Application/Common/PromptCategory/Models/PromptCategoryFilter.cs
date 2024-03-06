@@ -2,6 +2,9 @@ using Feedback.Analyzer.Domain.Common.Query;
 
 namespace Feedback.Analyzer.Application.Common.PromptCategory.Models;
 
+/// <summary>
+/// Represents a filter for prompts and pagination options.
+/// </summary>
 public class PromptCategoryFilter : FilterPagination
 {
     public PromptCategoryFilter()

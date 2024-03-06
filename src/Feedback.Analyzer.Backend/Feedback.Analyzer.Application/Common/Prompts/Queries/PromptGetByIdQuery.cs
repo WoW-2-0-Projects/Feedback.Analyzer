@@ -11,5 +11,5 @@ public record PromptGetByIdQuery : IQuery<AnalysisPromptDto?>
     /// <summary>
     /// The unique identifier of the organization to retrieve.
     /// </summary>
-    public Guid PromptId { get; set; } = Guid.Empty;
+    public Guid PromptId { get; set; }
 }

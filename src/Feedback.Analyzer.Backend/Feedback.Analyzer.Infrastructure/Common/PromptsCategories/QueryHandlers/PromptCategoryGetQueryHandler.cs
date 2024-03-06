@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.Common.PromptsCategories.QueryHandlers;
 
+/// <summary>
+/// Query handler for getting prompt categories
+/// </summary>
 public class PromptCategoryGetQueryHandler(IMapper mapper, IPromptCategoryService promptCategoryService)
     : IQueryHandler<PromptCategoryGetQuery, ICollection<AnalysisPromptCategoryDto>>
 {
@@ -21,11 +24,8 @@ public class PromptCategoryGetQueryHandler(IMapper mapper, IPromptCategoryServic
             }
         )
         .Include(promptCategory => promptCategory.Prompts)
-        //.ProjectTo<AnalysisPromptCategoryDto>(mapper.ConfigurationProvider)
         .ToListAsync(cancellationToken);
-
-        var result = mapper.Map<ICollection<AnalysisPromptCategoryDto>>(matchedPromptCategory);
         
-        return result;
+        return mapper.Map<ICollection<AnalysisPromptCategoryDto>>(matchedPromptCategory);;
     }
 }
