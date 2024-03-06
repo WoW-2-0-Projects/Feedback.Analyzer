@@ -8,7 +8,13 @@ public class AnalysisWorkflowConfiguration : IEntityTypeConfiguration<AnalysisWo
 {
     public void Configure(EntityTypeBuilder<AnalysisWorkflow> builder)
     {
-        builder.Property(analysisWorkflow => analysisWorkflow.Name).HasMaxLength(128).IsRequired();
-        builder.Property(analysisWorkflow => analysisWorkflow.Type).HasMaxLength(128).IsRequired();
+        builder.Property(analysisWorkflow => analysisWorkflow.Name)
+            .HasMaxLength(128)
+            .IsRequired();
+        
+        builder.Property(analysisWorkflow => analysisWorkflow.Type)
+            .HasMaxLength(128)
+            .HasConversion<string>()
+            .IsRequired();
     }
 }
