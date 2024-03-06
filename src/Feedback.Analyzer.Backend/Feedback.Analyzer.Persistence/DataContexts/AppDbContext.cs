@@ -1,5 +1,6 @@
 using System.Reflection;
 using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Persistence.EntityConfiguration;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Persistence.DataContexts;
@@ -25,6 +26,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     public DbSet<AnalysisPrompt> Prompts => Set<AnalysisPrompt>();
 
     public DbSet<AnalysisWorkflow> AnalysisWorkflows => Set<AnalysisWorkflow>();
+    
+    public DbSet<AnalysisPromptCategory> PromptCategories => Set<AnalysisPromptCategory>();
     
     
     #endregion

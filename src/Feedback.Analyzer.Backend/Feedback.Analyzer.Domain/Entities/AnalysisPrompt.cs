@@ -23,6 +23,16 @@ public class AnalysisPrompt : AuditableEntity, ICloneable<AnalysisPrompt>
     public int Revision { get; set; }
 
     /// <summary>
+    /// Gets or sets the ID of the category to which the analysis prompt belongs.
+    /// </summary>
+    public Guid CategoryId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the category of the analysis prompt.
+    /// </summary>
+    public AnalysisPromptCategory Category { get; set; } = default!;
+
+    /// <summary>
     /// Creates a deep clone of the analysis prompt.
     /// </summary>
     public AnalysisPrompt Clone()
@@ -32,6 +42,7 @@ public class AnalysisPrompt : AuditableEntity, ICloneable<AnalysisPrompt>
             Prompt = Prompt,
             Version = Version,
             Revision = Revision,
+            CategoryId = CategoryId,
         };
     }
 }
