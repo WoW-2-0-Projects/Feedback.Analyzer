@@ -12,7 +12,7 @@ namespace Feedback.Analyzer.Infrastructure.Common.PromptsCategories.Services;
 /// <summary>
 /// Represents a service that provides operations for prompt categories.
 /// </summary>
-public class PromptCategoryService(IPromptCategoryRepository promptCategoryRepository, IValidator<AnalysisPrompt> promptValidator)
+public class PromptCategoryService(IPromptCategoryRepository promptCategoryRepository)
     : IPromptCategoryService
 {
     public IQueryable<AnalysisPromptCategory> Get(Expression<Func<AnalysisPromptCategory, bool>>? predicate = default,
