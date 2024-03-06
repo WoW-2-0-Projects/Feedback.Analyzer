@@ -10,6 +10,8 @@ public class PromptCategoryMapper : Profile
     {
         CreateMap<AnalysisPromptCategory, AnalysisPromptCategoryDto>()
             .ForMember(dest => dest.PromptsCount, opt => opt.MapFrom(src => src.Prompts.Count))
-            .ReverseMap();
+            .ForMember(dest => dest.SelectedPromptVersion, opt =>
+                opt.MapFrom(src => src.SelectedPrompt != null ? $"{src.SelectedPrompt!.Version}.{src.SelectedPrompt!.Revision}" : null)
+            ).ReverseMap();
     }
 }

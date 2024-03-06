@@ -26,6 +26,7 @@ public class PromptCategoryGetQueryHandler(IPromptCategoryService promptCategory
                     AsNoTracking = true
                 }
             )
+            .Include(category => category.SelectedPrompt)
             .Include(promptCategory => promptCategory.Prompts)
             .ToListAsync(cancellationToken);
 

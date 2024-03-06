@@ -10,9 +10,9 @@
         <tr class="hover:bg-gray-500" v-for="(row, index) in data.rows"
             :key="index">
             <td v-for="(cell, index) in row.data" :key="index" :class="rowCellStyles">{{ cell }}</td>
-            <td v-show="row.actions.length > 0" :class="rowCellStyles">
+            <td v-show="row.actions.length > 0" :class="rowCellStyles" class="flex gap-2">
                 <app-button v-for="(action, index) in row.actions" :key="index" :icon="action.icon"
-                            :type="ButtonType.Danger" :layout="ButtonLayout.Square" :size="ActionComponentSize.ExtraSmall"
+                            :type="action.buttonType" :layout="ButtonLayout.Square" :size="ActionComponentSize.ExtraSmall"
                             @click="action.action">
                     <i :class="action.icon"/>
                 </app-button>

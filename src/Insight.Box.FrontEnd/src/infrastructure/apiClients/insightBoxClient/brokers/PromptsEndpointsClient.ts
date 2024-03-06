@@ -34,13 +34,14 @@ export class PromptsEndpointsClient {
         return await this.client.getAsync<Array<AnalysisPromptCategory>>(endpointUrl);
     }
 
+    public async getCategoryByIdAsync(categoryId: string) {
+        const endpointUrl = `api/prompts/categories/${categoryId}`;
+        return await this.client.getAsync<Array<AnalysisPromptCategory>>(endpointUrl);
+    }
+
     public async getPromptExecutionResults(categoryId: string) {
         const endpointUrl = `api/prompts/results/${categoryId}`;
-        const test = await this.client.getAsync<Array<PromptExecutionResult>>(endpointUrl);
-        const test2 = JSON.stringify(test);
-        const test3 = JSON.parse(test2);
-
-        return test3;
+        return await this.client.getAsync<Array<PromptExecutionResult>>(endpointUrl);
     }
 
     public async createAsync(command: CreatePromptCommand) {
@@ -51,5 +52,10 @@ export class PromptsEndpointsClient {
     public async updateAsync(command: CreatePromptCommand) {
         const endpointUrl =  'api/prompts';
         return await this.client.putAsync<AnalysisPrompt>(endpointUrl, command);
+    }
+
+    public async updateSelectedPromptAsync(promptCategoryId: string, promptId: string) {
+        const endpointUrl =  `api/prompts/categories/${promptCategoryId}/selected/${promptId}`;
+        return await this.client.putAsync<bool>(endpointUrl);
     }
 }

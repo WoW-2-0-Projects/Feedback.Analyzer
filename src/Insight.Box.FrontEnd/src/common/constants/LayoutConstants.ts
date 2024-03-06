@@ -3,9 +3,12 @@
  * Represents the layout constants
  */
 export class LayoutConstants {
+    public static readonly Search = 'Search';
+    public static readonly SearchHere = 'Search here...';
     public static readonly Organizations = 'Organizations';
     public static readonly Products = 'Products';
     public static readonly Prompts = 'Prompts';
+    public static readonly Summarize = 'Summarize the user input ...';
 
     /* Products */
 
@@ -22,6 +25,7 @@ export class LayoutConstants {
     public static readonly Prompt = 'Prompt';
     public static readonly EnterPrompt = 'Enter prompt';
     public static readonly Versions = 'Versions';
+    public static readonly SelectedVersion = 'Selected Version';
 
     /* Forms */
     public static readonly Submit = 'Submit';

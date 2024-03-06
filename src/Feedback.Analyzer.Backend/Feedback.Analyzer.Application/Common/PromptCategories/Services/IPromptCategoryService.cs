@@ -15,4 +15,10 @@ public interface IPromptCategoryService
     IQueryable<AnalysisPromptCategory> Get(
         PromptCategoryFilter promptCategoryFilter, 
         QueryOptions queryOptions = default);
+    
+    ValueTask<bool> UpdateSelectedPromptIdAsync(
+        Guid promptCategoryId,
+        Guid promptId,
+        CancellationToken cancellationToken = default
+    );
 }

@@ -34,7 +34,7 @@ public class PromptExecutionProcessingService(
             kernelArguments.Add(keyValuePair.Key, keyValuePair.Value);
 
         // Execute prompt
-        var executionResults = new List<(FuncResult<string?> PromptResult, double Elapsed)>();
+        var executionResults = new List<(FuncResult<string?> PromptResult, double ElapsedMilliseconds)>();
 
         await Parallel.ForEachAsync(
             Enumerable.Range(0, (int)executionCount),
@@ -44,15 +44,15 @@ public class PromptExecutionProcessingService(
                 var stopWatch = new Stopwatch();
                 var promptResult = await promptExecutionBroker.ExecutePromptAsync(prompt.Prompt, kernelArguments, cancellationToken);
                 stopWatch.Stop();
-                var elapsedSeconds = stopWatch.Elapsed.TotalSeconds;
+                var elapsedMilliseconds = stopWatch.Elapsed.TotalMilliseconds;
 
                 // Add result to list
-                executionResults.Add((promptResult, elapsedSeconds));
+                executionResults.Add((promptResult, elapsedMilliseconds));
             }
         );
 
         // Map to history
-        var histories = executionResults.Select(result => MapToHistory(promptId, result.PromptResult, result.Elapsed)).ToImmutableList();
+        var histories = executionResults.Select(result => MapToHistory(promptId, result.PromptResult, result.ElapsedMilliseconds)).ToImmutableList();
 
         var executionHistories = new List<PromptExecutionHistory>();
         
@@ -73,7 +73,7 @@ public class PromptExecutionProcessingService(
         return executionHistories.ToImmutableList();
     }
 
-    private PromptExecutionHistory MapToHistory(Guid promptId, FuncResult<string?> result, double elapsed)
+    private PromptExecutionHistory MapToHistory(Guid promptId, FuncResult<string?> result, double elapsedMilliseconds)
     {
         return new PromptExecutionHistory
         {
@@ -81,7 +81,7 @@ public class PromptExecutionProcessingService(
             Result = result.Data,
             Exception = result.Exception is not null ? JsonConvert.SerializeObject(result.Exception) : null,
             ExecutionTime = DateTime.UtcNow,
-            ExecutionDuration = TimeSpan.FromSeconds(elapsed)
+            ExecutionDuration = TimeSpan.FromMilliseconds(elapsedMilliseconds)
         };
     }
 }

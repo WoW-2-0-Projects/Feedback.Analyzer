@@ -33,6 +33,14 @@ public class ExecuteWorkflowSinglePromptEventHandler(
             { "customerFeedback", workflow.Product.CustomerFeedbacks.First().Comment }
         };
 
-        await promptExecutionProcessingService.ExecuteAsync(notification.PromptId, arguments, cancellationToken: cancellationToken);
+        var histories = await promptExecutionProcessingService.ExecuteAsync(notification.PromptId, arguments, cancellationToken: cancellationToken);
+
+        // Query prompt category
+        // var promptCategory = 
+        // var history = histories.First();
+        
+        // Send command to map history result based on prompt category
+
+        var result = "";
     }
 }

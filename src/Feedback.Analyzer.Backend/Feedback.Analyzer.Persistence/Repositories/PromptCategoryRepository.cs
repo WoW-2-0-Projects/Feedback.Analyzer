@@ -1,8 +1,10 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.Immutable;
+using System.Linq.Expressions;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
@@ -17,4 +19,21 @@ public class PromptCategoryRepository(AppDbContext dbContext)
         QueryOptions queryOptions = default
     ) =>
         base.Get(predicate, queryOptions);
+
+    // public new ValueTask<int> UpdateBatchAsync(
+    //         IImmutableList<(Func<AnalysisPromptCategory, object> propertySelector, 
+    //             Func<AnalysisPromptCategory, object> valueSelector)> setPropertyExecutors,
+    //         Expression<Func<AnalysisPromptCategory, bool>>? batchUpdatePredicate = default,
+    //         CancellationToken cancellationToken = default
+    //     )
+    // => base.UpdateBatchAsync(setPropertyExecutors, batchUpdatePredicate, cancellationToken);
+    //
+
+    public new ValueTask<int> UpdateBatchAsync(
+        Expression<Func<SetPropertyCalls<AnalysisPromptCategory>, SetPropertyCalls<AnalysisPromptCategory>>> setPropertyCalls,
+        // Func<AnalysisPromptCategory, object> valueSelector)> set,
+        Expression<Func<AnalysisPromptCategory, bool>>? batchUpdatePredicate = default,
+        CancellationToken cancellationToken = default
+    ) =>
+        base.UpdateBatchAsync(setPropertyCalls, batchUpdatePredicate, cancellationToken);
 }

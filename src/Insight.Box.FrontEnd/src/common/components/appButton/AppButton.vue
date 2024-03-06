@@ -56,8 +56,8 @@ const documentService = new DocumentService();
 const component = ref<HTMLButtonElement>();
 
 onMounted(() => {
-    if (props.layout === ButtonLayout.Square)
-        documentService.setEqualWidth(component.value);
+    // if (props.layout === ButtonLayout.Square)
+    //     documentService.setEqualWidth(component.value);
 });
 
 const componentStyles = computed(() => {
@@ -86,7 +86,7 @@ const componentStyles = computed(() => {
     if (props.layout === ButtonLayout.Rectangle)
         styles += ' theme-action-border-round action-layout';
     else if (props.layout === ButtonLayout.Square)
-        styles += ' theme-action-border-round action-square-layout';
+        styles += ' theme-action-border-round aspect-square ';
     else if (props.layout === ButtonLayout.Circle)
         styles += ' flex items-center justify-center action-circle-layout';
 

@@ -6,6 +6,7 @@ export class AnalysisPromptCategory {
     type: FeedbackAnalysisPromptType;
     typeDisplayName: string;
     selectedPromptId: string;
+    selectedPromptVersion: string;
     promptsCount: number;
     prompts: Array<AnalysisPrompt>;
 }

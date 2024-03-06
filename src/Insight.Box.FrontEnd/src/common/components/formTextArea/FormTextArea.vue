@@ -4,18 +4,18 @@
         class="h-[400px] flex theme-input-bg relative rounded-md
          theme-action-transition theme-action-shadow theme-action-content
         theme-action-border-round"
-        @focusin="focus = true"
-        @focusout="focus = false"
+        @focusin="onFocusIn"
+        @focusout="onFocusOut"
         :class="focus ? 'theme-input-border-focus' : 'theme-input-border'"
     >
         <!-- Prefix value -->
 <!--        <span class="px-2.5 pb-2.5 pt-5 whitespace-nowrap" v-if="prefix">{{ prefix }}</span>-->
 
         <!-- Form input field -->
-        <textarea name="input" :value="modelValue"
+        <textarea ref="textArea" name="input" :value="modelValue"
                @input="emit('update:modelValue', $event.target.value)"
-               @keydown="onInput"
-               class="w-full px-2.5 pb-2.5 pt-5 bg-transparent appearance-none focus:outline-none peer
+               @keydown="onInput" :disabled="disabled"
+               class="w-full px-2.5 pb-2.5 pt-5 no-scrollbar bg-transparent appearance-none focus:outline-none peer
                    theme-input-text theme-input-placeholder theme-action-transition text-base"
                :placeholder="placeholder"/>
 
@@ -39,8 +39,10 @@
 
 <script setup lang="ts">
 
-import {computed, defineEmits, defineProps, ref, watch} from 'vue';
+import {computed, defineEmits, defineProps, onBeforeMount, onMounted, type PropType, ref, watch} from 'vue';
 import {FormInputType} from "../formInput/FormInputType";
+import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
+import type {Action} from "@/infrastructure/models/notifications/Action";
 
 const props = defineProps({
     modelValue: {
@@ -55,10 +57,17 @@ const props = defineProps({
         type: String,
         default: ''
     },
+    disabled: {
+        type: Boolean,
+        default: false
+    },
     border: {
         type: Boolean,
         default: true
     },
+    focus: {
+        type: Object as PropType<Action>,
+    }
     // prefix: {
     //     type: String,
     //     default: ''
@@ -66,15 +75,39 @@ const props = defineProps({
 });
 
 // const actualType = ref<FormInputType>(props.type === FormInputType.Number ? FormInputType.Text : props.type);
+const textArea = ref<HTMLTextAreaElement>();
 const focus = ref<boolean>(false);
 
-const emit = defineEmits(['update:modelValue']);
+onBeforeMount(() => {
+    if(props.focus)
+        props.focus.callBack = () =>{
+        console.log('focusing for input');
+            textArea.value.focus();
+        };
+})
+
+// const emit = defineEmits(['update:modelValue']);
+
+const emit = defineEmits<{
+    (e: 'focusIn'): void,
+    (e: 'focusOut'): void,
+    (e: 'update:modelValue', string: value): void
+}>();
 
 // Watcher for prefix change
-// watch(() => props.prefix, (newValue, oldValue) => {
-//     if (newValue !== oldValue)
-//         emit('update:modelValue', props.modelValue?.replace(oldValue, newValue));
-// });
+watch(() => focus.value, (newValue, oldValue) => {
+    console.log('focused');
+});
+
+const onFocusIn = () => {
+    focus.value = true;
+    emit('focusIn');
+}
+
+const onFocusOut = () => {
+    focus.value = false;
+    emit('focusOut');
+}
 
 // Computed value without prefix
 // const value = computed(() => {

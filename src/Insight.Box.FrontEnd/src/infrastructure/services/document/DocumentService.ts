@@ -114,12 +114,4 @@ export class DocumentService {
         return scrollPosition >= threshold;
     }
 
-    // region Layout
-
-    public setEqualWidth(element: HTMLElement) {
-        const height = element.offsetHeight;
-        element.style.width = `${height}px`;
-    }
-
-    // endregion
 }

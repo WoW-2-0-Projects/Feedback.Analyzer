@@ -1,8 +1,11 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.Immutable;
+using System.Linq.Expressions;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Entities;
 using Feedback.Analyzer.Domain.Common.Queries;
+using Feedback.Analyzer.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
@@ -12,9 +15,7 @@ namespace Feedback.Analyzer.Persistence.Repositories;
 /// <param name="dbContext"></param>
 /// <typeparam name="TEntity"></typeparam>
 /// <typeparam name="TContext"></typeparam>
-public abstract class EntityRepositoryBase<TEntity, TContext>(
-    TContext dbContext)
-    where TEntity : class, IEntity where TContext : DbContext
+public abstract class EntityRepositoryBase<TEntity, TContext>(TContext dbContext) where TEntity : class, IEntity where TContext : DbContext
 {
     protected TContext DbContext => dbContext;
 
@@ -63,7 +64,11 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     /// <param name="queryOptions"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>A ValueTask,IList,TEntity, representing the asynchronous operation. The result will be a list of the found entities</returns>
-    protected async ValueTask<IList<TEntity>> GetByIdsAsync(IEnumerable<Guid> ids, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
+    protected async ValueTask<IList<TEntity>> GetByIdsAsync(
+        IEnumerable<Guid> ids,
+        QueryOptions queryOptions = default,
+        CancellationToken cancellationToken = default
+    )
     {
         var initialQuery = DbContext.Set<TEntity>().Where(entity => ids.Contains(entity.Id));
 
@@ -80,11 +85,15 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     /// <param name="commandOptions"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>A ValueTask,TEntity,representing the asynchronous operation. The result will be the newly created entity.</returns>
-    protected async ValueTask<TEntity> CreateAsync(TEntity entity, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+    protected async ValueTask<TEntity> CreateAsync(
+        TEntity entity,
+        CommandOptions commandOptions = default,
+        CancellationToken cancellationToken = default
+    )
     {
         await DbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
 
-        if (!commandOptions.SkipSaveChanges)    
+        if (!commandOptions.SkipSaveChanges)
             await DbContext.SaveChangesAsync(cancellationToken);
 
         return entity;
@@ -109,6 +118,31 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
             await DbContext.SaveChangesAsync(cancellationToken);
 
         return entity;
+    }
+
+    /// <summary>
+    /// Batch updates entities matching given predicate using the provided property selectors and value selectors.
+    /// </summary>
+    /// <param name="batchUpdatePredicate">Predicate to select entities for batch update</param>
+    /// <param name="setPropertyCalls">Batch update value selectors</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Number of updated rows.</returns>
+    protected async ValueTask<int> UpdateBatchAsync(
+        Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls,
+        // IImmutableList<(Func<TEntity, object> propertySelector, Func<TEntity, object> valueSelector)> setPropertyExecutors,
+        Expression<Func<TEntity, bool>>? batchUpdatePredicate = default,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var entities = DbContext.Set<TEntity>().AsQueryable();
+
+        if (batchUpdatePredicate is not null)
+            entities = entities.Where(batchUpdatePredicate);
+
+        return await entities.ExecuteUpdateAsync(setPropertyCalls,
+            // categoryPropertySelector => categoryPropertySelector.MapToSetPropertyCalls(setPropertyExecutors),
+            cancellationToken
+        );
     }
 
     /// <summary>

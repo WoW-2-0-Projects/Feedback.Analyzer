@@ -7,8 +7,12 @@
             <h5 class="text-xl">{{ promptCategory.typeDisplayName }}</h5>
 
             <!-- Add prompt button -->
-            <div class="flex gap-2 items-center justify-center">
-                <h5 class="mt-5 text-sm"> {{ LayoutConstants.Versions }} : {{ promptCategory.promptsCount }}</h5>
+            <div class="mt-10 flex gap-10 items-center justify-center">
+                <div class="flex flex-col h-fit">
+                    <h5 class="text-sm"> {{ LayoutConstants.Versions }} : {{ promptCategory.promptsCount }}</h5>
+                    <h5 class="text-sm"> {{ LayoutConstants.SelectedVersion }} :
+                        {{ promptCategory.selectedPromptVersion }}</h5>
+                </div>
 
                 <app-button :type="ButtonType.Primary" :layout="ButtonLayout.Rectangle" icon="fas fa-plus"
                             text="Add Prompt"
@@ -18,13 +22,19 @@
             <!-- Training workflows -->
             <div class="mt-20">
                 <h5 class="text-center">Training workflows</h5>
-                <form-drop-down label="Filter by" v-model="selectedWorkflow" :values="workflowDropDownValues"
-                                :size="ActionComponentSize.Small"/>
+
+                <div class="flex gap-10 mt-5">
+                    <form-drop-down label="Filter by" v-model="selectedWorkflow" :values="workflowDropDownValues"
+                                    :size="ActionComponentSize.Small"/>
+
+                    <app-button :type="ButtonType.Success" :layout="ButtonLayout.Rectangle" icon="fas fa-play"
+                                text="Trigger"
+                                :disabled="selectedWorkflow === null || promptCategory.selectedPromptId === null"
+                                :size="ActionComponentSize.Small" @click="onTriggerWorkflow"/>
+                </div>
+
             </div>
 
-            <app-button :type="ButtonType.Success" :layout="ButtonLayout.Rectangle" icon="fas fa-play"
-                        text="Trigger" :disabled="selectedWorkflow === null || promptCategory.selectedPromptId === null"
-                        :size="ActionComponentSize.ExtraSmall" @click="onTriggerWorkflow"/>
 
         </div>
 
@@ -105,7 +115,8 @@ watch(() => props.workflows, async () => {
 
 const emit = defineEmits<{
     (e: 'addPrompt', promptCategoryId: string): void
-    (e: 'editPrompt', promptId: string): void
+    (e: 'editPrompt', promptId: string): void,
+    (e: 'loadCategory', categoryId: string): void,
 }>();
 
 const promptResultsTableData = ref<TableData>(new TableData([
@@ -150,7 +161,8 @@ const convertResultToTableRowData = (result: PromptExecutionResult) => {
             result.executionsCount,  // Comma added here
         ],
         [
-            new TableAction(() => emit('editPrompt', result.promptId), ButtonType.Secondary, 'fas fa-edit')
+            new TableAction(() => emit('editPrompt', result.promptId), ButtonType.Secondary, 'fas fa-edit'),
+            new TableAction(() => onPromptVersionSelected(result.promptId), ButtonType.Secondary, 'fas fa-paperclip')
         ]
     );
 };
@@ -163,8 +175,6 @@ const loadPromptExecutionHistoryAsync = async () => {
     if (response.response) {
         promptExecutionHistories.value = response.response;
 
-        console.log('history', promptExecutionHistories.value);
-
         promptHistoriesTableData.value.rows = promptExecutionHistories.value.map(result => {
             return convertHistoryToTableRowData(result);
         });
@@ -172,8 +182,6 @@ const loadPromptExecutionHistoryAsync = async () => {
 };
 
 const convertHistoryToTableRowData = (result: PromptsExecutionHistory) => {
-    console.log('history data', result);
-
     return new TableRowData([
             dateTimeFormatterService.formatHumanize(result.executionTime),
             result.executionDurationInMilliseconds,
@@ -192,8 +200,6 @@ const onTriggerWorkflow = async () => {
     // const executeSinglePromptCommand = new ExecuteSinglePromptCommand();
     const response = await insightBoxApiClient.workflows
         .executeSinglePrompt(selectedWorkflow.value?.value?.id!, props.promptCategory?.selectedPromptId!);
-
-    // console.log(executeSinglePromptCommand);
 }
 
 
@@ -201,6 +207,17 @@ const loadWorkflowOptions = () => {
     workflowDropDownValues.value = props.workflows?.map(workflow => {
         return new DropDownValue(workflow.name, workflow);
     });
+};
+
+const onPromptVersionSelected = async (promptId: string) => {
+    const response = await insightBoxApiClient.prompts.updateSelectedPromptAsync(props.promptCategory?.id, promptId);
+
+    if (response.isSuccess) {
+        console.log('emit');
+        // props.promptCategory.selectedPromptId = promptId;
+        await loadPromptExecutionHistoryAsync();
+        emit('loadCategory', props.promptCategory?.id);
+    }
 };
 
 </script>

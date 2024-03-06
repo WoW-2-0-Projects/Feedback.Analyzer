@@ -17,11 +17,16 @@
 
             <div class="modal-content-padding modal-content-layout">
 
+
                 <form class="flex flex-col gap-10" @submit.prevent="onSubmit">
 
+                    <form-editor :focus="textAreaFocusAction" v-model="prompt.prompt" :label="LayoutConstants.Prompt"
+                        :placeholder="LayoutConstants.EnterPrompt" :defaultValue="LayoutConstants.Summarize"
+                    />
+
                     <!-- Modal inputs -->
-                    <form-text-area v-model="prompt.prompt" :label="LayoutConstants.Prompt"
-                                :placeholder="LayoutConstants.EnterPrompt"/>
+<!--                    <form-text-area v-model="prompt.prompt" :label="LayoutConstants.Prompt"-->
+<!--                                    :placeholder="LayoutConstants.EnterPrompt"/>-->
 
                     <!-- Modal actions -->
                     <div class="flex gap-10">
@@ -42,14 +47,15 @@
 
 <script setup lang="ts">
 
-import {defineEmits, type PropType} from 'vue';
+import {defineEmits, type PropType, ref, watch} from 'vue';
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ButtonType} from "@/common/components/appButton/ButtonType";
 import ModalBase from "@/common/components/modalBase/ModalBase.vue";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
-import FormTextArea from "@/common/components/formTextArea/FormTextArea.vue";
+import FormEditor from "@/common/components/formEditor/FormEditor.vue";
+import type {Action} from "@/infrastructure/models/notifications/Action";
 
 const props = defineProps({
     prompt: {
@@ -63,13 +69,25 @@ const props = defineProps({
     isCreate: {
         type: Boolean,
         default: true
-    }
+    },
+
 });
+
+const textAreaFocusAction = ref<Action>();
 
 const emit = defineEmits<{
     (e: 'closeModal'): void
     (e: 'submit', prompt: AnalysisPrompt): void
 }>();
+
+watch(() => props.isActive, () => {
+    if(props.isActive) {
+
+        console.log('focusing');
+        textAreaFocusAction.value?.callBack();
+    }
+    // console.log('isActive', props.isActive);
+});
 
 // const currentValue = ref<AnalysisPrompt>(props.prompt ?? new AnalysisPrompt());
 
