@@ -35,6 +35,7 @@ public class OrganizationValidator : AbstractValidator<Organization>
             }
         );
         
+        // Rule set for updating a organization
         RuleSet(
             EntityEvent.OnUpdate.ToString(),
             () =>

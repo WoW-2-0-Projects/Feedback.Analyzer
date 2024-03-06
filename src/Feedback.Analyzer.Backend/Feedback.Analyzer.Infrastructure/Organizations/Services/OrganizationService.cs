@@ -44,8 +44,7 @@ public class OrganizationService(
     {
         var validationResult = organizationValidator
             .Validate(organization,
-                options => 
-                    options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
+                options => options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
