@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240306133359_Add relation PromptExecutionHistory and AnalysisPrompt")]
-    partial class AddrelationPromptExecutionHistoryandAnalysisPrompt
+    [Migration("20240306145117_Add_AnalysisPromptCategory_And_AnalysisPrompt_Relation")]
+    partial class Add_AnalysisPromptCategory_And_AnalysisPrompt_Relation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,18 +71,26 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Category")
-                        .HasColumnType("integer");
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<Guid?>("SelectedPromptId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SelectedPromptId");
+                    b.HasIndex("Category")
+                        .IsUnique();
+
+                    b.HasIndex("SelectedPromptId")
+                        .IsUnique();
 
                     b.ToTable("PromptCategories");
                 });
@@ -238,36 +246,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.PromptExecutionHistory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Exception")
-                        .HasMaxLength(32768)
-                        .HasColumnType("character varying(32768)");
-
-                    b.Property<TimeSpan>("ExecutionDurationInMilliSeconds")
-                        .HasColumnType("interval");
-
-                    b.Property<DateTimeOffset>("ExecutionTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("PromptId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Result")
-                        .HasMaxLength(32768)
-                        .HasColumnType("character varying(32768)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PromptId");
-
-                    b.ToTable("PromptExecutionHistories");
-                });
-
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", "Category")
@@ -282,8 +260,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", "SelectedPrompt")
-                        .WithMany()
-                        .HasForeignKey("SelectedPromptId");
+                        .WithOne()
+                        .HasForeignKey("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", "SelectedPromptId");
 
                     b.Navigation("SelectedPrompt");
                 });
@@ -319,22 +297,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Organization");
-                });
-
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.PromptExecutionHistory", b =>
-                {
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", "Prompt")
-                        .WithMany("ExecutionHistories")
-                        .HasForeignKey("PromptId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Prompt");
-                });
-
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", b =>
-                {
-                    b.Navigation("ExecutionHistories");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", b =>

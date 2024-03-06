@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddrelationPromptExecutionHistoryandAnalysisPrompt : Migration
+    public partial class Add_AnalysisPromptCategory_And_AnalysisPrompt_Relation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,8 +23,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Category = table.Column<int>(type: "integer", nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false),
+                    Category = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Type = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     SelectedPromptId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -37,28 +37,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "PromptExecutionHistories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    PromptId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Result = table.Column<string>(type: "character varying(32768)", maxLength: 32768, nullable: true),
-                    Exception = table.Column<string>(type: "character varying(32768)", maxLength: 32768, nullable: true),
-                    ExecutionTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ExecutionDurationInMilliSeconds = table.Column<TimeSpan>(type: "interval", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PromptExecutionHistories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PromptExecutionHistories_Prompts_PromptId",
-                        column: x => x.PromptId,
-                        principalTable: "Prompts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Prompts_CategoryId_Version_Revision",
                 table: "Prompts",
@@ -66,14 +44,16 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_PromptCategories_SelectedPromptId",
+                name: "IX_PromptCategories_Category",
                 table: "PromptCategories",
-                column: "SelectedPromptId");
+                column: "Category",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_PromptExecutionHistories_PromptId",
-                table: "PromptExecutionHistories",
-                column: "PromptId");
+                name: "IX_PromptCategories_SelectedPromptId",
+                table: "PromptCategories",
+                column: "SelectedPromptId",
+                unique: true);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Prompts_PromptCategories_CategoryId",
@@ -93,9 +73,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "PromptCategories");
-
-            migrationBuilder.DropTable(
-                name: "PromptExecutionHistories");
 
             migrationBuilder.DropIndex(
                 name: "IX_Prompts_CategoryId_Version_Revision",
