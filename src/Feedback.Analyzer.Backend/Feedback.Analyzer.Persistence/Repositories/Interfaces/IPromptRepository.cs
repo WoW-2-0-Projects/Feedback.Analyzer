@@ -34,8 +34,7 @@ public interface IPromptRepository
     /// <param name="commandOptions">Command options for the creation operation.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A task representing the asynchronous operation that yields the created prompt.</returns>
-    ValueTask<AnalysisPrompt> CreateAsync(AnalysisPrompt prompt,
-        CommandOptions commandOptions = default,
+    ValueTask<AnalysisPrompt> CreateAsync(AnalysisPrompt prompt, CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default);
     
     /// <summary>
@@ -45,9 +44,7 @@ public interface IPromptRepository
     /// <param name="commandOptions">Indicates whether changes should be saved to the underlying data store (default is true).</param>
     /// <param name="cancellationToken">A cancellation token to cancel the asynchronous operation (optional).</param>
     /// <returns>A task representing the asynchronous operation, containing the updated prompt entity.</returns>
-    ValueTask<AnalysisPrompt> UpdateAsync(
-        AnalysisPrompt prompt,
-        CommandOptions commandOptions = default,
+    ValueTask<AnalysisPrompt> UpdateAsync(AnalysisPrompt prompt, CommandOptions commandOptions = default, 
         CancellationToken cancellationToken = default
     );
     

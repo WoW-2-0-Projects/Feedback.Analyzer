@@ -1,4 +1,4 @@
-﻿using Feedback.Analyzer.Domain.Common.Entities;
+using Feedback.Analyzer.Domain.Common.Entities;
 
 namespace Feedback.Analyzer.Domain.Entities;
 
@@ -23,6 +23,16 @@ public class AnalysisPrompt : AuditableEntity, ICloneable<AnalysisPrompt>
     public int Revision { get; set; }
 
     /// <summary>
+    /// Gets or sets the ID of the category to which the analysis prompt belongs.
+    /// </summary>
+    public Guid CategoryId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the category of the analysis prompt.
+    /// </summary>
+    public AnalysisPromptCategory Category { get; set; } = default!;
+
+    /// <summary>
     /// Gets or sets the collection of PromptExecutionHistory objects representing the execution histories.
     /// </summary>
     public IEnumerable<PromptExecutionHistory> ExecutionHistories { get; set; } = default!;
@@ -37,6 +47,7 @@ public class AnalysisPrompt : AuditableEntity, ICloneable<AnalysisPrompt>
             Prompt = Prompt,
             Version = Version,
             Revision = Revision,
+            CategoryId = CategoryId,
         };
     }
 }

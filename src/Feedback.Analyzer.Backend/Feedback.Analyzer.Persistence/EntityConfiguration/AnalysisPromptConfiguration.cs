@@ -8,6 +8,25 @@ public class AnalysisPromptConfiguration : IEntityTypeConfiguration<AnalysisProm
 {
     public void Configure(EntityTypeBuilder<AnalysisPrompt> builder)
     {
-        builder.Property(analysisPrompt => analysisPrompt.Prompt).HasMaxLength(32768).IsRequired();
+        builder.HasIndex(
+                   prompt => new
+                   {
+                       prompt.CategoryId,
+                       prompt.Version,
+                       prompt.Revision
+                   }
+               )
+               .IsUnique();
+        
+        builder
+            .Property(prompt => prompt.Prompt)
+            .HasMaxLength(32768)
+            .IsRequired()
+            .HasConversion<string>();
+        
+        builder
+            .HasOne(prompt => prompt.Category)
+            .WithMany(category => category.Prompts)
+            .HasForeignKey(prompt => prompt.CategoryId);
     }
 }
