@@ -15,6 +15,12 @@ public class AnalysisPromptCategoryConfiguration : IEntityTypeConfiguration<Anal
             .IsRequired();
 
         builder
+            .Property(category => category.Type)
+            .HasMaxLength(128)
+            .HasConversion<string>()
+            .IsRequired();
+
+        builder
             .HasIndex(category => category.Category)
             .IsUnique();
         

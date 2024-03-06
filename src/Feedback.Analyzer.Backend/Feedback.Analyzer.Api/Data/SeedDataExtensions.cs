@@ -1,4 +1,5 @@
 using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,9 @@ public static class SeedDataExtensions
         if (!await appDbContext.Feedbacks.AnyAsync())
             await SeedDataCustomerFeedbackAsync(appDbContext);
         
+        if (!await appDbContext.PromptCategories.AnyAsync())
+            await SeedPromptCategoriesAsync(appDbContext);
+
         if (!await appDbContext.Prompts.AnyAsync())
             await SeedAnalysisPromptAsync(appDbContext);
 
@@ -181,7 +185,76 @@ public static class SeedDataExtensions
         await appDbContext.Feedbacks.AddRangeAsync(customersFeedbacks);
     }
 
-    /// <summary>
+     /// <summary>
+    /// Seeds prompt categories
+    /// </summary>
+    /// <param name="appDbContext"></param>
+    private static async ValueTask SeedPromptCategoriesAsync(AppDbContext appDbContext)
+    {
+        var promptCategories = new List<AnalysisPromptCategory>
+        {
+            new()
+            {
+                Id = Guid.Parse("15072FC8-63C7-49EC-BF4F-3FD2A8479CF4"),
+                Category = FeedbackAnalysisPromptCategory.ContentSafetyAnalysis,
+            },
+            new()
+            {
+                Id = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
+                Category = FeedbackAnalysisPromptCategory.RelevanceAnalysis,
+            },
+            new()
+            {
+                Id = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
+                Category = FeedbackAnalysisPromptCategory.LanguageRecognition,
+            },
+            new()
+            {
+                Id = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
+                Category = FeedbackAnalysisPromptCategory.RelevantContentExtraction,
+            },
+            new()
+            {
+                Id = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
+                Category = FeedbackAnalysisPromptCategory.EntityIdentification,
+            },
+            new()
+            {
+                Id = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
+                Category = FeedbackAnalysisPromptCategory.PersonalInformationRedaction,
+            },
+            new()
+            {
+                Id = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
+                Category = FeedbackAnalysisPromptCategory.OpinionMining,
+            },
+            new()
+            {
+                Id = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
+                Category = FeedbackAnalysisPromptCategory.OpinionPointsExtraction,
+            },
+            new()
+            {
+                Id = Guid.Parse("6F1FDE2A-CAFC-4C4D-B909-655414C8C76E"),
+                Category = FeedbackAnalysisPromptCategory.ActionableOpinionsAnalysis,
+            },
+            new()
+            {
+                Id = Guid.Parse("33CCCA43-E803-4FA2-AFC7-7C202DE5EA0C"),
+                Category = FeedbackAnalysisPromptCategory.QuestionPointsExtraction,
+            },
+            new()
+            {
+                Id = Guid.Parse("2EF85588-0B12-4FB8-9027-80D45CC38EC1"),
+                Category = FeedbackAnalysisPromptCategory.ActionableQuestionsAnalysis,
+            }
+        };
+
+        await appDbContext.PromptCategories.AddRangeAsync(promptCategories);
+        await appDbContext.SaveChangesAsync();
+    }
+    
+   /// <summary>
     /// Seeds prompt categories
     /// </summary>
     /// <param name="appDbContext"></param>
@@ -191,7 +264,8 @@ public static class SeedDataExtensions
         {
             new()
             {
-                Id = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
+                Id = Guid.Parse("42204C3B-0E3E-4360-9059-94A011C29608"),
+                CategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                 Prompt = """
                          ## Instructions"
 
@@ -218,6 +292,7 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("3ca01475-d736-4ac3-a326-a2580110ee0c"),
+                CategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
                 Prompt = """
                          ## Instructions"
 
@@ -244,6 +319,7 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("4ca01475-d036-4ac3-a326-a2580110ee0c"),
+                CategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
                 Prompt = """
                          ## Instructions"
 
@@ -271,6 +347,7 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("2ba01475-d636-4ac3-a326-a2580112ee0c"),
+                CategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
                 Prompt = """
                          ## Instructions"
 
@@ -297,6 +374,7 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("551d1c24-24c2-45aa-9eba-383de543b24b"),
+                CategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
                 Prompt = """
                          ## Instructions"
 
@@ -338,5 +416,18 @@ public static class SeedDataExtensions
         };
 
         await appDbContext.Prompts.AddRangeAsync(analysisPrompts);
+
+        var categories = appDbContext.PromptCategories.ToList();
+        categories.ForEach(
+            category =>
+            {
+                var prompt = analysisPrompts.FirstOrDefault(prompt => prompt.CategoryId == category.Id);
+
+                if (prompt is not null)
+                    category.SelectedPromptId = prompt.Id;
+            }
+        );
+
+        appDbContext.PromptCategories.UpdateRange(categories);
     }
 }
