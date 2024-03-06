@@ -13,10 +13,10 @@ public class PromptExecutionHistoriesMapper : Profile
     {
 
         CreateMap<PromptExecutionHistoryDto, PromptExecutionHistory>()
-            .ForPath(dest => dest.ExecutionDuration, opt => opt.MapFrom(src => TimeSpan.FromSeconds(src.ExecutionDurationInSeconds)));
+            .ForPath(dest => dest.ExecutionDurationInMilliSeconds, opt => opt.MapFrom(src => TimeSpan.FromSeconds(src.ExecutionDurationInMilliseconds)));
 
         CreateMap<PromptExecutionHistory, PromptExecutionHistoryDto>()
-            .ForPath(dest => dest.ExecutionDurationInSeconds, opt => opt.MapFrom(src => src.ExecutionDuration.Seconds));
+            .ForPath(dest => dest.ExecutionDurationInMilliseconds, opt => opt.MapFrom(src => src.ExecutionDurationInMilliSeconds.Seconds));
     }
     
 }

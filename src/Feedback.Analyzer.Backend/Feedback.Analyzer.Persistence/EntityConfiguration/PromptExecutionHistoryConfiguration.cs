@@ -15,5 +15,9 @@ public class PromptExecutionHistoryConfiguration : IEntityTypeConfiguration<Prom
             .HasOne(history => history.Prompt)
             .WithMany(prompt => prompt.ExecutionHistories)
             .HasForeignKey(entity => entity.PromptId);
+
+        builder.Property(history => history.Exception).HasMaxLength(32768);
+        builder.Property(history => history.Result).HasMaxLength(32768);
+        
     }
 }

@@ -8,5 +8,8 @@ namespace Feedback.Analyzer.Application.PromptsHistory.Queries;
 /// </summary>
 public record PromptExecutionHistoryGetByPromptIdQuery : IQuery<IList<PromptExecutionHistoryDto>>
 {
+    /// <summary>
+    /// Gets or sets the unique identifier of the prompt.
+    /// </summary>
     public Guid PromptId { get; set; } = default!;
 }
