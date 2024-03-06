@@ -6,6 +6,10 @@ using Feedback.Analyzer.Domain.Common.Queries;
 
 namespace Feedback.Analyzer.Infrastructure.Organizations.QueryHandlers;
 
+
+/// <summary>
+/// Represents a query handler responsible for retrieving an organization by its ID.
+/// </summary>
 public class OrganizationGetByIdQueryHandler(IOrganizationService organizationService, IMapper mapper) : IQueryHandler<OrganizationGetByIdQuery, OrganizationDto>
 {
     public async Task<OrganizationDto> Handle(OrganizationGetByIdQuery request, CancellationToken cancellationToken)

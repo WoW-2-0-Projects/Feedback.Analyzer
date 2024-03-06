@@ -8,7 +8,7 @@ namespace Feedback.Analyzer.Infrastructure.CustomerFeedbacks.CommandHandlers;
 /// Handles the command to delete customer feedback by its ID.
 /// </summary>
 public class CustomerFeedbackDeleteByIdCommandHandler(ICustomerFeedbackService customerFeedbackService) 
-    : ICommandHandler<CustomerFeedbackDeleteByIdCommand,bool> 
+    : ICommandHandler<CustomerFeedbackDeleteByIdCommand, bool> 
 {
     public async Task<bool> Handle(CustomerFeedbackDeleteByIdCommand request, CancellationToken cancellationToken)
     {
