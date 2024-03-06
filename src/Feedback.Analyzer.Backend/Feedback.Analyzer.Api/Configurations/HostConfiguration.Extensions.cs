@@ -182,7 +182,8 @@ public static partial class HostConfiguration
     {
         // Register repositories
         builder.Services
-               .AddScoped<IPromptRepository, PromptRepository>();
+            .AddScoped<IPromptRepository, PromptRepository>()
+            .AddScoped<IAnalysisWorkflowRepository, AnalysisWorkflowRepository>();
         
         // Register services
         builder.Services
