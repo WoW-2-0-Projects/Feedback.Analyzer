@@ -187,13 +187,13 @@ public static partial class HostConfiguration
         // Register repositories
         builder.Services
                .AddScoped<IPromptRepository, PromptRepository>()
-               .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>();
+               .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>()
                .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>();
         
         // Register foundation services
         builder.Services
                .AddScoped<IPromptService, PromptService>()
-               .AddScoped<IPromptCategoryService, PromptCategoryService>();
+               .AddScoped<IPromptCategoryService, PromptCategoryService>()
                .AddScoped<IPromptExecutionHistoryService, PromptExecutionHistoryService>();
 
         return builder;
