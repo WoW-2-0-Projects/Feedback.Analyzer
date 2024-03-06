@@ -1,3 +1,4 @@
+using System.Formats.Asn1;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,9 @@ public static class SeedDataExtensions
         
         if (!await appDbContext.Prompts.AnyAsync())
             await SeedAnalysisPromptAsync(appDbContext);
+
+        if (!await appDbContext.FeedbackWorkflows.AnyAsync())
+            await SeedFeedbackWorkflowAsync(appDbContext);
 
         if (appDbContext.ChangeTracker.HasChanges())
             await appDbContext.SaveChangesAsync();
@@ -140,6 +144,10 @@ public static class SeedDataExtensions
         await appDbContext.Products.AddRangeAsync(products);
     }
 
+    /// <summary>
+    /// Seeds CustomerFeedback data asynchronously.
+    /// </summary>
+    /// <param name="appDbContext"></param>
     private static async ValueTask SeedDataCustomerFeedbackAsync(AppDbContext appDbContext)
     {
         var customersFeedbacks = new List<CustomerFeedback>()
@@ -181,6 +189,28 @@ public static class SeedDataExtensions
         await appDbContext.Feedbacks.AddRangeAsync(customersFeedbacks);
     }
 
+    /// <summary>
+    /// Seeds FeedbackWorkflow data asynchronously.
+    /// </summary>
+    /// <param name="appDbContext"></param>
+    private static async ValueTask SeedFeedbackWorkflowAsync(AppDbContext appDbContext)
+    {
+        var feedbackWorkflow = new List<FeedbackWorkflow>
+        {
+            new ()
+            {
+                ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
+                Name = "TemplateWorkflow"
+            },
+            new ()
+            {
+                ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
+                Name = "TrainingWorkflow"
+            }
+        };
+        await appDbContext.FeedbackWorkflows.AddRangeAsync(feedbackWorkflow);
+    }
+    
     /// <summary>
     /// Seeds prompt categories
     /// </summary>

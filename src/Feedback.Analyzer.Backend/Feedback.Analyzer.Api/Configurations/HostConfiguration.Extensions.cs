@@ -4,6 +4,7 @@ using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
+using Feedback.Analyzer.Application.FeedbackWorkflows.Services;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Constants;
@@ -13,6 +14,7 @@ using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
+using Feedback.Analyzer.Infrastructure.FeedbackWorkflows.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
@@ -169,11 +171,13 @@ public static partial class HostConfiguration
     {
         // Register repositories
         builder.Services
-               .AddScoped<ICustomerFeedbackRepository, CustomerFeedbackRepository>();
+            .AddScoped<ICustomerFeedbackRepository, CustomerFeedbackRepository>()
+            .AddScoped<IFeedbackWorkflowRepository, FeedbackWorkflowRepository>();
         
         // Register services
         builder.Services
-               .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>();
+            .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>()
+            .AddScoped<IFeedbackWorkflowService, FeedbackWorkflowService>();
 
         return builder;
     }
