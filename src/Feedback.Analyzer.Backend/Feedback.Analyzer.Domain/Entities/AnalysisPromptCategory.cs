@@ -11,7 +11,12 @@ public class AnalysisPromptCategory : Entity
     /// <summary>
     /// Gets or sets the type of analysis prompt category.
     /// </summary>
-    public FeedbackAnalysisPromptType Type { get; set; }
+    public FeedbackAnalysisPromptCategory Category { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the type of prompt.
+    /// </summary>
+    public PromptType Type { get; set; }
 
     /// <summary>
     /// Gets or sets the ID of the selected prompt.
