@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240305155425_Add_AnalysisPromptCategory_And_AnalysisPrompt_Relation")]
+    [Migration("20240306101934_Add_AnalysisPromptCategory_And_AnalysisPrompt_Relation")]
     partial class Add_AnalysisPromptCategory_And_AnalysisPrompt_Relation
     {
         /// <inheritdoc />
@@ -73,7 +73,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<Guid?>("SelectedPromptId")
                         .HasColumnType("uuid");
@@ -83,7 +84,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Category");
+                    b.HasIndex("Category")
+                        .IsUnique();
 
                     b.HasIndex("SelectedPromptId")
                         .IsUnique();

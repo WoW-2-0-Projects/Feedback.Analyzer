@@ -23,7 +23,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Category = table.Column<string>(type: "text", nullable: false),
+                    Category = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
                     SelectedPromptId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
@@ -46,7 +46,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_PromptCategories_Category",
                 table: "PromptCategories",
-                column: "Category");
+                column: "Category",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PromptCategories_SelectedPromptId",

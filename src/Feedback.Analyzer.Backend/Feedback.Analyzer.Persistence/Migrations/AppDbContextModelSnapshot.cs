@@ -70,7 +70,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<Guid?>("SelectedPromptId")
                         .HasColumnType("uuid");
@@ -80,7 +81,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Category");
+                    b.HasIndex("Category")
+                        .IsUnique();
 
                     b.HasIndex("SelectedPromptId")
                         .IsUnique();

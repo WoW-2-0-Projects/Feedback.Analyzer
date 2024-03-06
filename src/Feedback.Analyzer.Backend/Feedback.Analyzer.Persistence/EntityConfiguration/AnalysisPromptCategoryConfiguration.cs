@@ -10,11 +10,13 @@ public class AnalysisPromptCategoryConfiguration : IEntityTypeConfiguration<Anal
     {
         builder
             .Property(category => category.Category)
+            .HasMaxLength(128)
             .HasConversion<string>()
             .IsRequired();
 
         builder
-            .HasIndex(category => category.Category);
+            .HasIndex(category => category.Category)
+            .IsUnique();
         
         builder
             .HasOne(category => category.SelectedPrompt)
