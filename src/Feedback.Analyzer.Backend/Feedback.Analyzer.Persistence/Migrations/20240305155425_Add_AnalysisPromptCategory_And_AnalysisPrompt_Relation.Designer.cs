@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240304153437_Add Analysis Category and Analysis Prompt Migration")]
-    partial class AddAnalysisCategoryandAnalysisPromptMigration
+    [Migration("20240305155425_Add_AnalysisPromptCategory_And_AnalysisPrompt_Relation")]
+    partial class Add_AnalysisPromptCategory_And_AnalysisPrompt_Relation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,7 +59,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId", "Version", "Revision")
+                        .IsUnique();
 
                     b.ToTable("Prompts");
                 });
@@ -70,18 +71,24 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("SelectedPromptId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Type")
+                    b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("SelectedPromptId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("SelectedPromptId");
+                    b.HasIndex("Category");
 
-                    b.ToTable("AnalysisPromptCategories");
+                    b.HasIndex("SelectedPromptId")
+                        .IsUnique();
+
+                    b.ToTable("PromptCategories");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Client", b =>
@@ -249,8 +256,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", "SelectedPrompt")
-                        .WithMany()
-                        .HasForeignKey("SelectedPromptId");
+                        .WithOne()
+                        .HasForeignKey("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", "SelectedPromptId");
 
                     b.Navigation("SelectedPrompt");
                 });

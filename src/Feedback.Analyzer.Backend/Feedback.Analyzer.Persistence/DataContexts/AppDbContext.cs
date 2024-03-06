@@ -25,7 +25,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     #region Prompt infrastructure
     public DbSet<AnalysisPrompt> Prompts => Set<AnalysisPrompt>();
     
-    public DbSet<AnalysisPromptCategory> AnalysisPromptCategories => Set<AnalysisPromptCategory>();
+    public DbSet<AnalysisPromptCategory> PromptCategories => Set<AnalysisPromptCategory>();
     
     
     #endregion

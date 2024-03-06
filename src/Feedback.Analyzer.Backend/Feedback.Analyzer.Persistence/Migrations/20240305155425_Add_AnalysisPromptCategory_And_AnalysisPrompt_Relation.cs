@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAnalysisCategoryandAnalysisPromptMigration : Migration
+    public partial class Add_AnalysisPromptCategory_And_AnalysisPrompt_Relation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,38 +19,46 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.CreateTable(
-                name: "AnalysisPromptCategories",
+                name: "PromptCategories",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Type = table.Column<string>(type: "text", nullable: false),
+                    Category = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false),
                     SelectedPromptId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AnalysisPromptCategories", x => x.Id);
+                    table.PrimaryKey("PK_PromptCategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AnalysisPromptCategories_Prompts_SelectedPromptId",
+                        name: "FK_PromptCategories_Prompts_SelectedPromptId",
                         column: x => x.SelectedPromptId,
                         principalTable: "Prompts",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prompts_CategoryId",
+                name: "IX_Prompts_CategoryId_Version_Revision",
                 table: "Prompts",
-                column: "CategoryId");
+                columns: new[] { "CategoryId", "Version", "Revision" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AnalysisPromptCategories_SelectedPromptId",
-                table: "AnalysisPromptCategories",
-                column: "SelectedPromptId");
+                name: "IX_PromptCategories_Category",
+                table: "PromptCategories",
+                column: "Category");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PromptCategories_SelectedPromptId",
+                table: "PromptCategories",
+                column: "SelectedPromptId",
+                unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Prompts_AnalysisPromptCategories_CategoryId",
+                name: "FK_Prompts_PromptCategories_CategoryId",
                 table: "Prompts",
                 column: "CategoryId",
-                principalTable: "AnalysisPromptCategories",
+                principalTable: "PromptCategories",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -59,14 +67,14 @@ namespace Feedback.Analyzer.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Prompts_AnalysisPromptCategories_CategoryId",
+                name: "FK_Prompts_PromptCategories_CategoryId",
                 table: "Prompts");
 
             migrationBuilder.DropTable(
-                name: "AnalysisPromptCategories");
+                name: "PromptCategories");
 
             migrationBuilder.DropIndex(
-                name: "IX_Prompts_CategoryId",
+                name: "IX_Prompts_CategoryId_Version_Revision",
                 table: "Prompts");
 
             migrationBuilder.DropColumn(

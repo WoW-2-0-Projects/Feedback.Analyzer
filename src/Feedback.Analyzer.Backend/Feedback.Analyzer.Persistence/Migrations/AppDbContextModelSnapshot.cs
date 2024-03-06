@@ -56,7 +56,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId", "Version", "Revision")
+                        .IsUnique();
 
                     b.ToTable("Prompts");
                 });
@@ -67,18 +68,24 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("SelectedPromptId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Type")
+                    b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("SelectedPromptId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("SelectedPromptId");
+                    b.HasIndex("Category");
 
-                    b.ToTable("AnalysisPromptCategories");
+                    b.HasIndex("SelectedPromptId")
+                        .IsUnique();
+
+                    b.ToTable("PromptCategories");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Client", b =>
@@ -246,8 +253,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", "SelectedPrompt")
-                        .WithMany()
-                        .HasForeignKey("SelectedPromptId");
+                        .WithOne()
+                        .HasForeignKey("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", "SelectedPromptId");
 
                     b.Navigation("SelectedPrompt");
                 });

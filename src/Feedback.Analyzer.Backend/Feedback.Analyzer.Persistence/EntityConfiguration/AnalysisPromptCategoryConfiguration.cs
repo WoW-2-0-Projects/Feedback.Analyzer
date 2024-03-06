@@ -9,8 +9,17 @@ public class AnalysisPromptCategoryConfiguration : IEntityTypeConfiguration<Anal
     public void Configure(EntityTypeBuilder<AnalysisPromptCategory> builder)
     {
         builder
-            .Property(category => category.Type)
+            .Property(category => category.Category)
             .HasConversion<string>()
             .IsRequired();
+
+        builder
+            .HasIndex(category => category.Category);
+        
+        builder
+            .HasOne(category => category.SelectedPrompt)
+            .WithOne()
+            .HasForeignKey<AnalysisPromptCategory>(category => category.SelectedPromptId)
+            .IsRequired(false);
     }
 }
