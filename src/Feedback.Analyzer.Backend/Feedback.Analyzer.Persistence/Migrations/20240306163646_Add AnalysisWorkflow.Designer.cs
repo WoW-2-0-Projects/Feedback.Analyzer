@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240306160808_Add AnalysisWorkflow")]
+    [Migration("20240306163646_Add AnalysisWorkflow")]
     partial class AddAnalysisWorkflow
     {
         /// <inheritdoc />
@@ -118,9 +118,10 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
-                    b.Property<int>("Type")
+                    b.Property<string>("Type")
+                        .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("integer");
+                        .HasColumnType("character varying(128)");
 
                     b.HasKey("Id");
 
