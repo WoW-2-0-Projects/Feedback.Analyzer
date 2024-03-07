@@ -1,8 +1,8 @@
 import type ApiClientBase from "@/infrastructure/apiClients/apiClientBase/ApiClientBase";
 import type {Query} from "@/infrastructure/models/query/Query";
 import type {RequestFormatterService} from "@/infrastructure/apiClients/formatters/RequestFormatterService";
-import type {FeedbackExecutionWorkflowFilter} from "@/modules/prompts/models/FeedbackExecutionWorkflowFilter";
-import type {FeedbackExecutionWorkflow} from "@/modules/prompts/models/FeedbackExecutionWorkflow";
+import type {FeedbackAnalysisWorkflowFilter} from "@/modules/prompts/models/FeedbackAnalysisWorkflowFilter";
+import type {FeedbackAnalysisWorkflow} from "@/modules/prompts/models/FeedbackAnalysisWorkflow";
 
 export class WorkflowsEndpointsClient {
     public client: ApiClientBase;
@@ -13,9 +13,9 @@ export class WorkflowsEndpointsClient {
         this.requestFormatterService = requestFormatterService;
     }
 
-    public async getAsync(query: Query<FeedbackExecutionWorkflowFilter>) {
+    public async getAsync(query: Query<FeedbackAnalysisWorkflowFilter>) {
         const endpointUrl = this.requestFormatterService.addQueryParams('api/workflows', query);
-        return await this.client.getAsync<Array<FeedbackExecutionWorkflow>>(endpointUrl);
+        return await this.client.getAsync<Array<FeedbackAnalysisWorkflow>>(endpointUrl);
     }
 
     public async executeSinglePrompt(workflowId: string, promptId: string) {

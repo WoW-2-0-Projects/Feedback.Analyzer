@@ -5,7 +5,7 @@ import type {DropDownValue} from "@/common/components/formDropDown/DropDownValue
 /**
  * Represents a data transfer object (DTO) for a feedback execution workflow.
  */
-export class FeedbackExecutionWorkflow implements IDropDownValue<string, FeedbackExecutionWorkflow> {
+export class FeedbackAnalysisWorkflow implements IDropDownValue<string, FeedbackAnalysisWorkflow> {
     /*
      * Entity Id
      */
@@ -26,7 +26,9 @@ export class FeedbackExecutionWorkflow implements IDropDownValue<string, Feedbac
      */
     public type: WorkflowType;
 
-    public toDropDownValue(): DropDownValue<string, FeedbackExecutionWorkflow>{
+    public allPromptsSet: boolean;
+
+    public toDropDownValue(): DropDownValue<string, FeedbackAnalysisWorkflow>{
         return new DropDownValue(this.id, this);
     }
 

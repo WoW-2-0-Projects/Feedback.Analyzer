@@ -17,7 +17,7 @@
             <router-link :to="RouteName.Prompts">Prompts</router-link>
             <router-link :to="RouteName.Organizations">Organizations</router-link>
             <router-link :to="RouteName.Products">Products</router-link>
-            <router-link :to="RouteName.Organizations">Workflows</router-link>
+            <router-link :to="RouteName.Workflows">Workflows</router-link>
 
         </div>
 

@@ -10,19 +10,24 @@ const router = createRouter({
             component: () => import('../../common/views/HomeView.vue')
         },
         {
-            path: '/prompts',
-            name: RouteName.Prompts,
-            component: () => import('../../modules/prompts/components/PromptsTab.vue')
-        },
-        {
-            path: '/organizations',
+            path: `/${RouteName.Organizations}`,
             name: RouteName.Organizations,
             component: () => import('../../modules/organizations/components/OrganizationsTab.vue')
         },
         {
-            path: '/products',
+            path: `/${RouteName.Products}`,
             name: RouteName.Products,
             component: () => import('../../modules/products/components/ProductsTab.vue')
+        },
+        {
+            path: `/${RouteName.Prompts}`,
+            name: RouteName.Prompts,
+            component: () => import('../../modules/prompts/components/PromptsTab.vue')
+        },
+        {
+            path: `/${RouteName.Workflows}`,
+            name: RouteName.Workflows,
+            component: () => import('../../modules/analysisWorkflows/components/WorkflowsTab.vue')
         },
         {
             path: '/about',

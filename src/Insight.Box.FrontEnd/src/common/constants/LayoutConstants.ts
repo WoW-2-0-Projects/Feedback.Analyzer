@@ -8,6 +8,7 @@ export class LayoutConstants {
     public static readonly Organizations = 'Organizations';
     public static readonly Products = 'Products';
     public static readonly Prompts = 'Prompts';
+    public static readonly Workflows = 'Workflows';
     public static readonly Summarize = 'Summarize the user input ...';
 
     /* Products */
@@ -21,6 +22,7 @@ export class LayoutConstants {
 
     /* Prompts */
     public static readonly CreatePrompt = 'Create a prompt';
+    public static readonly Trigger = 'Trigger';
     public static readonly EditPrompt = 'Edit prompt';
     public static readonly Prompt = 'Prompt';
     public static readonly EnterPrompt = 'Enter prompt';

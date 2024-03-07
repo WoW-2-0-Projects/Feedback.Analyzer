@@ -13,6 +13,11 @@ export enum RouteName {
     Prompts = 'prompts',
 
     /*
+     * Refers to the workflows route
+     */
+    Workflows = 'workflows',
+
+    /*
      * Refers to the "organizations" route
      */
     Organizations = 'organizations',

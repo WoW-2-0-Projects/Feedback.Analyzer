@@ -54,9 +54,9 @@ import {CreatePromptCommand} from "@/modules/prompts/models/CreatePromptCommand"
 import {PromptCategoryFilter} from "@/modules/prompts/models/PromptCategoryFilter";
 import type {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisPromptCategory";
 import PromptCategoryCard from "@/modules/prompts/components/PromptCategoryCard.vue";
-import {FeedbackExecutionWorkflowFilter} from "@/modules/prompts/models/FeedbackExecutionWorkflowFilter";
+import {FeedbackAnalysisWorkflowFilter} from "@/modules/prompts/models/FeedbackAnalysisWorkflowFilter";
 import {WorkflowType} from "@/modules/prompts/models/WorkflowType";
-import {FeedbackExecutionWorkflow} from "@/modules/prompts/models/FeedbackExecutionWorkflow";
+import {FeedbackAnalysisWorkflow} from "@/modules/prompts/models/FeedbackAnalysisWorkflow";
 import PromptExecutionHistoryModal from "@/modules/prompts/components/PromptExecutionHistoryModal.vue";
 import type {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecutionHistory";
 
@@ -88,9 +88,9 @@ const openedHistory = ref<PromptsExecutionHistory | null>(null);
 const isSearchBarLoading = ref<boolean>(false);
 
 // Workflow states
-const workflowQuery = ref<Query<FeedbackExecutionWorkflowFilter>>(new Query<FeedbackExecutionWorkflowFilter>(new
-FeedbackExecutionWorkflowFilter(WorkflowType.Training)));
-const trainingWorkflows = ref<Array<FeedbackExecutionWorkflow>>([]);
+const workflowQuery = ref<Query<FeedbackAnalysisWorkflowFilter>>(new Query<FeedbackAnalysisWorkflowFilter>(new
+FeedbackAnalysisWorkflowFilter(WorkflowType.Training)));
+const trainingWorkflows = ref<Array<FeedbackAnalysisWorkflow>>([]);
 
 onBeforeMount(async () => {
     // Set page title

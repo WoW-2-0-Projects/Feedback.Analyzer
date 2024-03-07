@@ -28,7 +28,7 @@
                                     :size="ActionComponentSize.Small"/>
 
                     <app-button :type="ButtonType.Success" :layout="ButtonLayout.Rectangle" icon="fas fa-play"
-                                text="Trigger"
+                                :text="LayoutConstants.Trigger"
                                 :disabled="selectedWorkflow === null || promptCategory.selectedPromptId === null"
                                 :size="ActionComponentSize.Small" @click="onTriggerWorkflow"/>
                 </div>
@@ -83,7 +83,7 @@ import AppTable from "@/common/components/appTable/AppTable.vue";
 import {TableData} from "@/common/components/appTable/TableData";
 import {LayoutConstants} from "../../../common/constants/LayoutConstants";
 import {TableRowData} from "@/common/components/appTable/TableRowData";
-import {FeedbackExecutionWorkflow} from "@/modules/prompts/models/FeedbackExecutionWorkflow";
+import {FeedbackAnalysisWorkflow} from "@/modules/prompts/models/FeedbackAnalysisWorkflow";
 import FormDropDown from "@/common/components/formDropDown/FormDropDown.vue";
 import {TableAction} from "@/common/components/appTable/TableAction";
 import type {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecutionHistory";
@@ -102,13 +102,13 @@ const props = defineProps({
         required: true
     },
     workflows: {
-        type: Array as PropType<Array<FeedbackExecutionWorkflow>>,
+        type: Array as PropType<Array<FeedbackAnalysisWorkflow>>,
         required: true
     }
 });
 
-const selectedWorkflow = ref<DropDownValue<string, FeedbackExecutionWorkflow> | null>(null);
-const workflowDropDownValues = ref<Array<DropDownValue<string, FeedbackExecutionWorkflow>>>();
+const selectedWorkflow = ref<DropDownValue<string, FeedbackAnalysisWorkflow> | null>(null);
+const workflowDropDownValues = ref<Array<DropDownValue<string, FeedbackAnalysisWorkflow>>>();
 
 watch(() => props.workflows, async () => {
     loadWorkflowOptions();
