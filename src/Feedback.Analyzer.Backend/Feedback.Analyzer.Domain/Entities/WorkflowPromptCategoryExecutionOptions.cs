@@ -13,6 +13,8 @@ public class WorkflowPromptCategoryExecutionOptions : Entity, IParameterizedClon
     public FeedbackExecutionWorkflow FeedbackExecutionWorkflow { get; set; } = default!;
     
     public Guid? ParentId { get; set; }
+    
+    public bool IsActive { get; set; }
 
     public List<WorkflowPromptCategoryExecutionOptions> ChildExecutionOptions { get; set; } = default!;
 

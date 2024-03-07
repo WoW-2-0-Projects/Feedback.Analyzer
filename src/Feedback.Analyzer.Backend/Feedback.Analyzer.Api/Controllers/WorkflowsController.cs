@@ -1,4 +1,3 @@
-using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Application.Common.Workflows.Events;
 using Feedback.Analyzer.Application.Common.Workflows.Queries;
 using MediatR;
@@ -34,6 +33,19 @@ public class WorkflowsController(IMediator mediator) : ControllerBase
 
         await mediator.Publish(executePromptEvent, cancellationToken);
         return Accepted(executePromptEvent.Id);
+    }
+
+    [HttpPost("{workflowId:guid}/execute")]
+    public async ValueTask<IActionResult> ExecuteWorkflowAsync([FromRoute] Guid workflowId, CancellationToken cancellationToken)
+    {
+        var executeWorkflowEvent = new ExecuteWorkflowEvent()
+        {
+            WorkflowId = workflowId
+        };
+
+        await mediator.Publish(executeWorkflowEvent, cancellationToken);
+        
+        return Accepted(executeWorkflowEvent.Id);
     }
 
     #endregion

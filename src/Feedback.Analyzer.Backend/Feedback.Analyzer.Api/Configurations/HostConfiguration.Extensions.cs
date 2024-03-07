@@ -197,7 +197,8 @@ public static partial class HostConfiguration
         
         // Register orchestration services
         builder.Services
-            .AddScoped<IFeedbackPromptExecutionOrchestrationService, FeedbackPromptExecutionOrchestrationService>();
+            .AddScoped<IFeedbackPromptExecutionOrchestrationService, FeedbackPromptExecutionOrchestrationService>()
+            .AddScoped<IPromptExecutionOrchestrationService, PromptExecutionOrchestrationService>();
 
         return builder;
     }
