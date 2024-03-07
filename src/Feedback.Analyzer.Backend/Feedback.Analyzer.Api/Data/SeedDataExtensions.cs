@@ -458,6 +458,169 @@ public static class SeedDataExtensions
                          """,
                 Version = 5,
                 Revision = 0,
+            },
+            new ()
+            {
+                Id = Guid.Parse("6d4b569a-2df7-49ae-9d8a-7b6fdcc8f3af"),
+                CategoryId = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
+                Prompt = """
+                         ##Entity Identification from User Feedback:
+                         Objective: Analyze user feedback to extract and identify key entities, organizing these into clear key phrases paired with corresponding values to enhance understanding and facilitate actionable responses.
+                         
+                         ##Instructions:
+                         
+                         Extract Key Phrases:
+                        
+                         Identify Entities: Locate significant nouns or phrases in the feedback that symbolize distinct entities, like product features, issues, or user sentiments.
+                        
+                         Key Phrases Extraction: Catalog these entities as key phrases that reflect the primary subjects of the feedback.
+                        
+                         Assign Key-Value Pairs:
+                         For each identified key phrase, assign a value that aptly represents its sentiment, frequency, or importance as conveyed in the feedback.
+                        
+                         Organize Information:
+                         Arrange the extracted information methodically, with emphasis on relevance or urgency as dictated by the feedback's context.
+                        
+                         Context Provided:
+                         
+                         Product Description: {{$productDescription}}
+                         Provides background to help discern which feedback aspects are pertinent to the product features or services.
+                         
+                         User Feedback: {{$userFeedback}}
+                         The actual feedback from users that will be analyzed to identify and categorize key entities.
+                         
+                         ##Expected Output:
+                         A structured set of key phrases derived from the user feedback.
+                         Corresponding key-value pairs for each identified phrase, supplying additional detail or contextual information.
+                         
+                         ##Result:
+                         Key Phrases with Key-Value Pairs:
+                         
+                         This should return a dictionary-like structure (in a format appropriate for display) where each entry consists of a 'Phrase' (key) and its associated 'Value' (sentiment, frequency, importance). For example:
+                            
+                            Phrase: "Battery Life"; Value: "Short - Negative"
+                            Phrase: "Customer Service"; Value: "Helpful - Positive" 
+                            
+                         """,
+                Version = 6,
+                Revision = 0,
+            },
+            new ()
+            {
+                Id = Guid.Parse("82e41f2b-017d-46b4-95bf-17cfb9e31be6"),
+                CategoryId = Guid.Parse("33CCCA43-E803-4FA2-AFC7-7C202DE5EA0C"),
+                Prompt = """
+                         ##Question Points Extraction from User Feedback:
+                         Objective: Sift through user feedback to detect and compile a comprehensive list of questions or areas where clarification is sought, aiming for better engagement and resolution.
+                         
+                         ##Instructions:
+                         
+                         -Identify Questions:
+                         
+                         -Review Feedback: Diligently go through the feedback provided by users.
+                         
+                         -Extract Questions: Identify parts of the feedback where questions are posed or clarification is requested. These are typically interrogative statements or sentences ending with a question mark.
+                         
+                         -Compile Questions:
+                         
+                         List all questions identified from the feedback, making sure they are clear and retain the necessary context to be understood independently of the feedback.
+                         
+                         -Categorize Questions:
+                         If possible, organize the questions into categories based on common themes, such as Product Features, Usage, Support, etc.
+                         
+                         -Context Provided:
+                         Product Description: {{$productDescription}}
+                         
+                         Understanding the product or service in question to better frame the context of the feedback and the nature of the questions posed.
+                         User Feedback: {{$userFeedback}}
+                         
+                         Direct feedback from users, which will be analyzed to extract relevant questions.
+                         Expected Output:
+                         Collection of Questions: Enumerate the questions that have been extracted from the user feedback. These questions should be presented clearly and concisely, capturing the users' inquiries or points of confusion.
+                         ##Result:
+                         
+                         [Collection of Questions]: This should return an array or collection of strings, each string being a question extracted from the user feedback. Each question should maintain its context to ensure that what is being asked is understandable.
+                         Example output based on your structure could be:
+                         
+                             "How long does the battery last on a single charge?"
+                             "Can the software be updated to fix the current lag issues?"
+                         
+                         """,
+                Version = 7,
+                Revision = 0,
+            },
+            new ()
+            {
+                Id = Guid.Parse("f2d1c8ac-afe7-42d8-b277-7f8c5243e38f"),
+                CategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
+                Prompt = """
+                         ##Advanced Opinion Mining
+                         Objective: Evaluate the sentiment of user feedback in relation to the detailed product description provided. The analysis should discern nuanced language and contextual clues tied to specific attributes of the product mentioned within the feedback.
+                         
+                         Context Provided:
+                         Product Description: {productDescription}
+                         
+                         Utilize this information to understand the context of the feedback and how specific product features are being addressed by the users.
+                         User Feedback: {userFeedback}
+                         
+                         This is the actual feedback provided by the user that needs to be analyzed for sentiment.
+                         Sentiment Classification Criteria:
+                         Positive: The feedback should be considered positive if it expresses satisfaction, praises product features, or otherwise indicates a good user experience.
+                         
+                         Negative: The feedback is negative if it includes complaints, dissatisfaction, issues, or problems related to the product.
+                         
+                         Neutral: Classify the feedback as neutral if it neither explicitly expresses satisfaction nor dissatisfaction, or if it simply provides factual information without any emotional sentiment.
+                         
+                         Instruction for Analysis:
+                         Analyze the feedback carefully, taking into account the product description and the specific aspects mentioned in the feedback.
+                         Consider the overall tone, choice of words, and the context in which product features are discussed.
+                         Classify the overall sentiment of the feedback based on the criteria outlined above.
+                         
+                         Expected Outcome:
+                         ##Result: The sentiment of the user feedback classified into one of the following enums: Positive, Negative, Neutral.
+                         
+                         Ensure your response is concise and directly correlates to the sentiments expressed in the user feedback, reflecting a clear understanding of the user's perspective in relation to the product described.
+                         """,
+                Version = 8,
+                Revision = 0,
+            },
+            new()
+            {
+                Id = Guid.Parse("9f5f11d2-33f4-47bf-b7dd-29868df7e167"),
+                CategoryId = Guid.Parse("6F1FDE2A-CAFC-4C4D-B909-655414C8C76E"),
+                Prompt = """
+                         ##Detailed Feedback Analysis for Actionable Insights:
+                         Objective: Evaluate user comments to deduce their overarching messages and categorize the feedback based on its nature and potential for action.
+                         
+                         ##Instructions:
+                         
+                         -Summarize and Interpret Feedback:
+                         -Review User Comment: Thoroughly examine the provided user feedback.
+                         -Draft Overall Summary: Create a brief summary that encapsulates the main message or sentiment conveyed in the feedback.
+                         -Evaluate and Classify Feedback:
+                         -Assess Nature of Feedback: Ascertain whether the feedback is 'generic' (relating to broad concerns or opinions) or 'specific' (pertaining to concrete, detailed observations).
+                         -Determine Actionability: Decide if the feedback contains actionable suggestions or improvements.
+                         -Document Analysis and Recommendations:
+                         Offer recommendations or identify actions based on the feedback's content and nature, considering both immediate and long-term improvements.
+                         
+                         Context Provided:
+                         ##Product Description: {productDescription}
+                         
+                         ##User Feedback: {userFeedback}
+                         
+                         ##Expected Output:
+                         Feedback Summary: Provide a succinct interpretation that reflects the main message of the user's feedback.
+                         
+                         ##Classification:
+                         Nature: Label the feedback as either 'Generic' or 'Specific'.
+                         Actionability: Classify the feedback as 'Actionable' or 'Non-Actionable'.
+                         
+                         ##Result:
+                         [Detailed Feedback Analysis]: Return a string array containing the classifications for each piece of user feedback analyzed. The array should include labels such as 'General', 'Specific', 'Actionable', and 'Nonactionable', based on the analysis conducted according to the provided instructions.
+                         
+                         """,
+                Version = 9,
+                Revision = 0,
             }
         };
 
