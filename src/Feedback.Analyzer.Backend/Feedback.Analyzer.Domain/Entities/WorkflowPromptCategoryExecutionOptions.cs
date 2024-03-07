@@ -14,7 +14,7 @@ public class WorkflowPromptCategoryExecutionOptions : Entity, IParameterizedClon
     
     public Guid? ParentId { get; set; }
     
-    public bool IsActive { get; set; }
+    public bool IsDisabled { get; set; }
 
     public List<WorkflowPromptCategoryExecutionOptions> ChildExecutionOptions { get; set; } = default!;
 

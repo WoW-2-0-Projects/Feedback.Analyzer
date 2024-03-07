@@ -2,6 +2,7 @@ using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Persistence.DataContexts;
+using Force.DeepCloner;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.WebEncoders.Testing;
 
@@ -320,7 +321,7 @@ public static class SeedDataExtensions
             {
                 Id = Guid.Parse("42204C3B-0E3E-4360-9059-94A011C29608"),
                 CategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
-                Prompt = $"""
+                Prompt = """
                          ## Instructions"
 
                          Analyze user feedback and provide a relevance with the service in true or false format
@@ -328,16 +329,27 @@ public static class SeedDataExtensions
                          Conditions :
                          1. feedback must include at least 1 sentence about the service
                          2. even feedbacks that have non-related content counts if the rule 1 is satisfied
+                         
+                         ## Examples
+                         
+                         Product Description : Lenovo Yoga Laptop
+                         Customer Feedback : I like Lenovo laptops, they are so much durable
+                         Result : true
+                         
+                         Product Description : Lenovo Yoga Laptop
+                         Customer Feedback : I like gaming laptops, wanna buy nest month
+                         Result : false
 
                          ## Product Description:
                          
-                         {PromptConstants.ProductDescription}
+                         {{$productDescription}}
                          
                          ## Customer feedback :
                          
-                         {PromptConstants.CustomerFeedback}
+                         {{$customerFeedback}}
                          
                          ## Result
+                         The result format has to be either "true" or "false".
 
                          """,
                 Version = 1,
@@ -347,7 +359,7 @@ public static class SeedDataExtensions
             {
                 Id = Guid.Parse("3ca01475-d736-4ac3-a326-a2580110ee0c"),
                 CategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
-                Prompt = $"""
+                Prompt = """
                             ## Instructions"
 
                             Extract only relevant parts of the customer feedback for the product
@@ -355,14 +367,16 @@ public static class SeedDataExtensions
                             Requirements :
                             1. if feedback contains relevant content in different parts of the feedback, all relevant parts must be extracted and appended
                             2. try to extract as a readable sentence, not just words
+                            3. don't add anything from yourself
+                            4. just return the relevant part of the feedback as it is, don't paraphrase
 
                             ## Product Description:
                             
-                            {PromptConstants.ProductDescription}
+                            {{$productDescription}}
                             
                             ## Customer feedback :
                             
-                            {PromptConstants.CustomerFeedback}
+                            {{$customerFeedback}}
 
                             ## Result
 
@@ -374,7 +388,7 @@ public static class SeedDataExtensions
             {
                 Id = Guid.Parse("4ca01475-d036-4ac3-a326-a2580110ee0c"),
                 CategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
-                Prompt = $"""
+                Prompt = """
                             ## Instructions"
 
                             Redact personal information from the customer feedback
@@ -386,11 +400,11 @@ public static class SeedDataExtensions
 
                             ## Product Description:
                             
-                            {PromptConstants.ProductDescription}
+                            {{$productDescription}}
                             
                             ## Customer feedback :
                             
-                            {PromptConstants.CustomerFeedback}
+                            {{$customerFeedback}}
 
                             ## Result
 
@@ -402,7 +416,7 @@ public static class SeedDataExtensions
             {
                 Id = Guid.Parse("2ba01475-d636-4ac3-a326-a2580112ee0c"),
                 CategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
-                Prompt = $"""
+                Prompt = """
                             ## Instructions"
 
                             Recognize languages from the customer feedback
@@ -414,11 +428,11 @@ public static class SeedDataExtensions
 
                             ## Product Description:
                             
-                            {PromptConstants.ProductDescription}
+                            {{$productDescription}}
                             
                             ## Customer feedback :
                             
-                            {PromptConstants.CustomerFeedback}
+                            {{$customerFeedback}}
 
                             ## Result
 
@@ -430,7 +444,7 @@ public static class SeedDataExtensions
             {
                 Id = Guid.Parse("551d1c24-24c2-45aa-9eba-383de543b24b"),
                 CategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
-                Prompt = $"""
+                Prompt = """
                             ## Instructions"
 
                             Extract positive and  negative opinion points from the user feedback.
@@ -456,11 +470,11 @@ public static class SeedDataExtensions
                             
                             ## Product Description:
                             
-                            {PromptConstants.ProductDescription}
+                            {{$productDescription}}
                             
                             ## Customer feedback :
                             
-                            {PromptConstants.CustomerFeedback}
+                            {{$customerFeedback}}
 
                             ## Result
 
@@ -654,20 +668,20 @@ public static class SeedDataExtensions
         // Add template workflow execution options
         var executionOptions = new List<WorkflowPromptCategoryExecutionOptions>
         {
-            new()
-            {
-                AnalysisPromptCategoryId = Guid.Parse("15072FC8-63C7-49EC-BF4F-3FD2A8479CF4"),
-                ChildExecutionOptions =
-                [
+            // new()
+            // {
+            //     AnalysisPromptCategoryId = Guid.Parse("15072FC8-63C7-49EC-BF4F-3FD2A8479CF4"),
+            //     ChildExecutionOptions =
+            //     [
                     new WorkflowPromptCategoryExecutionOptions
                     {
                         AnalysisPromptCategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                         ChildExecutionOptions =
                         [
-                            new WorkflowPromptCategoryExecutionOptions
-                            {
-                                AnalysisPromptCategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
-                            },
+                            // new WorkflowPromptCategoryExecutionOptions
+                            // {
+                            //     AnalysisPromptCategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
+                            // },
                             new WorkflowPromptCategoryExecutionOptions
                             {
                                 AnalysisPromptCategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
@@ -708,14 +722,14 @@ public static class SeedDataExtensions
                                     },
                                 ]
                             },
-                            new WorkflowPromptCategoryExecutionOptions
-                            {
-                                AnalysisPromptCategoryId = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
-                            },
+                            // new WorkflowPromptCategoryExecutionOptions
+                            // {
+                            //     AnalysisPromptCategoryId = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
+                            // },
                         ]
                     }
-                ]
-            }
+        //         ]
+        //     }
         };
 
         // Add template workflow
@@ -723,18 +737,18 @@ public static class SeedDataExtensions
         {
             Name = "Base Workflow",
             ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
-            Type = WorkflowType.Template,
+            Type = WorkflowType.Training,
             StartingExecutionOption = executionOptions.First()
         };
 
         appDbContext.FeedbackExecutionWorkflows.Add(templateWorkflow);
 
-        var trainingWorkflow = templateWorkflow.Clone();
-        trainingWorkflow.Name = "Training Workflow";
-        trainingWorkflow.Type = WorkflowType.Training;
-        trainingWorkflow.ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D");
+        // var trainingWorkflow = templateWorkflow.Clone();
+        // trainingWorkflow.Name = "Training Workflow";
+        // trainingWorkflow.Type = WorkflowType.Training;
+        // trainingWorkflow.ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D");
 
-        appDbContext.FeedbackExecutionWorkflows.Add(trainingWorkflow);
+        // appDbContext.FeedbackExecutionWorkflows.Add(trainingWorkflow);
 
         await appDbContext.SaveChangesAsync();
     }
