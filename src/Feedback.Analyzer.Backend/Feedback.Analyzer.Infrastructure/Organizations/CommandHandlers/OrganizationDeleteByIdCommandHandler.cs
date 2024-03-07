@@ -9,7 +9,7 @@ namespace Feedback.Analyzer.Infrastructure.Organizations.CommandHandlers;
 /// Handles the execution of the <see cref="OrganizationDeleteByIdCommand"/>,
 /// responsible for deleting an organization.
 /// </summary>
-public class OrganizationDeleteCommandHandler(IMapper mapper, IOrganizationService organizationService) : ICommandHandler<OrganizationDeleteByIdCommand, bool>
+public class OrganizationDeleteByIdCommandHandler(IMapper mapper, IOrganizationService organizationService) : ICommandHandler<OrganizationDeleteByIdCommand, bool>
 {
     public async Task<bool> Handle(OrganizationDeleteByIdCommand request, CancellationToken cancellationToken)
     {
