@@ -39,21 +39,62 @@ public class ExecuteWorkflowSinglePromptEventHandler(
 
         var histories = await promptExecutionProcessingService.ExecuteAsync(notification.PromptId, arguments, cancellationToken: cancellationToken);
 
-        var testHistory = histories.First();
-
-        // Deserialize based on category
+        var history = histories.First();
         var category = await promptCategoryService
-            .Get(category => category.Id == testHistory.Prompt.CategoryId)
+            .Get(category => category.Id == history.Prompt.CategoryId)
             .FirstAsync(cancellationToken: cancellationToken);
+
+
+        if (category.Category == FeedbackAnalysisPromptCategory.LanguageRecognition)
+        {
+            var test = JsonConvert.DeserializeObject<string[]>(history.Result!);
+        }
 
         if (category.Category == FeedbackAnalysisPromptCategory.RelevanceAnalysis)
         {
-            var test = JsonConvert.DeserializeObject<bool>(testHistory.Result!);
+            var test = JsonConvert.DeserializeObject<bool>(history.Result!);
         }
-        
-        if (category.Category == FeedbackAnalysisPromptCategory.LanguageRecognition)
+
+        if (category.Category == FeedbackAnalysisPromptCategory.RelevantContentExtraction)
         {
-            var test = JsonConvert.DeserializeObject<string[]>(testHistory.Result!);
+            var test = JsonConvert.DeserializeObject<string>(history.Result!);
         }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.EntityIdentification)
+        {
+            var test = JsonConvert.DeserializeObject<string>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.OpinionMining)
+        {
+            var test = JsonConvert.DeserializeObject<OpinionType>(history.Result!);
+            //var test = JsonConvert.DeserializeObject<string[]>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.QuestionPointsExtraction)
+        {
+            var test = JsonConvert.DeserializeObject<string[]>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.OpinionPointsExtraction)
+        {
+            var test = JsonConvert.DeserializeObject<string[]>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.ActionableOpinionsAnalysis)
+        {
+            var test = JsonConvert.DeserializeObject<string[]>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.ActionableQuestionsAnalysis)
+        {
+            var test = JsonConvert.DeserializeObject<string[]>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.OpinionsCategoryAnalysis)
+        {
+            var test = JsonConvert.DeserializeObject<string[]>(history.Result!);
+        }
+
     }
 }
