@@ -21,8 +21,7 @@ public class AnalysisPromptConfiguration : IEntityTypeConfiguration<AnalysisProm
         builder
             .Property(prompt => prompt.Prompt)
             .HasMaxLength(32768)
-            .IsRequired()
-            .HasConversion<string>();
+            .IsRequired();
         
         builder
             .HasOne(prompt => prompt.Category)

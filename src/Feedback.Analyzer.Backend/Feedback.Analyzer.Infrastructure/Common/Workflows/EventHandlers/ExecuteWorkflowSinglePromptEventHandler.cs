@@ -1,13 +1,17 @@
+using Feedback.Analyzer.Application.Common.PromptCategories.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.Workflows.Events;
 using Feedback.Analyzer.Application.Common.Workflows.Services;
 using Feedback.Analyzer.Domain.Common.Events;
 using Feedback.Analyzer.Domain.Common.Queries;
+using Feedback.Analyzer.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Workflows.EventHandlers;
 
 public class ExecuteWorkflowSinglePromptEventHandler(
+    IPromptCategoryService promptCategoryService,
     IFeedbackExecutionWorkflowService workflowService,
     IPromptExecutionProcessingService promptExecutionProcessingService
 ) : IEventHandler<ExecuteWorkflowSinglePromptEvent>
@@ -35,12 +39,21 @@ public class ExecuteWorkflowSinglePromptEventHandler(
 
         var histories = await promptExecutionProcessingService.ExecuteAsync(notification.PromptId, arguments, cancellationToken: cancellationToken);
 
-        // Query prompt category
-        // var promptCategory = 
-        // var history = histories.First();
-        
-        // Send command to map history result based on prompt category
+        var testHistory = histories.First();
 
-        var result = "";
+        // Deserialize based on category
+        var category = await promptCategoryService
+            .Get(category => category.Id == testHistory.Prompt.CategoryId)
+            .FirstAsync(cancellationToken: cancellationToken);
+
+        if (category.Category == FeedbackAnalysisPromptCategory.RelevanceAnalysis)
+        {
+            var test = JsonConvert.DeserializeObject<bool>(testHistory.Result!);
+        }
+        
+        if (category.Category == FeedbackAnalysisPromptCategory.LanguageRecognition)
+        {
+            var test = JsonConvert.DeserializeObject<string[]>(testHistory.Result!);
+        }
     }
 }
