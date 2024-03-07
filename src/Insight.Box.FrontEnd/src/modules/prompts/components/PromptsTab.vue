@@ -17,6 +17,7 @@
                                   @addPrompt="categoryId => openPromptModal(null, categoryId)"
                                   @editPrompt="promptId=> openPromptModal(promptId, null)"
                                   @loadCategory="onLoadCategory"
+                                  @openHistory="openHistoryModal"
             />
 
         </infinite-scroll>
@@ -24,6 +25,12 @@
         <!-- Prompts create / edit modal -->
         <prompt-modal :isActive="promptModalActive" @closeModal="closePromptModal"
                       @submit="onPromptModalSubmit($event)" :isCreate="isCreate" :prompt="editingPrompt"
+        />
+
+        <!-- Prompt execution history modal -->
+        <prompt-execution-history-modal :history="openedHistory"
+                                        :isActive="historyModalActive"
+                                        @closeModal="historyModalActive = false"
         />
 
     </div>
@@ -50,6 +57,8 @@ import PromptCategoryCard from "@/modules/prompts/components/PromptCategoryCard.
 import {FeedbackExecutionWorkflowFilter} from "@/modules/prompts/models/FeedbackExecutionWorkflowFilter";
 import {WorkflowType} from "@/modules/prompts/models/WorkflowType";
 import {FeedbackExecutionWorkflow} from "@/modules/prompts/models/FeedbackExecutionWorkflow";
+import PromptExecutionHistoryModal from "@/modules/prompts/components/PromptExecutionHistoryModal.vue";
+import type {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecutionHistory";
 
 // Services
 const insightBoxApiClient = new InsightBoxApiClient();
@@ -70,6 +79,10 @@ const promptsChangeSource = ref<NotificationSource>(new NotificationSource());
 const promptModalActive = ref<boolean>(false);
 const isCreate = ref<boolean>(true);
 const editingPrompt = ref<AnalysisPrompt>(new AnalysisPrompt());
+
+// Prompt execution history modal
+const historyModalActive = ref<boolean>(false);
+const openedHistory = ref<PromptsExecutionHistory | null>(null);
 
 // Search bar states
 const isSearchBarLoading = ref<boolean>(false);
@@ -208,6 +221,10 @@ const closePromptModal = () => {
     promptModalActive.value = false;
 };
 
+const openHistoryModal = (history: PromptsExecutionHistory) => {
+    openedHistory.value = history;
+    historyModalActive.value = true;
+}
 
 /*
  * Scroll event handler

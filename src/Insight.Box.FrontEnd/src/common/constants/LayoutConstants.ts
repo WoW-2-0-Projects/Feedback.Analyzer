@@ -26,8 +26,12 @@ export class LayoutConstants {
     public static readonly EnterPrompt = 'Enter prompt';
     public static readonly Versions = 'Versions';
     public static readonly SelectedVersion = 'Selected Version';
+    public static readonly ExecutionHistory = 'Prompt Execution History';
+    public static readonly ExecutionResult = 'Prompt Execution Result';
+    public static readonly ExecutionException = 'Prompt Execution Exception';
 
     /* Forms */
     public static readonly Submit = 'Submit';
     public static readonly Cancel = 'Cancel';
+    public static readonly Close = 'Close';
 }

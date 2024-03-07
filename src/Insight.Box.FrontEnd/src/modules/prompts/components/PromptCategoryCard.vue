@@ -88,6 +88,7 @@ import FormDropDown from "@/common/components/formDropDown/FormDropDown.vue";
 import {TableAction} from "@/common/components/appTable/TableAction";
 import type {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecutionHistory";
 import {DateTimeFormatterService} from "@/infrastructure/services/dateTime/DateTimeFormatterService";
+import PromptExecutionHistoryModal from "@/modules/prompts/components/PromptExecutionHistoryModal.vue";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 const dateTimeFormatterService = new DateTimeFormatterService();
@@ -116,6 +117,7 @@ watch(() => props.workflows, async () => {
 const emit = defineEmits<{
     (e: 'addPrompt', promptCategoryId: string): void
     (e: 'editPrompt', promptId: string): void,
+    (e: 'openHistory', history: PromptsExecutionHistory): void,
     (e: 'loadCategory', categoryId: string): void,
 }>();
 
@@ -181,14 +183,14 @@ const loadPromptExecutionHistoryAsync = async () => {
     }
 };
 
-const convertHistoryToTableRowData = (result: PromptsExecutionHistory) => {
+const convertHistoryToTableRowData = (history: PromptsExecutionHistory) => {
     return new TableRowData([
-            dateTimeFormatterService.formatHumanize(result.executionTime),
-            result.executionDurationInMilliseconds,
-            result.result !== null
+            dateTimeFormatterService.formatHumanize(history.executionTime),
+            history.executionDurationInMilliseconds,
+            history.result !== null
         ],
         [
-            new TableAction(() => emit('editPrompt', result.promptId), ButtonType.Secondary, 'fas fa-edit')
+            new TableAction(() => emit('openHistory', history), ButtonType.Secondary, 'fas fa-circle-info')
         ]
     );
 };

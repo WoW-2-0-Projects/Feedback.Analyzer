@@ -11,8 +11,8 @@ using System.Text.Json;
 namespace Feedback.Analyzer.Infrastructure.Common.Workflows.EventHandlers;
 
 public class ExecuteWorkflowSinglePromptEventHandler(
-    IFeedbackExecutionWorkflowService workflowService,
     IPromptCategoryService promptCategoryService,
+    IFeedbackExecutionWorkflowService workflowService,
     IPromptExecutionProcessingService promptExecutionProcessingService
 ) : IEventHandler<ExecuteWorkflowSinglePromptEvent>
 {
@@ -44,13 +44,13 @@ public class ExecuteWorkflowSinglePromptEventHandler(
             .Get(category => category.Id == history.Prompt.CategoryId)
             .FirstAsync(cancellationToken: cancellationToken);
 
-        
+
         if (category.Category == FeedbackAnalysisPromptCategory.LanguageRecognition)
         {
             var test = JsonSerializer.Deserialize<string[]>(history.Result!);
         }
 
-        if (category.Category == FeedbackAnalysisPromptCategory.RelevanceAnalysis)     
+        if (category.Category == FeedbackAnalysisPromptCategory.RelevanceAnalysis)
         {
             var test = JsonSerializer.Deserialize<bool>(history.Result!);
         }
@@ -96,6 +96,5 @@ public class ExecuteWorkflowSinglePromptEventHandler(
             var test = JsonSerializer.Deserialize<string[]>(history.Result!);
         }
 
-        var result = "";
     }
 }
