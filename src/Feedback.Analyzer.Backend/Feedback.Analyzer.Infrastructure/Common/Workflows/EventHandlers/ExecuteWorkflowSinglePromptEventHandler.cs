@@ -1,14 +1,18 @@
+using Feedback.Analyzer.Application.Common.PromptCategories.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.Workflows.Events;
 using Feedback.Analyzer.Application.Common.Workflows.Services;
 using Feedback.Analyzer.Domain.Common.Events;
 using Feedback.Analyzer.Domain.Common.Queries;
+using Feedback.Analyzer.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Workflows.EventHandlers;
 
 public class ExecuteWorkflowSinglePromptEventHandler(
     IFeedbackExecutionWorkflowService workflowService,
+    IPromptCategoryService promptCategoryService,
     IPromptExecutionProcessingService promptExecutionProcessingService
 ) : IEventHandler<ExecuteWorkflowSinglePromptEvent>
 {
@@ -35,11 +39,62 @@ public class ExecuteWorkflowSinglePromptEventHandler(
 
         var histories = await promptExecutionProcessingService.ExecuteAsync(notification.PromptId, arguments, cancellationToken: cancellationToken);
 
-        // Query prompt category
-        // var promptCategory = 
-        // var history = histories.First();
+        var history = histories.First();
+        var category = await promptCategoryService
+            .Get(category => category.Id == history.Prompt.CategoryId)
+            .FirstAsync(cancellationToken: cancellationToken);
+
         
-        // Send command to map history result based on prompt category
+        if (category.Category == FeedbackAnalysisPromptCategory.LanguageRecognition)
+        {
+            var test = JsonSerializer.Deserialize<string[]>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.RelevanceAnalysis)     
+        {
+            var test = JsonSerializer.Deserialize<bool>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.RelevantContentExtraction)
+        {
+            var test = JsonSerializer.Deserialize<string>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.EntityIdentification)
+        {
+            var test = JsonSerializer.Deserialize<string>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.OpinionMining)
+        {
+            var test = JsonSerializer.Deserialize<OpinionType>(history.Result!);
+            //var test = JsonSerializer.Deserialize<string[]>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.QuestionPointsExtraction)
+        {
+            var test = JsonSerializer.Deserialize<string[]>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.OpinionPointsExtraction)
+        {
+            var test = JsonSerializer.Deserialize<string[]>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.ActionableOpinionsAnalysis)
+        {
+            var test = JsonSerializer.Deserialize<string[]>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.ActionableQuestionsAnalysis)
+        {
+            var test = JsonSerializer.Deserialize<string[]>(history.Result!);
+        }
+
+        if (category.Category == FeedbackAnalysisPromptCategory.OpinionsCategoryAnalysis)
+        {
+            var test = JsonSerializer.Deserialize<string[]>(history.Result!);
+        }
 
         var result = "";
     }
