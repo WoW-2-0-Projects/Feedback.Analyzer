@@ -8,6 +8,7 @@ using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Exceptions;
+using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
 using Microsoft.SemanticKernel;
 using Newtonsoft.Json;
@@ -36,8 +37,8 @@ public class FeedbackPromptExecutionOrchestrationService(
 
         var kernelArguments = new KernelArguments
         {
-            { "productDescription", product.Description },
-            { "customerFeedback", feedback.Comment }
+            { PromptConstants.ProductDescription, product.Description },
+            { PromptConstants.CustomerFeedback, feedback.Comment }
         };
 
         var task = feedbackExecutionContext switch

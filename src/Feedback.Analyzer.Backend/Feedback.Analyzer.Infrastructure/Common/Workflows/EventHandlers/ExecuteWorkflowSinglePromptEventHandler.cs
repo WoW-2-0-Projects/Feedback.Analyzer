@@ -4,6 +4,7 @@ using Feedback.Analyzer.Application.Common.Workflows.Events;
 using Feedback.Analyzer.Application.Common.Workflows.Services;
 using Feedback.Analyzer.Domain.Common.Events;
 using Feedback.Analyzer.Domain.Common.Queries;
+using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -33,8 +34,8 @@ public class ExecuteWorkflowSinglePromptEventHandler(
 
         var arguments = new Dictionary<string, string>
         {
-            { "productDescription", workflow.Product.Description },
-            { "customerFeedback", workflow.Product.CustomerFeedbacks.First().Comment }
+            { PromptConstants.ProductDescription, workflow.Product.Description },
+            { PromptConstants.CustomerFeedback, workflow.Product.CustomerFeedbacks.First().Comment }
         };
 
         var histories = await promptExecutionProcessingService.ExecuteAsync(notification.PromptId, arguments, cancellationToken: cancellationToken);

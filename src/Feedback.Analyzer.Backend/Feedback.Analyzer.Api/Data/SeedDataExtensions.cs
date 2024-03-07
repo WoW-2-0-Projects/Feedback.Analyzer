@@ -1,3 +1,4 @@
+using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Persistence.DataContexts;
@@ -319,7 +320,7 @@ public static class SeedDataExtensions
             {
                 Id = Guid.Parse("42204C3B-0E3E-4360-9059-94A011C29608"),
                 CategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
-                Prompt = """
+                Prompt = $"""
                          ## Instructions"
 
                          Analyze user feedback and provide a relevance with the service in true or false format
@@ -328,14 +329,14 @@ public static class SeedDataExtensions
                          1. feedback must include at least 1 sentence about the service
                          2. even feedbacks that have non-related content counts if the rule 1 is satisfied
 
-                         ## Data
-
-                         {{$productDescription}}
-
-                         ## Input
-
-                         {{$customerFeedback}}
-
+                         ## Product Description:
+                         
+                         {PromptConstants.ProductDescription}
+                         
+                         ## Customer feedback :
+                         
+                         {PromptConstants.CustomerFeedback}
+                         
                          ## Result
 
                          """,
@@ -346,26 +347,26 @@ public static class SeedDataExtensions
             {
                 Id = Guid.Parse("3ca01475-d736-4ac3-a326-a2580110ee0c"),
                 CategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
-                Prompt = """
-                         ## Instructions"
+                Prompt = $"""
+                            ## Instructions"
 
-                         Extract only relevant parts of the customer feedback for the product
+                            Extract only relevant parts of the customer feedback for the product
 
-                         Requirements :
-                         1. if feedback contains relevant content in different parts of the feedback, all relevant parts must be extracted and appended
-                         2. try to extract as a readable sentence, not just words
+                            Requirements :
+                            1. if feedback contains relevant content in different parts of the feedback, all relevant parts must be extracted and appended
+                            2. try to extract as a readable sentence, not just words
 
-                         ## Data
+                            ## Product Description:
+                            
+                            {PromptConstants.ProductDescription}
+                            
+                            ## Customer feedback :
+                            
+                            {PromptConstants.CustomerFeedback}
 
-                         {{$productDescription}}
+                            ## Result
 
-                         ## Input
-
-                         {{$customerFeedback}}
-
-                         ## Result
-
-                         """,
+                            """,
                 Version = 2,
                 Revision = 0,
             },
@@ -373,27 +374,27 @@ public static class SeedDataExtensions
             {
                 Id = Guid.Parse("4ca01475-d036-4ac3-a326-a2580110ee0c"),
                 CategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
-                Prompt = """
-                         ## Instructions"
+                Prompt = $"""
+                            ## Instructions"
 
-                         Redact personal information from the customer feedback
+                            Redact personal information from the customer feedback
 
-                         Requirements :
-                         1. redact only words that is considered as personal information, not the whole sentence
-                         2. replace the redacted words with asterisks
-                         3. make sure sentences are still readable
+                            Requirements :
+                            1. redact only words that is considered as personal information, not the whole sentence
+                            2. replace the redacted words with asterisks
+                            3. make sure sentences are still readable
 
-                         ## Data
+                            ## Product Description:
+                            
+                            {PromptConstants.ProductDescription}
+                            
+                            ## Customer feedback :
+                            
+                            {PromptConstants.CustomerFeedback}
 
-                         {{$productDescription}}
+                            ## Result
 
-                         ## Input
-
-                         {{$customerFeedback}}
-
-                         ## Result
-
-                         """,
+                            """,
                 Version = 3,
                 Revision = 0,
             },
@@ -401,27 +402,27 @@ public static class SeedDataExtensions
             {
                 Id = Guid.Parse("2ba01475-d636-4ac3-a326-a2580112ee0c"),
                 CategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
-                Prompt = """
-                         ## Instructions"
+                Prompt = $"""
+                            ## Instructions"
 
-                         Recognize languages from the customer feedback
+                            Recognize languages from the customer feedback
 
-                         Requirements :
-                         1. list language if something readable or like a sentence written in it, not just a word
-                         2. list all languages feedback contains multiple languages
-                         3. return languages as array of strings in JSON format to deserialize 
+                            Requirements :
+                            1. list language if something readable or like a sentence written in it, not just a word
+                            2. list all languages feedback contains multiple languages
+                            3. return languages as array of strings in JSON format to deserialize 
 
-                         ## Data
+                            ## Product Description:
+                            
+                            {PromptConstants.ProductDescription}
+                            
+                            ## Customer feedback :
+                            
+                            {PromptConstants.CustomerFeedback}
 
-                         {{$productDescription}}
+                            ## Result
 
-                         ## Input
-
-                         {{$customerFeedback}}
-
-                         ## Result
-
-                         """,
+                            """,
                 Version = 4,
                 Revision = 0,
             },
@@ -429,41 +430,41 @@ public static class SeedDataExtensions
             {
                 Id = Guid.Parse("551d1c24-24c2-45aa-9eba-383de543b24b"),
                 CategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
-                Prompt = """
-                         ## Instructions"
+                Prompt = $"""
+                            ## Instructions"
 
-                         Extract positive and  negative opinion points from the user feedback.
+                            Extract positive and  negative opinion points from the user feedback.
 
-                         Requirements :
-                         1. extract positive and negative opinion points from the user feedback.
-                         2. don't include neutral opinion points
-                         3. only extract opinion points that are related to the product
-                         4. only extract the section that contains opinion itself not the whole sentence
-                         5. don't include any points from product description
-                         6. be aware of mixed complex sentences that might contain turning points
-                         7. exclude actionable opinions because we want exact source of positive and negative experience not solutions
-                         8. analyze and exclude sentences with opinions that you are not sure whether it is about this product
-                         9. separate points if there are multiple points in a single sentence or in a conjunction
+                            Requirements :
+                            1. extract positive and negative opinion points from the user feedback.
+                            2. don't include neutral opinion points
+                            3. only extract opinion points that are related to the product
+                            4. only extract the section that contains opinion itself not the whole sentence
+                            5. don't include any points from product description
+                            6. be aware of mixed complex sentences that might contain turning points
+                            7. exclude actionable opinions because we want exact source of positive and negative experience not solutions
+                            8. analyze and exclude sentences with opinions that you are not sure whether it is about this product
+                            9. separate points if there are multiple points in a single sentence or in a conjunction
 
-                         ## Examples
+                            ## Examples
 
-                         These examples contain turning points
+                            These examples contain turning points
 
-                         - Overall I think the Viper is a good mouse, but I can't afford but - positive
-                         - Overall I think the Viper is a good mouse, but not for me - neutral
-                         - Overall Viper is a good mouse, they said, but nope - negative
+                            - Overall I think the Viper is a good mouse, but I can't afford but - positive
+                            - Overall I think the Viper is a good mouse, but not for me - neutral
+                            - Overall Viper is a good mouse, they said, but nope - negative
+                            
+                            ## Product Description:
+                            
+                            {PromptConstants.ProductDescription}
+                            
+                            ## Customer feedback :
+                            
+                            {PromptConstants.CustomerFeedback}
 
-                         ## Product Description:
+                            ## Result
 
-                         {{$productDescription}}
-
-                         ## Customer feedback :
-
-                         {{$customerFeedback}}
-
-                         ## Result
-
-                         """,
+                            """,
                 Version = 5,
                 Revision = 0,
             }
