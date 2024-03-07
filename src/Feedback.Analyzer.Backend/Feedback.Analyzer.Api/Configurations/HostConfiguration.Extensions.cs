@@ -1,5 +1,6 @@
 using System.Reflection;
 using Feedback.Analyzer.Api.Data;
+using Feedback.Analyzer.Application.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.PromptCategory.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
@@ -9,6 +10,7 @@ using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Application.PromptsHistory.Services;
 using Feedback.Analyzer.Domain.Constants;
+using Feedback.Analyzer.Infrastructure.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.PromptsCategories.Services;
@@ -195,7 +197,8 @@ public static partial class HostConfiguration
         builder.Services
                .AddScoped<IPromptService, PromptService>()
                .AddScoped<IPromptCategoryService, PromptCategoryService>()
-               .AddScoped<IPromptExecutionHistoryService, PromptExecutionHistoryService>();
+               .AddScoped<IPromptExecutionHistoryService, PromptExecutionHistoryService>()
+               .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>();
 
         return builder;
     }
