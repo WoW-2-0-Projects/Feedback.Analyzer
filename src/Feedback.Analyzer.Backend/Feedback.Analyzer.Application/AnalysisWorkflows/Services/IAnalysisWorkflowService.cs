@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using Feedback.Analyzer.Application.AnalysisWorkflows.Models;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
@@ -18,16 +17,6 @@ public interface IAnalysisWorkflowService
     /// <param name="queryOptions">Query options to specify how the analysis workflows should be retrieved.</param>
     /// <returns>An IQueryable of AnalysisWorkflow objects.</returns>
     IQueryable<AnalysisWorkflow> Get(Expression<Func<AnalysisWorkflow, bool>>? predicate = default, QueryOptions queryOptions = default);
-
-
-    /// <summary>
-    /// Retrieves analysis workflows based on the specified filter and query options.
-    /// </summary>
-    /// <param name="analysisWorkflowFilter">The filter to apply when retrieving analysis workflows.</param>
-    /// <param name="queryOptions">Query options to specify how the analysis workflows should be retrieved.</param>
-    /// <returns>An IQueryable of AnalysisWorkflow objects.</returns>
-    IQueryable<AnalysisWorkflow> Get(AnalysisWorkflowFilter analysisWorkflowFilter, QueryOptions queryOptions);
-
     
     /// <summary>
     /// Asynchronously retrieves an analysis workflow by its ID.

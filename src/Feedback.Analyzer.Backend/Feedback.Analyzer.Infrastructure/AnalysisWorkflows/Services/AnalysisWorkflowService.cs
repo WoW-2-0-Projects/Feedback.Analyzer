@@ -1,12 +1,11 @@
 using System.Linq.Expressions;
-using Feedback.Analyzer.Application.AnalysisWorkflows.Models;
 using Feedback.Analyzer.Application.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Infrastructure.AnalysisWorkflows.Validators;
-using Feedback.Analyzer.Persistence.Extensions;
+
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using FluentValidation;
 using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
@@ -24,11 +23,6 @@ public class AnalysisWorkflowService(
         Expression<Func<AnalysisWorkflow, bool>>? predicate = default,
         QueryOptions queryOptions = default)
         => analysisWorkflowRepository.Get(predicate, queryOptions);
-
-    public IQueryable<AnalysisWorkflow> Get(
-        AnalysisWorkflowFilter analysisWorkflowFilter, 
-        QueryOptions queryOptions)
-        => analysisWorkflowRepository.Get().ApplyPagination(analysisWorkflowFilter);
 
     public  ValueTask<AnalysisWorkflow> GetByIdAsync(
         Guid analysisWorkflowId,
