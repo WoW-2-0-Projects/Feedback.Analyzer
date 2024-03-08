@@ -231,6 +231,18 @@ public static class SeedDataExtensions
                 ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
                 Comment = "I laid my hands on the Viper in a local store and on the spot it felt rather flat. I think I prefer something with more hump and side area to grip onto. right now I have a basilisk v2 and think it's definetely more comfy, but that grip could still be better.\n\nThe Synapse software is extremely greedy though. 300MB HD space and about 200MB RAM is ludicrous for a gloryfied mouse driver.",
                 UserName = "Silvarspark"
+            },
+            new()
+            {
+                ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
+                Comment = "I would buy the product if the price was a bit lower. One can find many good options in this price range. I would rather buy a brand new RGB keyboard if I had such money. Overall the product is not bad but it is overpriced.",
+                UserName = "John Doe"
+            },
+            new()
+            {
+                ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
+                Comment = "Can anyone help me decide which mouse is the best one on the market now? I used Viper before but not satisfied.",
+                UserName = "John Smith"
             }
         };
 
@@ -350,26 +362,29 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("3ca01475-d736-4ac3-a326-a2580110ee0c"),
                 CategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
                 Prompt = """
-                            ## Instructions"
-
-                            Extract only relevant parts of the customer feedback for the product
-
-                            Requirements :
-                            1. if feedback contains relevant content in different parts of the feedback, all relevant parts must be extracted and appended
-                            2. try to extract as a readable sentence, not just words
-                            3. don't add anything from yourself
-                            4. just return the relevant part of the feedback as it is, don't paraphrase
-
-                            ## Product Description:
-                            
+                            ### Product Description
                             {{$productDescription}}
                             
-                            ## Customer feedback :
-                            
+                            ### Customer Feedback
                             {{$customerFeedback}}
-
-                            ## Result
-
+                          
+                            ### Instructions
+                            
+                            Analyze the given Customer Feedback (delimited by ###) systematically, identify and extract all parts that are relevant to the Product, its name, features and functionality given in Product Description (delimited by ###) into a single string.
+                            Think step by step.
+                            
+                            Return the extracted parts in json format: 
+                            {
+                                "RelevantParts": string
+                            }
+                            
+                            ### Examples
+                            Customer Feedback: The viper mouse feels great on my grip. It's RGB light perfectly matches my keyboard on my desk. I use magic keyboard at home. I also wanted to buy a new desk, any tips?
+                            
+                            Result: 
+                            {
+                                "RelevantParts": "The viper mouse feels great on my grip. It's RGB light perfectly matches my keyboard on my desk."
+                            }
                             """,
                 Version = 2,
                 Revision = 0,
