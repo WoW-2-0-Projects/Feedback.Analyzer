@@ -59,7 +59,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.HasIndex("CategoryId", "Version", "Revision")
                         .IsUnique();
 
-                    b.ToTable("Prompts");
+                    b.ToTable("Prompts", (string)null);
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", b =>
@@ -89,7 +89,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.HasIndex("SelectedPromptId")
                         .IsUnique();
 
-                    b.ToTable("PromptCategories");
+                    b.ToTable("PromptCategories", (string)null);
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisWorkflow", b =>
@@ -122,7 +122,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AnalysisWorkflows");
+                    b.ToTable("AnalysisWorkflows", (string)null);
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Client", b =>
@@ -165,7 +165,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.CustomerFeedback", b =>
@@ -203,35 +203,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Feedbacks");
-                });
-
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("Name", "ProductId")
-                        .IsUnique();
-
-                    b.ToTable("FeedbackAnalysisWorkflows");
+                    b.ToTable("Feedbacks", (string)null);
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>
@@ -263,7 +235,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Organizations");
+                    b.ToTable("Organizations", (string)null);
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Product", b =>
@@ -301,7 +273,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("OrganizationId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.PromptExecutionHistory", b =>
@@ -331,7 +303,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("PromptId");
 
-                    b.ToTable("PromptExecutionHistories");
+                    b.ToTable("PromptExecutionHistories", (string)null);
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", b =>
@@ -361,25 +333,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
-                {
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisWorkflow", "AnalysisWorkflow")
-                        .WithOne("FeedbackAnalysisWorkflow")
-                        .HasForeignKey("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.Product", "Product")
-                        .WithMany("Workflows")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AnalysisWorkflow");
 
                     b.Navigation("Product");
                 });
@@ -427,11 +380,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("Prompts");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisWorkflow", b =>
-                {
-                    b.Navigation("FeedbackAnalysisWorkflow");
-                });
-
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Client", b =>
                 {
                     b.Navigation("Organizations");
@@ -445,8 +393,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Product", b =>
                 {
                     b.Navigation("CustomerFeedbacks");
-
-                    b.Navigation("Workflows");
                 });
 #pragma warning restore 612, 618
         }
