@@ -188,10 +188,11 @@ public static partial class HostConfiguration
     {
         // Register repositories
         builder.Services
-               .AddScoped<IPromptRepository, PromptRepository>()
-               .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>()
-               .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>()
-               .AddScoped<IAnalysisWorkflowRepository, AnalysisWorkflowRepository>();
+            .AddScoped<IPromptRepository, PromptRepository>()
+            .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>()
+            .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>()
+            .AddScoped<IAnalysisWorkflowRepository, AnalysisWorkflowRepository>()
+            .AddScoped<IFeedbackAnalysisWorkflowRepository, FeedbackAnalysisWorkflowRepository>();
         
         // Register foundation services
         builder.Services
