@@ -31,4 +31,6 @@ public class Product : AuditableEntity
     /// Gets or sets the collection of customer feedback associated with this product.
     /// </summary>
     public IEnumerable<CustomerFeedback> CustomerFeedbacks { get; set; } = default!;
+
+    public ICollection<FeedbackAnalysisWorkflow> Workflows { get; set; } = default!;
 }
