@@ -16,5 +16,10 @@ public class AnalysisWorkflowConfiguration : IEntityTypeConfiguration<AnalysisWo
             .HasConversion<string>()
             .HasMaxLength(128)
             .IsRequired();
+
+        builder
+            .HasOne(analysisWorkflow => analysisWorkflow.FeedbackAnalysisWorkflow)
+            .WithOne(feedbackAnalysisWorkflow => feedbackAnalysisWorkflow.AnalysisWorkflow)
+            .HasForeignKey<FeedbackAnalysisWorkflow>(feedbackAnalysisWorkflow => feedbackAnalysisWorkflow.Id);
     }
 }

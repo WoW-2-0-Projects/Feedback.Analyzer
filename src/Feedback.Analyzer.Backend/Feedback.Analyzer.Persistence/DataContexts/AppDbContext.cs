@@ -34,8 +34,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     public DbSet<AnalysisWorkflow> AnalysisWorkflows => Set<AnalysisWorkflow>();
     
     public DbSet<AnalysisPromptCategory> PromptCategories => Set<AnalysisPromptCategory>();
-    
-    
+
+    public DbSet<FeedbackAnalysisWorkflow> FeedbackAnalysisWorkflows => Set<FeedbackAnalysisWorkflow>();
     #endregion
     
     
