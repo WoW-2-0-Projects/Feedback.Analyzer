@@ -1,5 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Feedback.Analyzer.Domain.Common.Entities;
-using Feedback.Analyzer.Domain.Enums;
 
 namespace Feedback.Analyzer.Domain.Entities;
 
@@ -21,6 +21,5 @@ public class FeedbackAnalysisWorkflow : Entity
     /// <summary>
     /// Navigation to related product
     /// </summary>
-    public WorkflowType Type { get; set; }
     public Product Product { get; set; } = default!;
 }
