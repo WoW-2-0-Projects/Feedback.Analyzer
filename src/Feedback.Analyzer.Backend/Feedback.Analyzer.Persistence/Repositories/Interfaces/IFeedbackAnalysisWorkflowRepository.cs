@@ -5,6 +5,9 @@ using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
+/// <summary>
+/// Represents a repository interface for managing feedback analysis workflows.
+/// </summary>
 public interface IFeedbackAnalysisWorkflowRepository
 {
     /// <summary>

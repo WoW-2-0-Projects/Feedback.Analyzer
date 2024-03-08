@@ -7,6 +7,9 @@ using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
+/// <summary>
+/// Represents a repository for managing analysis workflows in the database.
+/// </summary>
 public class AnalysisWorkflowRepository(AppDbContext appDbContext) : EntityRepositoryBase<AnalysisWorkflow, AppDbContext>(appDbContext), IAnalysisWorkflowRepository
 {
     public new IQueryable<AnalysisWorkflow> Get(Expression<Func<AnalysisWorkflow, bool>>? predicate = default, QueryOptions queryOptions = default)

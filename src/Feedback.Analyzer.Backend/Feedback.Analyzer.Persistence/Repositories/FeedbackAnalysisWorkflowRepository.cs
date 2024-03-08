@@ -7,6 +7,9 @@ using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
+/// <summary>
+/// Represents a repository interface for managing feedback analysis workflows.
+/// </summary>
 public class FeedbackAnalysisWorkflowRepository(AppDbContext appDbContext)
     : EntityRepositoryBase<FeedbackAnalysisWorkflow, AppDbContext>(appDbContext), IFeedbackAnalysisWorkflowRepository
 {
