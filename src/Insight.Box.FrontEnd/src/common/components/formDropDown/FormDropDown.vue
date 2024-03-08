@@ -18,7 +18,7 @@
 
         <!-- Expand / Collapse icon -->
         <svg :class="{ 'rotate-180': isOpen, 'transition-transform': true }"
-             class="right-4 z-10 h-full text-sm absolute top-1/2 -translate-y-1/2 theme-action-transition
+             class="right-4 h-full text-sm absolute top-1/2 -translate-y-1/2 theme-action-transition
                     theme-action-content theme-focus-content theme-text-secondary"
              xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 32 32"
@@ -36,8 +36,9 @@
         </svg>
 
         <!-- Drop down options -->
-        <div class="absolute mt-2 w-full focus:outline-none appearance-none rounded-md
-                    theme-modal-shadow theme-action-secondary theme-input-border-focus z-50 overflow-hidden theme-input"
+        <div
+            class="absolute mt-2 w-full focus:outline-none theme-modal-bg appearance-none rounded-md text-secondaryContentColor
+                    theme-modal-shadow theme-action-secondary theme-input-border-focus overflow-hidden theme-input"
              v-show="isOpen"
         >
             <ul>

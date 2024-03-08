@@ -1,7 +1,7 @@
 <template>
 
     <!-- View content -->
-    <div class="view theme-gradient-bg content-padding">
+    <div class="view content-padding">
 
         <!-- Site header -->
         <main-header/>

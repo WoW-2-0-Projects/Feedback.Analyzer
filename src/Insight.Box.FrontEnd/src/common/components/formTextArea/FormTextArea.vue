@@ -94,9 +94,9 @@ const emit = defineEmits<{
 }>();
 
 // Watcher for prefix change
-watch(() => focus.value, (newValue, oldValue) => {
-    console.log('focused');
-});
+// watch(() => focus.value, (newValue, oldValue) => {
+//     console.log('focused');
+// });
 
 const onFocusIn = () => {
     focus.value = true;
@@ -108,17 +108,6 @@ const onFocusOut = () => {
     emit('focusOut');
 }
 
-// Computed value without prefix
-// const value = computed(() => {
-//     return props.prefix ? props.modelValue?.replace(props.prefix, '') : props.modelValue;
-// });
-
-/* region Input actions */
-
-// const onTogglePasswordVisibility = () => {
-//     actualType.value = actualType.value === FormInputType.Password ? FormInputType.Text : FormInputType.Password;
-// }
-
 const onInput = (event: KeyboardEvent) => {
     const allowedKeys = ['Backspace', 'ArrowRight', 'ArrowUp', 'ArrowDown']
     const allowedShortcuts = ['a', 'c', 'x', 'v'];
@@ -127,11 +116,6 @@ const onInput = (event: KeyboardEvent) => {
     if (event.metaKey && allowedShortcuts.includes(event.key)) {
         return;
     }
-
-    // if (props.type === FormInputType.Number && !allowedKeys.includes(event.key) && (event.key.length === 1 &&
-    //     isNaN(Number(event.key)))) {
-    //     event.preventDefault();
-    // }
 }
 
 /* endregion */

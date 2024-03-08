@@ -16,9 +16,8 @@
                                   :promptCategory="promptCategory" :workflows="trainingWorkflows"
                                   @addPrompt="(categoryId, loadFunc) => openPromptModal(null, categoryId, loadFunc)"
                                   @editPrompt="(promptId, loadFunc) => openPromptModal(promptId, null, loadFunc)"
-                                  @loadCategory="onLoadCategory"
-                                  @openHistory="openHistoryModal"
-                                  @loadPromptResult=""
+                                  @loadCategory="categoryId => loadCategoryAsync(categoryId)"
+                                  @openHistory="onOpenHistoryModal"
             />
 
         </infinite-scroll>
@@ -61,7 +60,8 @@ import {FeedbackAnalysisWorkflow} from "@/modules/prompts/models/FeedbackAnalysi
 import PromptExecutionHistoryModal from "@/modules/prompts/components/PromptExecutionHistoryModal.vue";
 import type {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecutionHistory";
 import {AsyncFunction} from "@/infrastructure/models/delegates/Function";
-import {isCancel} from "axios";
+import {CategoryTrainingData} from "@/modules/prompts/models/CategoryTrainingData";
+import {CategoryTrainingDataService} from "@/modules/prompts/services/CategoryTrainingDataService";
 
 // Services
 const insightBoxApiClient = new InsightBoxApiClient();
@@ -76,7 +76,6 @@ const promptsCategoryQuery = ref<Query>(new Query(new PromptCategoryFilter()));
 const prompts = ref<Array<AnalysisPrompt>>([]);
 const promptCategories = ref<Array<AnalysisPromptCategory>>([]);
 const noPromptCategoriesFound = ref<boolean>(false);
-// const loadPromptResultFunc = ref<AsyncFunction>(new AsyncFunction());
 
 // Infinite scroll states
 const promptsChangeSource = ref<NotificationSource>(new NotificationSource());
@@ -85,7 +84,7 @@ const promptsChangeSource = ref<NotificationSource>(new NotificationSource());
 const promptModalActive = ref<boolean>(false);
 const isCreate = ref<boolean>(true);
 const editingPrompt = ref<AnalysisPrompt>(new AnalysisPrompt());
-const editingPromptLoadResultFunction = ref<AsyncFunction<string>>()
+const editingPromptLoadResultFunction = ref<AsyncFunction<string>>();
 
 // Prompt execution history modal
 const historyModalActive = ref<boolean>(false);
@@ -129,15 +128,11 @@ const loadCategoryAsync = async (categoryId: string) => {
 
     if (response.response) {
         let categoryIndex = promptCategories.value.findIndex(c => c.id === categoryId);
-        if (categoryIndex)
+        if (categoryIndex !== -1) {
             promptCategories.value[categoryIndex] = response.response;
-        else
+        } else
             promptCategories.value.push(response.response);
     }
-}
-
-const onLoadCategory = async (categoryId: string) => {
-    await loadCategoryAsync(categoryId);
 }
 
 const loadWorkflowsAsync = async () => {
@@ -197,10 +192,7 @@ const updatePromptAsync = async (prompt: AnalysisPrompt) => {
         insightBoxApiClient.prompts.updateAsync(createPromptCommand);
 
     if (response.response) {
-        console.log('adding new revision', editingPromptLoadResultFunction.value?.callBack);
-
         if (editingPromptLoadResultFunction?.value && editingPromptLoadResultFunction?.value?.callBack) {
-            console.log('adding prompt result')
             editingPromptLoadResultFunction.value?.callBack(response.response.id);
         }
     }
@@ -215,19 +207,15 @@ const openPromptModal = async (
 ) => {
     if (promptId) {
         editingPromptLoadResultFunction.value = loadPromptResultCallback;
-        console.log('assigned func', editingPromptLoadResultFunction.value)
         const response = await insightBoxApiClient.prompts.getByIdAsync(promptId!);
 
         if (response.isSuccess) {
             editingPrompt.value = response.response!;
             isCreate.value = false;
-            console.log('iscreate', isCreate.value);
-
             promptModalActive.value = true;
         }
     } else {
         editingPromptLoadResultFunction.value = loadPromptResultCallback;
-        console.log('assigned func', editingPromptLoadResultFunction.value);
         editingPrompt.value = new AnalysisPrompt();
         editingPrompt.value.categoryId = promptCategoryId!;
         isCreate.value = true;
@@ -240,7 +228,7 @@ const closePromptModal = () => {
     promptModalActive.value = false;
 };
 
-const openHistoryModal = (history: PromptsExecutionHistory) => {
+const onOpenHistoryModal = (history: PromptsExecutionHistory) => {
     openedHistory.value = history;
     historyModalActive.value = true;
 }
