@@ -33,7 +33,7 @@ import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vu
 import ProductModal from "@/modules/products/components/ProductModal.vue";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
-import {NotificationSource} from "@/infrastructure/models/notifications/Action";
+import {NotificationSource} from "@/infrastructure/models/delegates/Action";
 import {Query} from "@/infrastructure/models/query/Query";
 import {ProductFilter} from "@/modules/products/models/ProductFilter";
 import type {Product} from "@/modules/products/models/Product";

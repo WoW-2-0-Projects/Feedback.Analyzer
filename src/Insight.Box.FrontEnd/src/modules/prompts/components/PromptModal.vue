@@ -55,7 +55,7 @@ import ModalBase from "@/common/components/modalBase/ModalBase.vue";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 import FormEditor from "@/common/components/formEditor/FormEditor.vue";
-import type {Action} from "@/infrastructure/models/notifications/Action";
+import type {Action} from "@/infrastructure/models/delegates/Action";
 
 const props = defineProps({
     prompt: {
@@ -82,11 +82,8 @@ const emit = defineEmits<{
 
 watch(() => props.isActive, () => {
     if(props.isActive) {
-
-        console.log('focusing');
-        textAreaFocusAction.value?.callBack();
+        textAreaFocusAction.value?.callback();
     }
-    // console.log('isActive', props.isActive);
 });
 
 // const currentValue = ref<AnalysisPrompt>(props.prompt ?? new AnalysisPrompt());

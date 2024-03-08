@@ -37,7 +37,7 @@ import ModalBase from "@/common/components/modalBase/ModalBase.vue";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 import FormEditor from "@/common/components/formEditor/FormEditor.vue";
-import type {Action} from "@/infrastructure/models/notifications/Action";
+import type {Action} from "@/infrastructure/models/delegates/Action";
 import type {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecutionHistory";
 import FormTextArea from "@/common/components/formTextArea/FormTextArea.vue";
 

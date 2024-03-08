@@ -31,7 +31,7 @@ import {DocumentService} from "@/infrastructure/services/document/DocumentServic
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import OrganizationsSearchBar from "@/modules/organizations/components/OrganizationsSearchBar.vue";
 import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
-import {NotificationSource} from "@/infrastructure/models/notifications/Action";
+import {NotificationSource} from "@/infrastructure/models/delegates/Action";
 import { Organization } from "../models/Organization";
 import { InsightBoxApiClient } from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import OrganizationCard from "./OrganizationCard.vue";

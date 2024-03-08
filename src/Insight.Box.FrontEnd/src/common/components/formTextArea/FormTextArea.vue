@@ -42,7 +42,7 @@
 import {computed, defineEmits, defineProps, onBeforeMount, onMounted, type PropType, ref, watch} from 'vue';
 import {FormInputType} from "../formInput/FormInputType";
 import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
-import type {Action} from "@/infrastructure/models/notifications/Action";
+import type {Action} from "@/infrastructure/models/delegates/Action";
 
 const props = defineProps({
     modelValue: {
@@ -80,8 +80,7 @@ const focus = ref<boolean>(false);
 
 onBeforeMount(() => {
     if(props.focus)
-        props.focus.callBack = () =>{
-        console.log('focusing for input');
+        props.focus.callback = () =>{
             textArea.value.focus();
         };
 })

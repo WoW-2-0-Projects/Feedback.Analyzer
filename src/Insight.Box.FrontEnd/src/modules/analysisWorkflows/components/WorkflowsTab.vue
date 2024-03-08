@@ -28,7 +28,7 @@ import {onBeforeMount, ref} from "vue";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
-import {NotificationSource} from "@/infrastructure/models/notifications/Action";
+import {NotificationSource} from "@/infrastructure/models/delegates/Action";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import {Query} from "@/infrastructure/models/query/Query";
 import WorkflowsSearchBar from "@/modules/analysisWorkflows/components/WorkflowsSearchBar.vue";

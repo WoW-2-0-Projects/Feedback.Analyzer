@@ -58,7 +58,7 @@ import FormInput from "@/common/components/formInput/FormInput.vue";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
 import {TimerService} from "@/infrastructure/services/timer/TimerService";
-import type {Action} from "@/infrastructure/models/notifications/Action";
+import type {Action} from "@/infrastructure/models/delegates/Action";
 
 const timerService = new TimerService();
 const searchKeyword = ref<string>('');
@@ -119,9 +119,8 @@ const onRedo = () => {
 }
 
 const setDefaultValue = () => {
-    console.log('setting default value');
-
-    emit('update:modelValue', props.defaultValue);
+    if (!props.modelValue || props.modelValue === '')
+        emit('update:modelValue', props.defaultValue);
 }
 
 </script>

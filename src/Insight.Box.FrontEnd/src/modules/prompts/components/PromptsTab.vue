@@ -14,10 +14,11 @@
             <!-- Prompts card -->
             <prompt-category-card v-for="promptCategory in promptCategories" :key="promptCategory.id"
                                   :promptCategory="promptCategory" :workflows="trainingWorkflows"
-                                  @addPrompt="categoryId => openPromptModal(null, categoryId)"
-                                  @editPrompt="promptId=> openPromptModal(promptId, null)"
+                                  @addPrompt="(categoryId, loadFunc) => openPromptModal(null, categoryId, loadFunc)"
+                                  @editPrompt="(promptId, loadFunc) => openPromptModal(promptId, null, loadFunc)"
                                   @loadCategory="onLoadCategory"
                                   @openHistory="openHistoryModal"
+                                  @loadPromptResult=""
             />
 
         </infinite-scroll>
@@ -44,7 +45,7 @@ import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
-import {NotificationSource} from "@/infrastructure/models/notifications/Action";
+import {NotificationSource} from "@/infrastructure/models/delegates/Action";
 import {Query} from "@/infrastructure/models/query/Query";
 import PromptModal from "@/modules/prompts/components/PromptModal.vue";
 import PromptsSearchBar from "@/modules/prompts/components/PromptsSearchBar.vue";
@@ -59,6 +60,7 @@ import {WorkflowType} from "@/modules/prompts/models/WorkflowType";
 import {FeedbackAnalysisWorkflow} from "@/modules/prompts/models/FeedbackAnalysisWorkflow";
 import PromptExecutionHistoryModal from "@/modules/prompts/components/PromptExecutionHistoryModal.vue";
 import type {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecutionHistory";
+import {AsyncFunction} from "@/infrastructure/models/delegates/Function";
 
 // Services
 const insightBoxApiClient = new InsightBoxApiClient();
@@ -67,10 +69,13 @@ const documentService = new DocumentService();
 // States
 const isLoading = ref<boolean>(false);
 const promptsQuery = ref<Query>(new Query(new PromptFilter()));
+
+// Category card states
 const promptsCategoryQuery = ref<Query>(new Query(new PromptCategoryFilter()));
 const prompts = ref<Array<AnalysisPrompt>>([]);
 const promptCategories = ref<Array<AnalysisPromptCategory>>([]);
 const noPromptCategoriesFound = ref<boolean>(false);
+// const loadPromptResultFunc = ref<AsyncFunction>(new AsyncFunction());
 
 // Infinite scroll states
 const promptsChangeSource = ref<NotificationSource>(new NotificationSource());
@@ -79,6 +84,7 @@ const promptsChangeSource = ref<NotificationSource>(new NotificationSource());
 const promptModalActive = ref<boolean>(false);
 const isCreate = ref<boolean>(true);
 const editingPrompt = ref<AnalysisPrompt>(new AnalysisPrompt());
+const editingPromptLoadResultFunction = ref<AsyncFunction<string>>()
 
 // Prompt execution history modal
 const historyModalActive = ref<boolean>(false);
@@ -95,7 +101,6 @@ const trainingWorkflows = ref<Array<FeedbackAnalysisWorkflow>>([]);
 onBeforeMount(async () => {
     // Set page title
     documentService.setTitle(LayoutConstants.Prompts);
-
 
     await loadPromptCategoriesAsync();
     await loadWorkflowsAsync();
@@ -123,9 +128,6 @@ const loadCategoryAsync = async (categoryId: string) => {
 
     if (response.response) {
         let categoryIndex = promptCategories.value.findIndex(c => c.id === categoryId);
-        console.log('loaded cateogry', promptCategories.value);
-        console.log('loaded cateogry', categoryIndex);
-
         if (categoryIndex)
             promptCategories.value[categoryIndex] = response.response;
         else
@@ -172,7 +174,10 @@ const createPromptAsync = async (prompt: AnalysisPrompt) => {
         insightBoxApiClient.prompts.createAsync(createPromptCommand);
 
     if (response.response) {
-        prompts.value.push(response.response);
+        console.log('adding new version', editingPromptLoadResultFunction.value?.callBack);
+
+        if (editingPromptLoadResultFunction?.value && editingPromptLoadResultFunction?.value?.callBack)
+            editingPromptLoadResultFunction.value?.callBack(response.response.id);
     }
 
     isSearchBarLoading.value = false;
@@ -184,23 +189,32 @@ const createPromptAsync = async (prompt: AnalysisPrompt) => {
 const updatePromptAsync = async (prompt: AnalysisPrompt) => {
     isSearchBarLoading.value = true;
 
-    prompt.organizationId = '60e6a4de-31e5-4f8b-8e6a-0a8f63f41527';
+    // prompt.organizationId = '60e6a4de-31e5-4f8b-8e6a-0a8f63f41527';
     const createPromptCommand = new CreatePromptCommand(prompt);
 
     const response = await
         insightBoxApiClient.prompts.updateAsync(createPromptCommand);
 
     if (response.response) {
-        prompts.value.push(response.response);
-        // await loadpromp
+        console.log('adding new revision', editingPromptLoadResultFunction.value?.callBack);
+
+        if (editingPromptLoadResultFunction?.value && editingPromptLoadResultFunction?.value?.callBack) {
+            console.log('adding prompt result')
+            editingPromptLoadResultFunction.value?.callBack(response.response.id);
+        }
     }
 
     isSearchBarLoading.value = false;
 };
 
-const openPromptModal = async (promptId: string | null, promptCategoryId: string | null) => {
-
+const openPromptModal = async (
+    promptId: string | null,
+    promptCategoryId: string | null,
+    loadPromptResultCallback: AsyncFunction<string>
+) => {
     if (promptId) {
+        editingPromptLoadResultFunction.value = loadPromptResultCallback;
+        console.log('assigned func', editingPromptLoadResultFunction.value)
         const response = await insightBoxApiClient.prompts.getByIdAsync(promptId!);
 
         if (response.isSuccess) {
@@ -209,6 +223,8 @@ const openPromptModal = async (promptId: string | null, promptCategoryId: string
             promptModalActive.value = true;
         }
     } else {
+        editingPromptLoadResultFunction.value = loadPromptResultCallback;
+        console.log('assigned func', editingPromptLoadResultFunction.value);
         editingPrompt.value = new AnalysisPrompt();
         editingPrompt.value.categoryId = promptCategoryId!;
         isCreate.value = true;

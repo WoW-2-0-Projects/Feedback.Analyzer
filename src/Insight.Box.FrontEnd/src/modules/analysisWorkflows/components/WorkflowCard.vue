@@ -54,9 +54,6 @@ const props = defineProps({
 });
 
 const onTriggerWorkflow = async () => {
-    console.log('test');
-
-    // const executeSinglePromptCommand = new ExecuteSinglePromptCommand();
     const response = await insightBoxApiClient.workflows
         .executeWorkflowAsync(props.workflow?.id);
 }

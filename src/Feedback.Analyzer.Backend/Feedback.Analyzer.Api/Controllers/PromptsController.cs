@@ -1,5 +1,6 @@
 using Feedback.Analyzer.Application.Common.PromptCategories.Commands;
 using Feedback.Analyzer.Application.Common.PromptCategories.Queries;
+using Feedback.Analyzer.Application.Common.PromptResults.Queries;
 using Feedback.Analyzer.Application.Common.Prompts.Commands;
 using Feedback.Analyzer.Application.Common.Prompts.Events;
 using Feedback.Analyzer.Application.Common.Prompts.Models;
@@ -93,8 +94,8 @@ public class PromptsController(IMediator mediator) : ControllerBase
 
     #region Prompt Results
 
-    [HttpGet("results/{categoryId:guid}")]
-    public async ValueTask<IActionResult> GetPromptResultById([FromRoute] Guid categoryId, CancellationToken cancellationToken = default)
+    [HttpGet("categories/{categoryId:guid}/results")]
+    public async ValueTask<IActionResult> GetPromptResultsByCategoryId([FromRoute] Guid categoryId, CancellationToken cancellationToken = default)
     {
         var result = await mediator.Send(
             new PromptResultGetByCategoryIdQuery
@@ -104,6 +105,19 @@ public class PromptsController(IMediator mediator) : ControllerBase
             cancellationToken
         );
         return result.Any() ? Ok(result) : NoContent();
+    }
+    
+    [HttpGet("{promptId:guid}/results")]
+    public async ValueTask<IActionResult> GetPromptResultByPromptId([FromRoute] Guid promptId, CancellationToken cancellationToken = default)
+    {
+        var result = await mediator.Send(
+            new PromptResultGetByPromptIdQuery
+            {
+                PromptId = promptId
+            },
+            cancellationToken
+        );
+        return result is not null ? Ok(result) : NotFound();
     }
     
     [HttpPut("categories/{categoryId:guid}/selected/{promptId:guid}")]
