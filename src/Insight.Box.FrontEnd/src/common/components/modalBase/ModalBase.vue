@@ -4,7 +4,7 @@
 
         <!-- Modal background -->
         <div v-show="isActiveInternal" :class="isActive ? 'transition duration-1000 modal-bg-overlay-blur' : '' "
-             @click="emit('closeModal')">
+             @click="emit('closeModal')" class="h-full w-full">
 
             <!-- Modal container -->
             <div :class="isActive ? 'absolute-y-center' : 'opacity-0' "
@@ -35,9 +35,12 @@
 
 <script setup lang="ts">
 
-import CloseButton from "@/common/components/buttons/CloseButton.vue";
 import {ref, watch} from "vue";
 import {TimerService} from "@/infrastructure/services/timer/TimerService";
+import {DocumentService} from "@/infrastructure/services/document/DocumentService";
+import CloseButton from "@/common/components/buttons/CloseButton.vue";
+
+const documentService = new DocumentService();
 
 const props = defineProps({
     isActive: {
@@ -52,9 +55,11 @@ const timer = ref<number | null>(null);
 
 watch(() => props.isActive, (isActive) => {
     if (isActive) {
+        documentService.handleBodyOverflow(isActive);
         timer.value = timerService.clearTimer(timer.value);
         timer.value = timerService.setTimer(() => isActiveInternal.value = true, 0);
     } else {
+        documentService.handleBodyOverflow(isActive);
         timer.value = timerService.clearTimer(timer.value);
         timer.value = timerService.setTimer(() => isActiveInternal.value = false, 200);
     }

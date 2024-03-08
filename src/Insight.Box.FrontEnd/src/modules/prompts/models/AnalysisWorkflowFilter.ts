@@ -4,7 +4,7 @@
 import {FilterPagination} from "@/common/FilterPagination";
 import {WorkflowType} from "@/modules/prompts/models/WorkflowType";
 
-export class FeedbackAnalysisWorkflowFilter extends  FilterPagination {
+export class AnalysisWorkflowFilter extends  FilterPagination {
 
     /*
      * Search keyword

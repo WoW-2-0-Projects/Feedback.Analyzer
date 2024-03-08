@@ -19,7 +19,7 @@
 }
 
 .modal-bg-overlay-blur {
-  @apply absolute z-30 bg-opacity-30 bg-black top-0 left-0 h-screen w-screen backdrop-filter backdrop-blur-lg;
+  @apply fixed inset-0 z-30 bg-opacity-30 bg-black top-0 left-0 h-screen w-screen backdrop-filter backdrop-blur-lg;
 }
 
 .modal-content-padding {

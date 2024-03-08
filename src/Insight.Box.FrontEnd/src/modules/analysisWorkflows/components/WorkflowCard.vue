@@ -14,7 +14,6 @@
 
             <app-button :type="ButtonType.Success" :layout="ButtonLayout.Rectangle" icon="fas fa-play"
                         text="Trigger"
-                        :disabled="!workflow.allPromptsSet"
                         :size="ActionComponentSize.Small" @click="onTriggerWorkflow"/>
 
         </div>
@@ -55,12 +54,11 @@ const props = defineProps({
 });
 
 const onTriggerWorkflow = async () => {
-    if (!selectedWorkflow.value?.value?.id || !props.promptCategory?.selectedPromptId)
-        return;
+    console.log('test');
 
     // const executeSinglePromptCommand = new ExecuteSinglePromptCommand();
     const response = await insightBoxApiClient.workflows
-        .executeSinglePrompt(selectedWorkflow.value?.value?.id!, props.promptCategory?.selectedPromptId!);
+        .executeWorkflowAsync(props.workflow?.id);
 }
 
 </script>

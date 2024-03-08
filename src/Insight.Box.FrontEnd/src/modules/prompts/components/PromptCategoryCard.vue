@@ -201,7 +201,7 @@ const onTriggerWorkflow = async () => {
 
     // const executeSinglePromptCommand = new ExecuteSinglePromptCommand();
     const response = await insightBoxApiClient.workflows
-        .executeSinglePrompt(selectedWorkflow.value?.value?.id!, props.promptCategory?.selectedPromptId!);
+        .executeSinglePromptAsync(selectedWorkflow.value?.value?.id!, props.promptCategory?.selectedPromptId!);
 }
 
 
