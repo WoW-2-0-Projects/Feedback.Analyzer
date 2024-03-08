@@ -1,10 +1,7 @@
-using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Persistence.DataContexts;
-using Force.DeepCloner;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.WebEncoders.Testing;
 
 namespace Feedback.Analyzer.Api.Data;
 
@@ -322,34 +319,27 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("42204C3B-0E3E-4360-9059-94A011C29608"),
                 CategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                 Prompt = """
-                         ## Instructions"
-
-                         Analyze user feedback and provide a relevance with the service in true or false format
-
-                         Conditions :
-                         1. feedback must include at least 1 sentence about the service
-                         2. even feedbacks that have non-related content counts if the rule 1 is satisfied
-                         
-                         ## Examples
-                         
-                         Product Description : Lenovo Yoga Laptop
-                         Customer Feedback : I like Lenovo laptops, they are so much durable
-                         Result : true
-                         
-                         Product Description : Lenovo Yoga Laptop
-                         Customer Feedback : I like gaming laptops, wanna buy nest month
-                         Result : false
-
-                         ## Product Description:
-                         
+                         ### Product Description
                          {{$productDescription}}
                          
-                         ## Customer feedback :
-                         
+                         ### Customer Feedback
                          {{$customerFeedback}}
                          
-                         ## Result
-                         The result format has to be either "true" or "false".
+                         ### Instructions
+                         Decide if the given Customer Feedback (delimited by ###) is relevant or irrelevant to the given Product Description (delimited by ###).
+                         Relevant - "true"
+                         irrelevant - "false"
+                         
+                         Conditions:
+                         1. Even the slightest mention of the product, its features, name or service in the Customer Feedback is counted as relevant.
+                         2. Questions about product, its name and features, or service is also considered as relevant.
+                         3. Any word or expression that is used to imply the product, its name or features, or service is considered as relevant.
+                         4. Any word or expression indicating an issue with the product or service, its functionality.
+                         
+                         The return format has to be in json: 
+                         {
+                             "IsRelevant": ...
+                         }
 
                          """,
                 Version = 1,
