@@ -37,6 +37,9 @@ public static class SeedDataExtensions
         if (!await appDbContext.Prompts.AnyAsync())
             await SeedAnalysisPromptAsync(appDbContext);
 
+        if (!await appDbContext.AnalysisWorkflows.AnyAsync())
+            await SeedDataAnalysisWorkflowAsync(appDbContext);
+        
         if (appDbContext.ChangeTracker.HasChanges())
             await appDbContext.SaveChangesAsync();
     }
@@ -185,6 +188,26 @@ public static class SeedDataExtensions
         await appDbContext.Feedbacks.AddRangeAsync(customersFeedbacks);
     }
 
+    private static async ValueTask SeedDataAnalysisWorkflowAsync(AppDbContext appDbContext)
+    {
+        var analysisWorkflow = new List<AnalysisWorkflow>
+        {
+            new ()
+            {
+                Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
+                Name = "TemplateWorkflow",
+                Type = WorkflowType.Template
+            },
+            new ()
+            {
+                Id = Guid.Parse("5912074a-11f4-4049-aea9-966dcb809bf2"),
+                Name = "TrainingWorkflow",
+                Type = WorkflowType.Template
+            }
+        };
+
+        await appDbContext.AnalysisWorkflows.AddRangeAsync(analysisWorkflow);
+    }
      /// <summary>
     /// Seeds prompt categories
     /// </summary>

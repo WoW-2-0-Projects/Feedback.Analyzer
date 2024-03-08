@@ -3,6 +3,7 @@ using System;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240306163646_Add AnalysisWorkflow")]
+    partial class AddAnalysisWorkflow
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,21 +209,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.ToTable("Feedbacks");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("FeedbackAnalysisWorkflows");
-                });
-
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>
                 {
                     b.Property<Guid>("Id")
@@ -352,25 +340,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
-                {
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisWorkflow", "AnalysisWorkflow")
-                        .WithOne()
-                        .HasForeignKey("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.Product", "Product")
-                        .WithMany("Workflows")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AnalysisWorkflow");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.Client", "Client")
@@ -427,8 +396,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Product", b =>
                 {
                     b.Navigation("CustomerFeedbacks");
-
-                    b.Navigation("Workflows");
                 });
 #pragma warning restore 612, 618
         }
