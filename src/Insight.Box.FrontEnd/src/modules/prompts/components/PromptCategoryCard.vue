@@ -25,17 +25,15 @@
                 <h5 class="text-center">Training workflows</h5>
 
                 <div class="flex gap-10 mt-5">
-                    <form-drop-down label="Filter by" v-model="selectedWorkflow" :values="workflowDropDownValues"
+                    <form-drop-down label="Filter by" v-model="selectedTrainingWorkflow" :values="trainingWorkflowOptions"
                                     :size="ActionComponentSize.Small"/>
 
-                    <app-button :type="ButtonType.Success" :layout="ButtonLayout.Rectangle" icon="fas fa-play"
-                                :text="LayoutConstants.Trigger"
-                                :disabled="selectedWorkflow === null || promptCategory.selectedPromptId === null"
+                    <app-button :type="ButtonType.Success" :layout="ButtonLayout.Rectangle" icon="fas fa-vial-virus"
+                                :disabled="selectedTrainingWorkflow === null || promptCategory.selectedPromptId === null"
                                 :size="ActionComponentSize.Small" @click="onTriggerWorkflow"/>
                 </div>
 
             </div>
-
 
         </div>
 
@@ -91,9 +89,11 @@ import type {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecu
 import {DateTimeFormatterService} from "@/infrastructure/services/dateTime/DateTimeFormatterService";
 import PromptExecutionHistoryModal from "@/modules/prompts/components/PromptExecutionHistoryModal.vue";
 import {AsyncFunction} from "@/infrastructure/models/delegates/Function";
+import {CategoryTrainingDataService} from "@/modules/prompts/services/CategoryTrainingDataService";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 const dateTimeFormatterService = new DateTimeFormatterService();
+const categoryTrainingDataService = new CategoryTrainingDataService();
 
 const promptExecutionResults = ref<Array<PromptExecutionResult>>([]);
 const promptExecutionHistories = ref<Array<PromptsExecutionHistory>>([]);
@@ -110,12 +110,8 @@ const props = defineProps({
 });
 
 const promptResultLoadFunction = ref<AsyncFunction>();
-const selectedWorkflow = ref<DropDownValue<string, FeedbackAnalysisWorkflow> | null>(null);
-const workflowDropDownValues = ref<Array<DropDownValue<string, FeedbackAnalysisWorkflow>>>();
-
-const test = () => {
-
-}
+const selectedTrainingWorkflow = ref<DropDownValue<string, FeedbackAnalysisWorkflow> | null>(null);
+const trainingWorkflowOptions = ref<Array<DropDownValue<string, FeedbackAnalysisWorkflow>>>();
 
 watch(() => props.workflows, async () => {
     loadWorkflowOptions();
@@ -147,8 +143,8 @@ const promptHistoriesTableData = ref<TableData>(new TableData([
 
 onBeforeMount(async () => {
     promptResultLoadFunction.value = new AsyncFunction<string>(loadPromptResultAsync);
-    // props.loadPromptResult?.setCallback(loadPromptResultAsync);
     loadWorkflowOptions();
+    setSelectedTrainingWorkflow();
     await loadAllPromptResultsAsync();
     await loadPromptExecutionHistoryAsync();
 });
@@ -220,17 +216,16 @@ const convertHistoryToTableRowData = (history: PromptsExecutionHistory) => {
 };
 
 const onTriggerWorkflow = async () => {
-    if (!selectedWorkflow.value?.value?.id || !props.promptCategory?.selectedPromptId)
+    if (!selectedTrainingWorkflow.value?.value?.id || !props.promptCategory?.selectedPromptId)
         return;
 
     // const executeSinglePromptCommand = new ExecuteSinglePromptCommand();
     const response = await insightBoxApiClient.workflows
-        .executeSinglePromptAsync(selectedWorkflow.value?.value?.id!, props.promptCategory?.selectedPromptId!);
+        .executeSinglePromptAsync(selectedTrainingWorkflow.value?.value?.id!, props.promptCategory?.selectedPromptId!);
 }
 
-
 const loadWorkflowOptions = () => {
-    workflowDropDownValues.value = props.workflows?.map(workflow => {
+    trainingWorkflowOptions.value = props.workflows?.map(workflow => {
         return new DropDownValue(workflow.name, workflow);
     });
 };
@@ -243,5 +238,38 @@ const onPromptVersionSelected = async (promptId: string) => {
         emit('loadCategory', props.promptCategory?.id);
     }
 };
+
+watch(() => selectedTrainingWorkflow.value, () => {
+    // if (selectedTrainingWorkflow.value) {
+    //     categoryTrainingDataService.setTrainingData(props.promptCategory?.id, selectedTrainingWorkflow.value.value.id);
+    // }
+});
+
+const setSelectedTrainingWorkflow = () => {
+    // const setTrainingWorkflow = categoryTrainingDataService.getTrainingData(props.promptCategory?.id);
+    // console.log('test', setTrainingWorkflow);
+    //
+    // if(setTrainingWorkflow) {
+    //
+    //     // Find that selected one from workflow from database
+    //     const test = props.workflows?.findIndex(workflow => workflow.id === setTrainingWorkflow.workflowId);
+    //
+    //     const foundWorkflow = props.workflows?.find(workflow => workflow.id === setTrainingWorkflow.workflowId);
+    //
+    //     console.log('workflow was set', setTrainingWorkflow);
+    //     console.log('workflow was set', test);
+    //     console.log('workflow was set', props.workflows);
+    //     console.log('workflow was set', props.workflows[0]);
+    //
+    //     // If that workflow still exists, put that to drop down value
+    //     if(foundWorkflow) {
+    //         selectedTrainingWorkflow.value = new DropDownValue(foundWorkflow.name, foundWorkflow);
+    //     // If not, remove from storage
+    //     } else {
+    //         categoryTrainingDataService.removeTrainingData(props.promptCategory?.id);
+    //     }
+    // }
+
+}
 
 </script>

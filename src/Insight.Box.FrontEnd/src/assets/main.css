@@ -25,6 +25,10 @@ body {
 
 /* Theme styles */
 
+.theme-bg {
+  @apply bg-secondaryColor;
+}
+
 .theme-gradient-bg {
   @apply bg-gradient-to-br from-30% from-secondaryColor to-primaryColor;
 }

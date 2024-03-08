@@ -74,12 +74,6 @@ const props = defineProps({
     },
 });
 
-// console.log('value', props.isCreate);
-
-// watch(() => props.isCreate, (newValue) => {
-//     console.log('value', newValue);
-// });
-
 const textAreaFocusAction = ref<Action>();
 
 const emit = defineEmits<{
@@ -93,13 +87,7 @@ watch(() => props.isActive, () => {
     }
 });
 
-// const currentValue = ref<AnalysisPrompt>(props.prompt ?? new AnalysisPrompt());
-
 const onCloseModal = () => {
-    // Reset values
-    // if(props.isCreate)
-    //     currentValue.value = new AnalysisPrompt();
-
     emit('closeModal');
 }
 
@@ -107,9 +95,5 @@ const onSubmit = async () => {
     emit('submit', props.prompt);
     emit('closeModal');
 }
-
-// watch(() => props.prompt, (newValue) => {
-//     currentValue.value = newValue;
-// });
 
 </script>

@@ -65,7 +65,7 @@ const componentStyles = computed(() => {
 
     // Add button type styles
     if (props.disabled) {
-        styles += ' theme-action-disabled';
+        styles += ' theme-action-disabled cursor-not-allowed';
     } else
         switch (props.type) {
             case ButtonType.Primary:
