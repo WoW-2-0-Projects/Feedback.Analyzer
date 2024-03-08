@@ -12,9 +12,6 @@
                          class="grid w-full px-20 gap-x-5 gap-y-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 theme-bg-primary">
 
             <!-- Listing card -->
-
-
-
         </infinite-scroll>
 
         <!-- Workflows gallery -->
@@ -31,25 +28,24 @@ import {onBeforeMount, ref} from "vue";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
-import {NotificationSource} from "@/infrastructure/models/notifications/Action";
-import { InsightBoxApiClient } from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
+import {NotificationSource} from "@/infrastructure/models/delegates/Action";
+import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import {Query} from "@/infrastructure/models/query/Query";
 import WorkflowsSearchBar from "@/modules/analysisWorkflows/components/WorkflowsSearchBar.vue";
-import {FeedbackAnalysisWorkflowFilter} from "@/modules/prompts/models/FeedbackAnalysisWorkflowFilter";
+import {AnalysisWorkflowFilter} from "@/modules/prompts/models/AnalysisWorkflowFilter";
 import type {Organization} from "@/modules/organizations/models/Organization";
 import WorkflowCard from "@/modules/analysisWorkflows/components/WorkflowCard.vue";
-import {ButtonType} from "@/common/components/appButton/ButtonType";
-import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
-import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
-import AppButton from "@/common/components/appButton/AppButton.vue";
+import {WorkflowType} from "@/modules/prompts/models/WorkflowType";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 const documentService = new DocumentService();
 const workflows = ref<Array<Organization>>([]);
-const workflowsQuery = ref<Query>(new Query(new FeedbackAnalysisWorkflowFilter()));
+const workflowsQuery = ref<Query<AnalysisWorkflowFilter>>(new Query<AnalysisWorkflowFilter>(new
+AnalysisWorkflowFilter()));
 
 onBeforeMount(async () => {
     // Set page title
+    workflowsQuery.value.filter.type = WorkflowType.Training;
     documentService.setTitle(LayoutConstants.Workflows);
     await loadWorkflowsAsync();
 });

@@ -39,8 +39,13 @@ export class PromptsEndpointsClient {
         return await this.client.getAsync<Array<AnalysisPromptCategory>>(endpointUrl);
     }
 
-    public async getPromptExecutionResults(categoryId: string) {
-        const endpointUrl = `api/prompts/results/${categoryId}`;
+    public async getPromptResultsByCategoryIdAsync(categoryId: string) {
+        const endpointUrl = `api/prompts/categories/${categoryId}/results/`;
+        return await this.client.getAsync<Array<PromptExecutionResult>>(endpointUrl);
+    }
+
+    public async getPromptResultsByPromptIdAsync(promptId: string) {
+        const endpointUrl = `api/prompts/${promptId}/results`;
         return await this.client.getAsync<Array<PromptExecutionResult>>(endpointUrl);
     }
 

@@ -113,5 +113,4 @@ export class DocumentService {
         const threshold = document.body.scrollHeight - (minimumSpace || 0);
         return scrollPosition >= threshold;
     }
-
 }

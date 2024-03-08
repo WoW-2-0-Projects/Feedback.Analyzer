@@ -3,14 +3,21 @@
  */
 export class Action {
 
-    constructor(callback: () => void) {
-        this.callBack = callback;
-    }
-
     /*
      * Action callback
      */
-    public callBack: () => void;
+    public callback: () => void;
+
+    constructor(callback: () => void) {
+        this.callback = callback;
+    }
+
+    /*
+     * Sets callback
+     */
+    public setCallback(callback: (args: TArgs) => void) {
+        this.callback = callback;
+    }
 }
 
 /*
@@ -26,7 +33,7 @@ export class NotificationSource {
     public updateListeners = () => {
         this.listeners.forEach((listener: Action) => {
 
-            listener.callBack();
+            listener.callback();
         });
     }
 

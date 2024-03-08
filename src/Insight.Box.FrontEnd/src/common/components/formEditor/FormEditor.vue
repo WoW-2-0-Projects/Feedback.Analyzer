@@ -9,11 +9,11 @@
             <form-input :type="FormInputType.Text" :modelValue="searchKeyword"
                         :size="ActionComponentSize.ExtraSmall"
                         class="flex-grow"
-                        @update:modelValue="($event) => $emit('update:modelValue', $event)"
+                        @update:modelValue="() => $emit('update:modelValue', $event)"
                         :label="LayoutConstants.Search" :placeholder="LayoutConstants.SearchHere"/>
 
-            <app-button class="w-fit" :type="ButtonType.Secondary" :layout="ButtonLayout.Square"
-                        :icon="isEditingDisabled ? 'fas fa-lock' : 'fas fa-lock-open'"
+            <app-button class="w-fit" :type="isEditingDisabled ? ButtonType.Secondary : ButtonType.Danger"
+                        :layout="ButtonLayout.Square" :icon="isEditingDisabled ? 'fas fa-lock' : 'fas fa-lock-open'"
                         @click="isEditingDisabled = !isEditingDisabled"
                         :size="ActionComponentSize.ExtraSmall"/>
 
@@ -45,26 +45,19 @@
 
 <script setup lang="ts">
 
-
+import {defineEmits, defineProps, type PropType, ref, watch} from "vue";
+import AppButton from "@/common/components/appButton/AppButton.vue";
+import FormInput from "@/common/components/formInput/FormInput.vue";
 import FormTextArea from "@/common/components/formTextArea/FormTextArea.vue";
-import {defineEmits, defineProps, nextTick, onBeforeMount, onMounted, type PropType, ref} from "vue";
 import {ButtonType} from "@/common/components/appButton/ButtonType";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
-import AppButton from "@/common/components/appButton/AppButton.vue";
-import {TextContentSnapshotQueue} from "@/infrastructure/models/textContent/TextContentSnapshotQueue";
 import {FormInputType} from "@/common/components/formInput/FormInputType";
-import FormInput from "@/common/components/formInput/FormInput.vue";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
-import {DocumentService} from "@/infrastructure/services/document/DocumentService";
-import {TimerService} from "@/infrastructure/services/timer/TimerService";
-import type {Action} from "@/infrastructure/models/notifications/Action";
+import {TextContentSnapshotQueue} from "@/infrastructure/models/textContent/TextContentSnapshotQueue";
+import type {Action} from "@/infrastructure/models/delegates/Action";
 
-const timerService = new TimerService();
-const searchKeyword = ref<string>('');
 const textSnapshotService = ref<TextContentSnapshotQueue>(new TextContentSnapshotQueue());
-const isEditingDisabled = ref<boolean>(false);
-const timerId = ref<number>();
 
 const props = defineProps({
     modelValue: {
@@ -89,15 +82,19 @@ const props = defineProps({
     },
     focus: {
         type: Object as PropType<Action>,
+    },
+    props: {
+        type: Boolean,
+        default: false
+    },
+    editingDisabled: {
+        type: Boolean,
+        default: false
     }
 });
 
-onBeforeMount(() => {
-    // setTimeout(() => setDefaultValue(), 1000);
-
-    // if (!props.modelValue || props.modelValue === '')
-    //     timerId.value = timerService.setTimer(() => setDefaultValue(), 1000);
-});
+const isEditingDisabled = ref<boolean>(props.editingDisabled);
+const searchKeyword = ref<string>('');
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -119,9 +116,10 @@ const onRedo = () => {
 }
 
 const setDefaultValue = () => {
-    console.log('setting default value');
-
-    emit('update:modelValue', props.defaultValue);
+    if (!props.modelValue || props.modelValue === '')
+        emit('update:modelValue', props.defaultValue);
 }
+
+watch(() => props.editingDisabled, () => isEditingDisabled.value = props.editingDisabled);
 
 </script>

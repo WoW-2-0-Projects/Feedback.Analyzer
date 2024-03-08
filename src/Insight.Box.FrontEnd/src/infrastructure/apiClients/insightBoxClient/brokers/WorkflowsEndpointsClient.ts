@@ -1,7 +1,7 @@
 import type ApiClientBase from "@/infrastructure/apiClients/apiClientBase/ApiClientBase";
 import type {Query} from "@/infrastructure/models/query/Query";
 import type {RequestFormatterService} from "@/infrastructure/apiClients/formatters/RequestFormatterService";
-import type {FeedbackAnalysisWorkflowFilter} from "@/modules/prompts/models/FeedbackAnalysisWorkflowFilter";
+import type {AnalysisWorkflowFilter} from "@/modules/prompts/models/AnalysisWorkflowFilter";
 import type {FeedbackAnalysisWorkflow} from "@/modules/prompts/models/FeedbackAnalysisWorkflow";
 
 export class WorkflowsEndpointsClient {
@@ -13,13 +13,18 @@ export class WorkflowsEndpointsClient {
         this.requestFormatterService = requestFormatterService;
     }
 
-    public async getAsync(query: Query<FeedbackAnalysisWorkflowFilter>) {
+    public async getAsync(query: Query<AnalysisWorkflowFilter>) {
         const endpointUrl = this.requestFormatterService.addQueryParams('api/workflows', query);
         return await this.client.getAsync<Array<FeedbackAnalysisWorkflow>>(endpointUrl);
     }
 
-    public async executeSinglePrompt(workflowId: string, promptId: string) {
+    public async executeSinglePromptAsync(workflowId: string, promptId: string) {
         const endpointUrl = `api/workflows/${workflowId}/execute/${promptId}`;
+        return await this.client.postAsync(endpointUrl);
+    }
+
+    public async executeWorkflowAsync(workflowId: string) {
+        const endpointUrl = `api/workflows/${workflowId}/execute`;
         return await this.client.postAsync(endpointUrl);
     }
 

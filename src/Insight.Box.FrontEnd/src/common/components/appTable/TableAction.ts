@@ -1,4 +1,4 @@
-import type {Action} from "@/infrastructure/models/notifications/Action";
+import type {Action} from "@/infrastructure/models/delegates/Action";
 import type {ButtonType} from "@/common/components/appButton/ButtonType";
 
 export class TableAction {
