@@ -7,7 +7,7 @@
                 {{
                     isCreate
                         ? LayoutConstants.CreatePrompt :
-                        LayoutConstants.EditPrompt
+                        `${LayoutConstants.EditPrompt} - ${prompt.version}.${prompt.revision}`
                 }}
             </h1>
         </template>
@@ -22,6 +22,7 @@
 
                     <form-editor :focus="textAreaFocusAction" v-model="prompt.prompt" :label="LayoutConstants.Prompt"
                         :placeholder="LayoutConstants.EnterPrompt" :defaultValue="LayoutConstants.Summarize"
+                        :editingDisabled="!isCreate"
                     />
 
                     <!-- Modal inputs -->
@@ -56,6 +57,7 @@ import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 import FormEditor from "@/common/components/formEditor/FormEditor.vue";
 import type {Action} from "@/infrastructure/models/delegates/Action";
+import {isCancel} from "axios";
 
 const props = defineProps({
     prompt: {
@@ -70,8 +72,13 @@ const props = defineProps({
         type: Boolean,
         default: true
     },
-
 });
+
+// console.log('value', props.isCreate);
+
+// watch(() => props.isCreate, (newValue) => {
+//     console.log('value', newValue);
+// });
 
 const textAreaFocusAction = ref<Action>();
 

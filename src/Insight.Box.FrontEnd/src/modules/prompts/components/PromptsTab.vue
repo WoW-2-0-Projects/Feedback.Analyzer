@@ -61,6 +61,7 @@ import {FeedbackAnalysisWorkflow} from "@/modules/prompts/models/FeedbackAnalysi
 import PromptExecutionHistoryModal from "@/modules/prompts/components/PromptExecutionHistoryModal.vue";
 import type {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecutionHistory";
 import {AsyncFunction} from "@/infrastructure/models/delegates/Function";
+import {isCancel} from "axios";
 
 // Services
 const insightBoxApiClient = new InsightBoxApiClient();
@@ -220,6 +221,8 @@ const openPromptModal = async (
         if (response.isSuccess) {
             editingPrompt.value = response.response!;
             isCreate.value = false;
+            console.log('iscreate', isCreate.value);
+
             promptModalActive.value = true;
         }
     } else {
