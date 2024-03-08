@@ -8,18 +8,15 @@ public class AnalysisWorkflowConfiguration : IEntityTypeConfiguration<AnalysisWo
 {
     public void Configure(EntityTypeBuilder<AnalysisWorkflow> builder)
     {
-        builder.Property(analysisWorkflow => analysisWorkflow.Name)
+        builder
+            .Property(analysisWorkflow => analysisWorkflow.Name)
             .HasMaxLength(128)
-        
             .IsRequired();
-        builder.Property(analysisWorkflow => analysisWorkflow.Type)
+        
+        builder
+            .Property(analysisWorkflow => analysisWorkflow.Type)
             .HasConversion<string>()
             .HasMaxLength(128)
             .IsRequired();
-
-        builder
-            .HasOne(analysisWorkflow => analysisWorkflow.FeedbackAnalysisWorkflow)
-            .WithOne(feedbackAnalysisWorkflow => feedbackAnalysisWorkflow.AnalysisWorkflow)
-            .HasForeignKey<FeedbackAnalysisWorkflow>(feedbackAnalysisWorkflow => feedbackAnalysisWorkflow.Id);
     }
 }

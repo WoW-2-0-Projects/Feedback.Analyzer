@@ -11,20 +11,15 @@ public class FeedbackAnalysisWorkflowConfiguration : IEntityTypeConfiguration<Fe
 {
     public void Configure(EntityTypeBuilder<FeedbackAnalysisWorkflow> builder)
     {
-        builder.Property(workflow => workflow.Name).HasMaxLength(128).IsRequired();
+        builder
+            .HasOne(feedbackAnalysisWorkflow => feedbackAnalysisWorkflow.AnalysisWorkflow)
+            .WithOne()
+            .HasForeignKey<FeedbackAnalysisWorkflow>(feedbackAnalysisWorkflow => feedbackAnalysisWorkflow.Id);
         
-        builder.Property(analysisWorkflow => analysisWorkflow.Type)
-            .HasConversion<string>()
-            .HasMaxLength(128)
-            .IsRequired();
         
-        builder.HasIndex(
+        //TODO : Add name and product Id unique index between this and AnalysisWorkflow table
+        
             workflow => new
-            {
-                workflow.Name,
-                workflow.ProductId
-            }
-        ).IsUnique();
        
         builder
             .HasOne(workflow => workflow.Product)

@@ -17,6 +17,4 @@ public class AnalysisWorkflow : AuditableEntity
     /// Gets or sets the type of the analysis workflow.
     /// </summary>
     public WorkflowType Type { get; set; }
-
-    public FeedbackAnalysisWorkflow FeedbackAnalysisWorkflow = default!;
 }
