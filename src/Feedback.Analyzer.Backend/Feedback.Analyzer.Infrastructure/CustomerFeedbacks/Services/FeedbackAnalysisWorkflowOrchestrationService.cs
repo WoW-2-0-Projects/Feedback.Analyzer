@@ -21,22 +21,24 @@ public class FeedbackAnalysisWorkflowOrchestrationService(
 {
     public async ValueTask ExecuteWorkflowAsync(Guid workflowId, CancellationToken cancellationToken = default)
     {
+        var queryOptions = new QueryOptions
+        {
+            AsNoTracking = true
+        };
+
+        // Load analysis workflow
         var analysisWorkflow = await feedbackAnalysisWorkflowRepository
                                    .Get(
                                        workflow => workflow.Id == workflowId,
-                                       new QueryOptions
-                                       {
-                                           AsNoTracking = true
-                                       }
+                                       queryOptions
                                    )
-                                   // .Include(workflow => workflow.StartingExecutionOption)
-                                   // .ThenInclude(options => options.AnalysisPromptCategory)
                                    .Include(workflow => workflow.Product)
                                    .ThenInclude(workflow => workflow.CustomerFeedbacks)
                                    .AsSplitQuery()
                                    .FirstOrDefaultAsync(cancellationToken) ??
                                throw new InvalidOperationException($"Could not execute prompt, workflow with id {workflowId} not found.");
 
+        // Load workflow execution options
         analysisWorkflow.StartingExecutionOption =
             await workflowExecutionOptionsService.GetByIdForExecutionAsync(analysisWorkflow.StartingExecutionOptionId, cancellationToken) ??
             throw new InvalidOperationException(

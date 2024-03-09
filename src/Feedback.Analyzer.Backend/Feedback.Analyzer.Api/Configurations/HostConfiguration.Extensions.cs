@@ -201,7 +201,7 @@ public static partial class HostConfiguration
         
         // Register orchestration services
         builder.Services
-            .AddScoped<IAnalysisWorkflowOrchestrationService, AnalysisWorkflowOrchestrationService>()
+            // .AddScoped<IAnalysisWorkflowOrchestrationService, AnalysisWorkflowOrchestrationService>()
             .AddScoped<IWorkflowExecutionService, WorkflowExecutionService>();
 
         return builder;

@@ -20,7 +20,8 @@ public class WorkflowExecutionService(
         CancellationToken cancellationToken = default
     )
     {
-        await ExecutePrompt(executionContext, headPromptOption);
+        throw new NotImplementedException();
+        // await ExecutePrompt(executionContext, headPromptOption);
     }
 
     private async ValueTask ExecutePrompt(PromptExecutionContext executionContext, WorkflowExecutionOptions executionOptions)
@@ -76,6 +77,11 @@ public class WorkflowExecutionService(
         {
             await ExecutePrompt(executionContext, prompt);
         }
+    }
+
+    public ValueTask ExecuteAsync(WorkflowExecutionOptions headPromptOption, CustomerFeedback feedback, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
     }
 }
 
