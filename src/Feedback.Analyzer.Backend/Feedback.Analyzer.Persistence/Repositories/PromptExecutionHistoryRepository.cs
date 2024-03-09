@@ -18,12 +18,16 @@ public class PromptExecutionHistoryRepository(AppDbContext dbContext) :
 
     public new async ValueTask<PromptExecutionHistory> CreateAsync(PromptExecutionHistory history, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
     {
+        var prompt = history.Prompt;
+        history.Prompt = null;
+        
         // DbContext.Entry(history.Prompt).State = EntityState.Detached;
         
         var createdEvent = await base.CreateAsync(history, commandOptions, cancellationToken);
         
         // DbContext.Entry(history.Prompt).State = EntityState.Unchanged;
-
+        history.Prompt = prompt;
+        
         return createdEvent;
     }
 }
