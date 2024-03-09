@@ -12,12 +12,12 @@ public record WorkflowContext
     /// Workflow analysis Id
     /// </summary>
     public Guid WorkflowId { get; init; }
-    
+
     /// <summary>
     /// Gets 
     /// </summary>
     public WorkflowExecutionOption EntryExecutionOption { get; set; } = default!;
-    
+
     /// <summary>
     /// Gets or sets execution arguments
     /// </summary>
@@ -28,11 +28,16 @@ public record WorkflowContext
     /// </summary>
     public IList<IGrouping<Guid, PromptExecutionHistory>> Histories { get; init; } =
         Enumerable.Empty<PromptExecutionHistory>().GroupBy(x => x.Id).ToList();
-    
+
     /// <summary>
     /// Gets or sets indicator that shows the workflow status
     /// </summary>
     public WorkflowStatus Status { get; set; }
+
+    /// <summary>
+    /// Gets or sets error message
+    /// </summary>
+    public string? ErrorMessage { get; set; } = null;
 
     /// <summary>
     /// Retrieves last history for given category Id

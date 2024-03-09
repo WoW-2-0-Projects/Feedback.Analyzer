@@ -9,6 +9,7 @@ using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
+using Feedback.Analyzer.Domain.Extensions;
 using Json.Schema;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
@@ -39,25 +40,26 @@ public class FeedbackAnalysisOrchestrationService(
         // Map execution histories to feedback analysis result
     }
 
-    private async ValueTask ExecuteOptionAsync(
-        WorkflowContext context,
-        WorkflowExecutionOption option,
-        CancellationToken cancellationToken = default
-    )
+    private async ValueTask ExecuteOptionAsync(WorkflowContext context, WorkflowExecutionOption option, CancellationToken cancellationToken = default)
     {
         // Execute option
-        await ExecutePromptAsync(context, option.AnalysisPromptCategory.SelectedPrompt!, cancellationToken);
+        var executePromptAction = () => ExecutePromptAsync(context, option.AnalysisPromptCategory.SelectedPrompt!, cancellationToken);
+        var promptResult = await executePromptAction.GetValueAsync();
+        if (!promptResult.IsSuccess)
+        {
+            context.Status = WorkflowStatus.Failed;
+            context.ErrorMessage =
+                $"Failed to execute prompt - {option.AnalysisPromptCategory.Category.GetDisplayName()}, Version - {option.AnalysisPromptCategory.SelectedPrompt!.Version}.{option.AnalysisPromptCategory.SelectedPrompt.Revision}, Reason - {promptResult.Exception!.Message}";
+        }
 
         // Execute child options
         if (option.ChildExecutionOptions is not null && option.ChildExecutionOptions.Count > 0)
-            await Task.WhenAll(option.ChildExecutionOptions.Select(childOption => ExecuteOptionAsync(context, childOption, cancellationToken).AsTask()));
+            await Task.WhenAll(
+                option.ChildExecutionOptions.Select(childOption => ExecuteOptionAsync(context, childOption, cancellationToken).AsTask())
+            );
     }
 
-    private async ValueTask ExecutePromptAsync(
-        WorkflowContext context,
-        AnalysisPrompt prompt,
-        CancellationToken cancellationToken = default
-    )
+    private async ValueTask ExecutePromptAsync(WorkflowContext context, AnalysisPrompt prompt, CancellationToken cancellationToken = default)
     {
         // Publish before prompt execution event
         await eventBusBroker.PublishLocalAsync(
