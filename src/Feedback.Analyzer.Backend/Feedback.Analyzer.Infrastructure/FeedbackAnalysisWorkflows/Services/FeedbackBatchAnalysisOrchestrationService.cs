@@ -2,7 +2,6 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Feedback.Analyzer.Application.Common.AnalysisWorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Application.Common.EventBus.Brokers;
-using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
@@ -12,20 +11,20 @@ using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
-namespace Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
+namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 
 /// <summary>
 /// Provides feedback analysis workflow orchestration functionality
 /// </summary>
-public class FeedbackBatchAnalysisWorkflowOrchestrationService(
+public class FeedbackBatchAnalysisOrchestrationService(
     IMapper mapper,
     IEventBusBroker eventBusBroker,
     IFeedbackAnalysisWorkflowService feedbackAnalysisWorkflowService,
     IWorkflowExecutionOptionsService workflowExecutionOptionsService,
     IFeedbackAnalysisWorkflowResultService feedbackAnalysisWorkflowResultService
-) : IFeedbackBatchAnalysisWorkflowOrchestrationService
+) : IFeedbackBatchAnalysisOrchestrationService
 {
-    public async ValueTask ExecuteWorkflowAsync(Guid workflowId, CancellationToken cancellationToken = default)
+    public async ValueTask RunWorkflowAsync(Guid workflowId, CancellationToken cancellationToken = default)
     {
         var queryOptions = new QueryOptions
         {

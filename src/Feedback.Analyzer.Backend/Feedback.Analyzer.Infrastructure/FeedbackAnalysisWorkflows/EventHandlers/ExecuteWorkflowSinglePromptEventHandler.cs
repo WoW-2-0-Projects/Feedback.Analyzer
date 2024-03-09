@@ -7,18 +7,21 @@ using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandlers;
 
-public class ExecuteWorkflowSinglePromptEventHandler(
-    IPromptCategoryService promptCategoryService,
-    IFeedbackAnalysisWorkflowService workflowService,
-    IPromptExecutionProcessingService promptExecutionProcessingService
-) : IEventHandler<ExecuteWorkflowSinglePromptEvent>
+public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory serviceScopeFactory) : IEventHandler<ExecuteWorkflowSinglePromptEvent>
 {
     public async Task Handle(ExecuteWorkflowSinglePromptEvent notification, CancellationToken cancellationToken)
     {
+        var scopedServiceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
+
+        var promptCategoryService = scopedServiceProvider.GetRequiredService<IPromptCategoryService>();
+        var workflowService = scopedServiceProvider.GetRequiredService<IFeedbackAnalysisWorkflowService>();
+        var promptExecutionProcessingService = scopedServiceProvider.GetRequiredService<IPromptExecutionProcessingService>();
+
         var workflow = await workflowService.Get(
                                workflow => workflow.Id == notification.WorkflowId,
                                new QueryOptions
@@ -41,8 +44,7 @@ public class ExecuteWorkflowSinglePromptEventHandler(
         var histories = await promptExecutionProcessingService.ExecuteAsync(notification.PromptId, arguments, cancellationToken: cancellationToken);
 
         var history = histories.First();
-        var category = await promptCategoryService
-            .Get(category => category.Id == history.Prompt.CategoryId)
+        var category = await promptCategoryService.Get(category => category.Id == history.Prompt.CategoryId)
             .FirstAsync(cancellationToken: cancellationToken);
 
 
@@ -96,6 +98,5 @@ public class ExecuteWorkflowSinglePromptEventHandler(
         {
             var test = JsonConvert.DeserializeObject<string[]>(history.Result!);
         }
-
     }
 }

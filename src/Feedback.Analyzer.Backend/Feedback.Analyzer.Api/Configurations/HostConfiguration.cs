@@ -13,6 +13,7 @@ public static partial class HostConfiguration
         builder
             .AddValidators()
             .AddMappers()
+            .AddEventBus()
             .AddPersistence()
             .AddSemanticKernelInfrastructure()
             .AddSemanticAnalysisInfrastructure()

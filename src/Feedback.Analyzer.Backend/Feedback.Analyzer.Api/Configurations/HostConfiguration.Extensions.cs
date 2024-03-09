@@ -4,6 +4,7 @@ using System.Text;
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.AnalysisWorkflowExecutionOptions.Services;
+using Feedback.Analyzer.Application.Common.EventBus.Brokers;
 using Feedback.Analyzer.Application.Common.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.PromptCategories.Services;
@@ -21,6 +22,7 @@ using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.AnalysisWorkflowExecutionOptions.Services;
+using Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.PromptCategories.Services;
@@ -79,6 +81,18 @@ public static partial class HostConfiguration
     private static WebApplicationBuilder AddMappers(this WebApplicationBuilder builder)
     {
         builder.Services.AddAutoMapper(Assemblies);
+        return builder;
+    }
+    
+    /// <summary>
+    /// Adds event bus
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddEventBus(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<IEventBusBroker, EventBusBroker>();
+
         return builder;
     }
 
@@ -246,7 +260,8 @@ public static partial class HostConfiguration
         
         // Register orchestration services
         builder.Services
-            .AddScoped<IFeedbackBatchAnalysisWorkflowOrchestrationService, FeedbackBatchAnalysisWorkflowOrchestrationService>();
+            .AddScoped<IFeedbackAnalysisOrchestrationService, FeedbackAnalysisOrchestrationService>()
+            .AddScoped<IFeedbackBatchAnalysisOrchestrationService, FeedbackBatchAnalysisOrchestrationService>();
 
         return builder;
     }
