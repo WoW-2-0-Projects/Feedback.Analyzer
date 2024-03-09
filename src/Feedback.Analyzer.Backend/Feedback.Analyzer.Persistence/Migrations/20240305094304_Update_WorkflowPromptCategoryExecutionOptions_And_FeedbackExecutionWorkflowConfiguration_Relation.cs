@@ -13,15 +13,15 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_WorkflowPromptCategoryExecutionOptions_FeedbackExecutionWor~",
-                table: "WorkflowPromptCategoryExecutionOptions");
+                table: "WorkflowExecutionOptions");
 
             migrationBuilder.DropIndex(
                 name: "IX_WorkflowPromptCategoryExecutionOptions_FeedbackExecutionWor~",
-                table: "WorkflowPromptCategoryExecutionOptions");
+                table: "WorkflowExecutionOptions");
 
             migrationBuilder.DropColumn(
                 name: "FeedbackExecutionWorkflowId",
-                table: "WorkflowPromptCategoryExecutionOptions");
+                table: "WorkflowExecutionOptions");
 
             migrationBuilder.AddColumn<Guid>(
                 name: "StartingExecutionOptionId",
@@ -40,7 +40,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 name: "FK_FeedbackExecutionWorkflows_WorkflowPromptCategoryExecutionO~",
                 table: "FeedbackExecutionWorkflows",
                 column: "StartingExecutionOptionId",
-                principalTable: "WorkflowPromptCategoryExecutionOptions",
+                principalTable: "WorkflowExecutionOptions",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -62,19 +62,19 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             migrationBuilder.AddColumn<Guid>(
                 name: "FeedbackExecutionWorkflowId",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 type: "uuid",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkflowPromptCategoryExecutionOptions_FeedbackExecutionWor~",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 column: "FeedbackExecutionWorkflowId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_WorkflowPromptCategoryExecutionOptions_FeedbackExecutionWor~",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 column: "FeedbackExecutionWorkflowId",
                 principalTable: "FeedbackExecutionWorkflows",
                 principalColumn: "Id",

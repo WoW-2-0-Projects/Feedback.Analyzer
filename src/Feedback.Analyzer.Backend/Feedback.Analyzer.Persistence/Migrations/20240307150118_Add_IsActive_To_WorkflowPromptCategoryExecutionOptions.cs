@@ -12,7 +12,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.AddColumn<bool>(
                 name: "IsActive",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 type: "boolean",
                 nullable: false,
                 defaultValue: false);
@@ -23,7 +23,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "IsActive",
-                table: "WorkflowPromptCategoryExecutionOptions");
+                table: "WorkflowExecutionOptions");
         }
     }
 }

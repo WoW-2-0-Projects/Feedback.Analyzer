@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Feedback.Analyzer.Persistence.EntityConfiguration;
 
-public class WorkflowPromptCategoryExecutionOptionsConfigurations : IEntityTypeConfiguration<WorkflowPromptCategoryExecutionOptions>
+public class WorkflowPromptCategoryExecutionOptionsConfigurations : IEntityTypeConfiguration<WorkflowExecutionOptions>
 {
-    public void Configure(EntityTypeBuilder<WorkflowPromptCategoryExecutionOptions> builder)
+    public void Configure(EntityTypeBuilder<WorkflowExecutionOptions> builder)
     {
         // builder.HasKey(
         //     executionOptions => new
@@ -20,7 +20,7 @@ public class WorkflowPromptCategoryExecutionOptionsConfigurations : IEntityTypeC
             .WithMany(promptCategory => promptCategory.FeedbackWorkflowExecutionOptions)
             .HasForeignKey(pc => pc.AnalysisPromptCategoryId);
 
-        builder.HasOne<WorkflowPromptCategoryExecutionOptions>()
+        builder.HasOne<WorkflowExecutionOptions>()
             .WithMany(executionOptions => executionOptions.ChildExecutionOptions)
             .HasForeignKey(executionOptions => executionOptions.ParentId)
             //     executionOptions => new

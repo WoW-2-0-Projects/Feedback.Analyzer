@@ -12,7 +12,7 @@ public class PromptExecutionOrchestrationService(IPromptExecutionProcessingServi
     : IPromptExecutionOrchestrationService
 {
     public async ValueTask ExecuteAsync(
-        WorkflowPromptCategoryExecutionOptions headPromptOption,
+        WorkflowExecutionOptions headPromptOption,
         CustomerFeedback feedback,
         CancellationToken cancellationToken = default
     )
@@ -30,7 +30,7 @@ public class PromptExecutionOrchestrationService(IPromptExecutionProcessingServi
         await ExecutePrompt(executionContext, headPromptOption);
     }
 
-    private async ValueTask ExecutePrompt(PromptExecutionContext executionContext, WorkflowPromptCategoryExecutionOptions executionOptions)
+    private async ValueTask ExecutePrompt(PromptExecutionContext executionContext, WorkflowExecutionOptions executionOptions)
     {
         if (executionContext.Arguments is null)
             return;
@@ -79,7 +79,7 @@ public class PromptExecutionOrchestrationService(IPromptExecutionProcessingServi
     
     private async ValueTask ExecuteChildrenPrompts(
         PromptExecutionContext executionContext,
-        IImmutableList<WorkflowPromptCategoryExecutionOptions> childrenOptions
+        IImmutableList<WorkflowExecutionOptions> childrenOptions
     )
     {
         foreach (var prompt in childrenOptions.Where(prompt => !prompt.IsDisabled))

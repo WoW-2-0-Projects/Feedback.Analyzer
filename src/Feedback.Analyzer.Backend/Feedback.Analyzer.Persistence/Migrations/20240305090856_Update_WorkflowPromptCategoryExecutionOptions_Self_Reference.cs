@@ -13,41 +13,41 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.DropPrimaryKey(
                 name: "PK_WorkflowPromptCategoryExecutionOptions",
-                table: "WorkflowPromptCategoryExecutionOptions");
+                table: "WorkflowExecutionOptions");
 
             migrationBuilder.AddColumn<Guid>(
                 name: "Id",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 type: "uuid",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.AddColumn<Guid>(
                 name: "ParentId",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 type: "uuid",
                 nullable: true);
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_WorkflowPromptCategoryExecutionOptions",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkflowPromptCategoryExecutionOptions_AnalysisPromptCatego~",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 column: "AnalysisPromptCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkflowPromptCategoryExecutionOptions_ParentId",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 column: "ParentId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_WorkflowPromptCategoryExecutionOptions_WorkflowPromptCatego~",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 column: "ParentId",
-                principalTable: "WorkflowPromptCategoryExecutionOptions",
+                principalTable: "WorkflowExecutionOptions",
                 principalColumn: "Id");
         }
 
@@ -56,31 +56,31 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_WorkflowPromptCategoryExecutionOptions_WorkflowPromptCatego~",
-                table: "WorkflowPromptCategoryExecutionOptions");
+                table: "WorkflowExecutionOptions");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_WorkflowPromptCategoryExecutionOptions",
-                table: "WorkflowPromptCategoryExecutionOptions");
+                table: "WorkflowExecutionOptions");
 
             migrationBuilder.DropIndex(
                 name: "IX_WorkflowPromptCategoryExecutionOptions_AnalysisPromptCatego~",
-                table: "WorkflowPromptCategoryExecutionOptions");
+                table: "WorkflowExecutionOptions");
 
             migrationBuilder.DropIndex(
                 name: "IX_WorkflowPromptCategoryExecutionOptions_ParentId",
-                table: "WorkflowPromptCategoryExecutionOptions");
+                table: "WorkflowExecutionOptions");
 
             migrationBuilder.DropColumn(
                 name: "Id",
-                table: "WorkflowPromptCategoryExecutionOptions");
+                table: "WorkflowExecutionOptions");
 
             migrationBuilder.DropColumn(
                 name: "ParentId",
-                table: "WorkflowPromptCategoryExecutionOptions");
+                table: "WorkflowExecutionOptions");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_WorkflowPromptCategoryExecutionOptions",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 columns: new[] { "AnalysisPromptCategoryId", "FeedbackExecutionWorkflowId" });
         }
     }

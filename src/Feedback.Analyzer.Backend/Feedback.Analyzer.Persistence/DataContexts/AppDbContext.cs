@@ -33,7 +33,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     
     public DbSet<PromptExecutionHistory> PromptExecutionHistories => Set<PromptExecutionHistory>();
     
-    public DbSet<WorkflowPromptCategoryExecutionOptions> WorkflowPromptCategoryExecutionOptions => Set<WorkflowPromptCategoryExecutionOptions>();
+    public DbSet<WorkflowExecutionOptions> WorkflowExecutionOptions => Set<WorkflowExecutionOptions>();
     
     #endregion
     
