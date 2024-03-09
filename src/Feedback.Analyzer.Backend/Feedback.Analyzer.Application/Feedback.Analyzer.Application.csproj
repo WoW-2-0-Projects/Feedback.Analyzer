@@ -17,6 +17,7 @@
 
     <ItemGroup>
       <Folder Include="Common\Prompts\" />
+      <Folder Include="CustomerFeedbacks\Events\" />
     </ItemGroup>
 
 </Project>

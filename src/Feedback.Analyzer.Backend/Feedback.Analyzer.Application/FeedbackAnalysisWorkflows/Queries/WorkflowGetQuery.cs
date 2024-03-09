@@ -1,7 +1,7 @@
-using Feedback.Analyzer.Application.Common.Workflows.Models;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 using Feedback.Analyzer.Domain.Common.Queries;
 
-namespace Feedback.Analyzer.Application.Common.Workflows.Queries;
+namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Queries;
 
 public record WorkflowGetQuery : IQuery<ICollection<FeedbackExecutionWorkflowDto>>
 {

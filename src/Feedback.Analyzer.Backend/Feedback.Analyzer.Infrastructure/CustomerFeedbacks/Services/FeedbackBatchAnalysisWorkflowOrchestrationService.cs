@@ -1,14 +1,15 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Feedback.Analyzer.Application.Common.AnalysisWorkflowExecutionOptions.Services;
-using Feedback.Analyzer.Application.Common.Workflows.Services;
-using Feedback.Analyzer.Application.CustomerFeedbacks.Models;
+using Feedback.Analyzer.Application.Common.EventBus.Brokers;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Services;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
-using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
@@ -18,6 +19,7 @@ namespace Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
 /// </summary>
 public class FeedbackBatchAnalysisWorkflowOrchestrationService(
     IMapper mapper,
+    IEventBusBroker eventBusBroker,
     IFeedbackAnalysisWorkflowService feedbackAnalysisWorkflowService,
     IWorkflowExecutionOptionsService workflowExecutionOptionsService,
     IFeedbackAnalysisWorkflowResultService feedbackAnalysisWorkflowResultService
@@ -34,14 +36,14 @@ public class FeedbackBatchAnalysisWorkflowOrchestrationService(
 
         // Load analysis workflow
         var workflowContext = await feedbackAnalysisWorkflowService
-                                   .Get(workflow => workflow.Id == workflowId, queryOptions)
-                                   .Include(workflow => workflow.Product)
-                                   .Include(workflow => workflow.Product.Organization)
-                                   .Include(workflow => workflow.Product.CustomerFeedbacks)
-                                   .AsSplitQuery()
-                                   .ProjectTo<FeedbackAnalysisWorkflowContext>(mapper.ConfigurationProvider)
-                                   .FirstOrDefaultAsync(cancellationToken) ??
-                               throw new InvalidOperationException($"Could not execute prompt, workflow with id {workflowId} not found.");
+                                  .Get(workflow => workflow.Id == workflowId, queryOptions)
+                                  .Include(workflow => workflow.Product)
+                                  .Include(workflow => workflow.Product.Organization)
+                                  .Include(workflow => workflow.Product.CustomerFeedbacks)
+                                  .AsSplitQuery()
+                                  .ProjectTo<FeedbackAnalysisWorkflowContext>(mapper.ConfigurationProvider)
+                                  .FirstOrDefaultAsync(cancellationToken) ??
+                              throw new InvalidOperationException($"Could not execute prompt, workflow with id {workflowId} not found.");
 
         // Load workflow execution options
         workflowContext.EntryExecutionOption =
@@ -59,17 +61,37 @@ public class FeedbackBatchAnalysisWorkflowOrchestrationService(
         var updateResult = await feedbackAnalysisWorkflowService.UpdateStatus(workflowId, WorkflowStatus.Running, cancellationToken);
         if (!updateResult)
             throw new InvalidOperationException($"Could not execute workflow, workflow with id {workflowId} not found.");
-        
-        // Create workflow result
+
+        // Create workflow result and add to context
         var workflowResult = new FeedbackAnalysisWorkflowResult
         {
             WorkflowId = workflowContext.WorkflowId,
             FeedbacksCount = (ulong)workflowContext.FeedbacksId.Count
         };
-        
-        await feedbackAnalysisWorkflowResultService.CreateAsync(workflowResult, cancellationToken: cancellationToken);
+
+        var createdWorkflowResult = await feedbackAnalysisWorkflowResultService.CreateAsync(workflowResult, cancellationToken: cancellationToken);
+        workflowContext.WorkflowResultId = createdWorkflowResult.Id;
 
         // Create and publish event for each feedback
-        
+        var analyzeFeedbackEventPublishTasks = workflowContext.FeedbacksId
+            .Select(
+                feedbackId =>
+                {
+                    var singleFeedbackAnalysisWorkflowContext = mapper.Map<SingleFeedbackAnalysisWorkflowContext>(workflowContext);
+                    singleFeedbackAnalysisWorkflowContext.FeedbackId = feedbackId;
+
+                    return singleFeedbackAnalysisWorkflowContext;
+                }
+            )
+            .Select(
+                feedbackAnalysisContext => eventBusBroker.PublishAsync(
+                    new AnalyzeFeedbackEvent
+                    {
+                        Context = feedbackAnalysisContext
+                    }
+                ).AsTask()
+            );
+
+        await Task.WhenAll(analyzeFeedbackEventPublishTasks);
     }
 }

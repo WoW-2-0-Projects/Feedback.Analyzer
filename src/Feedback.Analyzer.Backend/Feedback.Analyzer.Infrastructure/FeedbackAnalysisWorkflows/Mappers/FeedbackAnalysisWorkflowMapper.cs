@@ -1,13 +1,13 @@
 using AutoMapper;
-using Feedback.Analyzer.Application.Common.Workflows.Models;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Models;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Mappers;
 
-public class FeedbackExecutionWorkflowMapper : Profile
+public class FeedbackAnalysisWorkflowMapper : Profile
 {
-    public FeedbackExecutionWorkflowMapper()
+    public FeedbackAnalysisWorkflowMapper()
     {
         CreateMap<FeedbackAnalysisWorkflow, FeedbackExecutionWorkflowDto>().ReverseMap();
 
@@ -20,5 +20,7 @@ public class FeedbackExecutionWorkflowMapper : Profile
             .ForMember(dest => dest.Organization, opt => opt.MapFrom(src => src.Product.Organization))
             .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product))
             .ForMember(dest => dest.FeedbacksId, opt => opt.MapFrom(src => src.Product.CustomerFeedbacks.Select(feedback => feedback.Id)));
+
+        CreateMap<FeedbackAnalysisWorkflowContext, SingleFeedbackAnalysisWorkflowContext>();
     }
 }

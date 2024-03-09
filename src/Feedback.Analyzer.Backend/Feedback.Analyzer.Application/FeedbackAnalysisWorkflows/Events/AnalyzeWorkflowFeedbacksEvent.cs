@@ -1,11 +1,11 @@
 using Feedback.Analyzer.Domain.Common.Events;
 
-namespace Feedback.Analyzer.Application.Common.Workflows.Events;
+namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 
 /// <summary>
 /// Represents workflow execution event
 /// </summary>
-public record ExecuteWorkflowEvent : Event
+public record AnalyzeWorkflowFeedbacksEvent : Event
 {
     /// <summary>
     /// Gets workflow Id

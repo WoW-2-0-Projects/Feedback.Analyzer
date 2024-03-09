@@ -1,14 +1,18 @@
-using System.Collections.Immutable;
 using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Application.CustomerFeedbacks.Models;
+namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 
 /// <summary>
 /// Represents feedback analysis workflow context
 /// </summary>
 public record FeedbackAnalysisWorkflowContext : WorkflowContext
 {
+    /// <summary>
+    /// Gets or sets workflow result id
+    /// </summary>
+    public Guid WorkflowResultId { get; set; }
+    
     /// <summary>
     /// Organization of the product
     /// </summary>
@@ -23,9 +27,4 @@ public record FeedbackAnalysisWorkflowContext : WorkflowContext
     /// Gets feedbacks Id
     /// </summary>
     public ICollection<Guid> FeedbacksId { get; set; } = new List<Guid>();
-
-    // /// <summary>
-    // /// Gets feedback analysis result
-    // /// </summary>
-    // public FeedbackAnalysisResult AnalysisResult { get; set; } = default!;
 }

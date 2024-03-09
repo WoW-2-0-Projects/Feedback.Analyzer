@@ -1,7 +1,7 @@
 using Feedback.Analyzer.Application.Common.PromptCategories.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
-using Feedback.Analyzer.Application.Common.Workflows.Events;
-using Feedback.Analyzer.Application.Common.Workflows.Services;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Domain.Common.Events;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Constants;
@@ -9,7 +9,7 @@ using Feedback.Analyzer.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace Feedback.Analyzer.Infrastructure.Common.Workflows.EventHandlers;
+namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandlers;
 
 public class ExecuteWorkflowSinglePromptEventHandler(
     IPromptCategoryService promptCategoryService,

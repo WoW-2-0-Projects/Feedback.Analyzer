@@ -1,12 +1,12 @@
 using AutoMapper;
-using Feedback.Analyzer.Application.Common.Workflows.Models;
-using Feedback.Analyzer.Application.Common.Workflows.Queries;
-using Feedback.Analyzer.Application.Common.Workflows.Services;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Queries;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Feedback.Analyzer.Infrastructure.Common.Workflows.QueryHandlers;
+namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.QueryHandlers;
 
 public class WorkflowGetQueryHandler(IMapper mapper, IFeedbackAnalysisWorkflowService workflowService)
     : IQueryHandler<WorkflowGetQuery, ICollection<FeedbackExecutionWorkflowDto>>

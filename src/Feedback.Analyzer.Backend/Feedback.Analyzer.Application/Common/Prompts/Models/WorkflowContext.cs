@@ -13,11 +13,6 @@ public record WorkflowContext
     /// </summary>
     public Guid WorkflowId { get; init; }
     
-    // /// <summary>
-    // /// Gets entry execution option Id
-    // /// </summary>
-    // public Guid EntryExecutionOptionId { get; init; }
-    
     /// <summary>
     /// Gets 
     /// </summary>

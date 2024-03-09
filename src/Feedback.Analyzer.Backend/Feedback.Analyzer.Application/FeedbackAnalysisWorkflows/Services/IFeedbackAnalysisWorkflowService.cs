@@ -4,7 +4,7 @@ using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 
-namespace Feedback.Analyzer.Application.Common.Workflows.Services;
+namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 
 /// <summary>
 /// Interface for managing FeedbackAnalysisWorkflow entities.

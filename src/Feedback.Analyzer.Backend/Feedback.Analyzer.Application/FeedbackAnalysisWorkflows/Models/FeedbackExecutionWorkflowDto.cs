@@ -1,6 +1,6 @@
 using Feedback.Analyzer.Domain.Enums;
 
-namespace Feedback.Analyzer.Application.Common.Workflows.Models;
+namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 
 public class FeedbackExecutionWorkflowDto
 {
