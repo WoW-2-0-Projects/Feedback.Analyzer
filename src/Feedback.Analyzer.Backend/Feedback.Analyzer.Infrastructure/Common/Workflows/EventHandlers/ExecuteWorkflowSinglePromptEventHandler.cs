@@ -13,7 +13,7 @@ namespace Feedback.Analyzer.Infrastructure.Common.Workflows.EventHandlers;
 
 public class ExecuteWorkflowSinglePromptEventHandler(
     IPromptCategoryService promptCategoryService,
-    IFeedbackExecutionWorkflowService workflowService,
+    IFeedbackAnalysisWorkflowService workflowService,
     IPromptExecutionProcessingService promptExecutionProcessingService
 ) : IEventHandler<ExecuteWorkflowSinglePromptEvent>
 {

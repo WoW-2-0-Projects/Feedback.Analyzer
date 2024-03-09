@@ -3,7 +3,7 @@ using Feedback.Analyzer.Domain.Enums;
 
 namespace Feedback.Analyzer.Domain.Entities;
 
-public class FeedbackExecutionWorkflow : AuditableEntity, ICloneable<FeedbackExecutionWorkflow>
+public class FeedbackAnalysisWorkflow : AuditableEntity, ICloneable<FeedbackAnalysisWorkflow>
 {
     public string Name { get; set; } = default!;
     
@@ -17,9 +17,9 @@ public class FeedbackExecutionWorkflow : AuditableEntity, ICloneable<FeedbackExe
     
     public WorkflowExecutionOptions StartingExecutionOption { get; set; } = default!;
 
-    public FeedbackExecutionWorkflow Clone()
+    public FeedbackAnalysisWorkflow Clone()
     {
-        var clonedWorkflow = new FeedbackExecutionWorkflow
+        var clonedWorkflow = new FeedbackAnalysisWorkflow
         {
             Type = Type,
         };

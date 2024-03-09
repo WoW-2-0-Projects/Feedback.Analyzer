@@ -4,6 +4,7 @@ using Feedback.Analyzer.Application.Common.Prompts.Brokers;
 using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.PromptsHistory.Services;
+using Feedback.Analyzer.Application.CustomerFeedbacks.Models;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
@@ -15,24 +16,24 @@ using Newtonsoft.Json;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 
-public class FeedbackPromptExecutionOrchestrationService(
+public class AnalysisWorkflowOrchestrationService(
     IPromptService promptService,
     ICustomerFeedbackService customerFeedbackService,
     IProductService productService,
     IPromptExecutionBroker promptExecutionBroker,
     IPromptsExecutionHistoryService promptsExecutionHistoryService
-) : IFeedbackPromptExecutionOrchestrationService
+) : IAnalysisWorkflowOrchestrationService
 {
-    public async ValueTask ExecuteAsync(FeedbackExecutionContext feedbackExecutionContext, CancellationToken cancellationToken = default)
+    public async ValueTask ExecuteAsync(FeedbackAnalysisWorkflowContext feedbackAnalysisWorkflowContext, CancellationToken cancellationToken = default)
     {
-        var feedback = await customerFeedbackService.GetByIdAsync(feedbackExecutionContext.FeedbackId, cancellationToken: cancellationToken) ??
+        var feedback = await customerFeedbackService.GetByIdAsync(feedbackAnalysisWorkflowContext.FeedbackId, cancellationToken: cancellationToken) ??
                        throw new InvalidOperationException(
-                           $"Could not execute prompt, feedback with id {feedbackExecutionContext.FeedbackId} not found."
+                           $"Could not execute prompt, feedback with id {feedbackAnalysisWorkflowContext.FeedbackId} not found."
                        );
 
-        var product = await productService.GetByIdAsync(feedbackExecutionContext.ProductId, cancellationToken: cancellationToken) ??
+        var product = await productService.GetByIdAsync(feedbackAnalysisWorkflowContext.ProductId, cancellationToken: cancellationToken) ??
                       throw new InvalidOperationException(
-                          $"Could not execute prompt, product with id {feedbackExecutionContext.ProductId} not found."
+                          $"Could not execute prompt, product with id {feedbackAnalysisWorkflowContext.ProductId} not found."
                       );
 
         var kernelArguments = new KernelArguments
@@ -41,19 +42,18 @@ public class FeedbackPromptExecutionOrchestrationService(
             { PromptConstants.CustomerFeedback, feedback.Comment }
         };
 
-        var task = feedbackExecutionContext switch
+        var task = feedbackAnalysisWorkflowContext switch
         {
-            FeedbackSingleExecutionContext executionContext => ExecuteAsync(executionContext, kernelArguments, cancellationToken),
-            FeedbackWorkflowExecutionContext executionContext => ExecuteAsync(executionContext, kernelArguments, cancellationToken),
+            FeedbackAnalysisWorkflowPromptSingleExecutionContext executionContext => ExecuteAsync(executionContext, kernelArguments, cancellationToken),
+            FeedbackAnalysisWorkflowPromptWorkflowExecutionContext executionContext => ExecuteAsync(executionContext, kernelArguments, cancellationToken),
             _ => throw new InvalidOperationException("Invalid feedback execution context.")
         };
-
 
         await task;
     }
 
     private async ValueTask ExecuteAsync(
-        FeedbackSingleExecutionContext executionContext,
+        FeedbackAnalysisWorkflowPromptSingleExecutionContext executionContext,
         KernelArguments kernelArguments,
         CancellationToken cancellationToken = default
     )
@@ -98,7 +98,7 @@ public class FeedbackPromptExecutionOrchestrationService(
     }
 
     private ValueTask ExecuteAsync(
-        FeedbackWorkflowExecutionContext executionContext,
+        FeedbackAnalysisWorkflowPromptWorkflowExecutionContext executionContext,
         KernelArguments kernelArguments,
         CancellationToken cancellationToken = default
     )

@@ -738,7 +738,7 @@ public static class SeedDataExtensions
         };
 
         // Add template workflow
-        var templateWorkflow = new FeedbackExecutionWorkflow
+        var templateWorkflow = new FeedbackAnalysisWorkflow
         {
             Name = "Base Workflow",
             ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),

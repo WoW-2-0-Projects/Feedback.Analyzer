@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Workflows.QueryHandlers;
 
-public class WorkflowGetQueryHandler(IMapper mapper, IFeedbackExecutionWorkflowService workflowService)
+public class WorkflowGetQueryHandler(IMapper mapper, IFeedbackAnalysisWorkflowService workflowService)
     : IQueryHandler<WorkflowGetQuery, ICollection<FeedbackExecutionWorkflowDto>>
 {
     public async Task<ICollection<FeedbackExecutionWorkflowDto>> Handle(WorkflowGetQuery request, CancellationToken cancellationToken)

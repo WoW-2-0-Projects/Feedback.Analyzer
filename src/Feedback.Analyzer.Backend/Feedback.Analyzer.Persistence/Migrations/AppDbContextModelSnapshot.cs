@@ -207,7 +207,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.ToTable("FeedbackAnalysisResults", (string)null);
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackExecutionWorkflow", b =>
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -555,7 +555,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackExecutionWorkflow", b =>
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.Product", "Product")
                         .WithMany()
@@ -564,8 +564,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("Feedback.Analyzer.Domain.Entities.WorkflowPromptCategoryExecutionOptions", "StartingExecutionOption")
-                        .WithOne("FeedbackExecutionWorkflow")
-                        .HasForeignKey("Feedback.Analyzer.Domain.Entities.FeedbackExecutionWorkflow", "StartingExecutionOptionId")
+                        .WithOne("FeedbackAnalysisWorkflow")
+                        .HasForeignKey("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", "StartingExecutionOptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -659,7 +659,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 {
                     b.Navigation("ChildExecutionOptions");
 
-                    b.Navigation("FeedbackExecutionWorkflow")
+                    b.Navigation("FeedbackAnalysisWorkflow")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

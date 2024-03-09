@@ -8,6 +8,6 @@ public class FeedbackExecutionWorkflowMapper : Profile
 {
     public FeedbackExecutionWorkflowMapper()
     {
-        CreateMap<FeedbackExecutionWorkflow, FeedbackExecutionWorkflowDto>().ReverseMap();
+        CreateMap<FeedbackAnalysisWorkflow, FeedbackExecutionWorkflowDto>().ReverseMap();
     }
 }

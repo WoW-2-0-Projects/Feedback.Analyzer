@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Feedback.Analyzer.Persistence.EntityConfiguration;
 
-public class FeedbackExecutionWorkflowConfiguration : IEntityTypeConfiguration<FeedbackExecutionWorkflow>
+public class FeedbackExecutionWorkflowConfiguration : IEntityTypeConfiguration<FeedbackAnalysisWorkflow>
 {
-    public void Configure(EntityTypeBuilder<FeedbackExecutionWorkflow> builder)
+    public void Configure(EntityTypeBuilder<FeedbackAnalysisWorkflow> builder)
     {
         builder
             .Property(workflow => workflow.Name)
@@ -21,8 +21,8 @@ public class FeedbackExecutionWorkflowConfiguration : IEntityTypeConfiguration<F
 
         builder
             .HasOne(workflow => workflow.StartingExecutionOption)
-            .WithOne(executionOptions => executionOptions.FeedbackExecutionWorkflow)
-            .HasForeignKey<FeedbackExecutionWorkflow>(promptCategory => promptCategory.StartingExecutionOptionId);
+            .WithOne(executionOptions => executionOptions.FeedbackAnalysisWorkflow)
+            .HasForeignKey<FeedbackAnalysisWorkflow>(promptCategory => promptCategory.StartingExecutionOptionId);
 
         builder
             .HasIndex(

@@ -8,25 +8,18 @@ using Newtonsoft.Json;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 
-public class PromptExecutionOrchestrationService(IPromptExecutionProcessingService promptExecutionProcessingService, AppDbContext appDbContext)
-    : IPromptExecutionOrchestrationService
+public class WorkflowExecutionService(
+    IPromptExecutionProcessingService promptExecutionProcessingService, 
+    AppDbContext appDbContext)
+    : IWorkflowExecutionService
 {
     public async ValueTask ExecuteAsync(
         WorkflowExecutionOptions headPromptOption,
-        CustomerFeedback feedback,
+        PromptExecutionContext promptExecutionContext,
+        // CustomerFeedback feedback,
         CancellationToken cancellationToken = default
     )
     {
-        var executionContext = new PromptExecutionContext
-        {
-            Arguments = new Dictionary<string, string>
-            {
-                { $"{PromptConstants.ProductDescription}", feedback.Product.Description },
-                { $"{PromptConstants.CustomerFeedback}", feedback.Comment }
-            },
-            ExecutionHistories = new Dictionary<Guid, PromptExecutionHistory>(),
-        };
-
         await ExecutePrompt(executionContext, headPromptOption);
     }
 
@@ -36,7 +29,7 @@ public class PromptExecutionOrchestrationService(IPromptExecutionProcessingServi
             return;
 
         await appDbContext.Entry(executionOptions).Reference(options => options.AnalysisPromptCategory).LoadAsync();
-        
+
         var history = promptExecutionProcessingService.ExecuteAsync(
                 (Guid)executionOptions.AnalysisPromptCategory.SelectedPromptId!,
                 executionContext.Arguments
@@ -57,7 +50,7 @@ public class PromptExecutionOrchestrationService(IPromptExecutionProcessingServi
             var test = JsonConvert.DeserializeObject<FeedbackRelevance>(history.Result!);
             executionContext.Arguments[PromptConstants.CustomerFeedback] = test!.ExtractedRelevantContent;
         }
-        
+
         else if (executionOptions.AnalysisPromptCategory.Category == FeedbackAnalysisPromptCategory.PersonalInformationRedaction)
         {
             var test = JsonConvert.DeserializeObject<FeedbackRelevance>(history.Result!);
@@ -72,15 +65,12 @@ public class PromptExecutionOrchestrationService(IPromptExecutionProcessingServi
         }
 
         await appDbContext.Entry(executionOptions).Collection(option => option.ChildExecutionOptions).LoadAsync();
-        
-        if(executionOptions.ChildExecutionOptions.Any())
+
+        if (executionOptions.ChildExecutionOptions.Any())
             await ExecuteChildrenPrompts(executionContext, executionOptions.ChildExecutionOptions.ToImmutableList());
     }
-    
-    private async ValueTask ExecuteChildrenPrompts(
-        PromptExecutionContext executionContext,
-        IImmutableList<WorkflowExecutionOptions> childrenOptions
-    )
+
+    private async ValueTask ExecuteChildrenPrompts(PromptExecutionContext executionContext, IImmutableList<WorkflowExecutionOptions> childrenOptions)
     {
         foreach (var prompt in childrenOptions.Where(prompt => !prompt.IsDisabled))
         {

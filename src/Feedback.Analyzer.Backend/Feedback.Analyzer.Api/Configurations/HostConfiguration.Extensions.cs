@@ -3,6 +3,7 @@ using System.Text;
 
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
+using Feedback.Analyzer.Application.Common.AnalysisWorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Application.Common.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.PromptCategories.Services;
@@ -18,6 +19,7 @@ using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
+using Feedback.Analyzer.Infrastructure.Common.AnalysisWorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Infrastructure.Common.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.PromptCategories.Services;
@@ -180,7 +182,8 @@ public static partial class HostConfiguration
             .AddScoped<IPromptRepository, PromptRepository>()
             .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>()
             .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>()
-            .AddScoped<IFeedbackExecutionWorkflowRepository, FeedbackExecutionWorkflowRepository>()
+            .AddScoped<IWorkflowExecutionOptionRepository, WorkflowExecutionOptionRepository>() 
+            .AddScoped<IFeedbackAnalysisWorkflowRepository, FeedbackAnalysisWorkflowRepository>()
             .AddScoped<IFeedbackAnalysisResultRepository, FeedbackAnalysisResultRepository>();
 
         // Register foundation services
@@ -188,8 +191,9 @@ public static partial class HostConfiguration
             .AddScoped<IPromptService, PromptService>()
             .AddScoped<IPromptCategoryService, PromptCategoryService>()
             .AddScoped<IPromptsExecutionHistoryService, PromptExecutionHistoryService>()
+            .AddScoped<IWorkflowExecutionOptionsService, WorkflowExecutionOptionsService>() 
             .AddScoped<IFeedbackAnalysisResultService, FeedbackAnalysisResultService>()
-            .AddScoped<IFeedbackExecutionWorkflowService, FeedbackExecutionWorkflowService>();
+            .AddScoped<IFeedbackAnalysisWorkflowService, FeedbackAnalysisWorkflowService>();
         
         // Register processing services
         builder.Services
@@ -197,8 +201,8 @@ public static partial class HostConfiguration
         
         // Register orchestration services
         builder.Services
-            .AddScoped<IFeedbackPromptExecutionOrchestrationService, FeedbackPromptExecutionOrchestrationService>()
-            .AddScoped<IPromptExecutionOrchestrationService, PromptExecutionOrchestrationService>();
+            .AddScoped<IAnalysisWorkflowOrchestrationService, AnalysisWorkflowOrchestrationService>()
+            .AddScoped<IWorkflowExecutionService, WorkflowExecutionService>();
 
         return builder;
     }
