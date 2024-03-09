@@ -3,7 +3,7 @@ using Feedback.Analyzer.Domain.Common.Events;
 
 namespace Feedback.Analyzer.Application.Common.Prompts.Events;
 
-public class ExecutePromptEvent : Event
-{
-    public FeedbackAnalysisWorkflowContext AnalysisWorkflowContext { get; set; } = default!;
-}
+// public record ExecutePromptEvent : Event
+// {
+//     public FeedbackAnalysisWorkflowContext AnalysisWorkflowContext { get; set; } = default!;
+// }

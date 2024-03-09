@@ -2,7 +2,13 @@ using Feedback.Analyzer.Domain.Common.Events;
 
 namespace Feedback.Analyzer.Application.Common.Workflows.Events;
 
-public class ExecuteWorkflowEvent : Event
+/// <summary>
+/// Represents workflow execution event
+/// </summary>
+public record ExecuteWorkflowEvent : Event
 {
-    public Guid WorkflowId { get; set; }
+    /// <summary>
+    /// Gets workflow Id
+    /// </summary>
+    public Guid WorkflowId { get; init; }
 }
