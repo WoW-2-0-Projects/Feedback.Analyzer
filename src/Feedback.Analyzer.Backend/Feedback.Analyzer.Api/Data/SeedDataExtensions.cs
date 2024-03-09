@@ -39,6 +39,8 @@ public static class SeedDataExtensions
 
         if (!await appDbContext.AnalysisWorkflows.AnyAsync())
             await SeedDataAnalysisWorkflowAsync(appDbContext);
+        if (!await appDbContext.FeedbackAnalysisWorkflows.AnyAsync())
+            await SeedDataFeedbackAnalysisWorkflowAsync(appDbContext);
         
         if (appDbContext.ChangeTracker.HasChanges())
             await appDbContext.SaveChangesAsync();
@@ -208,6 +210,26 @@ public static class SeedDataExtensions
 
         await appDbContext.AnalysisWorkflows.AddRangeAsync(analysisWorkflow);
     }
+    
+    private static async ValueTask SeedDataFeedbackAnalysisWorkflowAsync(AppDbContext appDbContext)
+    {
+        var feedbackAnalysisWorkflows = new List<FeedbackAnalysisWorkflow>
+        {
+           new()
+           {
+               Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
+               ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
+           },
+           new()
+           {
+               Id = Guid.Parse("5912074a-11f4-4049-aea9-966dcb809bf2"),
+               ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
+           }
+        };
+
+        await appDbContext.FeedbackAnalysisWorkflows.AddRangeAsync(feedbackAnalysisWorkflows);
+    } 
+    
      /// <summary>
     /// Seeds prompt categories
     /// </summary>
