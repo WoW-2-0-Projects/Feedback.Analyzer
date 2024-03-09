@@ -16,9 +16,12 @@ public class FeedbackAnalysisWorkflow : AuditableEntity, ICloneable<FeedbackAnal
     public Guid EntryExecutionOptionId { get; set; }
    
     public WorkflowExecutionOptions EntryExecutionOption { get; set; } = default!;
-
+    
+    public ICollection<FeedbackAnalysisWorkflowResult> Results { get; set; } = default!;
+    
     public FeedbackAnalysisWorkflow Clone()
     {
+        // TODO : fix this clone logic
         var clonedWorkflow = new FeedbackAnalysisWorkflow
         {
             Type = Type,

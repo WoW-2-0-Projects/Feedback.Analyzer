@@ -9,9 +9,19 @@ namespace Feedback.Analyzer.Application.Common.Prompts.Models;
 public record WorkflowContext
 {
     /// <summary>
+    /// Workflow analysis Id
+    /// </summary>
+    public Guid WorkflowId { get; init; }
+    
+    // /// <summary>
+    // /// Gets entry execution option Id
+    // /// </summary>
+    // public Guid EntryExecutionOptionId { get; init; }
+    
+    /// <summary>
     /// Gets 
     /// </summary>
-    public WorkflowExecutionOptions EntryExecutionOption { get; init; } = default!;
+    public WorkflowExecutionOptions EntryExecutionOption { get; set; } = default!;
     
     /// <summary>
     /// Gets or sets execution arguments

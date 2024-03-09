@@ -15,25 +15,31 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     
     #endregion
 
-    #region FeedbackInfrastructure
+    #region Feedbacks Infrastructure
     
     public DbSet<CustomerFeedback> Feedbacks => Set<CustomerFeedback>();
 
     #endregion
 
-    #region Prompts Infrastructure
+    #region Semantic Analysis Infrastructure
     
     public DbSet<AnalysisPrompt> Prompts => Set<AnalysisPrompt>();
-    
+
     public DbSet<AnalysisPromptCategory> PromptCategories => Set<AnalysisPromptCategory>();
-    
-    public DbSet<FeedbackAnalysisResult> FeedbackAnalysisResults => Set<FeedbackAnalysisResult>();
-    
-    public DbSet<FeedbackAnalysisWorkflow> FeedbackExecutionWorkflows => Set<FeedbackAnalysisWorkflow>();
     
     public DbSet<PromptExecutionHistory> PromptExecutionHistories => Set<PromptExecutionHistory>();
     
     public DbSet<WorkflowExecutionOptions> WorkflowExecutionOptions => Set<WorkflowExecutionOptions>();
+    
+    #endregion
+    
+    #region Feedback Analysis Infrastructure
+
+    public DbSet<FeedbackAnalysisResult> FeedbackAnalysisResults => Set<FeedbackAnalysisResult>();
+    
+    public DbSet<FeedbackAnalysisWorkflow> FeedbackExecutionWorkflows => Set<FeedbackAnalysisWorkflow>();
+    
+    public DbSet<FeedbackAnalysisWorkflowResult> FeedbackAnalysisWorkflowResults => Set<FeedbackAnalysisWorkflowResult>();
     
     #endregion
     

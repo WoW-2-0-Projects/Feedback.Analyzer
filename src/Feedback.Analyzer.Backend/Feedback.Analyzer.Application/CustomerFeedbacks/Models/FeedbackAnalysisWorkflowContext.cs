@@ -24,8 +24,8 @@ public record FeedbackAnalysisWorkflowContext : WorkflowContext
     /// </summary>
     public IImmutableList<Guid> FeedbacksId { get; init; } = new ImmutableArray<Guid>();
 
-    /// <summary>
-    /// Gets feedback analysis result
-    /// </summary>
-    public FeedbackAnalysisResult AnalysisResult { get; set; } = default!;
+    // /// <summary>
+    // /// Gets feedback analysis result
+    // /// </summary>
+    // public FeedbackAnalysisResult AnalysisResult { get; set; } = default!;
 }

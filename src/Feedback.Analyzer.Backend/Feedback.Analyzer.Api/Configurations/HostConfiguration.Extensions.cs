@@ -233,7 +233,8 @@ public static partial class HostConfiguration
         // Register repositories
         builder.Services
             .AddScoped<IFeedbackAnalysisWorkflowRepository, FeedbackAnalysisWorkflowRepository>()
-            .AddScoped<IFeedbackAnalysisResultRepository, FeedbackAnalysisResultRepository>();
+            .AddScoped<IFeedbackAnalysisResultRepository, FeedbackAnalysisResultRepository>()
+            .AddScoped<IFeedbackAnalysisWorkflowResultRepository, FeedbackAnalysisWorkflowResultRepository>();
 
         // Register foundation services
         builder.Services

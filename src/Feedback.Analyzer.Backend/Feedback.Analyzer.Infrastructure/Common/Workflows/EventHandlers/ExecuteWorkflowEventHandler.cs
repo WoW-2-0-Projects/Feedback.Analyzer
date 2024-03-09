@@ -4,6 +4,10 @@ using Feedback.Analyzer.Domain.Common.Events;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Workflows.EventHandlers;
 
+/// <summary>
+/// Represents workflow execution event handler
+/// </summary>
+/// <param name="feedbackBatchAnalysisWorkflowOrchestrationService"></param>
 public class ExecuteWorkflowEventHandler(IFeedbackBatchAnalysisWorkflowOrchestrationService feedbackBatchAnalysisWorkflowOrchestrationService)
     : IEventHandler<ExecuteWorkflowEvent>
 {

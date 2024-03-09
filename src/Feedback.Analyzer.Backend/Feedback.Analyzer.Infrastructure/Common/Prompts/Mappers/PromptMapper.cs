@@ -18,11 +18,9 @@ public class PromptMapper : Profile
                 opt =>
                 {
                     opt.PreCondition(src => src.ExecutionHistories.Any());
-                    // opt.MapFrom(src => new TimeSpan((long)src.ExecutionHistories.Select(history => history.ExecutionTime.Ticks).Average()).Seconds);
                     opt.MapFrom(
                         src => src.ExecutionHistories.Select(history => history.ExecutionDuration).Average(timeSpan => timeSpan.TotalMilliseconds)
                     );
-                    // new TimeSpan((long)src.ExecutionHistories.Select(history => history.ExecutionTime.Ticks).Average()).Seconds);
                 }
             );
     }
