@@ -5,8 +5,8 @@ namespace Feedback.Analyzer.Application.Common.Prompts.Services;
 
 public interface IPromptExecutionProcessingService
 {
-    ValueTask<IImmutableList<PromptExecutionHistory>> ExecuteAsync(
-        Guid promptId,
+    ValueTask<IReadOnlyList<PromptExecutionHistory>> ExecuteAsync(
+        AnalysisPrompt prompt,
         Dictionary<string, string> arguments,
         uint executionCount = 1,
         CancellationToken cancellationToken = default

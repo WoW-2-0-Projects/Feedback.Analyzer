@@ -38,6 +38,7 @@ public class WorkflowExecutionOptionRepository(AppDbContext dbContext)
     private async ValueTask LoadAllChildrenAsync(WorkflowExecutionOption executionOption, CancellationToken cancellationToken = default)
     {
         await DbContext.Entry(executionOption).Reference(option => option.AnalysisPromptCategory!).LoadAsync(cancellationToken);
+        await DbContext.Entry(executionOption).Reference(option => option.AnalysisPromptCategory!.SelectedPrompt).LoadAsync(cancellationToken);
 
         if (executionOption.ChildExecutionOptions is null || executionOption.ChildExecutionOptions.Count == 0)
             return;
@@ -46,6 +47,7 @@ public class WorkflowExecutionOptionRepository(AppDbContext dbContext)
         {
             await DbContext.Entry(childOption).Reference(option => option.AnalysisPromptCategory!).LoadAsync(cancellationToken);
             await DbContext.Entry(childOption).Collection(option => option.ChildExecutionOptions!).LoadAsync(cancellationToken);
+            await DbContext.Entry(executionOption).Reference(option => option.AnalysisPromptCategory!.SelectedPrompt).LoadAsync(cancellationToken);
 
             if (childOption.ChildExecutionOptions is not null && childOption.ChildExecutionOptions.Count > 0)
                 await LoadAllChildrenAsync(childOption, cancellationToken);

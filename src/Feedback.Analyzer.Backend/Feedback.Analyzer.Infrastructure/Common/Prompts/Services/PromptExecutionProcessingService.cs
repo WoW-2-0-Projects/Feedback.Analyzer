@@ -12,22 +12,17 @@ using Newtonsoft.Json;
 namespace Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 
 public class PromptExecutionProcessingService(
-    IPromptService promptService,
     IPromptExecutionBroker promptExecutionBroker,
     IPromptsExecutionHistoryService promptsExecutionHistoryService
 ) : IPromptExecutionProcessingService
 {
-    public async ValueTask<IImmutableList<PromptExecutionHistory>> ExecuteAsync(
-        Guid promptId,
+    public async ValueTask<IReadOnlyList<PromptExecutionHistory>> ExecuteAsync(
+        AnalysisPrompt prompt,
         Dictionary<string, string> arguments,
         uint executionCount = 1,
         CancellationToken cancellationToken = default
     )
     {
-        // Query prompt and feedback
-        var prompt = await promptService.GetByIdAsync(promptId, cancellationToken: cancellationToken) ??
-                     throw new InvalidOperationException($"Could not execute prompt, prompt with id {promptId} not found.");
-
         // Map arguments to kernel arguments
         var kernelArguments = new KernelArguments();
         foreach (var keyValuePair in arguments)
@@ -52,10 +47,10 @@ public class PromptExecutionProcessingService(
         );
 
         // Map to history
-        var histories = executionResults.Select(result => MapToHistory(promptId, result.PromptResult, result.ElapsedMilliseconds)).ToImmutableList();
+        var histories = executionResults.Select(result => MapToHistory(prompt.Id, result.PromptResult, result.ElapsedMilliseconds)).ToImmutableList();
 
         var executionHistories = new List<PromptExecutionHistory>();
-        
+
         if (histories.Count > 1)
         {
             // Save prompt execution history
@@ -69,7 +64,7 @@ public class PromptExecutionProcessingService(
         }
 
         executionHistories.Add(await promptsExecutionHistoryService.CreateAsync(histories.Last(), default, cancellationToken: cancellationToken));
-      
+
         return executionHistories.ToImmutableList();
     }
 

@@ -177,8 +177,8 @@ public static partial class HostConfiguration
             .AddScoped<IPromptExecutionProcessingService, PromptExecutionProcessingService>();
         
         // Register orchestration services
-        builder.Services
-            .AddScoped<IWorkflowExecutionService, WorkflowExecutionService>();
+        // builder.Services
+            // .AddScoped<IWorkflowExecutionService, WorkflowExecutionService>();
 
         return builder;
     }
