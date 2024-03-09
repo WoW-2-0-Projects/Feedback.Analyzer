@@ -105,6 +105,84 @@ public static partial class HostConfiguration
         return builder;
     }
 
+    
+      /// <summary>
+    /// Configures exposers including controllers
+    /// </summary>
+    /// <param name="builder">Application builder</param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddSemanticKernelInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Create kernel builder
+        var kernelBuilder = Kernel.CreateBuilder();
+
+        // Add OpenAI connector
+        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-3.5-turbo", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
+
+        // Build kernel
+        var kernel = kernelBuilder.Build();
+
+        builder.Services.AddSingleton(kernel);
+
+        return builder;
+    }
+      
+    /// <summary>
+    /// Configures exposers including controllers
+    /// </summary>
+    /// <param name="builder">Application builder</param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddSemanticAnalysisInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Register brokers
+        builder.Services
+            .AddScoped<IPromptExecutionBroker, PromptExecutionBroker>();
+        
+        // Register repositories
+        builder.Services
+            .AddScoped<IPromptRepository, PromptRepository>()
+            .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>()
+            .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>()
+            .AddScoped<IWorkflowExecutionOptionRepository, WorkflowExecutionOptionRepository>(); 
+
+        // Register foundation services
+        builder.Services
+            .AddScoped<IPromptService, PromptService>()
+            .AddScoped<IPromptCategoryService, PromptCategoryService>()
+            .AddScoped<IPromptsExecutionHistoryService, PromptExecutionHistoryService>()
+            .AddScoped<IWorkflowExecutionOptionsService, WorkflowExecutionOptionsService>();
+        
+        // Register processing services
+        builder.Services
+            .AddScoped<IPromptExecutionProcessingService, PromptExecutionProcessingService>();
+        
+        // Register orchestration services
+        builder.Services
+            .AddScoped<IWorkflowExecutionService, WorkflowExecutionService>();
+
+        return builder;
+    }
+
+    /// <summary>
+    /// Configures exposers including controllers
+    /// </summary>
+    /// <param name="builder">Application builder</param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddPromptAnalysisInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Register brokers
+        
+        // Register repositories
+
+        // Register foundation services
+        
+        // Register processing services
+  
+        // Register orchestration services
+
+        return builder;
+    }
+
     /// <summary>
     /// Adds client-related infrastructure services to the web application builder.
     /// </summary>
@@ -144,69 +222,31 @@ public static partial class HostConfiguration
 
         return builder;
     }
-
-    /// <summary>
+    
+        /// <summary>
     /// Configures exposers including controllers
     /// </summary>
     /// <param name="builder">Application builder</param>
     /// <returns></returns>
-    private static WebApplicationBuilder AddSemanticKernelInfrastructure(this WebApplicationBuilder builder)
+    private static WebApplicationBuilder AddFeedbackAnalysisInfrastructure(this WebApplicationBuilder builder)
     {
-        // Create kernel builder
-        var kernelBuilder = Kernel.CreateBuilder();
-
-        // Add OpenAI connector
-        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-3.5-turbo", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
-
-        // Build kernel
-        var kernel = kernelBuilder.Build();
-
-        builder.Services.AddSingleton(kernel);
-
-        return builder;
-    }
-
-    /// <summary>
-    /// Configures exposers including controllers
-    /// </summary>
-    /// <param name="builder">Application builder</param>
-    /// <returns></returns>
-    private static WebApplicationBuilder AddPromptAnalysisInfrastructure(this WebApplicationBuilder builder)
-    {
-        // Register brokers
-        builder.Services
-            .AddScoped<IPromptExecutionBroker, PromptExecutionBroker>();
-        
         // Register repositories
         builder.Services
-            .AddScoped<IPromptRepository, PromptRepository>()
-            .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>()
-            .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>()
-            .AddScoped<IWorkflowExecutionOptionRepository, WorkflowExecutionOptionRepository>() 
             .AddScoped<IFeedbackAnalysisWorkflowRepository, FeedbackAnalysisWorkflowRepository>()
             .AddScoped<IFeedbackAnalysisResultRepository, FeedbackAnalysisResultRepository>();
 
         // Register foundation services
         builder.Services
-            .AddScoped<IPromptService, PromptService>()
-            .AddScoped<IPromptCategoryService, PromptCategoryService>()
-            .AddScoped<IPromptsExecutionHistoryService, PromptExecutionHistoryService>()
-            .AddScoped<IWorkflowExecutionOptionsService, WorkflowExecutionOptionsService>() 
             .AddScoped<IFeedbackAnalysisResultService, FeedbackAnalysisResultService>()
             .AddScoped<IFeedbackAnalysisWorkflowService, FeedbackAnalysisWorkflowService>();
         
-        // Register processing services
-        builder.Services
-            .AddScoped<IPromptExecutionProcessingService, PromptExecutionProcessingService>();
-        
         // Register orchestration services
         builder.Services
-            // .AddScoped<IAnalysisWorkflowOrchestrationService, AnalysisWorkflowOrchestrationService>()
-            .AddScoped<IWorkflowExecutionService, WorkflowExecutionService>();
+            .AddScoped<IFeedbackBatchAnalysisWorkflowOrchestrationService, FeedbackBatchAnalysisWorkflowOrchestrationService>();
 
         return builder;
     }
-
+        
     /// <summary>
     /// Adds MediatR services to the application with custom service registrations.
     /// </summary>

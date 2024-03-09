@@ -336,7 +336,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.ToTable("PromptExecutionHistories");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowPromptCategoryExecutionOptions", b =>
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowExecutionOptions", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -359,7 +359,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("WorkflowPromptCategoryExecutionOptions");
+                    b.ToTable("WorkflowExecutionOptions");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", b =>
@@ -576,7 +576,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("Prompt");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowPromptCategoryExecutionOptions", b =>
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowExecutionOptions", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", "AnalysisPromptCategory")
                         .WithMany("FeedbackWorkflowExecutionOptions")
@@ -590,7 +590,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.WorkflowPromptCategoryExecutionOptions", null)
+                    b.HasOne("Feedback.Analyzer.Domain.Entities.WorkflowExecutionOptions", null)
                         .WithMany("ChildExecutionOptions")
                         .HasForeignKey("ParentId");
 
@@ -637,7 +637,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("CustomerFeedbacks");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowPromptCategoryExecutionOptions", b =>
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowExecutionOptions", b =>
                 {
                     b.Navigation("ChildExecutionOptions");
                 });

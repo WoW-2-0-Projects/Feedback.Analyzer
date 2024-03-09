@@ -30,20 +30,25 @@ public class WorkflowExecutionOptionRepository(AppDbContext dbContext)
         return executionOption;
     }
 
+    /// <summary>
+    /// Loads all children of the given execution option
+    /// </summary>
+    /// <param name="executionOption">Execution option to load children for</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     private async ValueTask LoadAllChildrenAsync(WorkflowExecutionOptions executionOption, CancellationToken cancellationToken = default)
     {
+        await DbContext.Entry(executionOption).Reference(option => option.AnalysisPromptCategory!).LoadAsync(cancellationToken);
+
         if (executionOption.ChildExecutionOptions is null || executionOption.ChildExecutionOptions.Count == 0)
             return;
 
-        // Load all children execution options and category references
-        var loadChildrenTasks = executionOption.ChildExecutionOptions.Select(
-            async childOption =>
-            {
-                await DbContext.Entry(childOption).Collection(option => option.ChildExecutionOptions!).LoadAsync(cancellationToken);
-                await DbContext.Entry(childOption).Reference(option => option.AnalysisPromptCategory!).LoadAsync(cancellationToken);
-            }
-        );
+        foreach (var childOption in executionOption.ChildExecutionOptions)
+        {
+            await DbContext.Entry(childOption).Reference(option => option.AnalysisPromptCategory!).LoadAsync(cancellationToken);
+            await DbContext.Entry(childOption).Collection(option => option.ChildExecutionOptions!).LoadAsync(cancellationToken);
 
-        await Task.WhenAll(loadChildrenTasks);
+            if (childOption.ChildExecutionOptions is not null && childOption.ChildExecutionOptions.Count > 0)
+                await LoadAllChildrenAsync(childOption, cancellationToken);
+        }
     }
 }

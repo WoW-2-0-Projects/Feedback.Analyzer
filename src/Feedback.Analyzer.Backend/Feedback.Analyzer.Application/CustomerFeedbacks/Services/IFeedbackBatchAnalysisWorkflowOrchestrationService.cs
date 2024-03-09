@@ -3,7 +3,7 @@ namespace Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 /// <summary>
 /// Defines feedback analysis workflow orchestration functionality
 /// </summary>
-public interface IIFeedbackAnalysisWorkflowOrchestrationService
+public interface IFeedbackBatchAnalysisWorkflowOrchestrationService
 {
     /// <summary>
     /// Executes workflow for the given feedback

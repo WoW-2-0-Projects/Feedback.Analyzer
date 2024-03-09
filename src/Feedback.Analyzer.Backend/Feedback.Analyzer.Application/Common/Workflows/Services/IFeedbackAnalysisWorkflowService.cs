@@ -26,7 +26,7 @@ public interface IFeedbackAnalysisWorkflowService
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the operation and containing the FeedbackAnalysisWorkflow entity.</returns>
     ValueTask<FeedbackAnalysisWorkflow?> GetByIdAsync(Guid workflowId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default);
-
+    
     /// <summary>
     /// Asynchronously creates a new FeedbackAnalysisWorkflow entity.
     /// </summary>

@@ -265,7 +265,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowPromptCategoryExecutionOptions", b =>
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowExecutionOptions", b =>
                 {
                     b.Property<Guid>("AnalysisPromptCategoryId")
                         .HasColumnType("uuid");
@@ -280,7 +280,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("FeedbackExecutionWorkflowId");
 
-                    b.ToTable("WorkflowPromptCategoryExecutionOptions");
+                    b.ToTable("WorkflowExecutionOptions");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Common.Prompts.AnalysisPrompt", b =>
@@ -336,7 +336,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("Organization");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowPromptCategoryExecutionOptions", b =>
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowExecutionOptions", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.FeedbackExecutionWorkflow", "FeedbackExecutionWorkflow")
                         .WithMany("FeedbackWorkflowExecutionOptions")

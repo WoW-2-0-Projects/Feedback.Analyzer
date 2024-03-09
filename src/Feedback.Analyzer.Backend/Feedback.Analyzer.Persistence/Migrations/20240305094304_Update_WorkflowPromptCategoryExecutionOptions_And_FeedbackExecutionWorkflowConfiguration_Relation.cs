@@ -24,7 +24,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 table: "WorkflowExecutionOptions");
 
             migrationBuilder.AddColumn<Guid>(
-                name: "StartingExecutionOptionId",
+                name: "EntryExecutionOptionId",
                 table: "FeedbackExecutionWorkflows",
                 type: "uuid",
                 nullable: false,
@@ -33,13 +33,13 @@ namespace Feedback.Analyzer.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_FeedbackExecutionWorkflows_StartingExecutionOptionId",
                 table: "FeedbackExecutionWorkflows",
-                column: "StartingExecutionOptionId",
+                column: "EntryExecutionOptionId",
                 unique: true);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_FeedbackExecutionWorkflows_WorkflowPromptCategoryExecutionO~",
                 table: "FeedbackExecutionWorkflows",
-                column: "StartingExecutionOptionId",
+                column: "EntryExecutionOptionId",
                 principalTable: "WorkflowExecutionOptions",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
@@ -57,7 +57,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 table: "FeedbackExecutionWorkflows");
 
             migrationBuilder.DropColumn(
-                name: "StartingExecutionOptionId",
+                name: "EntryExecutionOptionId",
                 table: "FeedbackExecutionWorkflows");
 
             migrationBuilder.AddColumn<Guid>(

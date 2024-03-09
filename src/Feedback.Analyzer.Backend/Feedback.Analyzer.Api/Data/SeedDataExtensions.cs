@@ -743,7 +743,7 @@ public static class SeedDataExtensions
             Name = "Base Workflow",
             ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
             Type = WorkflowType.Training,
-            StartingExecutionOption = executionOptions.First()
+            EntryExecutionOption = executionOptions.First()
         };
 
         appDbContext.FeedbackExecutionWorkflows.Add(templateWorkflow);

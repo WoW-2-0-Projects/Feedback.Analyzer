@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 
@@ -12,8 +11,7 @@ public record WorkflowContext
     /// <summary>
     /// Gets 
     /// </summary>
-    public IImmutableList<WorkflowExecutionOptions> ExecutionOptions { get; init; } 
-        = ImmutableList<WorkflowExecutionOptions>.Empty;
+    public WorkflowExecutionOptions EntryExecutionOption { get; init; } = default!;
     
     /// <summary>
     /// Gets or sets execution arguments

@@ -13,9 +13,9 @@ public class FeedbackAnalysisWorkflow : AuditableEntity, ICloneable<FeedbackAnal
 
     public WorkflowType Type { get; set; }
 
-    public Guid StartingExecutionOptionId { get; set; }
-    
-    public WorkflowExecutionOptions StartingExecutionOption { get; set; } = default!;
+    public Guid EntryExecutionOptionId { get; set; }
+   
+    public WorkflowExecutionOptions EntryExecutionOption { get; set; } = default!;
 
     public FeedbackAnalysisWorkflow Clone()
     {
@@ -24,7 +24,7 @@ public class FeedbackAnalysisWorkflow : AuditableEntity, ICloneable<FeedbackAnal
             Type = Type,
         };
 
-        clonedWorkflow.StartingExecutionOption = StartingExecutionOption.Clone(clonedWorkflow);
+        clonedWorkflow.EntryExecutionOption = EntryExecutionOption.Clone(clonedWorkflow);
 
         return clonedWorkflow;
     }

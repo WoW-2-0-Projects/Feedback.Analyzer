@@ -4,11 +4,11 @@ using Feedback.Analyzer.Domain.Common.Events;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Workflows.EventHandlers;
 
-public class ExecuteWorkflowEventHandler(IIFeedbackAnalysisWorkflowOrchestrationService feedbackAnalysisWorkflowOrchestrationService)
+public class ExecuteWorkflowEventHandler(IFeedbackBatchAnalysisWorkflowOrchestrationService feedbackBatchAnalysisWorkflowOrchestrationService)
     : IEventHandler<ExecuteWorkflowEvent>
 {
     public async Task Handle(ExecuteWorkflowEvent notification, CancellationToken cancellationToken)
     {
-        await feedbackAnalysisWorkflowOrchestrationService.ExecuteWorkflowAsync(notification.WorkflowId, cancellationToken);
+        await feedbackBatchAnalysisWorkflowOrchestrationService.ExecuteWorkflowAsync(notification.WorkflowId, cancellationToken);
     }
 }

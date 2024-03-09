@@ -20,9 +20,9 @@ public class FeedbackExecutionWorkflowConfiguration : IEntityTypeConfiguration<F
             .OnDelete(DeleteBehavior.Restrict);
 
         builder
-            .HasOne(workflow => workflow.StartingExecutionOption)
+            .HasOne(workflow => workflow.EntryExecutionOption)
             .WithOne(executionOptions => executionOptions.FeedbackAnalysisWorkflow)
-            .HasForeignKey<FeedbackAnalysisWorkflow>(promptCategory => promptCategory.StartingExecutionOptionId);
+            .HasForeignKey<FeedbackAnalysisWorkflow>(promptCategory => promptCategory.EntryExecutionOptionId);
 
         builder
             .HasIndex(

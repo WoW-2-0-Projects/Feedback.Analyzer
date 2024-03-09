@@ -10,14 +10,19 @@ namespace Feedback.Analyzer.Application.CustomerFeedbacks.Models;
 public record FeedbackAnalysisWorkflowContext : WorkflowContext
 {
     /// <summary>
+    /// Organization of the product
+    /// </summary>
+    public Organization Organization { get; set; } = default!;
+
+    /// <summary>
+    /// Product to analyze
+    /// </summary>
+    public Product Product { get; set; } = default!;
+    
+    /// <summary>
     /// Gets feedbacks Id
     /// </summary>
     public IImmutableList<Guid> FeedbacksId { get; init; } = new ImmutableArray<Guid>();
-
-    /// <summary>
-    /// Gets product Id
-    /// </summary>
-    public Guid ProductId { get; init; }
 
     /// <summary>
     /// Gets feedback analysis result
