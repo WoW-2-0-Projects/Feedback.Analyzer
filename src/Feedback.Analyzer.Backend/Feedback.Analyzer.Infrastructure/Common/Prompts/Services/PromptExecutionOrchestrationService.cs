@@ -47,15 +47,21 @@ public class PromptExecutionOrchestrationService(IPromptExecutionProcessingServi
 
         if (executionOptions.AnalysisPromptCategory.Category == FeedbackAnalysisPromptCategory.RelevanceAnalysis)
         {
-            var test = JsonConvert.DeserializeObject<bool>(history.Result!.ToLower());
-            if (!test)
+            var test = JsonConvert.DeserializeObject<FeedbackRelevance>(history.Result!.ToLower());
+            if (!test?.IsRelevant ?? false)
                 executionContext.Arguments = null!;
         }
 
         else if (executionOptions.AnalysisPromptCategory.Category == FeedbackAnalysisPromptCategory.RelevantContentExtraction)
         {
-            var test = JsonConvert.DeserializeObject<string>(history.Result!);
-            executionContext.Arguments[PromptConstants.CustomerFeedback] = test;
+            var test = JsonConvert.DeserializeObject<FeedbackRelevance>(history.Result!);
+            executionContext.Arguments[PromptConstants.CustomerFeedback] = test!.ExtractedRelevantContent;
+        }
+        
+        else if (executionOptions.AnalysisPromptCategory.Category == FeedbackAnalysisPromptCategory.PersonalInformationRedaction)
+        {
+            var test = JsonConvert.DeserializeObject<FeedbackRelevance>(history.Result!);
+            executionContext.Arguments[PromptConstants.CustomerFeedback] = test!.PiiRedactedContent;
         }
 
         else if (executionOptions.AnalysisPromptCategory.Category is FeedbackAnalysisPromptCategory.QuestionPointsExtraction

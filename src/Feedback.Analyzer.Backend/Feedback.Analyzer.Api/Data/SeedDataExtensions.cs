@@ -392,7 +392,7 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("4ca01475-d036-4ac3-a326-a2580110ee0c"),
-                CategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
+                CategoryId = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
                 Prompt = """
                             ## Instructions"
 
