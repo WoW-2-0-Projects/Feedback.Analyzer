@@ -18,11 +18,11 @@ public record FeedbackAnalysisWorkflowContext : WorkflowContext
     /// Product to analyze
     /// </summary>
     public Product Product { get; set; } = default!;
-    
+
     /// <summary>
     /// Gets feedbacks Id
     /// </summary>
-    public IImmutableList<Guid> FeedbacksId { get; init; } = new ImmutableArray<Guid>();
+    public ICollection<Guid> FeedbacksId { get; set; } = new List<Guid>();
 
     // /// <summary>
     // /// Gets feedback analysis result

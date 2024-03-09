@@ -4,6 +4,7 @@ using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
@@ -36,6 +37,13 @@ public class FeedbackAnalysisWorkflowRepository(AppDbContext dbContext)
         CancellationToken cancellationToken = default
     ) =>
         base.UpdateAsync(workflow, commandOptions, cancellationToken);
+
+    public new ValueTask<int> UpdateBatchAsync(
+        Expression<Func<SetPropertyCalls<FeedbackAnalysisWorkflow>, SetPropertyCalls<FeedbackAnalysisWorkflow>>> setPropertyCalls,
+        Expression<Func<FeedbackAnalysisWorkflow, bool>>? batchUpdatePredicate = default,
+        CancellationToken cancellationToken = default
+    ) =>
+        base.UpdateBatchAsync(setPropertyCalls, batchUpdatePredicate, cancellationToken);
 
     public new ValueTask<FeedbackAnalysisWorkflow?> DeleteAsync(
         FeedbackAnalysisWorkflow workflow,

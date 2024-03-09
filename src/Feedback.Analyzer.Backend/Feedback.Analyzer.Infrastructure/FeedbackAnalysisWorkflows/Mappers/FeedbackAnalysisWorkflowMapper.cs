@@ -17,9 +17,8 @@ public class FeedbackExecutionWorkflowMapper : Profile
             {
                 Id = src.EntryExecutionOptionId
             }))
-            // .ForMember(dest => dest.EntryExecutionOptionId, opt => opt.MapFrom(src => src.EntryExecutionOptionId))
-            
             .ForMember(dest => dest.Organization, opt => opt.MapFrom(src => src.Product.Organization))
-            .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
+            .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product))
+            .ForMember(dest => dest.FeedbacksId, opt => opt.MapFrom(src => src.Product.CustomerFeedbacks.Select(feedback => feedback.Id)));
     }
 }

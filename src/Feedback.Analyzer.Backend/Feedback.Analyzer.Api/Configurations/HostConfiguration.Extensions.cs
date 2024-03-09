@@ -14,6 +14,7 @@ using Feedback.Analyzer.Application.Common.PromptsHistory.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Common.Workflows.Services;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Services;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Constants;
@@ -31,6 +32,7 @@ using Feedback.Analyzer.Infrastructure.Common.Workflows.Services;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
+using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflowResults.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
@@ -239,7 +241,8 @@ public static partial class HostConfiguration
         // Register foundation services
         builder.Services
             .AddScoped<IFeedbackAnalysisResultService, FeedbackAnalysisResultService>()
-            .AddScoped<IFeedbackAnalysisWorkflowService, FeedbackAnalysisWorkflowService>();
+            .AddScoped<IFeedbackAnalysisWorkflowService, FeedbackAnalysisWorkflowService>()
+            .AddScoped<IFeedbackAnalysisWorkflowResultService, FeedbackAnalysisWorkflowResultService>();
         
         // Register orchestration services
         builder.Services

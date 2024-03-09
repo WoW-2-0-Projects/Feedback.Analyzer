@@ -3,6 +3,7 @@ using Feedback.Analyzer.Application.Common.Workflows.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Workflows.Services;
@@ -36,6 +37,17 @@ public class FeedbackAnalysisWorkflowService(IFeedbackAnalysisWorkflowRepository
         CancellationToken cancellationToken = default
     ) =>
         feedbackAnalysisWorkflowRepository.UpdateAsync(workflow, commandOptions, cancellationToken);
+
+    public async ValueTask<bool> UpdateStatus(Guid workflowId, WorkflowStatus status, CancellationToken cancellationToken = default)
+    {
+        var updatedWorkflowsCount =  await feedbackAnalysisWorkflowRepository.UpdateBatchAsync(
+            setPropertyCalls => setPropertyCalls.SetProperty(workflow => workflow.Status, status),
+            workflow => workflow.Id == workflowId,
+            cancellationToken
+        );
+
+        return updatedWorkflowsCount == 1;
+    }
 
     public ValueTask<FeedbackAnalysisWorkflow?> DeleteAsync(
         FeedbackAnalysisWorkflow workflow,

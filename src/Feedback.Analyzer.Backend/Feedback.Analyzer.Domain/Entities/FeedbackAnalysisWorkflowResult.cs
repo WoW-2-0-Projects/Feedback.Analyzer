@@ -6,5 +6,7 @@ public class FeedbackAnalysisWorkflowResult : Entity
 {
     public Guid WorkflowId { get; set; }
     
+    public ulong FeedbacksCount { get; set; }
+    
     public FeedbackAnalysisWorkflow Workflow { get; set; } = default!;
 }

@@ -12,9 +12,11 @@ public class FeedbackAnalysisWorkflow : AuditableEntity, ICloneable<FeedbackAnal
     public Product Product { get; set; } = default!;
 
     public WorkflowType Type { get; set; }
+    
+    public WorkflowStatus Status { get; set; }
 
     public Guid EntryExecutionOptionId { get; set; }
-   
+    
     public WorkflowExecutionOptions EntryExecutionOption { get; set; } = default!;
     
     public ICollection<FeedbackAnalysisWorkflowResult> Results { get; set; } = default!;

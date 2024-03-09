@@ -20,18 +20,8 @@ public class PromptCategoryRepository(AppDbContext dbContext)
     ) =>
         base.Get(predicate, queryOptions);
 
-    // public new ValueTask<int> UpdateBatchAsync(
-    //         IImmutableList<(Func<AnalysisPromptCategory, object> propertySelector, 
-    //             Func<AnalysisPromptCategory, object> valueSelector)> setPropertyExecutors,
-    //         Expression<Func<AnalysisPromptCategory, bool>>? batchUpdatePredicate = default,
-    //         CancellationToken cancellationToken = default
-    //     )
-    // => base.UpdateBatchAsync(setPropertyExecutors, batchUpdatePredicate, cancellationToken);
-    //
-
     public new ValueTask<int> UpdateBatchAsync(
         Expression<Func<SetPropertyCalls<AnalysisPromptCategory>, SetPropertyCalls<AnalysisPromptCategory>>> setPropertyCalls,
-        // Func<AnalysisPromptCategory, object> valueSelector)> set,
         Expression<Func<AnalysisPromptCategory, bool>>? batchUpdatePredicate = default,
         CancellationToken cancellationToken = default
     ) =>
