@@ -348,10 +348,7 @@ public static class SeedDataExtensions
                          3. Any word or expression that is used to imply the product, its name or features, or service is considered as relevant.
                          4. Any word or expression indicating an issue with the product or service, its functionality.
                          
-                         The return format has to be in json: 
-                         {
-                             "IsRelevant": ...
-                         }
+                         The return format: "true" or "false"
 
                          """,
                 Version = 1,
@@ -362,29 +359,16 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("3ca01475-d736-4ac3-a326-a2580110ee0c"),
                 CategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
                 Prompt = """
-                            ### Product Description
+                            ## Product Description
                             {{$productDescription}}
                             
-                            ### Customer Feedback
+                            ## Customer Feedback
                             {{$customerFeedback}}
-                          
-                            ### Instructions
                             
-                            Analyze the given Customer Feedback (delimited by ###) systematically, identify and extract all parts that are relevant to the Product, its name, features and functionality given in Product Description (delimited by ###) into a single string.
-                            Think step by step.
+                            ## Instructions
                             
-                            Return the extracted parts in json format: 
-                            {
-                                "RelevantParts": string
-                            }
-                            
-                            ### Examples
-                            Customer Feedback: The viper mouse feels great on my grip. It's RGB light perfectly matches my keyboard on my desk. I use magic keyboard at home. I also wanted to buy a new desk, any tips?
-                            
-                            Result: 
-                            {
-                                "RelevantParts": "The viper mouse feels great on my grip. It's RGB light perfectly matches my keyboard on my desk."
-                            }
+                            Exclude the parts of the Customer Feedback that are irrelevant to the Product. Return the Customer Feedback after exclusion of irrelevant parts in a plain text.
+                            Example Result: "..."
                             """,
                 Version = 2,
                 Revision = 0,
@@ -404,6 +388,7 @@ public static class SeedDataExtensions
                             3. make sure sentences are still readable
 
                             ## Product Description:
+                            
                             
                             {{$productDescription}}
                             
