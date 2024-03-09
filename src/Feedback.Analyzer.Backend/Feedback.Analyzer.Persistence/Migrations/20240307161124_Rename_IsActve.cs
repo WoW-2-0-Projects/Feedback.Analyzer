@@ -12,7 +12,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.RenameColumn(
                 name: "IsActive",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 newName: "IsDisabled");
         }
 
@@ -21,7 +21,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.RenameColumn(
                 name: "IsDisabled",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 newName: "IsActive");
         }
     }

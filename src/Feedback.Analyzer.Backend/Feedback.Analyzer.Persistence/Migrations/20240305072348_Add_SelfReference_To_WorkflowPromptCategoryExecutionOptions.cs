@@ -13,7 +13,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "Id",
-                table: "WorkflowPromptCategoryExecutionOptions");
+                table: "WorkflowExecutionOptions");
         }
 
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.AddColumn<Guid>(
                 name: "Id",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 type: "uuid",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));

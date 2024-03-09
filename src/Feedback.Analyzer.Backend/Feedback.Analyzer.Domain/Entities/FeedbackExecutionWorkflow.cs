@@ -15,7 +15,7 @@ public class FeedbackExecutionWorkflow : AuditableEntity, ICloneable<FeedbackExe
 
     public Guid StartingExecutionOptionId { get; set; }
     
-    public WorkflowPromptCategoryExecutionOptions StartingExecutionOption { get; set; } = default!;
+    public WorkflowExecutionOptions StartingExecutionOption { get; set; } = default!;
 
     public FeedbackExecutionWorkflow Clone()
     {

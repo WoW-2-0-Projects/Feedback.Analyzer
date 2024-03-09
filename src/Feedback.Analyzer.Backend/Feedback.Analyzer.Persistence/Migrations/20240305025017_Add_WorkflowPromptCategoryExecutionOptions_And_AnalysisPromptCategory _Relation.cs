@@ -12,7 +12,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "WorkflowPromptCategoryExecutionOptions",
+                name: "WorkflowExecutionOptions",
                 columns: table => new
                 {
                     AnalysisPromptCategoryId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -32,7 +32,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkflowPromptCategoryExecutionOptions_FeedbackExecutionWor~",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 column: "FeedbackExecutionWorkflowId");
         }
 
@@ -40,7 +40,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "WorkflowPromptCategoryExecutionOptions");
+                name: "WorkflowExecutionOptions");
         }
     }
 }

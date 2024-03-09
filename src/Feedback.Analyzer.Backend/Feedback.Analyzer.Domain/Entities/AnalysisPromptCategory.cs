@@ -15,5 +15,5 @@ public class AnalysisPromptCategory : Entity
     
     public ICollection<AnalysisPrompt> Prompts { get; set; } = new List<AnalysisPrompt>();
     
-    public List<WorkflowPromptCategoryExecutionOptions> FeedbackWorkflowExecutionOptions { get; set; }
+    public List<WorkflowExecutionOptions> FeedbackWorkflowExecutionOptions { get; set; }
 }

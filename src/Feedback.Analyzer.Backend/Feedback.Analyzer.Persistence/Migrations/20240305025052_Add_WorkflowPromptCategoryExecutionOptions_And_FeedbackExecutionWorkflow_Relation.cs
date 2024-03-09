@@ -12,7 +12,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.AddForeignKey(
                 name: "FK_WorkflowPromptCategoryExecutionOptions_PromptCategories_Ana~",
-                table: "WorkflowPromptCategoryExecutionOptions",
+                table: "WorkflowExecutionOptions",
                 column: "AnalysisPromptCategoryId",
                 principalTable: "PromptCategories",
                 principalColumn: "Id",
@@ -24,7 +24,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_WorkflowPromptCategoryExecutionOptions_PromptCategories_Ana~",
-                table: "WorkflowPromptCategoryExecutionOptions");
+                table: "WorkflowExecutionOptions");
         }
     }
 }

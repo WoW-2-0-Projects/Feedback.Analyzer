@@ -376,7 +376,7 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("4ca01475-d036-4ac3-a326-a2580110ee0c"),
-                CategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
+                CategoryId = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
                 Prompt = """
                             ## Instructions"
 
@@ -656,53 +656,53 @@ public static class SeedDataExtensions
     private static async ValueTask SeedAnalysisWorkflows(AppDbContext appDbContext)
     {
         // Add template workflow execution options
-        var executionOptions = new List<WorkflowPromptCategoryExecutionOptions>
+        var executionOptions = new List<WorkflowExecutionOptions>
         {
             // new()
             // {
             //     AnalysisPromptCategoryId = Guid.Parse("15072FC8-63C7-49EC-BF4F-3FD2A8479CF4"),
             //     ChildExecutionOptions =
             //     [
-                    new WorkflowPromptCategoryExecutionOptions
+                    new WorkflowExecutionOptions
                     {
                         AnalysisPromptCategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                         ChildExecutionOptions =
                         [
-                            // new WorkflowPromptCategoryExecutionOptions
+                            // new WorkflowExecutionOptions
                             // {
                             //     AnalysisPromptCategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
                             // },
-                            new WorkflowPromptCategoryExecutionOptions
+                            new WorkflowExecutionOptions
                             {
                                 AnalysisPromptCategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
                                 ChildExecutionOptions =
                                 [
-                                    new WorkflowPromptCategoryExecutionOptions
+                                    new WorkflowExecutionOptions
                                     {
                                         AnalysisPromptCategoryId = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
                                         ChildExecutionOptions =
                                         [
-                                            new WorkflowPromptCategoryExecutionOptions
+                                            new WorkflowExecutionOptions
                                             {
                                                 AnalysisPromptCategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
                                             },
-                                            new WorkflowPromptCategoryExecutionOptions
+                                            new WorkflowExecutionOptions
                                             {
                                                 AnalysisPromptCategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
                                                 ChildExecutionOptions =
                                                 [
-                                                    new WorkflowPromptCategoryExecutionOptions
+                                                    new WorkflowExecutionOptions
                                                     {
                                                         AnalysisPromptCategoryId = Guid.Parse("6F1FDE2A-CAFC-4C4D-B909-655414C8C76E"),
                                                     },
                                                 ]
                                             },
-                                            new WorkflowPromptCategoryExecutionOptions
+                                            new WorkflowExecutionOptions
                                             {
                                                 AnalysisPromptCategoryId = Guid.Parse("33CCCA43-E803-4FA2-AFC7-7C202DE5EA0C"),
                                                 ChildExecutionOptions =
                                                 [
-                                                    new WorkflowPromptCategoryExecutionOptions
+                                                    new WorkflowExecutionOptions
                                                     {
                                                         AnalysisPromptCategoryId = Guid.Parse("2EF85588-0B12-4FB8-9027-80D45CC38EC1"),
                                                     },
@@ -712,7 +712,7 @@ public static class SeedDataExtensions
                                     },
                                 ]
                             },
-                            // new WorkflowPromptCategoryExecutionOptions
+                            // new WorkflowExecutionOptions
                             // {
                             //     AnalysisPromptCategoryId = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
                             // },

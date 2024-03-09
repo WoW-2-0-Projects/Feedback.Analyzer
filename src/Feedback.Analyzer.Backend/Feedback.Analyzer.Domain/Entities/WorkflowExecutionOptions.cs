@@ -2,7 +2,7 @@ using Feedback.Analyzer.Domain.Common.Entities;
 
 namespace Feedback.Analyzer.Domain.Entities;
 
-public class WorkflowPromptCategoryExecutionOptions : Entity, IParameterizedCloneable<FeedbackExecutionWorkflow, WorkflowPromptCategoryExecutionOptions>
+public class WorkflowExecutionOptions : Entity, IParameterizedCloneable<FeedbackExecutionWorkflow, WorkflowExecutionOptions>
 {
     public Guid AnalysisPromptCategoryId { get; set; }
 
@@ -16,11 +16,11 @@ public class WorkflowPromptCategoryExecutionOptions : Entity, IParameterizedClon
     
     public bool IsDisabled { get; set; }
 
-    public List<WorkflowPromptCategoryExecutionOptions> ChildExecutionOptions { get; set; } = default!;
+    public List<WorkflowExecutionOptions> ChildExecutionOptions { get; set; } = default!;
 
-    public WorkflowPromptCategoryExecutionOptions Clone(FeedbackExecutionWorkflow args)
+    public WorkflowExecutionOptions Clone(FeedbackExecutionWorkflow args)
     {
-        return new WorkflowPromptCategoryExecutionOptions
+        return new WorkflowExecutionOptions
         {
             AnalysisPromptCategoryId = AnalysisPromptCategoryId,
             FeedbackExecutionWorkflow = args,
