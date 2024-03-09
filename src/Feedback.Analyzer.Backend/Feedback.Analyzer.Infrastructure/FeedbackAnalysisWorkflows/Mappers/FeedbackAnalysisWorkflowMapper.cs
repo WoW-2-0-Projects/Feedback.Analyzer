@@ -9,13 +9,16 @@ public class FeedbackAnalysisWorkflowMapper : Profile
 {
     public FeedbackAnalysisWorkflowMapper()
     {
-        CreateMap<FeedbackAnalysisWorkflow, FeedbackExecutionWorkflowDto>().ReverseMap();
+        CreateMap<FeedbackAnalysisWorkflow, FeedbackExecutionWorkflowDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Workflow.Name))
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Workflow.Type))
+            .ReverseMap();
 
         CreateMap<FeedbackAnalysisWorkflow, FeedbackAnalysisWorkflowContext>()
             .ForMember(dest => dest.WorkflowId, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.EntryExecutionOption, opt => opt.MapFrom(src => new WorkflowExecutionOptions
+            .ForMember(dest => dest.EntryExecutionOption, opt => opt.MapFrom(src => new WorkflowExecutionOption
             {
-                Id = src.EntryExecutionOptionId
+                Id = src.Workflow.EntryExecutionOptionId
             }))
             .ForMember(dest => dest.Organization, opt => opt.MapFrom(src => src.Product.Organization))
             .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product))

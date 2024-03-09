@@ -1,7 +1,8 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Feedback.Analyzer.Application.Common.AnalysisWorkflowExecutionOptions.Services;
+using Feedback.Analyzer.Application.Common.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Application.Common.EventBus.Brokers;
+using Feedback.Analyzer.Application.Common.WorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
@@ -19,6 +20,7 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 public class FeedbackBatchAnalysisOrchestrationService(
     IMapper mapper,
     IEventBusBroker eventBusBroker,
+    IAnalysisWorkflowService analysisWorkflowService,
     IFeedbackAnalysisWorkflowService feedbackAnalysisWorkflowService,
     IWorkflowExecutionOptionsService workflowExecutionOptionsService,
     IFeedbackAnalysisWorkflowResultService feedbackAnalysisWorkflowResultService
@@ -36,6 +38,7 @@ public class FeedbackBatchAnalysisOrchestrationService(
         // Load analysis workflow
         var workflowContext = await feedbackAnalysisWorkflowService
                                   .Get(workflow => workflow.Id == workflowId, queryOptions)
+                                  .Include(workflow => workflow.Workflow)
                                   .Include(workflow => workflow.Product)
                                   .Include(workflow => workflow.Product.Organization)
                                   .Include(workflow => workflow.Product.CustomerFeedbacks)
@@ -57,7 +60,7 @@ public class FeedbackBatchAnalysisOrchestrationService(
         // Validate workflow
 
         //  Update workflow status
-        var updateResult = await feedbackAnalysisWorkflowService.UpdateStatus(workflowId, WorkflowStatus.Running, cancellationToken);
+        var updateResult = await analysisWorkflowService.UpdateStatus(workflowId, WorkflowStatus.Running, cancellationToken);
         if (!updateResult)
             throw new InvalidOperationException($"Could not execute workflow, workflow with id {workflowId} not found.");
 

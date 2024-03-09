@@ -14,12 +14,13 @@ public class WorkflowGetQueryHandler(IMapper mapper, IFeedbackAnalysisWorkflowSe
     public async Task<ICollection<FeedbackExecutionWorkflowDto>> Handle(WorkflowGetQuery request, CancellationToken cancellationToken)
     {
         var workflows = await workflowService.Get(
-                workflow => workflow.Type == request.Filter.Type,
+                feedbackAnalysisWorkflow => feedbackAnalysisWorkflow.Workflow.Type == request.Filter.Type,
                 new QueryOptions
                 {
                     AsNoTracking = true
                 }
             )
+            .Include(feedbackAnalysisWorkflow => feedbackAnalysisWorkflow.Workflow)
             .ApplyPagination(request.Filter)
             .ToListAsync(cancellationToken: cancellationToken);
 

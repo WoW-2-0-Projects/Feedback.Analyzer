@@ -1,4 +1,5 @@
-﻿using Feedback.Analyzer.Domain.Common.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Feedback.Analyzer.Domain.Common.Entities;
 
 namespace Feedback.Analyzer.Domain.Entities;
 
@@ -27,5 +28,8 @@ public class CustomerFeedback : AuditableEntity
     /// </summary>
     public Product Product { get; set; } = default!;
 
+    /// <summary>
+    /// Gets or sets the analysis result of the feedback.
+    /// </summary>
     public FeedbackAnalysisResult FeedbackAnalysisResult { get; set; }
 }

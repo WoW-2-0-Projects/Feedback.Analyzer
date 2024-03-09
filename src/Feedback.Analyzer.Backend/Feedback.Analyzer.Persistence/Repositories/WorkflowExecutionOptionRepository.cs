@@ -10,9 +10,9 @@ namespace Feedback.Analyzer.Persistence.Repositories;
 /// Provides workflow execution options repository functionality
 /// </summary>
 public class WorkflowExecutionOptionRepository(AppDbContext dbContext)
-    : EntityRepositoryBase<WorkflowExecutionOptions, AppDbContext>(dbContext), IWorkflowExecutionOptionRepository
+    : EntityRepositoryBase<WorkflowExecutionOption, AppDbContext>(dbContext), IWorkflowExecutionOptionRepository
 {
-    public async ValueTask<WorkflowExecutionOptions?> GetByIdAndIncludeAllGrandChildrenAsync(
+    public async ValueTask<WorkflowExecutionOption?> GetByIdAndIncludeAllGrandChildrenAsync(
         Guid optionId,
         QueryOptions queryOptions = default,
         CancellationToken cancellationToken = default
@@ -35,7 +35,7 @@ public class WorkflowExecutionOptionRepository(AppDbContext dbContext)
     /// </summary>
     /// <param name="executionOption">Execution option to load children for</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    private async ValueTask LoadAllChildrenAsync(WorkflowExecutionOptions executionOption, CancellationToken cancellationToken = default)
+    private async ValueTask LoadAllChildrenAsync(WorkflowExecutionOption executionOption, CancellationToken cancellationToken = default)
     {
         await DbContext.Entry(executionOption).Reference(option => option.AnalysisPromptCategory!).LoadAsync(cancellationToken);
 

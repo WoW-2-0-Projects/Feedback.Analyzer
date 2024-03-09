@@ -14,7 +14,7 @@ public class WorkflowExecutionService(
     : IWorkflowExecutionService
 {
     public async ValueTask ExecuteAsync(
-        WorkflowExecutionOptions headPromptOption,
+        WorkflowExecutionOption headPromptOption,
         PromptExecutionContext promptExecutionContext,
         // CustomerFeedback feedback,
         CancellationToken cancellationToken = default
@@ -24,54 +24,54 @@ public class WorkflowExecutionService(
         // await ExecutePrompt(executionContext, headPromptOption);
     }
 
-    private async ValueTask ExecutePrompt(PromptExecutionContext executionContext, WorkflowExecutionOptions executionOptions)
+    private async ValueTask ExecutePrompt(PromptExecutionContext executionContext, WorkflowExecutionOption executionOption)
     {
         if (executionContext.Arguments is null)
             return;
 
-        await appDbContext.Entry(executionOptions).Reference(options => options.AnalysisPromptCategory).LoadAsync();
+        await appDbContext.Entry(executionOption).Reference(options => options.AnalysisPromptCategory).LoadAsync();
 
         var history = promptExecutionProcessingService.ExecuteAsync(
-                (Guid)executionOptions.AnalysisPromptCategory.SelectedPromptId!,
+                (Guid)executionOption.AnalysisPromptCategory.SelectedPromptId!,
                 executionContext.Arguments
             )
             .Result[0];
 
-        executionContext.ExecutionHistories.Add(executionOptions.Id, history);
+        executionContext.ExecutionHistories.Add(executionOption.Id, history);
 
-        if (executionOptions.AnalysisPromptCategory.Category == FeedbackAnalysisPromptCategory.RelevanceAnalysis)
+        if (executionOption.AnalysisPromptCategory.Category == FeedbackAnalysisPromptCategory.RelevanceAnalysis)
         {
             var test = JsonConvert.DeserializeObject<FeedbackRelevance>(history.Result!.ToLower());
             if (!test?.IsRelevant ?? false)
                 executionContext.Arguments = null!;
         }
 
-        else if (executionOptions.AnalysisPromptCategory.Category == FeedbackAnalysisPromptCategory.RelevantContentExtraction)
+        else if (executionOption.AnalysisPromptCategory.Category == FeedbackAnalysisPromptCategory.RelevantContentExtraction)
         {
             var test = JsonConvert.DeserializeObject<FeedbackRelevance>(history.Result!);
             executionContext.Arguments[PromptConstants.CustomerFeedback] = test!.ExtractedRelevantContent;
         }
 
-        else if (executionOptions.AnalysisPromptCategory.Category == FeedbackAnalysisPromptCategory.PersonalInformationRedaction)
+        else if (executionOption.AnalysisPromptCategory.Category == FeedbackAnalysisPromptCategory.PersonalInformationRedaction)
         {
             var test = JsonConvert.DeserializeObject<FeedbackRelevance>(history.Result!);
             executionContext.Arguments[PromptConstants.CustomerFeedback] = test!.PiiRedactedContent;
         }
 
-        else if (executionOptions.AnalysisPromptCategory.Category is FeedbackAnalysisPromptCategory.QuestionPointsExtraction
+        else if (executionOption.AnalysisPromptCategory.Category is FeedbackAnalysisPromptCategory.QuestionPointsExtraction
                  or FeedbackAnalysisPromptCategory.OpinionPointsExtraction)
         {
             var test = JsonConvert.DeserializeObject<string[]>(history.Result!);
             executionContext.Arguments[PromptConstants.CustomerFeedback] = string.Join(", ", test!);
         }
 
-        await appDbContext.Entry(executionOptions).Collection(option => option.ChildExecutionOptions).LoadAsync();
+        await appDbContext.Entry(executionOption).Collection(option => option.ChildExecutionOptions).LoadAsync();
 
-        if (executionOptions.ChildExecutionOptions.Any())
-            await ExecuteChildrenPrompts(executionContext, executionOptions.ChildExecutionOptions.ToImmutableList());
+        if (executionOption.ChildExecutionOptions.Any())
+            await ExecuteChildrenPrompts(executionContext, executionOption.ChildExecutionOptions.ToImmutableList());
     }
 
-    private async ValueTask ExecuteChildrenPrompts(PromptExecutionContext executionContext, IImmutableList<WorkflowExecutionOptions> childrenOptions)
+    private async ValueTask ExecuteChildrenPrompts(PromptExecutionContext executionContext, IImmutableList<WorkflowExecutionOption> childrenOptions)
     {
         foreach (var prompt in childrenOptions.Where(prompt => !prompt.IsDisabled))
         {
@@ -79,7 +79,7 @@ public class WorkflowExecutionService(
         }
     }
 
-    public ValueTask ExecuteAsync(WorkflowExecutionOptions headPromptOption, CustomerFeedback feedback, CancellationToken cancellationToken = default)
+    public ValueTask ExecuteAsync(WorkflowExecutionOption headPromptOption, CustomerFeedback feedback, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

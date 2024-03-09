@@ -38,17 +38,6 @@ public class FeedbackAnalysisWorkflowService(IFeedbackAnalysisWorkflowRepository
     ) =>
         feedbackAnalysisWorkflowRepository.UpdateAsync(workflow, commandOptions, cancellationToken);
 
-    public async ValueTask<bool> UpdateStatus(Guid workflowId, WorkflowStatus status, CancellationToken cancellationToken = default)
-    {
-        var updatedWorkflowsCount =  await feedbackAnalysisWorkflowRepository.UpdateBatchAsync(
-            setPropertyCalls => setPropertyCalls.SetProperty(workflow => workflow.Status, status),
-            workflow => workflow.Id == workflowId,
-            cancellationToken
-        );
-
-        return updatedWorkflowsCount == 1;
-    }
-
     public ValueTask<FeedbackAnalysisWorkflow?> DeleteAsync(
         FeedbackAnalysisWorkflow workflow,
         CommandOptions commandOptions = default,

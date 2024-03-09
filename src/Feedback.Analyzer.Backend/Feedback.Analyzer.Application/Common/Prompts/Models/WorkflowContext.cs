@@ -16,7 +16,7 @@ public record WorkflowContext
     /// <summary>
     /// Gets 
     /// </summary>
-    public WorkflowExecutionOptions EntryExecutionOption { get; set; } = default!;
+    public WorkflowExecutionOption EntryExecutionOption { get; set; } = default!;
     
     /// <summary>
     /// Gets or sets execution arguments

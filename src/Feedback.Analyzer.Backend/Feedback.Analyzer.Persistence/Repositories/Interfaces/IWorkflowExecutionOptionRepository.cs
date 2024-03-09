@@ -15,7 +15,7 @@ public interface IWorkflowExecutionOptionRepository
     /// <param name="queryOptions">Indicates whether the entity should be queried without tracking changes (default is false).</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Execution workflow with all included categories and children options if found, otherwise null</returns>
-    ValueTask<WorkflowExecutionOptions?> GetByIdAndIncludeAllGrandChildrenAsync(
+    ValueTask<WorkflowExecutionOption?> GetByIdAndIncludeAllGrandChildrenAsync(
         Guid optionId,
         QueryOptions queryOptions = default,
         CancellationToken cancellationToken = default

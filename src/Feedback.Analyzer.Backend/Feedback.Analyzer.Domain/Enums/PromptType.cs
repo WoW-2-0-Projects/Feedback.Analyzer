@@ -2,7 +2,7 @@ namespace Feedback.Analyzer.Domain.Enums;
 
 public enum PromptType
 {
-    AnalysisPrompt,
+    AnalysisPrompt = 0,
     
-    AssertionPrompt
+    AssertionPrompt = 1
 }

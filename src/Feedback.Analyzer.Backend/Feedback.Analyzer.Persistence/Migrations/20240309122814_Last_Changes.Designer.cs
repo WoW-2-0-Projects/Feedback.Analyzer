@@ -3,6 +3,7 @@ using System;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240309122814_Last_Changes")]
+    partial class Last_Changes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,6 +241,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedTime")
@@ -255,9 +259,15 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("WorkflowId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("WorkflowId")
+                        .IsUnique();
 
                     b.ToTable("FeedbackExecutionWorkflows");
                 });
@@ -600,15 +610,15 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
                 {
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisWorkflow", "Workflow")
-                        .WithOne()
-                        .HasForeignKey("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", "Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Feedback.Analyzer.Domain.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisWorkflow", "Workflow")
+                        .WithOne()
+                        .HasForeignKey("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", "WorkflowId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

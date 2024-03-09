@@ -29,7 +29,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     
     public DbSet<PromptExecutionHistory> PromptExecutionHistories => Set<PromptExecutionHistory>();
     
-    public DbSet<WorkflowExecutionOptions> WorkflowExecutionOptions => Set<WorkflowExecutionOptions>();
+    public DbSet<AnalysisWorkflow> AnalysisWorkflows => Set<AnalysisWorkflow>();
+    
+    public DbSet<WorkflowExecutionOption> WorkflowExecutionOptions => Set<WorkflowExecutionOption>();
     
     #endregion
     

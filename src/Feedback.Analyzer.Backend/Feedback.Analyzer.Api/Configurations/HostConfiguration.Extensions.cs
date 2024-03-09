@@ -3,7 +3,7 @@ using System.Text;
 
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
-using Feedback.Analyzer.Application.Common.AnalysisWorkflowExecutionOptions.Services;
+using Feedback.Analyzer.Application.Common.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Application.Common.EventBus.Brokers;
 using Feedback.Analyzer.Application.Common.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
@@ -13,6 +13,7 @@ using Feedback.Analyzer.Application.Common.Prompts.Commands;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.PromptsHistory.Services;
 using Feedback.Analyzer.Application.Common.Settings;
+using Feedback.Analyzer.Application.Common.WorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
@@ -21,7 +22,7 @@ using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
-using Feedback.Analyzer.Infrastructure.Common.AnalysisWorkflowExecutionOptions.Services;
+using Feedback.Analyzer.Infrastructure.Common.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
@@ -30,6 +31,7 @@ using Feedback.Analyzer.Infrastructure.Common.Prompts.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.PromptsHistory.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
+using Feedback.Analyzer.Infrastructure.Common.WorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
@@ -159,6 +161,7 @@ public static partial class HostConfiguration
             .AddScoped<IPromptRepository, PromptRepository>()
             .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>()
             .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>()
+            .AddScoped<IAnalysisWorkflowsRepository, AnalysisWorkflowsRepository>()
             .AddScoped<IWorkflowExecutionOptionRepository, WorkflowExecutionOptionRepository>(); 
 
         // Register foundation services
@@ -166,6 +169,7 @@ public static partial class HostConfiguration
             .AddScoped<IPromptService, PromptService>()
             .AddScoped<IPromptCategoryService, PromptCategoryService>()
             .AddScoped<IPromptsExecutionHistoryService, PromptExecutionHistoryService>()
+            .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>()
             .AddScoped<IWorkflowExecutionOptionsService, WorkflowExecutionOptionsService>();
         
         // Register processing services
