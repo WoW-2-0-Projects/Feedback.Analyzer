@@ -16,5 +16,5 @@ public class WorkflowExecutionOption : Entity
     
     public Guid? ParentId { get; set; }
 
-    public List<WorkflowExecutionOption>? ChildExecutionOptions { get; set; }
+    public IReadOnlyList<WorkflowExecutionOption>? ChildExecutionOptions { get; set; }
 }
