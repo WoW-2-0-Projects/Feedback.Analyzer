@@ -16,7 +16,7 @@ public class FeedbackAnalysisResultGetByIdQueryHandler(IFeedbackAnalysisResultSe
         CancellationToken cancellationToken)
     {
         var result = await feedbackAnalysisResultService.GetByIdAsync(request.FeedbackAnalysisResultId,
-            new QueryOptions() { AsNoTracking = true }, cancellationToken);
+            new QueryOptions() { TrackingMode = QueryTrackingMode.AsNoTracking }, cancellationToken);
 
         return mapper.Map<FeedbackAnalysisResultDto>(result);
     }

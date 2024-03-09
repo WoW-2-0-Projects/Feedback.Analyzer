@@ -17,7 +17,7 @@ public class WorkflowGetQueryHandler(IMapper mapper, IFeedbackAnalysisWorkflowSe
                 feedbackAnalysisWorkflow => feedbackAnalysisWorkflow.Workflow.Type == request.Filter.Type,
                 new QueryOptions
                 {
-                    AsNoTracking = true
+                    TrackingMode = QueryTrackingMode.AsNoTracking
                 }
             )
             .Include(feedbackAnalysisWorkflow => feedbackAnalysisWorkflow.Workflow)

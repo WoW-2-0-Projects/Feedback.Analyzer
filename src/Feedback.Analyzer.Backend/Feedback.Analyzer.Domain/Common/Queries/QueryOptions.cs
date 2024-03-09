@@ -9,5 +9,5 @@ public struct QueryOptions()
     /// Gets or sets a value indicating whether change tracking should be disabled for query results. 
     /// Disabling change tracking can potentially improve performance.
     /// </summary>
-    public bool AsNoTracking { get; set; } = false;
+    public QueryTrackingMode TrackingMode { get; set; }
 }

@@ -21,7 +21,7 @@ public class PromptResultGetByPromptIdQueryHandler(
                 prompt => prompt.Id == request.PromptId,
                 queryOptions: new QueryOptions
                 {
-                    AsNoTracking = true
+                    TrackingMode = QueryTrackingMode.AsNoTracking
                 }
             )
             .Include(prompt => prompt.ExecutionHistories)

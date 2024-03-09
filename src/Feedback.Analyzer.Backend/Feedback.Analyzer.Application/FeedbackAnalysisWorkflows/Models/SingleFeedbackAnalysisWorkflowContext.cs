@@ -27,4 +27,9 @@ public record SingleFeedbackAnalysisWorkflowContext : WorkflowContext
     /// Gets customer feedback Id
     /// </summary>
     public Guid FeedbackId { get; set; }
+
+    /// <summary>
+    /// Gets feedback analysis result
+    /// </summary>
+    public FeedbackAnalysisResult Result { get; init; } = default!;
 }

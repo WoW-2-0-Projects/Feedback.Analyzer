@@ -20,7 +20,7 @@ public class PromptResultGetByCategoryIdQueryHandler(IMapper mapper, IPromptServ
                 prompt => prompt.CategoryId == request.CategoryId,
                 queryOptions: new QueryOptions
                 {
-                    AsNoTracking = true
+                    TrackingMode = QueryTrackingMode.AsNoTracking
                 }
             )
             .OrderByDescending(prompt => prompt.Version)

@@ -24,6 +24,7 @@ public class FeedbackAnalysisWorkflowMapper : Profile
             .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product))
             .ForMember(dest => dest.FeedbacksId, opt => opt.MapFrom(src => src.Product.CustomerFeedbacks.Select(feedback => feedback.Id)));
 
-        CreateMap<FeedbackAnalysisWorkflowContext, SingleFeedbackAnalysisWorkflowContext>();
+        CreateMap<FeedbackAnalysisWorkflowContext, SingleFeedbackAnalysisWorkflowContext>()
+            .ForMember(dest => dest.Result, opt => opt.MapFrom(src => new FeedbackAnalysisResult()));
     }
 }

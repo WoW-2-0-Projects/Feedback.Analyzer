@@ -33,4 +33,14 @@ public record WorkflowContext
     /// Gets or sets indicator that shows the workflow status
     /// </summary>
     public WorkflowStatus Status { get; set; }
+
+    /// <summary>
+    /// Retrieves last history for given category Id
+    /// </summary>
+    /// <param name="categoryId">Category Id to search histories</param>
+    /// <returns>Prompt execution history</returns>
+    public PromptExecutionHistory? GetLastHistory(Guid categoryId)
+    {
+        return Histories.First(groupedHistory => groupedHistory.Key == categoryId).MaxBy(t => t.ExecutionTime);
+    }
 }

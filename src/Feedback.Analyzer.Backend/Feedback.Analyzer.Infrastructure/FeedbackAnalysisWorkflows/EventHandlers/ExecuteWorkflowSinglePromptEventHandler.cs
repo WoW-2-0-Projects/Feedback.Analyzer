@@ -26,7 +26,7 @@
 //                                workflow => workflow.Id == notification.WorkflowId,
 //                                new QueryOptions
 //                                {
-//                                    AsNoTracking = true
+//                                    TrackingMode = true
 //                                }
 //                            )
 //                            .Include(workflow => workflow.Product)

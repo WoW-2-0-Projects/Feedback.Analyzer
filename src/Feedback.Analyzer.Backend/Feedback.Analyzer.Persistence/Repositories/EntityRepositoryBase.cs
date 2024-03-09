@@ -27,13 +27,10 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(TContext dbContext
     /// <returns>An IQueryable,TEntity, representing the query, allowing for further chaining and filtering</returns>
     protected IQueryable<TEntity> Get(Expression<Func<TEntity, bool>>? predicate = default, QueryOptions queryOptions = default)
     {
-        var initialQuery = DbContext.Set<TEntity>().Where(entity => true);
+        var initialQuery = DbContext.Set<TEntity>().Where(entity => true).ApplyTrackingMode(queryOptions.TrackingMode);
 
         if (predicate is not null)
             initialQuery = initialQuery.Where(predicate);
-
-        if (queryOptions.AsNoTracking)
-            initialQuery = initialQuery.AsNoTracking();
 
         return initialQuery;
     }
@@ -47,10 +44,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(TContext dbContext
     /// <returns>A ValueTask,TEntity,representing the asynchronous operation. The result will be the found entity, or null if not found.</returns>
     protected async ValueTask<TEntity?> GetByIdAsync(Guid id, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
     {
-        var initialQuery = DbContext.Set<TEntity>().AsQueryable();
-
-        if (queryOptions.AsNoTracking)
-            initialQuery = initialQuery.AsNoTracking();
+        var initialQuery = DbContext.Set<TEntity>().AsQueryable().ApplyTrackingMode(queryOptions.TrackingMode);
 
         var foundEntity = await initialQuery.FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
 
@@ -70,10 +64,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(TContext dbContext
         CancellationToken cancellationToken = default
     )
     {
-        var initialQuery = DbContext.Set<TEntity>().Where(entity => ids.Contains(entity.Id));
-
-        if (queryOptions.AsNoTracking)
-            initialQuery = initialQuery.AsNoTracking();
+        var initialQuery = DbContext.Set<TEntity>().Where(entity => ids.Contains(entity.Id)).ApplyTrackingMode(queryOptions.TrackingMode);
 
         return await initialQuery.ToListAsync(cancellationToken: cancellationToken);
     }
@@ -139,7 +130,8 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(TContext dbContext
         if (batchUpdatePredicate is not null)
             entities = entities.Where(batchUpdatePredicate);
 
-        return await entities.ExecuteUpdateAsync(setPropertyCalls,
+        return await entities.ExecuteUpdateAsync(
+            setPropertyCalls,
             // categoryPropertySelector => categoryPropertySelector.MapToSetPropertyCalls(setPropertyExecutors),
             cancellationToken
         );

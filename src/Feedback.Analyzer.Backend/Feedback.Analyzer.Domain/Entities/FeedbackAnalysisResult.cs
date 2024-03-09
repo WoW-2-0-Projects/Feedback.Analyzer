@@ -7,6 +7,17 @@ namespace Feedback.Analyzer.Domain.Entities;
 /// </summary>
 public class FeedbackAnalysisResult : AuditableEntity
 {
+    public FeedbackAnalysisResult()
+    {
+        FeedbackRelevance = new FeedbackRelevance();
+        FeedbackOpinion = new FeedbackOpinion();
+        FeedbackActionablePoints = new FeedbackActionablePoints();
+        FeedbackEntities = new FeedbackEntities();
+        FeedbackMetrics = new FeedbackMetrics();
+        CategorizedOpinions = new List<CategorizedOpinions>();
+        EntityIdentifications = new List<EntityIdentification>();
+    }
+    
     /// <summary>
     /// Gets or sets the relevance of the feedback.
     /// </summary>
@@ -50,5 +61,5 @@ public class FeedbackAnalysisResult : AuditableEntity
     /// <summary>
     /// Gets or sets the reference to the original customer feedback.
     /// </summary>
-    public virtual CustomerFeedback CustomerFeedback { get; set; }
+    public CustomerFeedback CustomerFeedback { get; set; } = default!;
 }

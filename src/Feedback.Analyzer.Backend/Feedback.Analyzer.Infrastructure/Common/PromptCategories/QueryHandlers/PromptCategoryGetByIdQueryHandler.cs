@@ -16,7 +16,7 @@ public class PromptCategoryGetByIdQueryHandler(IMapper mapper, IPromptCategorySe
                 category => category.Id == request.CategoryId,
                 new QueryOptions
                 {
-                    AsNoTracking = true
+                    TrackingMode = QueryTrackingMode.AsNoTracking
                 }
             )
             .Include(category => category.SelectedPrompt)

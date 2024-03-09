@@ -17,7 +17,7 @@ public class FeedbackAnalysisResultGetQueryHandler
     public async Task<ICollection<FeedbackAnalysisResultDto>> Handle(FeedbackAnalysisResultGetQuery request, CancellationToken cancellationToken)
     {
         var matchedPromptsFeedbackAnalysisResults =  await feedbackAnalysisResultService.Get(request.Filter, new QueryOptions
-            { AsNoTracking = true }).ToListAsync(cancellationToken);
+            { TrackingMode = QueryTrackingMode.AsNoTracking }).ToListAsync(cancellationToken);
         
         return mapper.Map<ICollection<FeedbackAnalysisResultDto>>(matchedPromptsFeedbackAnalysisResults);
     }

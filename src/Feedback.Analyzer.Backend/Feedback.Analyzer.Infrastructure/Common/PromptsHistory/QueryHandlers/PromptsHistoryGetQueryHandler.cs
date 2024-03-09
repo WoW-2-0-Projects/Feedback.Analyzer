@@ -16,7 +16,7 @@ public class PromptsHistoryGetQueryHandler(IPromptsExecutionHistoryService promp
                 history => history.PromptId == request.Filter.PromptId,
                 new QueryOptions
                 {
-                    AsNoTracking = true
+                    TrackingMode = QueryTrackingMode.AsNoTracking
                 }
             )
             .OrderBy(history => history.ExecutionTime)

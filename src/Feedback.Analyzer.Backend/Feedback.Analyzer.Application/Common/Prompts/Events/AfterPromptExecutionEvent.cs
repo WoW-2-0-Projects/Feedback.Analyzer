@@ -1,5 +1,6 @@
 using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Domain.Common.Events;
+using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Application.Common.Prompts.Events;
 
@@ -10,7 +11,12 @@ namespace Feedback.Analyzer.Application.Common.Prompts.Events;
 public record AfterPromptExecutionEvent<TWorkflow> : Event where TWorkflow : WorkflowContext
 {
     /// <summary>
-    /// Execution context
+    /// Gets execution context
     /// </summary>
-    public WorkflowContext Context { get; set; } = default!;
+    public WorkflowContext Context { get; init; } = default!;
+
+    /// <summary>
+    /// Gets prompt that was executed
+    /// </summary>
+    public AnalysisPrompt Prompt { get; init; } = default!;
 }

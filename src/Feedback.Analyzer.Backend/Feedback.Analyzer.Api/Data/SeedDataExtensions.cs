@@ -37,9 +37,6 @@ public static class SeedDataExtensions
         if (!await appDbContext.Prompts.AnyAsync())
             await SeedAnalysisPromptAsync(appDbContext);
 
-        // if (!await appDbContext.PromptExecutionHistories.AnyAsync())
-        //     await SeedAnalysisPromptAsync(appDbContext);
-
         if (!await appDbContext.FeedbackExecutionWorkflows.AnyAsync())
             await SeedAnalysisWorkflows(appDbContext);
 
@@ -232,19 +229,6 @@ public static class SeedDataExtensions
                 Comment =
                     "I laid my hands on the Viper in a local store and on the spot it felt rather flat. I think I prefer something with more hump and side area to grip onto. right now I have a basilisk v2 and think it's definetely more comfy, but that grip could still be better.\n\nThe Synapse software is extremely greedy though. 300MB HD space and about 200MB RAM is ludicrous for a gloryfied mouse driver.",
                 UserName = "Silvarspark"
-            },
-            new()
-            {
-                ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
-                Comment =
-                    "I would buy the product if the price was a bit lower. One can find many good options in this price range. I would rather buy a brand new RGB keyboard if I had such money. Overall the product is not bad but it is overpriced.",
-                UserName = "John Doe"
-            },
-            new()
-            {
-                ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
-                Comment = "Can anyone help me decide which mouse is the best one on the market now? I used Viper before but not satisfied.",
-                UserName = "John Smith"
             }
         };
 
@@ -350,7 +334,7 @@ public static class SeedDataExtensions
                          3. Any word or expression that is used to imply the product, its name or features, or service is considered as relevant.
                          4. Any word or expression indicating an issue with the product or service, its functionality.
 
-                         The return format: "true" or "false"
+                         Expected return format: "true" or "false"
 
                          """,
                 Version = 1,
@@ -370,7 +354,13 @@ public static class SeedDataExtensions
                          ## Instructions
 
                          Exclude the parts of the Customer Feedback that are irrelevant to the Product. Return the Customer Feedback after exclusion of irrelevant parts in a plain text.
-                         Example Result: "..."
+                         
+                         ## Examples 
+                         
+                         Product Description : Wireless Computer Mouse with RGB light
+                         Customer Feedback : I really like this mouse with RGB light, I have lots of keyboards with RGB lights too
+                         Extracted Content : I really like this mouse with RGB light
+                         
                          """,
                 Version = 2,
                 Revision = 0,
@@ -390,7 +380,6 @@ public static class SeedDataExtensions
                          3. make sure sentences are still readable
 
                          ## Product Description:
-
 
                          {{$productDescription}}
 

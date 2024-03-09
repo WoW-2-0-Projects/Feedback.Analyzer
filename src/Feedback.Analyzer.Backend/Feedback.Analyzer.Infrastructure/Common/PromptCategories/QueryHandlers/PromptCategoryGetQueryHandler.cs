@@ -23,7 +23,7 @@ public class PromptCategoryGetQueryHandler(IPromptCategoryService promptCategory
                 request.Filter,
                 new QueryOptions
                 {
-                    AsNoTracking = true
+                    TrackingMode = QueryTrackingMode.AsNoTracking
                 }
             )
             .Include(category => category.SelectedPrompt)

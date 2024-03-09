@@ -23,7 +23,7 @@ public class FeedbackAnalysisOrchestrationService(
     {
         var queryOptions = new QueryOptions
         {
-            AsNoTracking = true
+            TrackingMode = QueryTrackingMode.AsNoTracking
         };
 
         var feedback = await customerFeedbackService.GetByIdAsync(context.FeedbackId, queryOptions, cancellationToken) ??
@@ -63,7 +63,8 @@ public class FeedbackAnalysisOrchestrationService(
         await eventBusBroker.PublishLocalAsync(
             new BeforePromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>
             {
-                Context = context
+                Context = context,
+                Prompt = prompt
             }
         );
 
@@ -76,7 +77,8 @@ public class FeedbackAnalysisOrchestrationService(
         await eventBusBroker.PublishLocalAsync(
             new AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>
             {
-                Context = context
+                Context = context,
+                Prompt = prompt
             }
         );
     }
