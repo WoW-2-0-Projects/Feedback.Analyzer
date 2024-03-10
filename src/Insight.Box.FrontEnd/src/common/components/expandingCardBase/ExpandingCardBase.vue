@@ -18,17 +18,10 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeMount, ref, watch} from "vue";
+import {onBeforeMount, onBeforeUnmount, ref, watch} from "vue";
 import {TimerService} from "@/infrastructure/services/timer/TimerService";
-import {DocumentService} from "@/infrastructure/services/document/DocumentService";
-import CloseButton from "@/common/components/buttons/CloseButton.vue";
-import {DividerType} from "@/common/components/divider/DividerType";
-import {ButtonType} from "@/common/components/appButton/ButtonType";
-import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
-import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
-import ExpandButton from "@/common/components/buttons/ExpandButton.vue";
-import AppButton from "@/common/components/appButton/AppButton.vue";
-import VerticalDivider from "@/common/components/divider/VerticalDivider.vue";
+
+const timerService = new TimerService();
 
 const props = defineProps({
     isExpanded: {
@@ -45,49 +38,37 @@ const props = defineProps({
     },
 });
 
-const timerService = new TimerService();
-const isActiveInternal = ref<boolean>(props.isActive);
+const emit = defineEmits(['closeModal']);
+
 const timer = ref<number | null>(null);
 const expandingContentStyles = ref<string>('');
 
 onBeforeMount(() => setStyles(true));
-watch(() => props.isExpanded, () => {
-    console.log('test', props.isExpanded);
-    setStyles();
-});
+watch(() => props.isExpanded, () => setStyles());
+onBeforeUnmount(() => timer.value = timerService.clearTimer(timer.value));
 
 const setStyles = (beforeMount: false) => {
     if (props.isExpanded) {
-        expandingContentStyles.value = 'h-0 ';
+        expandingContentStyles.value = 'h-0 opacity-0';
         timer.value = timerService.clearTimer(timer.value);
-        timer.value = timerService.setTimer(() => {
-            expandingContentStyles.value = props.expandingContentHeight > 0 ? `h-[${props.expandingContentHeight}px]` :
-                'h-fit';
-        }, 100);
+        timer.value = timerService.setTimer(() => expandingContentStyles.value = `opacity-0 ${getExpandingContentHeight()}`, 100);
+        timer.value = timerService.setTimer(() => expandingContentStyles.value += 'opacity-100 ', 400);
     } else {
-        expandingContentStyles.value = 'h-0 ';
+        expandingContentStyles.value = `opacity-0 ${getExpandingContentHeight()}`;
         timer.value = timerService.clearTimer(timer.value);
+        timer.value = timerService.setTimer(() => expandingContentStyles.value = 'opacity-0 h-0', 200);
 
-        if(beforeMount) {
-            expandingContentStyles.value = 'h-0 hidden';
+        if (beforeMount) {
+            expandingContentStyles.value = 'hidden';
         } else {
-            timer.value = timerService.setTimer(() => expandingContentStyles.value += 'hidden', 2000);
+            timer.value = timerService.setTimer(() => expandingContentStyles.value = 'hidden', 2000);
         }
-
     }
 };
 
-// const expandingContentStyles = computed(() => {
-//     let styles = '';
-//
-//     if (props.expandingContentHeight > 0) {
-//         styles += `h-[${props.expandingContentHeight}px]`;
-//     } else {
-//         styles += 'h-0 hidden';
-//     }
-// })
-
-const emit = defineEmits(['closeModal']);
-
+const getExpandingContentHeight = () => expandingContentStyles.value =
+    props.expandingContentHeight > 0
+        ? `h-[${props.expandingContentHeight}px] `
+        : 'h-fit ';
 
 </script>
