@@ -1,3 +1,19 @@
 .table-cell-mini-spacing {
   @apply p-2;
 }
+
+.table-bg {
+  @apply bg-secondaryContentColor bg-opacity-5;
+}
+
+.table-row-text {
+  @apply text-left;
+}
+
+.table-header-cell {
+  @apply sticky top-0 z-10 px-6 py-2 text-left rtl:text-right bg-accentTertiaryColor;
+}
+
+.table-data-cell {
+  @apply py-1 px-6 text-left rtl:text-right;
+}

@@ -1,3 +1,4 @@
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Queries;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Queries;
 using MediatR;
@@ -10,9 +11,23 @@ namespace Feedback.Analyzer.Api.Controllers;
 public class WorkflowsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async ValueTask<IActionResult> GetWorkflows([FromQuery] WorkflowGetQuery query, CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> GetWorkflows([FromQuery] FeedbackWorkflowGetQuery query, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(query, cancellationToken);
+        return result.Any() ? Ok(result) : NotFound();
+    }
+
+    [HttpGet("{workflowId:guid}/results")]
+    public async ValueTask<IActionResult> GetWorkflowResultsById([FromRoute] Guid workflowId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new FeedbackWorkflowResultGetByWorkflowIdQuery
+            {
+                WorkflowId = workflowId
+            },
+            cancellationToken
+        );
+
         return result.Any() ? Ok(result) : NotFound();
     }
 
@@ -44,7 +59,7 @@ public class WorkflowsController(IMediator mediator) : ControllerBase
         };
 
         await mediator.Publish(executeWorkflowEvent, cancellationToken);
-        
+
         return Accepted(executeWorkflowEvent.Id);
     }
 

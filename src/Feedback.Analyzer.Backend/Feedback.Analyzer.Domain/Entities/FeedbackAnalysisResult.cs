@@ -62,4 +62,9 @@ public class FeedbackAnalysisResult : AuditableEntity
     /// Gets or sets the reference to the original customer feedback.
     /// </summary>
     public CustomerFeedback CustomerFeedback { get; set; } = default!;
+    
+    /// <summary>
+    /// Gets or sets the workflow result Id
+    /// </summary>
+    public Guid FeedbackAnalysisWorkflowResultId { get; set; }
 }

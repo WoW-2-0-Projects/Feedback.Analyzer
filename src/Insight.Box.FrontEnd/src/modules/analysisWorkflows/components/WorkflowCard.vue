@@ -38,30 +38,23 @@
 
         <template v-slot:expandingContent>
 
+            <!-- Workflow execution results -->
+            <!--            <app-table>-->
+
+            <!--            </app-table>-->
+
+
             <div v-for="test in 10">hi</div>
 
         </template>
 
     </expanding-card-base>
 
-<!--    <div class="w-full flex flex-col card card-bg card-round card-shadow text-secondaryContentColor">-->
-
-<!--        <div class="h-[100px] flex card-shadow">-->
-
-<!--        </div>-->
-
-<!--        <div class="w-full transition-all ease-in-out duration-1000" :class="isOpen ? 'h-[300px]' :'h-0 hidden'">-->
-
-
-<!--        </div>-->
-
-<!--    </div>-->
-
 </template>
 
 <script setup lang="ts">
 
-import {type PropType, ref} from "vue";
+import {onBeforeMount, onBeforeUnmount, type PropType, ref} from "vue";
 import {ButtonType} from "@/common/components/appButton/ButtonType";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
@@ -70,13 +63,13 @@ import {DividerType} from "@/common/components/divider/DividerType";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import {FeedbackAnalysisWorkflow} from "@/modules/prompts/models/FeedbackAnalysisWorkflow";
-import ExpandIcon from "@/common/components/icons/ExpandIcon.vue";
-import {ExpandIconStyle} from "@/common/components/icons/ExpandIconStyle";
 import ExpandButton from "@/common/components/buttons/ExpandButton.vue";
 import ExpandingCardBase from "@/common/components/expandingCardBase/ExpandingCardBase.vue";
+import {FeedbackAnalysisWorkflowResult} from "@/modules/analysisWorkflows/models/FeedbackAnalysisWorkflowResult";
 
 const isOpen = ref<boolean>(false);
 const insightBoxApiClient = new InsightBoxApiClient();
+const workflowResults = ref<Array<FeedbackAnalysisWorkflowResult>>([]);
 
 const props = defineProps({
     workflow: {
@@ -85,9 +78,20 @@ const props = defineProps({
     }
 });
 
+onBeforeMount(async () => {
+    await loadWorkflowResults();
+});
+
 const onTriggerWorkflow = async () => {
     const response = await insightBoxApiClient.workflows
         .executeWorkflowAsync(props.workflow?.id);
+}
+
+const loadWorkflowResults = async () => {
+    const response = await insightBoxApiClient.workflows.getResultsById(props.workflow?.id);
+
+    if (response.response)
+        workflowResults.value.push = response.response;
 }
 
 </script>

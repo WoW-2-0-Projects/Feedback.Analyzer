@@ -9,11 +9,6 @@ namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 public record FeedbackAnalysisWorkflowContext : WorkflowContext
 {
     /// <summary>
-    /// Gets or sets workflow result id
-    /// </summary>
-    public Guid WorkflowResultId { get; set; }
-    
-    /// <summary>
     /// Organization of the product
     /// </summary>
     public Organization Organization { get; set; } = default!;

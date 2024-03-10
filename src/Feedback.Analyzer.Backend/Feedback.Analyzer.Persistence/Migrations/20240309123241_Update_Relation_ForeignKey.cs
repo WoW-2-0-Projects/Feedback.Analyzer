@@ -13,19 +13,19 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_FeedbackExecutionWorkflows_AnalysisWorkflows_WorkflowId",
-                table: "FeedbackExecutionWorkflows");
+                table: "FeedbackAnalysisWorkflows");
 
             migrationBuilder.DropIndex(
                 name: "IX_FeedbackExecutionWorkflows_WorkflowId",
-                table: "FeedbackExecutionWorkflows");
+                table: "FeedbackAnalysisWorkflows");
 
             migrationBuilder.DropColumn(
                 name: "WorkflowId",
-                table: "FeedbackExecutionWorkflows");
+                table: "FeedbackAnalysisWorkflows");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_FeedbackExecutionWorkflows_AnalysisWorkflows_Id",
-                table: "FeedbackExecutionWorkflows",
+                table: "FeedbackAnalysisWorkflows",
                 column: "Id",
                 principalTable: "AnalysisWorkflows",
                 principalColumn: "Id",
@@ -37,24 +37,24 @@ namespace Feedback.Analyzer.Persistence.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_FeedbackExecutionWorkflows_AnalysisWorkflows_Id",
-                table: "FeedbackExecutionWorkflows");
+                table: "FeedbackAnalysisWorkflows");
 
             migrationBuilder.AddColumn<Guid>(
                 name: "WorkflowId",
-                table: "FeedbackExecutionWorkflows",
+                table: "FeedbackAnalysisWorkflows",
                 type: "uuid",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.CreateIndex(
                 name: "IX_FeedbackExecutionWorkflows_WorkflowId",
-                table: "FeedbackExecutionWorkflows",
+                table: "FeedbackAnalysisWorkflows",
                 column: "WorkflowId",
                 unique: true);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_FeedbackExecutionWorkflows_AnalysisWorkflows_WorkflowId",
-                table: "FeedbackExecutionWorkflows",
+                table: "FeedbackAnalysisWorkflows",
                 column: "WorkflowId",
                 principalTable: "AnalysisWorkflows",
                 principalColumn: "Id",

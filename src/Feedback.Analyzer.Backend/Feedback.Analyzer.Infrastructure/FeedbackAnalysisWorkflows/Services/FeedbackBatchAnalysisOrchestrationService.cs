@@ -74,7 +74,6 @@ public class FeedbackBatchAnalysisOrchestrationService(
         };
 
         var createdWorkflowResult = await feedbackAnalysisWorkflowResultService.CreateAsync(workflowResult, cancellationToken: cancellationToken);
-        workflowContext.WorkflowResultId = createdWorkflowResult.Id;
 
         // Create and publish event for each feedback
         var analyzeFeedbackEventPublishTasks = workflowContext.FeedbacksId
@@ -84,6 +83,7 @@ public class FeedbackBatchAnalysisOrchestrationService(
                     var singleFeedbackAnalysisWorkflowContext = mapper.Map<SingleFeedbackAnalysisWorkflowContext>(workflowContext);
                     singleFeedbackAnalysisWorkflowContext.FeedbackId = feedbackId;
                     singleFeedbackAnalysisWorkflowContext.Result.CustomerFeedbackId = feedbackId;
+                    singleFeedbackAnalysisWorkflowContext.Result.FeedbackAnalysisWorkflowResultId = createdWorkflowResult.Id;
 
                     return singleFeedbackAnalysisWorkflowContext;
                 }

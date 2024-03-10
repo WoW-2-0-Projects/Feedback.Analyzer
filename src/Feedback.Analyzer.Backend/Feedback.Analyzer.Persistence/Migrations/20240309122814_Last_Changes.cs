@@ -99,7 +99,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FeedbackExecutionWorkflows",
+                name: "FeedbackAnalysisWorkflows",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -141,7 +141,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     table.ForeignKey(
                         name: "FK_FeedbackAnalysisWorkflowResults_FeedbackExecutionWorkflows_~",
                         column: x => x.WorkflowId,
-                        principalTable: "FeedbackExecutionWorkflows",
+                        principalTable: "FeedbackAnalysisWorkflows",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -165,12 +165,12 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_FeedbackExecutionWorkflows_ProductId",
-                table: "FeedbackExecutionWorkflows",
+                table: "FeedbackAnalysisWorkflows",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FeedbackExecutionWorkflows_WorkflowId",
-                table: "FeedbackExecutionWorkflows",
+                table: "FeedbackAnalysisWorkflows",
                 column: "WorkflowId",
                 unique: true);
 
@@ -195,7 +195,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 name: "FeedbackAnalysisWorkflowResults");
 
             migrationBuilder.DropTable(
-                name: "FeedbackExecutionWorkflows");
+                name: "FeedbackAnalysisWorkflows");
 
             migrationBuilder.DropTable(
                 name: "AnalysisWorkflows");

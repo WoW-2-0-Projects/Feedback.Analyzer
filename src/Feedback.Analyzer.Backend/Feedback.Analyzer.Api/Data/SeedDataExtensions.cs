@@ -37,7 +37,7 @@ public static class SeedDataExtensions
         if (!await appDbContext.Prompts.AnyAsync())
             await SeedAnalysisPromptAsync(appDbContext);
 
-        if (!await appDbContext.FeedbackExecutionWorkflows.AnyAsync())
+        if (!await appDbContext.FeedbackAnalysisWorkflows.AnyAsync())
             await SeedAnalysisWorkflows(appDbContext);
 
         if (appDbContext.ChangeTracker.HasChanges())
@@ -730,14 +730,14 @@ public static class SeedDataExtensions
             ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
         };
 
-        appDbContext.FeedbackExecutionWorkflows.Add(feedbackAnalysisWorkflow);
+        appDbContext.FeedbackAnalysisWorkflows.Add(feedbackAnalysisWorkflow);
 
         // var trainingWorkflow = templateWorkflow.Clone();
         // trainingWorkflow.Name = "Training Workflow";
         // trainingWorkflow.Type = WorkflowType.Training;
         // trainingWorkflow.ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D");
 
-        // appDbContext.FeedbackExecutionWorkflows.Add(trainingWorkflow);
+        // appDbContext.FeedbackAnalysisWorkflows.Add(trainingWorkflow);
 
         await appDbContext.SaveChangesAsync();
     }

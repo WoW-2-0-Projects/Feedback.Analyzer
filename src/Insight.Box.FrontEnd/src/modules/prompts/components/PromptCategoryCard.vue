@@ -37,28 +37,24 @@
 
         </div>
 
-        <vertical-divider :type="DividerType.ContentLength"/>
+<!--        <vertical-divider :type="DividerType.ContentLength"/>-->
 
         <!-- Prompt selection -->
-        <div class="w-full p-2 py-5 flex flex-col item-center">
-
+        <div class="w-full p-5 pt-3 pr-2.5 flex flex-col item-center">
             <h5 class="text-center">Prompts</h5>
-            <div class="overflow-y-scroll no-scrollbar">
-                <app-table :data="promptResultsTableData"/>
+            <div class="mt-3 rounded-lg overflow-y-scroll no-scrollbar">
+                <app-table class="w-full" :data="promptResultsTableData"/>
             </div>
-
         </div>
 
-        <vertical-divider :type="DividerType.ContentLength"/>
+<!--        <vertical-divider :type="DividerType.ContentLength"/>-->
 
         <!-- Prompt execution result -->
-        <div class="w-full p-2 py-5 flex flex-col">
-
+        <div class="w-full p-5 pt-3 pl-2.5 flex flex-col">
             <h5 class="text-center">Execution histories</h5>
-            <div class="overflow-y-scroll no-scrollbar">
-                <app-table :data="promptHistoriesTableData"/>
+            <div class="mt-3 rounded-lg overflow-y-scroll no-scrollbar">
+                <app-table class="w-full" :data="promptHistoriesTableData"/>
             </div>
-
         </div>
 
     </div>
@@ -134,7 +130,7 @@ const promptResultsTableData = ref<TableData>(new TableData([
 ));
 
 const promptHistoriesTableData = ref<TableData>(new TableData([
-        "ET",
+        "Execution Time",
         "ED",
         "A",
         "Actions",

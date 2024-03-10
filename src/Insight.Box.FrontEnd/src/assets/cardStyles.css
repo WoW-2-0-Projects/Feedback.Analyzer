@@ -2,7 +2,7 @@
 }
 
 .card-round {
-  @apply rounded-lg;
+  @apply rounded-xl;
 }
 
 .card-bg {

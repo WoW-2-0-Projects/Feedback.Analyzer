@@ -1,11 +1,8 @@
 /*
- * Represents product filter
- */
-import {FilterPagination} from "@/common/FilterPagination";
-
-/*
  * Represents organization filter
  */
+import {FilterPagination} from "@/infrastructure/models/query/FilterPagination";
+
 export class OrganizationFilter extends  FilterPagination {
 
     /*

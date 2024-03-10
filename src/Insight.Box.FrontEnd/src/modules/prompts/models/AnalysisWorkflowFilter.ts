@@ -1,8 +1,8 @@
 /*
  * Represents product filter
  */
-import {FilterPagination} from "@/common/FilterPagination";
 import {WorkflowType} from "@/modules/prompts/models/WorkflowType";
+import {FilterPagination} from "@/infrastructure/models/query/FilterPagination";
 
 export class AnalysisWorkflowFilter extends  FilterPagination {
 

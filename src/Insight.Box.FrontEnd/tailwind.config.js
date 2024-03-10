@@ -16,6 +16,7 @@ export default {
         tertiaryColor: '#9A9CAB',
         accentPrimaryColor: '#A07C7F',
         accentSecondaryColor: '#656a80',
+        accentTertiaryColor: '#4B4D63',
         primaryContentColor: '#f5f5f5',
         secondaryContentColor: '#b5b5b5',
         dangerColor: '#E63946',

@@ -39,7 +39,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
 
     public DbSet<FeedbackAnalysisResult> FeedbackAnalysisResults => Set<FeedbackAnalysisResult>();
     
-    public DbSet<FeedbackAnalysisWorkflow> FeedbackExecutionWorkflows => Set<FeedbackAnalysisWorkflow>();
+    public DbSet<FeedbackAnalysisWorkflow> FeedbackAnalysisWorkflows => Set<FeedbackAnalysisWorkflow>();
     
     public DbSet<FeedbackAnalysisWorkflowResult> FeedbackAnalysisWorkflowResults => Set<FeedbackAnalysisWorkflowResult>();
     
