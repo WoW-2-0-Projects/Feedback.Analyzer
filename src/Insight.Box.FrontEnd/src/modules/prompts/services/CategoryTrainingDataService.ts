@@ -25,8 +25,6 @@ export class CategoryTrainingDataService {
      */
     public getTrainingData(categoryId: string): CategoryTrainingData | null {
         const categoryTrainingData = this.getAllTrainingData();
-        console.log('training data', categoryTrainingData);
-        // return [];
         return categoryTrainingData.find(x => x.categoryId === categoryId);
     }
 
@@ -34,16 +32,9 @@ export class CategoryTrainingDataService {
      * Adds training data
      */
     public setTrainingData(categoryId: string, trainingWorkflowId: string) {
-        // console.log('set workflow', categoryId);
-        // console.log('set workflow', trainingWorkflowId);
-        // console.log('setting training data', JSON.stringify(new CategoryTrainingData(categoryId, trainingWorkflowId)));
-
         const categoryTrainingData = this.getAllTrainingData();
-        console.log('test', categoryTrainingData);
-
         categoryTrainingData.push(new CategoryTrainingData(categoryId, trainingWorkflowId));
         this.localStorageService.set('categoryTrainingData', categoryTrainingData);
-        // localStorage.setItem('categoryTrainingData', JSON.stringify(categoryTrainingData));
     }
 
     /*

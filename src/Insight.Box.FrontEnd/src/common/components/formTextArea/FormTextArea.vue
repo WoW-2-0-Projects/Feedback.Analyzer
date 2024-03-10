@@ -93,11 +93,6 @@ const emit = defineEmits<{
     (e: 'update:modelValue', string: value): void
 }>();
 
-// Watcher for prefix change
-// watch(() => focus.value, (newValue, oldValue) => {
-//     console.log('focused');
-// });
-
 const onFocusIn = () => {
     focus.value = true;
     emit('focusIn');

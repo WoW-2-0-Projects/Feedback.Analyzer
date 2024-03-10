@@ -161,8 +161,6 @@ const loadAllPromptResultsAsync = async () => {
 };
 
 const loadPromptResultAsync = async (promptId: string) => {
-    console.log('loading result', promptId);
-
     const response = await insightBoxApiClient.prompts.getPromptResultsByCategoryIdAsync(props.promptCategory.id);
 
     if (response.response) {
@@ -247,7 +245,6 @@ watch(() => selectedTrainingWorkflow.value, () => {
 
 const setSelectedTrainingWorkflow = () => {
     // const setTrainingWorkflow = categoryTrainingDataService.getTrainingData(props.promptCategory?.id);
-    // console.log('test', setTrainingWorkflow);
     //
     // if(setTrainingWorkflow) {
     //
@@ -255,11 +252,6 @@ const setSelectedTrainingWorkflow = () => {
     //     const test = props.workflows?.findIndex(workflow => workflow.id === setTrainingWorkflow.workflowId);
     //
     //     const foundWorkflow = props.workflows?.find(workflow => workflow.id === setTrainingWorkflow.workflowId);
-    //
-    //     console.log('workflow was set', setTrainingWorkflow);
-    //     console.log('workflow was set', test);
-    //     console.log('workflow was set', props.workflows);
-    //     console.log('workflow was set', props.workflows[0]);
     //
     //     // If that workflow still exists, put that to drop down value
     //     if(foundWorkflow) {

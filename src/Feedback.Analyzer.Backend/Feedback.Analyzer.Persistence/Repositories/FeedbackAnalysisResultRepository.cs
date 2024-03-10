@@ -8,23 +8,35 @@ using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 namespace Feedback.Analyzer.Persistence.Repositories;
 
 /// <summary>
-/// Represents a repository for managing feedback analysis results in the persistence layer.
+/// Provides feedback analysis result repository functionality
 /// </summary>
-/// <param name="appDbContext"></param>
 public class FeedbackAnalysisResultRepository(AppDbContext appDbContext)
-    : EntityRepositoryBase<FeedbackAnalysisResult, AppDbContext>(appDbContext),
-        IFeedbackAnalysisResultRepository
+    : EntityRepositoryBase<FeedbackAnalysisResult, AppDbContext>(appDbContext), IFeedbackAnalysisResultRepository
 {
-    public new IQueryable<FeedbackAnalysisResult> Get(Expression<Func<FeedbackAnalysisResult, bool>>? 
-        predicate = default, QueryOptions queryOptions = default)
-    {
-        return base.Get(predicate, queryOptions);
-    }
+    public new IQueryable<FeedbackAnalysisResult> Get(
+        Expression<Func<FeedbackAnalysisResult, bool>>? predicate = default,
+        QueryOptions queryOptions = default
+    ) =>
+        base.Get(predicate, queryOptions);
 
-    public new ValueTask<FeedbackAnalysisResult?> GetByIdAsync(Guid feedbackAnalysisResultId, 
+    public new ValueTask<FeedbackAnalysisResult?> GetByIdAsync(
+        Guid feedbackAnalysisResultId,
         QueryOptions queryOptions = default,
-        CancellationToken cancellationToken = default)
-    {
-        return base.GetByIdAsync(feedbackAnalysisResultId, queryOptions, cancellationToken);
-    }
+        CancellationToken cancellationToken = default
+    ) =>
+        base.GetByIdAsync(feedbackAnalysisResultId, queryOptions, cancellationToken);
+
+    public new ValueTask<FeedbackAnalysisResult> CreateAsync(
+        FeedbackAnalysisResult result,
+        CommandOptions commandOptions = default,
+        CancellationToken cancellationToken = default
+    ) =>
+        base.CreateAsync(result, commandOptions, cancellationToken);
+
+    public new ValueTask<FeedbackAnalysisResult?> DeleteByIdAsync(
+        Guid resultId,
+        CommandOptions commandOptions = default,
+        CancellationToken cancellationToken = default
+    ) =>
+        base.DeleteByIdAsync(resultId, commandOptions, cancellationToken);
 }

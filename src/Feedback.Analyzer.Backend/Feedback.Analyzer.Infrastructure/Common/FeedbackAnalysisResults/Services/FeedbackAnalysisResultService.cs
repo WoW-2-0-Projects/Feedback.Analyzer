@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Feedback.Analyzer.Application.Common.FeedbackAnalysisResults.Models;
 using Feedback.Analyzer.Application.Common.FeedbackAnalysisResults.Services;
+using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.Extensions;
@@ -11,7 +12,6 @@ namespace Feedback.Analyzer.Infrastructure.Common.FeedbackAnalysisResults.Servic
 /// <summary>
 /// Represents a service for managing feedback analysis results.
 /// </summary>
-/// <param name="feedbackAnalysisResultRepository"></param>
 public class FeedbackAnalysisResultService(IFeedbackAnalysisResultRepository feedbackAnalysisResultRepository) : IFeedbackAnalysisResultService
 {
     public IQueryable<FeedbackAnalysisResult> Get(
@@ -22,17 +22,29 @@ public class FeedbackAnalysisResultService(IFeedbackAnalysisResultRepository fee
         return feedbackAnalysisResultRepository.Get(predicate, queryOptions);
     }
 
-    public IQueryable<FeedbackAnalysisResult> Get(FeedbackAnalysisResultFilter feedbackAnalysisResultFilter, QueryOptions queryOptions = default)
-    {
-        return feedbackAnalysisResultRepository.Get(queryOptions: queryOptions).ApplyPagination(feedbackAnalysisResultFilter);
-    }
+    public IQueryable<FeedbackAnalysisResult> Get(
+        FeedbackAnalysisResultFilter feedbackAnalysisResultFilter, 
+        QueryOptions queryOptions = default) =>
+        feedbackAnalysisResultRepository.Get(queryOptions: queryOptions).ApplyPagination(feedbackAnalysisResultFilter);
 
     public ValueTask<FeedbackAnalysisResult?> GetByIdAsync(
         Guid feedbackAnalysisResultId,
         QueryOptions queryOptions = default,
         CancellationToken cancellationToken = default
-    )
-    {
-        return feedbackAnalysisResultRepository.GetByIdAsync(feedbackAnalysisResultId, queryOptions, cancellationToken);
-    }
+    ) =>
+        feedbackAnalysisResultRepository.GetByIdAsync(feedbackAnalysisResultId, queryOptions, cancellationToken);
+
+    public ValueTask<FeedbackAnalysisResult> CreateAsync(
+        FeedbackAnalysisResult analysisResult,
+        CommandOptions commandOptions = default,
+        CancellationToken cancellationToken = default
+    ) =>
+        feedbackAnalysisResultRepository.CreateAsync(analysisResult, commandOptions, cancellationToken);
+
+    public ValueTask<FeedbackAnalysisResult?> DeleteByIdAsync(
+        Guid analysisResultId,
+        CommandOptions commandOptions = default,
+        CancellationToken cancellationToken = default
+    ) =>
+        feedbackAnalysisResultRepository.DeleteByIdAsync(analysisResultId, commandOptions, cancellationToken);
 }

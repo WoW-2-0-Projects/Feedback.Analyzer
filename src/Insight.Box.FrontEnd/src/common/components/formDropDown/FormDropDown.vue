@@ -17,23 +17,7 @@
         </label>
 
         <!-- Expand / Collapse icon -->
-        <svg :class="{ 'rotate-180': isOpen, 'transition-transform': true }"
-             class="right-4 h-full text-sm absolute top-1/2 -translate-y-1/2 theme-action-transition
-                    theme-action-content theme-focus-content theme-text-secondary"
-             xmlns="http://www.w3.org/2000/svg"
-             viewBox="0 0 32 32"
-             aria-hidden="true"
-             role="presentation"
-             focusable="false"
-             style="display: block;
-            fill: none;
-            height: 16px;
-            width: 16px;
-            stroke: currentcolor;
-            stroke-width: 4;
-            overflow: visible;">
-            <path fill="none" d="M28 12 16.7 23.3a1 1 0 0 1-1.4 0L4 12"></path>
-        </svg>
+        <expand-icon :isOpen="isOpen" class="absolute top-1/2 -translate-y-1/2 right-4"/>
 
         <!-- Drop down options -->
         <div
@@ -62,6 +46,7 @@
 import {computed, onMounted, type PropType, ref, watch} from "vue";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 import type {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
+import ExpandIcon from "@/common/components/icons/ExpandIcon.vue";
 
 const props = defineProps({
     values: {

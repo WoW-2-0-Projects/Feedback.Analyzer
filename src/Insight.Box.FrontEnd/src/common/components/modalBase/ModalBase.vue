@@ -3,11 +3,11 @@
     <Teleport to="body">
 
         <!-- Modal background -->
-        <div v-show="isActiveInternal" :class="isActive ? 'transition duration-1000 modal-bg-overlay-blur' : '' "
-             @click="emit('closeModal')" class="h-full w-full">
+        <div :class="overlayStyles"
+             @click="emit('closeModal')" class="h-full w-full theme-modal-transition">
 
             <!-- Modal container -->
-            <div :class="isActive ? 'absolute-y-center' : 'opacity-0' "
+            <div :class="modalStyles"
                  class="fixed h-fit transform top-1/2 w-fit absolute-x-center theme-modal-transition
                      theme-modal-bg modal-border-round theme-modal-border inset-0 z-30 overflow-auto no-scrollbar">
 
@@ -35,11 +35,12 @@
 
 <script setup lang="ts">
 
-import {ref, watch} from "vue";
+import {onBeforeMount, ref, watch} from "vue";
+import CloseButton from "@/common/components/buttons/CloseButton.vue";
 import {TimerService} from "@/infrastructure/services/timer/TimerService";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
-import CloseButton from "@/common/components/buttons/CloseButton.vue";
 
+const timerService = new TimerService();
 const documentService = new DocumentService();
 
 const props = defineProps({
@@ -49,23 +50,39 @@ const props = defineProps({
     }
 });
 
-const timerService = new TimerService();
-const isActiveInternal = ref<boolean>(props.isActive);
-const timer = ref<number | null>(null);
-
-watch(() => props.isActive, (isActive) => {
-    if (isActive) {
-        documentService.handleBodyOverflow(isActive);
-        timer.value = timerService.clearTimer(timer.value);
-        timer.value = timerService.setTimer(() => isActiveInternal.value = true, 0);
-    } else {
-        documentService.handleBodyOverflow(isActive);
-        timer.value = timerService.clearTimer(timer.value);
-        timer.value = timerService.setTimer(() => isActiveInternal.value = false, 200);
-    }
-});
-
 const emit = defineEmits(['closeModal']);
+
+
+const timer = ref<number | null>(null);
+const overlayStyles = ref<string>('');
+const modalStyles = ref<string>('');
+
+onBeforeMount(() => setStyles(true));
+watch(() => props.isActive, () => setStyles());
+
+const setStyles = (beforeMount: false) => {
+    if (props.isActive) {
+        documentService.handleBodyOverflow(props.isActive);
+        timer.value = timerService.clearTimer(timer.value);
+
+        overlayStyles.value = '';
+        timer.value = timerService.setTimer(() => {
+            modalStyles.value = 'absolute-y-center ';
+            overlayStyles.value = 'modal-bg-overlay-blur'
+        }, 0);
+    } else {
+        documentService.handleBodyOverflow(props.isActive);
+        timer.value = timerService.clearTimer(timer.value);
+        modalStyles.value = 'opacity-0 ';
+
+        if(beforeMount) {
+            overlayStyles.value = 'hidden ';
+        } else {
+            timer.value = timerService.clearTimer(timer.value);
+            timer.value = timerService.setTimer(() => overlayStyles.value = 'hidden', 200);
+        }
+    }
+}
 
 
 </script>

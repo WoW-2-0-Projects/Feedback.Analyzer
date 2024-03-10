@@ -28,4 +28,26 @@ public interface IFeedbackAnalysisResultRepository
     /// <returns>A task representing the asynchronous operation. The task result contains the feedback analysis result, if found; otherwise, null.</returns>
     ValueTask<FeedbackAnalysisResult?> GetByIdAsync(Guid feedbackAnalysisResultId, QueryOptions queryOptions = default,
         CancellationToken cancellationToken = default); 
+    
+    /// <summary>
+    /// Creates a feedback analysis result
+    /// </summary>
+    /// <param name="result">The result to be created.</param>
+    /// <param name="commandOptions">Commands options for the creation operation.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Created feedback analysis result.</returns>
+    ValueTask<FeedbackAnalysisResult> CreateAsync(FeedbackAnalysisResult result,
+        CommandOptions commandOptions = default,
+        CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Asynchronously deletes a result from by its Id
+    /// </summary>
+    /// <param name="resultId">If of feedback analysis result being deleted</param>
+    /// <param name="commandOptions">Commands options for the deletion operation.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Deleted feedback analysis result if soft deletion enabled, otherwise null</returns>
+    ValueTask<FeedbackAnalysisResult?> DeleteByIdAsync(Guid resultId,
+        CommandOptions commandOptions = default,
+        CancellationToken cancellationToken = default);
 }

@@ -170,8 +170,6 @@ const createPromptAsync = async (prompt: AnalysisPrompt) => {
         insightBoxApiClient.prompts.createAsync(createPromptCommand);
 
     if (response.response) {
-        console.log('adding new version', editingPromptLoadResultFunction.value?.callBack);
-
         if (editingPromptLoadResultFunction?.value && editingPromptLoadResultFunction?.value?.callBack)
             editingPromptLoadResultFunction.value?.callBack(response.response.id);
     }

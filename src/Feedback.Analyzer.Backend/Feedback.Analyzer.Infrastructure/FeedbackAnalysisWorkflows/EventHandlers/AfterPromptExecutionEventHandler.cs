@@ -32,15 +32,37 @@ public class AfterPromptExecutionEventHandler : IEventHandler<AfterPromptExecuti
                 );
 
             context.Result.FeedbackRelevance.IsRelevant = JsonConvert.DeserializeObject<bool>(lastHistory.Result!);
+
+            if (!context.Result.FeedbackRelevance.IsRelevant)
+                throw new InvalidOperationException("Feedback is not relevant");
         }
 
         if (notification.Prompt.Category.Category == FeedbackAnalysisPromptCategory.RelevantContentExtraction)
         {
+            var lastHistory = context.GetLastHistory(notification.Prompt.CategoryId) ?? throw new InvalidOperationException(
+                $"No history found for the category - {notification.Prompt.Category.Category.GetDisplayName()}"
+            );
+
+            if (lastHistory.Result is null)
+                throw new InvalidOperationException(
+                    $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null"
+                );
+
+            context.Result.FeedbackRelevance.ExtractedRelevantContent = lastHistory.Result;
         }
 
         if (notification.Prompt.Category.Category == FeedbackAnalysisPromptCategory.PersonalInformationRedaction)
         {
-            context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.ExtractedRelevantContent;
+            var lastHistory = context.GetLastHistory(notification.Prompt.CategoryId) ?? throw new InvalidOperationException(
+                $"No history found for the category - {notification.Prompt.Category.Category.GetDisplayName()}"
+            );
+
+            if (lastHistory.Result is null)
+                throw new InvalidOperationException(
+                    $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null"
+                );
+
+            context.Result.FeedbackRelevance.PiiRedactedContent = lastHistory.Result;
         }
 
         if (notification.Prompt.Category.Category == FeedbackAnalysisPromptCategory.OpinionMining)

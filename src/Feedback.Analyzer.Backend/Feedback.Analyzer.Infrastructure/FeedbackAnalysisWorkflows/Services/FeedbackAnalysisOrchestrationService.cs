@@ -1,4 +1,5 @@
 using Feedback.Analyzer.Application.Common.EventBus.Brokers;
+using Feedback.Analyzer.Application.Common.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Events;
 using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
@@ -10,14 +11,14 @@ using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Domain.Extensions;
-using Json.Schema;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 
 public class FeedbackAnalysisOrchestrationService(
     IEventBusBroker eventBusBroker,
     ICustomerFeedbackService customerFeedbackService,
-    IPromptExecutionProcessingService promptExecutionProcessingService
+    IPromptExecutionProcessingService promptExecutionProcessingService,
+    IFeedbackAnalysisResultService feedbackAnalysisResultService
 ) : IFeedbackAnalysisOrchestrationService
 {
     public async ValueTask ExecuteWorkflowAsync(SingleFeedbackAnalysisWorkflowContext context, CancellationToken cancellationToken = default)
@@ -37,11 +38,15 @@ public class FeedbackAnalysisOrchestrationService(
         // Execute whole workflow
         await ExecuteOptionAsync(context, context.EntryExecutionOption, cancellationToken);
 
-        // Map execution histories to feedback analysis result
+        // Create feedback analysis result
+        await feedbackAnalysisResultService.CreateAsync(context.Result, cancellationToken: cancellationToken);
     }
 
     private async ValueTask ExecuteOptionAsync(WorkflowContext context, WorkflowExecutionOption option, CancellationToken cancellationToken = default)
     {
+        if (context.Status != WorkflowStatus.Running)
+            return;
+
         // Execute option
         var executePromptAction = () => ExecutePromptAsync(context, option.AnalysisPromptCategory.SelectedPrompt!, cancellationToken);
         var promptResult = await executePromptAction.GetValueAsync();
