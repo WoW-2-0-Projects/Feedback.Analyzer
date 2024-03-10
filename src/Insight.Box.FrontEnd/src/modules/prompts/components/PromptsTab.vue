@@ -28,10 +28,10 @@
         />
 
         <!-- Prompt execution history modal -->
-        <prompt-execution-history-modal :history="openedHistory"
-                                        :isActive="historyModalActive"
-                                        @closeModal="historyModalActive = false"
-        />
+<!--        <prompt-execution-history-modal :history="openedHistory"-->
+<!--                                        :isActive="historyModalActive"-->
+<!--                                        @closeModal="historyModalActive = false"-->
+<!--        />-->
 
     </div>
 
@@ -82,6 +82,11 @@ const promptsChangeSource = ref<NotificationSource>(new NotificationSource());
 
 // Prompt modal states
 const promptModalActive = ref<boolean>(false);
+
+// setInterval(() => {
+//     promptModalActive.value = !promptModalActive.value;
+// }, 2000);
+
 const isCreate = ref<boolean>(true);
 const editingPrompt = ref<AnalysisPrompt>(new AnalysisPrompt());
 const editingPromptLoadResultFunction = ref<AsyncFunction<string>>();

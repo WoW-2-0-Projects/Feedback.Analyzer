@@ -2,18 +2,18 @@
 
     <Teleport to="body">
 
-        <!-- Modal background -->
-        <div :class="overlayStyles"
-             @click="emit('closeModal')" class="h-full w-full theme-modal-transition">
+        <!-- Modal background overlay -->
+        <div class="z-30 modal-bg-overlay-blur" @click="emit('closeModal')"
+             :class="{'animate-backgroundFadeIn': props.isActive, 'animate-backgroundFadeOut': !props.isActive,
+                      'hidden': hideModal}">
 
             <!-- Modal container -->
-            <div :class="modalStyles"
-                 class="fixed h-fit transform top-1/2 w-fit absolute-x-center theme-modal-transition
-                     theme-modal-bg modal-border-round theme-modal-border inset-0 z-30 overflow-auto no-scrollbar">
+            <div
+                class="fixed inset-0 w-fit h-fit z-40 top-1/2 left-1/3 -translate-x-1/2 overflow-auto no-scrollbar
+                    theme-modal-bg modal-border-round theme-modal-border" @click.stop
+                :class="props.isActive ? 'animate-fadeIn' : 'animate-fadeOut'">
+                <div class="w-full h-full relative pt-20">
 
-                <div class="w-full h-full relative pt-20" @click.stop>
-
-                    <!-- Modal close button -->
                     <close-button class="absolute top-5 right-5" @click="emit('closeModal')"/>
 
                     <!-- Modal header -->
@@ -23,10 +23,8 @@
 
                     <!-- Modal content -->
                     <slot name="content"/>
-
                 </div>
             </div>
-
         </div>
 
     </Teleport>
@@ -35,10 +33,10 @@
 
 <script setup lang="ts">
 
-import {onBeforeMount, ref, watch} from "vue";
+import {onBeforeMount, onBeforeUnmount, ref, watch} from "vue";
 import CloseButton from "@/common/components/buttons/CloseButton.vue";
-import {TimerService} from "@/infrastructure/services/timer/TimerService";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
+import {TimerService} from "@/infrastructure/services/timer/TimerService";
 
 const timerService = new TimerService();
 const documentService = new DocumentService();
@@ -50,39 +48,17 @@ const props = defineProps({
     }
 });
 
+const timer = ref<number>(0);
+const hideModal = ref<boolean>(!props.isActive);
 const emit = defineEmits(['closeModal']);
 
-
-const timer = ref<number | null>(null);
-const overlayStyles = ref<string>('');
-const modalStyles = ref<string>('');
-
-onBeforeMount(() => setStyles(true));
+onBeforeMount(() => setStyles());
 watch(() => props.isActive, () => setStyles());
+onBeforeUnmount(() => timerService.clearTimer(timer));
 
-const setStyles = (beforeMount: false) => {
-    if (props.isActive) {
-        documentService.handleBodyOverflow(props.isActive);
-        timer.value = timerService.clearTimer(timer.value);
-
-        overlayStyles.value = '';
-        timer.value = timerService.setTimer(() => {
-            modalStyles.value = 'absolute-y-center ';
-            overlayStyles.value = 'modal-bg-overlay-blur'
-        }, 0);
-    } else {
-        documentService.handleBodyOverflow(props.isActive);
-        timer.value = timerService.clearTimer(timer.value);
-        modalStyles.value = 'opacity-0 ';
-
-        if(beforeMount) {
-            overlayStyles.value = 'hidden ';
-        } else {
-            timer.value = timerService.clearTimer(timer.value);
-            timer.value = timerService.setTimer(() => overlayStyles.value = 'hidden', 200);
-        }
-    }
+const setStyles = () => {
+    documentService.handleBodyOverflow(props.isActive);
+    timerService.setTimer(() => hideModal.value = !props.isActive, props.isActive ? 0 : 300);
 }
-
 
 </script>

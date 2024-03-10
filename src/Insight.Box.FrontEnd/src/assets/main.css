@@ -6,9 +6,6 @@
 
 body {
   @apply font-poppins;
-  /*overflow-y: auto; !* Ensure scrollbar is visible *!*/
-  /*scrollbar-width: thin; !* Might work in some browsers *!*/
-  /*scrollbar-color: blue gray-400; !* Might work in some browsers *!*/
 }
 
 .view {

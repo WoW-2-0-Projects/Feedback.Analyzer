@@ -2,13 +2,17 @@
 
     <div class="w-full flex flex-col card card-bg card-round card-shadow text-secondaryContentColor">
 
-        <div class="flex card-shadow" :class="mainContentHeight > 0 ? `h-[${mainContentHeight}px]` : 'h-fit'">
+        <!-- Main content -->
+        <div class="flex card-shadow" :style="{ maxHeight: mainContentHeight > 0 ? `${mainContentHeight}px` : 'none' }">
             <slot name="mainContent"/>
         </div>
 
-        <div class="w-full theme-action-transition"
-             :class="expandingContentStyles"
-        >
+        <!-- Expanding content -->
+        <div class="w-full overflow-hidden"
+             :style="`--expand-height: ${props.expandingContentHeight}px`"
+             :class="{'animate-fadeInExpand': isExpanded, 'animate-fadeOutCollapse': !isExpanded
+                      ,'hidden': !firstExpanded
+             }">
             <slot name="expandingContent"/>
         </div>
 
@@ -18,10 +22,7 @@
 
 <script setup lang="ts">
 
-import {onBeforeMount, onBeforeUnmount, ref, watch} from "vue";
-import {TimerService} from "@/infrastructure/services/timer/TimerService";
-
-const timerService = new TimerService();
+import {ref, watch} from "vue";
 
 const props = defineProps({
     isExpanded: {
@@ -38,37 +39,10 @@ const props = defineProps({
     },
 });
 
+const firstExpanded = ref<boolean>(props.isExpanded);
 const emit = defineEmits(['closeModal']);
-
-const timer = ref<number | null>(null);
-const expandingContentStyles = ref<string>('');
-
-onBeforeMount(() => setStyles(true));
-watch(() => props.isExpanded, () => setStyles());
-onBeforeUnmount(() => timer.value = timerService.clearTimer(timer.value));
-
-const setStyles = (beforeMount: false) => {
-    if (props.isExpanded) {
-        expandingContentStyles.value = 'h-0 opacity-0';
-        timer.value = timerService.clearTimer(timer.value);
-        timer.value = timerService.setTimer(() => expandingContentStyles.value = `opacity-0 ${getExpandingContentHeight()}`, 100);
-        timer.value = timerService.setTimer(() => expandingContentStyles.value += 'opacity-100 ', 400);
-    } else {
-        expandingContentStyles.value = `opacity-0 ${getExpandingContentHeight()}`;
-        timer.value = timerService.clearTimer(timer.value);
-        timer.value = timerService.setTimer(() => expandingContentStyles.value = 'opacity-0 h-0', 200);
-
-        if (beforeMount) {
-            expandingContentStyles.value = 'hidden';
-        } else {
-            timer.value = timerService.setTimer(() => expandingContentStyles.value = 'hidden', 2000);
-        }
-    }
-};
-
-const getExpandingContentHeight = () => expandingContentStyles.value =
-    props.expandingContentHeight > 0
-        ? `h-[${props.expandingContentHeight}px] `
-        : 'h-fit ';
+watch(() => props.isExpanded, () => {
+    if (props.isExpanded) firstExpanded.value = true;
+});
 
 </script>

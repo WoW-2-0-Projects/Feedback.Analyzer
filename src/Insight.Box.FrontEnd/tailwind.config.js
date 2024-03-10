@@ -21,19 +21,45 @@ export default {
         secondaryContentColor: '#b5b5b5',
         dangerColor: '#E63946',
         successColor: '#2A9D8F',
-
-        // bgColor1: '#555979',
-        // bgColor2: '#454861',
-        // textColorPrimary: '#f5f5f5',
-        // textColorSecondary: '#b5b5b5',
-        // actionPrimaryColor: '#A07C7F',
-        // actionDangerColor: '#E63946',
-        // actionSuccessColor: '#2A9D8F',
-        // actionSecondaryColor: '#A07C7F',
-        // actionDisabledColor: '#A07C7F',
       },
       fontFamily: {
         'poppins': ['Poppins', 'sans-serif'],
+      },
+      keyframes: {
+        fadeInExpand: {
+          '0%': { opacity: '0', height: '0' },
+          '50%': { opacity: '1', height: '0' },
+          '100%': { opacity: '1', height: 'var(--expand-height)' },
+        },
+        fadeOutCollapse: {
+          '0%': { opacity: '1', height: 'var(--expand-height)' },
+          '50%': { opacity: '0', height: 'var(--expand-height)' },
+          '100%': { opacity: '0', height: '0' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0',  transform: 'translateY(-20%)' },
+          '100%': { opacity: '1',  transform: 'translateY(-50%)' },
+        },
+        fadeOut: {
+          '0%': { opacity: '1',  transform: 'translateY(-50%)'  },
+          '100%': { opacity: '0', transform: 'translateY(-20%)' },
+        },
+        backgroundFadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        backgroundFadeOut: {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
+      },
+      animation: {
+        fadeInExpand: 'fadeInExpand 0.5s ease-in-out forwards',
+        fadeOutCollapse: 'fadeOutCollapse 0.5s ease-in-out forwards',
+        fadeIn: 'fadeIn 0.15s ease-out forwards',
+        fadeOut: 'fadeOut 0.15s ease-out forwards',
+        backgroundFadeIn: 'backgroundFadeIn 0.3s ease-out forwards',
+        backgroundFadeOut: 'backgroundFadeOut 0.3s ease-out forwards',
       },
     },
   },
