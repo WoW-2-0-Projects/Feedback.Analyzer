@@ -7,17 +7,24 @@
             <h5 class="text-xl">{{ promptCategory.typeDisplayName }}</h5>
 
             <!-- Add prompt button -->
-            <div class="mt-10 flex gap-10 items-center justify-center">
+            <div class="mt-10 flex items-center gap-10">
                 <div class="flex flex-col h-fit">
                     <h5 class="text-sm"> {{ LayoutConstants.Versions }} : {{ promptCategory.promptsCount }}</h5>
                     <h5 class="text-sm"> {{ LayoutConstants.SelectedVersion }} :
                         {{ promptCategory.selectedPromptVersion }}</h5>
                 </div>
 
-                <app-button :type="ButtonType.Primary" :layout="ButtonLayout.Rectangle" icon="fas fa-plus"
-                            text="Add Prompt"
-                            :size="ActionComponentSize.ExtraSmall"
-                            @click="emit('addPrompt', promptCategory.id, promptResultLoadFunction)"/>
+                <div class="flex gap-4">
+
+                    <app-button :type="ButtonType.Primary" :layout="ButtonLayout.Square" icon="fas fa-plus"
+                                :size="ActionComponentSize.ExtraSmall"
+                                @click="emit('addPrompt', promptCategory.id, promptResultLoadFunction)"/>
+
+                    <app-button :type="ButtonType.Success" :layout="ButtonLayout.Square" icon="fas fa-play"
+                                :disabled="selectedTrainingWorkflow === null || promptCategory.selectedPromptId === null"
+                                :size="ActionComponentSize.ExtraSmall" @click="onTriggerWorkflow"/>
+                </div>
+
             </div>
 
             <!-- Training workflows -->
@@ -25,19 +32,16 @@
                 <h5 class="text-center">Training workflows</h5>
 
                 <div class="flex gap-10 mt-5">
-                    <form-drop-down label="Filter by" v-model="selectedTrainingWorkflow" :values="trainingWorkflowOptions"
+                    <form-drop-down label="Filter by" v-model="selectedTrainingWorkflow"
+                                    :values="trainingWorkflowOptions"
                                     :size="ActionComponentSize.Small"/>
-
-                    <app-button :type="ButtonType.Success" :layout="ButtonLayout.Rectangle" icon="fas fa-vial-virus"
-                                :disabled="selectedTrainingWorkflow === null || promptCategory.selectedPromptId === null"
-                                :size="ActionComponentSize.Small" @click="onTriggerWorkflow"/>
                 </div>
 
             </div>
 
         </div>
 
-<!--        <vertical-divider :type="DividerType.ContentLength"/>-->
+        <!--        <vertical-divider :type="DividerType.ContentLength"/>-->
 
         <!-- Prompt selection -->
         <div class="w-full p-5 pt-3 pr-2.5 flex flex-col item-center">
@@ -47,7 +51,7 @@
             </div>
         </div>
 
-<!--        <vertical-divider :type="DividerType.ContentLength"/>-->
+        <!--        <vertical-divider :type="DividerType.ContentLength"/>-->
 
         <!-- Prompt execution result -->
         <div class="w-full p-5 pt-3 pl-2.5 flex flex-col">

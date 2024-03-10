@@ -15,5 +15,5 @@
 }
 
 .table-data-cell {
-  @apply py-1 px-6 text-left rtl:text-right;
+  @apply py-1.5 px-6 text-left rtl:text-right;
 }

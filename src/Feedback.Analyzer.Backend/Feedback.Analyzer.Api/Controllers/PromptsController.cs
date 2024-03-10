@@ -69,7 +69,7 @@ public class PromptsController(IMediator mediator) : ControllerBase
     #endregion
 
     #region Prompt categories
-    
+
     [HttpGet("categories/{categoryId:guid}")]
     public async ValueTask<IActionResult> GetPromptCategories([FromRoute] Guid categoryId, CancellationToken cancellationToken)
     {
@@ -77,8 +77,9 @@ public class PromptsController(IMediator mediator) : ControllerBase
             new PromptCategoryGetByIdQuery
             {
                 CategoryId = categoryId
-            }
-            , cancellationToken);
+            },
+            cancellationToken
+        );
         return result is not null ? Ok(result) : NotFound();
     }
 
@@ -106,7 +107,7 @@ public class PromptsController(IMediator mediator) : ControllerBase
         );
         return result.Any() ? Ok(result) : NoContent();
     }
-    
+
     [HttpGet("{promptId:guid}/results")]
     public async ValueTask<IActionResult> GetPromptResultByPromptId([FromRoute] Guid promptId, CancellationToken cancellationToken = default)
     {
@@ -119,9 +120,13 @@ public class PromptsController(IMediator mediator) : ControllerBase
         );
         return result is not null ? Ok(result) : NotFound();
     }
-    
+
     [HttpPut("categories/{categoryId:guid}/selected/{promptId:guid}")]
-    public async ValueTask<IActionResult> UpdateSelectedPrompt([FromRoute] Guid categoryId, Guid promptId, CancellationToken cancellationToken = default)
+    public async ValueTask<IActionResult> UpdateSelectedPrompt(
+        [FromRoute] Guid categoryId,
+        Guid promptId,
+        CancellationToken cancellationToken = default
+    )
     {
         var result = await mediator.Send(
             new UpdateSelectedPromptCommand
@@ -136,16 +141,15 @@ public class PromptsController(IMediator mediator) : ControllerBase
 
     #endregion
 
+    #region Prompt Execution Histories
+
     [HttpGet("{promptId:guid}/histories")]
     public async ValueTask<IActionResult> GetPromptExecutionHistory([FromRoute] Guid promptId, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new PromptsHistoryGetQuery
+            new PromptsHistoryGetByPromptIdQuery
             {
-                Filter = new PromptsHistoryFilter
-                {
-                    PromptId = promptId
-                }
+                PromptId = promptId
             },
             cancellationToken
         );
@@ -161,4 +165,6 @@ public class PromptsController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(promptsHistoryCreateCommand, cancellationToken);
         return Ok(result);
     }
+
+    #endregion
 }
