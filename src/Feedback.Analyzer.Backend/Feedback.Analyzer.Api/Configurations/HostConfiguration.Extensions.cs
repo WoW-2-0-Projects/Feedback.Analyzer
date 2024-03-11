@@ -289,9 +289,6 @@ public static partial class HostConfiguration
 
         builder.Services.AddScoped<IRequestClientContextProvider, RequestClientContextProvider>();
 
-        builder.Services.Configure<RequestClientContextSettings>(
-            builder.Configuration.GetSection(nameof(RequestClientContextSettings)));
-
         return builder;
     }
     

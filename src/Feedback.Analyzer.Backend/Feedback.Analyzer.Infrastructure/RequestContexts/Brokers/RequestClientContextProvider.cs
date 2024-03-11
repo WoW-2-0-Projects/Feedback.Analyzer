@@ -1,12 +1,10 @@
 using System;
 using System.Linq;
 using System.Security.Claims;
-using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Domain.Constants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 
 namespace Feedback.Analyzer.Infrastructure.RequestContexts.Brokers;
 
@@ -14,12 +12,9 @@ namespace Feedback.Analyzer.Infrastructure.RequestContexts.Brokers;
 /// Provides client context information for the current request.
 /// </summary>
 public class RequestClientContextProvider(
-    IHttpContextAccessor httpContextAccessor, 
-    IOptions<RequestClientContextSettings> userContextProvider)
+    IHttpContextAccessor httpContextAccessor)
     : IRequestClientContextProvider
 {
-    private readonly RequestClientContextSettings _requestClientContextSettings = userContextProvider.Value;
-
     public string? GetAccessToken()
     {
         return httpContextAccessor.HttpContext?.Request.Headers.Authorization;
