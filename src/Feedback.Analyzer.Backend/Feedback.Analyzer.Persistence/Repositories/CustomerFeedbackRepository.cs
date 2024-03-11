@@ -11,8 +11,8 @@ namespace Feedback.Analyzer.Persistence.Repositories;
 /// <summary>
 /// Represents a repository for managing customer feedback entities in the database.
 /// </summary>
-public class CustomerFeedbackRepository(AppDbContext dbContext)
-    : EntityRepositoryBase<CustomerFeedback, AppDbContext>(dbContext),ICustomerFeedbackRepository
+public class CustomerFeedbackRepository(AppDbContext dbContext, ICacheBroker cacheBroker)
+    : EntityRepositoryBase<CustomerFeedback, AppDbContext>(dbContext, cacheBroker),ICustomerFeedbackRepository
 {
     public new IQueryable<CustomerFeedback> Get(Expression<Func<CustomerFeedback, bool>>? predicate = default, QueryOptions queryOptions = default)
     {
