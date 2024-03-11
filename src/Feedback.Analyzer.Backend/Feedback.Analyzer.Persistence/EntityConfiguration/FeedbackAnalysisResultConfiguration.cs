@@ -30,9 +30,9 @@ public class FeedbackAnalysisResultConfiguration : IEntityTypeConfiguration<Feed
                 v => JsonConvert.DeserializeObject<List<EntityIdentification>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })!);
 
         builder
-            .HasOne<CustomerFeedback>(feedback => feedback.CustomerFeedback)
-            .WithOne(customerFeedback => customerFeedback.FeedbackAnalysisResult)
-            .HasForeignKey<FeedbackAnalysisResult>(feedback => feedback.CustomerFeedbackId);
+            .HasOne<CustomerFeedback>(result => result.CustomerFeedback)
+            .WithMany(feedback => feedback.FeedbackAnalysisResult)
+            .HasForeignKey(result => result.CustomerFeedbackId);
         
         builder
             .HasOne<FeedbackAnalysisWorkflowResult>()

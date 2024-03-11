@@ -11,18 +11,21 @@
                 <!-- Prompt category details -->
                 <div class="w-1/4 flex items-center">
 
-                    <div class="flex flex-col flex-grow">
+                    <div class="flex flex-col flex-grow items-center justify-center">
                         <h5 class="text-xl text-center">{{ workflow.name }}</h5>
 
                         <h5 class="text-sm"> {{ LayoutConstants.Results }} : {{ workflowResults.length }}</h5>
 
-                        <div class="flex gap-5">
+                        <div class="mt-10 flex gap-3">
 
-                            <app-button class="w-fit" :type="ButtonType.Success" :layout="ButtonLayout.Square"
+                            <app-button class="w-fit" :type="ButtonType.Success" :layout="ButtonLayout.Rectangle"
                                         icon="fas fa-play"
+                                        :text="triggerButtonText"
                                         :size="ActionComponentSize.ExtraSmall" @click="onTriggerWorkflow"/>
 
-                            <app-button class="w-fit" :type="ButtonType.Secondary" :layout="ButtonLayout.Square"
+                            <app-button class="w-fit" :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
+                                        :text="workflowResults.length + ' ' +
+                                        LayoutConstants.Results" :hideText="hideResultsButtonText"
                                         icon="fas fa-clock-rotate-left" @click="onToggleResultsList"
                                         :size="ActionComponentSize.ExtraSmall"/>
 
@@ -97,7 +100,6 @@ import ExpandingCardBase from "@/common/components/expandingCardBase/ExpandingCa
 import {FeedbackAnalysisWorkflowResult} from "@/modules/analysisWorkflows/models/FeedbackAnalysisWorkflowResult";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import WorkflowResultCard from "@/modules/analysisWorkflows/components/WorkflowResultCard.vue";
-import HorizontalDivider from "@/common/components/dividers/HorizontalDivider.vue";
 import DoughnutChart from "@/common/components/doughnutChart/DoughnutChart.vue";
 
 const isResultsListOpen = ref<boolean>(false);
@@ -111,13 +113,26 @@ const props = defineProps({
     }
 });
 
+// Action button messages
+const triggerButtonText = ref<string>('');
+const hideResultsButtonText = ref<boolean>(false);
+const workflowResultProgress = ref<number>(0);
+
 onBeforeMount(async () => {
     await loadWorkflowResults();
 });
 
 const onTriggerWorkflow = async () => {
+    hideResultsButtonText.value = true;
+    triggerButtonText.value = `${LayoutConstants.Progress}: ${workflowResultProgress.value}%`;
+
+    // await new Promise(resolve => setTimeout(resolve, 500));
+
     const response = await insightBoxApiClient.workflows
         .executeWorkflowAsync(props.workflow?.id);
+
+    hideResultsButtonText.value = false;
+    triggerButtonText.value = '';
 }
 
 const onToggleResultsList = async () => {

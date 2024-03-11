@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240309123241_Update_Relation_ForeignKey")]
-    partial class Update_Relation_ForeignKey
+    [Migration("20240311070845_Last changes")]
+    partial class Lastchanges
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -224,6 +224,9 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("json");
 
+                    b.Property<Guid>("FeedbackAnalysisWorkflowResultId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -232,8 +235,9 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerFeedbackId")
-                        .IsUnique();
+                    b.HasIndex("CustomerFeedbackId");
+
+                    b.HasIndex("FeedbackAnalysisWorkflowResultId");
 
                     b.ToTable("FeedbackAnalysisResults");
                 });
@@ -262,7 +266,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("FeedbackExecutionWorkflows");
+                    b.ToTable("FeedbackAnalysisWorkflows");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", b =>
@@ -273,6 +277,12 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.Property<decimal>("FeedbacksCount")
                         .HasColumnType("numeric(20,0)");
+
+                    b.Property<DateTimeOffset>("FinishedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("StartedTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("WorkflowId")
                         .HasColumnType("uuid");
@@ -454,8 +464,14 @@ namespace Feedback.Analyzer.Persistence.Migrations
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.CustomerFeedback", "CustomerFeedback")
-                        .WithOne("FeedbackAnalysisResult")
-                        .HasForeignKey("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult", "CustomerFeedbackId")
+                        .WithMany("FeedbackAnalysisResult")
+                        .HasForeignKey("CustomerFeedbackId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", null)
+                        .WithMany("FeedbackAnalysisResults")
+                        .HasForeignKey("FeedbackAnalysisWorkflowResultId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -698,13 +714,17 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.CustomerFeedback", b =>
                 {
-                    b.Navigation("FeedbackAnalysisResult")
-                        .IsRequired();
+                    b.Navigation("FeedbackAnalysisResult");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
                 {
                     b.Navigation("Results");
+                });
+
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", b =>
+                {
+                    b.Navigation("FeedbackAnalysisResults");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>

@@ -31,5 +31,5 @@ public class CustomerFeedback : AuditableEntity
     /// <summary>
     /// Gets or sets the analysis result of the feedback.
     /// </summary>
-    public FeedbackAnalysisResult FeedbackAnalysisResult { get; set; }
+    public ICollection<FeedbackAnalysisResult> FeedbackAnalysisResult { get; set; } = default!;
 }

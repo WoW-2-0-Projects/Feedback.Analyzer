@@ -1,12 +1,13 @@
 <template>
 
     <button ref="component" type="button" :class="componentStyles" :disabled="disabled"
-            class="text-md text-nowrap overflow-hidden
-                   theme-action-content theme-action-shadow">
+            class="text-md text-nowrap overflow-hidden theme-action-content theme-action-shadow">
         <span class="h-full w-full inline-flex items-center theme-action-overlay theme-action-transition"
               :class="contentStyles">
             <i v-if="icon" :class="icon"></i>
-            {{ text }}
+            <span class="theme-action-transition" :class="hideText ? 'w-0 opacity-0' : 'w-fit opacity-100'">
+                {{ text }}
+            </span>
         </span>
     </button>
 
@@ -15,11 +16,10 @@
 <script setup lang="ts">
 
 import {ButtonType} from "@/common/components/appButton/ButtonType";
-import {computed, onMounted, type PropType, ref} from "vue";
+import {computed, type PropType, ref} from "vue";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
-import {DocumentService} from "@/infrastructure/services/document/DocumentService";
 
 const props = defineProps({
     type: {
@@ -49,16 +49,15 @@ const props = defineProps({
     size: {
         type: Number as PropType<ActionComponentSize>,
         default: ActionComponentSize.Medium
+    },
+    hideText: {
+        type: Boolean,
+        default: false
     }
 });
 
-const documentService = new DocumentService();
 const component = ref<HTMLButtonElement>();
-
-onMounted(() => {
-    // if (props.layout === ButtonLayout.Square)
-    //     documentService.setEqualWidth(component.value);
-});
+const actualLayout = ref<ButtonLayout>(props.layout);
 
 const componentStyles = computed(() => {
     let styles = ''
@@ -83,11 +82,11 @@ const componentStyles = computed(() => {
         }
 
     //  Add button layout styles
-    if (props.layout === ButtonLayout.Rectangle)
+    if (actualLayout.value === ButtonLayout.Rectangle)
         styles += ' theme-action-border-round action-layout';
-    else if (props.layout === ButtonLayout.Square)
+    else if (actualLayout.value === ButtonLayout.Square)
         styles += ' theme-action-border-round aspect-square ';
-    else if (props.layout === ButtonLayout.Circle)
+    else if (actualLayout.value === ButtonLayout.Circle)
         styles += ' flex items-center justify-center action-circle-layout';
 
     // Add button size styles
@@ -103,6 +102,10 @@ const componentStyles = computed(() => {
             break;
     }
 
+    if((!(props.text && props.icon) || props.hideText) && !styles.includes('aspect-square')) {
+        styles += ' aspect-square';
+    }
+
     return styles;
 });
 
@@ -110,13 +113,13 @@ const contentStyles = computed(() => {
     let styles = ' ';
 
     // Add button layout styles
-    if (props.layout === ButtonLayout.Rectangle)
-        styles += ' theme-action-padding justify-around ';
-    else if (props.layout === ButtonLayout.Square || props.layout === ButtonLayout.SquareMini || props.layout === ButtonLayout.Circle)
-        styles += ' justify-center ';
+    if (actualLayout.value === ButtonLayout.Rectangle)
+        styles += ' theme-action-padding';
 
-    if (props.icon)
-        styles += ' gap-2';
+    if (props.icon && props.text && !props.hideText)
+        styles += ' justify-around gap-2';
+    else
+        styles += ' justify-center';
 
     return styles;
 });

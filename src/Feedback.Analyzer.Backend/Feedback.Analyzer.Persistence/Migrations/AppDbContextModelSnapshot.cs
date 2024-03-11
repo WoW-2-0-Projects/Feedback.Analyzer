@@ -232,8 +232,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerFeedbackId")
-                        .IsUnique();
+                    b.HasIndex("CustomerFeedbackId");
 
                     b.HasIndex("FeedbackAnalysisWorkflowResultId");
 
@@ -462,8 +461,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.CustomerFeedback", "CustomerFeedback")
-                        .WithOne("FeedbackAnalysisResult")
-                        .HasForeignKey("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult", "CustomerFeedbackId")
+                        .WithMany("FeedbackAnalysisResult")
+                        .HasForeignKey("CustomerFeedbackId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -712,8 +711,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.CustomerFeedback", b =>
                 {
-                    b.Navigation("FeedbackAnalysisResult")
-                        .IsRequired();
+                    b.Navigation("FeedbackAnalysisResult");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
