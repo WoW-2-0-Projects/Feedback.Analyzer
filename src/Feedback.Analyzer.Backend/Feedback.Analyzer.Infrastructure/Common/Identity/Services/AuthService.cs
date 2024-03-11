@@ -37,17 +37,10 @@ public class AuthService(
         //Map the entered user object
         var client = mapper.Map<Client>(signUpDetails);
 
-        //Generating complex password
-        var password = signUpDetails.AutoGeneratePassword
-            ? passwordGeneratorService.GeneratePassword()
-            : passwordGeneratorService.GetValidatedPassword(signUpDetails.Password!, client);
-
-        //Hash password
-        client.PasswordHash = passwordHasherService.HashPassword(signUpDetails.Password);
+        //Generate complex password and hash it
+        client.PasswordHash = passwordHasherService.HashPassword(passwordGeneratorService.GeneratePassword());
 
         var createdUser = await accountService.CreateClientAsync(client, cancellationToken);
-        
-        
         
         return createdUser is not null;
     }
@@ -66,7 +59,7 @@ public class AuthService(
         if (foundUser is null || !passwordHasherService.ValidatePassword(signInDetails.Password, foundUser.PasswordHash))
             throw new AuthenticationException("Sign in details are invalid, contact support.");
        
-        return await CreateTokens(foundUser, cancellationToken);
+        return await CreateTokens(foundUser, signInDetails.RememberMe, cancellationToken);
     }
     
 
@@ -140,11 +133,10 @@ public class AuthService(
         return await identitySecurityTokenService.CreateAccessTokenAsync(newAccessToken, new CommandOptions(), cancellationToken);
     }
 
-    private async Task<(AccessToken AccessToken, RefreshToken RefreshToken)> CreateTokens(Client user, CancellationToken cancellationToken = default)
+    private async Task<(AccessToken AccessToken, RefreshToken RefreshToken)> CreateTokens(Client user, bool rememberMe, CancellationToken cancellationToken = default)
     {
         var accessToken = identitySecurityTokenGeneratorService.GenerateAccessToken(user);
-
-        var refreshToken = identitySecurityTokenGeneratorService.GenerateRefreshToken(user);
+        var refreshToken = identitySecurityTokenGeneratorService.GenerateRefreshToken(user, rememberMe);
 
         return (await identitySecurityTokenService.CreateAccessTokenAsync(accessToken, new CommandOptions(), cancellationToken),
             await identitySecurityTokenService.CreateRefreshTokenAsync(refreshToken, new CommandOptions(), cancellationToken));

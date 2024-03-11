@@ -15,20 +15,8 @@ public class SignUpDetails
     /// </summary>
     public string LastName { get; set; } = default!;
     
-
     /// <summary>
     /// Gets or sets email address of the sign up details
     /// </summary>
     public string EmailAddress { get; set; } = default!;
-
-    /// <summary>
-    /// Gets or sets password of the sign up details
-    /// </summary>
-    public string Password { get; set; } = default!;
-    
-    /// <summary>
-    /// Gets or sets auto generate password of sign up Details
-    /// </summary>
-    public bool AutoGeneratePassword { get; set; }
-    
 }
