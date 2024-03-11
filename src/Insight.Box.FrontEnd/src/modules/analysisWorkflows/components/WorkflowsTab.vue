@@ -3,6 +3,7 @@
     <!-- Workflows tab content -->
     <div class="tab pt-10">
 
+
         <!-- Workflows search bar -->
         <workflows-search-bar/>
 
@@ -38,6 +39,7 @@ import WorkflowCard from "@/modules/analysisWorkflows/components/WorkflowCard.vu
 import {WorkflowType} from "@/modules/prompts/models/WorkflowType";
 import {DividerType} from "@/common/components/dividers/DividerType";
 import HorizontalDivider from "@/common/components/dividers/HorizontalDivider.vue";
+import DoughnutChart from "@/common/components/doughnutChart/DoughnutChart.vue";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 const documentService = new DocumentService();

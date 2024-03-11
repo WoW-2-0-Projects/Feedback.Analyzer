@@ -1,7 +1,6 @@
 <template>
 
     <expanding-card-base :isExpanded="isResultsListOpen"
-                         :mainContentHeight="300"
                          :expandingContentHeight="400"
                          class="w-full card card-bg card-round card-shadow text-secondaryContentColor"
     >
@@ -10,14 +9,12 @@
             <div class="flex p-2 card-shadow">
 
                 <!-- Prompt category details -->
-                <div class="flex items-center w-full">
-
-                    <!--                    <expand-button class="flex-1" :isExpanded="isOpen" @click="isOpen = !isOpen"/>-->
+                <div class="w-1/4 flex items-center">
 
                     <div class="flex flex-col flex-grow">
                         <h5 class="text-xl text-center">{{ workflow.name }}</h5>
 
-                        <h5 class="text-sm"> {{ LayoutConstants.Versions }} : {{ 5 }}</h5>
+                        <h5 class="text-sm"> {{ LayoutConstants.Results }} : {{ workflowResults.length }}</h5>
 
                         <div class="flex gap-5">
 
@@ -38,15 +35,31 @@
                 <vertical-divider :type="DividerType.ContentLength"/>
 
                 <!-- Prompt selection -->
-                <div class="w-full p-2 py-5 flex flex-col item-center">
+                <div class="w-1/2 flex p-2 py-5 item-center">
 
+                    <div class="w-full flex flex-col items-center justify-center">
+                        <h5>Overall opinions</h5>
+                        <doughnut-chart/>
+                    </div>
+
+                    <div class="w-full flex flex-col items-center justify-center">
+                        <h5>Opinion points</h5>
+                        <doughnut-chart/>
+                    </div>
+
+                    <div class="w-full flex flex-col items-center justify-center">
+                        <h5>Actionable points</h5>
+                        <doughnut-chart/>
+                    </div>
 
                 </div>
 
                 <vertical-divider :type="DividerType.ContentLength"/>
 
                 <!-- Prompt execution result -->
-                <div class="w-full p-2 py-5 flex flex-col">
+                <div class="w-1/4 flex-1 p-2 py-5 flex flex-col">
+
+                    <h5>Key points</h5>
 
                 </div>
 
@@ -85,6 +98,7 @@ import {FeedbackAnalysisWorkflowResult} from "@/modules/analysisWorkflows/models
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import WorkflowResultCard from "@/modules/analysisWorkflows/components/WorkflowResultCard.vue";
 import HorizontalDivider from "@/common/components/dividers/HorizontalDivider.vue";
+import DoughnutChart from "@/common/components/doughnutChart/DoughnutChart.vue";
 
 const isResultsListOpen = ref<boolean>(false);
 const insightBoxApiClient = new InsightBoxApiClient();
