@@ -11,11 +11,15 @@ public record FeedbackAnalysisWorkflowResultDto
     /// Gets feedback workflow result Id 
     /// </summary>
     public Guid Id { get; init; }
-    
+
     /// <summary>
     /// Gets workflow Id
     /// </summary>
     public Guid WorkflowId { get; init; }
+
+    public DateTimeOffset StartedTime { get; set; }
+
+    public DateTimeOffset FinishedTime { get; set; }
 
     /// <summary>
     /// Gets related feedbacks results

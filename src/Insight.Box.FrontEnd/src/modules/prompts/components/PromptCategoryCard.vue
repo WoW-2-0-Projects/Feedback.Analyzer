@@ -41,7 +41,7 @@
 
         </div>
 
-        <!--        <vertical-divider :type="DividerType.ContentLength"/>-->
+        <!--        <vertical-dividers :type="DividerType.ContentLength"/>-->
 
         <!-- Prompt selection -->
         <div class="w-full p-5 pt-3 pr-2.5 flex flex-col item-center">
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <!--        <vertical-divider :type="DividerType.ContentLength"/>-->
+        <!--        <vertical-dividers :type="DividerType.ContentLength"/>-->
 
         <!-- Prompt execution result -->
         <div class="w-full p-5 pt-3 pl-2.5 flex flex-col">
@@ -72,8 +72,8 @@ import type {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisProm
 import {ButtonType} from "@/common/components/appButton/ButtonType";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
-import VerticalDivider from "@/common/components/divider/VerticalDivider.vue";
-import {DividerType} from "@/common/components/divider/DividerType";
+import VerticalDivider from "@/common/components/dividers/VerticalDivider.vue";
+import {DividerType} from "@/common/components/dividers/DividerType";
 import {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";

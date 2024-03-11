@@ -6,7 +6,7 @@ public class FeedbackOpinion
 {
     public OpinionType OverallOpinion { get; set; }
 
-    public string[] PositiveOpinionPoints { get; set; } = default!;
+    public string[] PositiveOpinionPoints { get; set; } = Array.Empty<string>();
 
-    public string[] NegativeOpinionPoints { get; set; } = default!;
+    public string[] NegativeOpinionPoints { get; set; } = Array.Empty<string>();
 }

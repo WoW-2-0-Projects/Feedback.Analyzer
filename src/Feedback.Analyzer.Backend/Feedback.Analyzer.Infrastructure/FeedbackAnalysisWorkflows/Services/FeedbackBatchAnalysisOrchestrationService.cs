@@ -70,7 +70,8 @@ public class FeedbackBatchAnalysisOrchestrationService(
         var workflowResult = new FeedbackAnalysisWorkflowResult
         {
             WorkflowId = workflowContext.WorkflowId,
-            FeedbacksCount = (ulong)workflowContext.FeedbacksId.Count
+            FeedbacksCount = (ulong)workflowContext.FeedbacksId.Count,
+            StartedTime = DateTimeOffset.UtcNow
         };
 
         var createdWorkflowResult = await feedbackAnalysisWorkflowResultService.CreateAsync(workflowResult, cancellationToken: cancellationToken);

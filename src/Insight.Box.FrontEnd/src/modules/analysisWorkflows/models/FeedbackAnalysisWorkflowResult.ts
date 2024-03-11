@@ -10,5 +10,9 @@ export class FeedbackAnalysisWorkflowResult{
 
     public workflowId: string;
 
+    public startedTime: Date;
+
+    public finishedTime: Date;
+
     public results: Array<FeedbackAnalysisResult>;
 }

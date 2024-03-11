@@ -1,14 +1,15 @@
 <template>
 
-    <div class="w-full flex flex-col card card-bg card-round card-shadow text-secondaryContentColor">
+    <div class="flex flex-col">
 
         <!-- Main content -->
-        <div class="flex card-shadow" :style="{ maxHeight: mainContentHeight > 0 ? `${mainContentHeight}px` : 'none' }">
+        <div class="z-20" :style="{ maxHeight: mainContentHeight > 0 ? `${mainContentHeight}px` : 'none'
+        }">
             <slot name="mainContent"/>
         </div>
 
         <!-- Expanding content -->
-        <div class="w-full overflow-hidden"
+        <div class="w-full overflow-y-scroll z-10 no-scrollbar"
              :style="`--expand-height: ${props.expandingContentHeight}px`"
              :class="{'animate-fadeInExpand': isExpanded, 'animate-fadeOutCollapse': !isExpanded
                       ,'hidden': !firstExpanded

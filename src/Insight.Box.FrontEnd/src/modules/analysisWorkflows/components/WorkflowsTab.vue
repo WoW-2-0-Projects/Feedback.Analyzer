@@ -36,6 +36,8 @@ import {AnalysisWorkflowFilter} from "@/modules/prompts/models/AnalysisWorkflowF
 import type {Organization} from "@/modules/organizations/models/Organization";
 import WorkflowCard from "@/modules/analysisWorkflows/components/WorkflowCard.vue";
 import {WorkflowType} from "@/modules/prompts/models/WorkflowType";
+import {DividerType} from "@/common/components/dividers/DividerType";
+import HorizontalDivider from "@/common/components/dividers/HorizontalDivider.vue";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 const documentService = new DocumentService();

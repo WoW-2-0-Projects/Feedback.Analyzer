@@ -8,6 +8,10 @@ public class FeedbackAnalysisWorkflowResult : Entity
     
     public ulong FeedbacksCount { get; set; }
     
+    public DateTimeOffset StartedTime { get; set; }
+    
+    public DateTimeOffset FinishedTime { get; set; }
+    
     public FeedbackAnalysisWorkflow Workflow { get; set; } = default!;
 
     public ICollection<FeedbackAnalysisResult> FeedbackAnalysisResults { get; set; } = default!;

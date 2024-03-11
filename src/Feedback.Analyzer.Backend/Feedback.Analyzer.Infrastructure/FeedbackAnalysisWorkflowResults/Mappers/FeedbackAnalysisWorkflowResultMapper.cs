@@ -8,6 +8,7 @@ public class FeedbackAnalysisWorkflowResultMapper : Profile
 {
     public FeedbackAnalysisWorkflowResultMapper()
     {
-        CreateMap<FeedbackAnalysisWorkflowResult, FeedbackAnalysisWorkflowResultDto>();
+        CreateMap<FeedbackAnalysisWorkflowResult, FeedbackAnalysisWorkflowResultDto>()
+            .ForMember(dest => dest.Results, opt => opt.MapFrom(src => src.FeedbackAnalysisResults));
     }
 }

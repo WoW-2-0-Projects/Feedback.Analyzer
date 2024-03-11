@@ -1,6 +1,6 @@
 <template>
 
-    <div class=" flex items-center">
+    <div class="flex items-center">
         <div class="bg-accentSecondaryColor w-[1.5px] h-4/5" :class="componentStyles"/>
     </div>
 
@@ -9,7 +9,7 @@
 <script setup lang="ts">
 
 import {computed, type PropType} from "vue";
-import {DividerType} from "@/common/components/divider/DividerType";
+import {DividerType} from "@/common/components/dividers/DividerType";
 
 const props = defineProps({
     type: {
@@ -31,6 +31,6 @@ const componentStyles = computed(() => {
             break;
     }
 
-})
+});
 
 </script>

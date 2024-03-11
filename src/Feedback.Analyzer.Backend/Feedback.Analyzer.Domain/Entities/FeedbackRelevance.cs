@@ -8,5 +8,5 @@ public class FeedbackRelevance
 
     public string PiiRedactedContent { get; set; } = default!;
 
-    public string[] RecognizedLanguages { get; set; } = default!;
+    public string[] RecognizedLanguages { get; set; } = Array.Empty<string>();
 }

@@ -32,6 +32,11 @@ export class LayoutConstants {
     public static readonly ExecutionResult = 'Prompt Execution Result';
     public static readonly ExecutionException = 'Prompt Execution Exception';
 
+    /* Workflows */
+    public static readonly CreateWorkflow = 'Create a workflow';
+    public static readonly StartedTime = 'Started';
+    public static readonly FinishedTime = 'Finished';
+
     /* Forms */
     public static readonly Submit = 'Submit';
     public static readonly Cancel = 'Cancel';
