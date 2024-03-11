@@ -40,6 +40,8 @@ public class FeedbackAnalysisOrchestrationService(
 
         // Create feedback analysis result
         await feedbackAnalysisResultService.CreateAsync(context.Result, cancellationToken: cancellationToken);
+
+        // UpdateWorkflowResultStatusEvent();
     }
 
     private async ValueTask ExecuteOptionAsync(WorkflowContext context, WorkflowExecutionOption option, CancellationToken cancellationToken = default)

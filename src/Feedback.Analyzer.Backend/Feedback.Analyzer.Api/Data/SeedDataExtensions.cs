@@ -210,16 +210,16 @@ public static class SeedDataExtensions
             // Negative feedback
             new()
             {
-                ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
-                Comment = "I found the product to be **confusing** and **difficult to navigate**. It also **lacked some features** I was hoping for.",
+                ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
+                Comment = "Good mouse, but wireless connection sucks",
                 UserName = "Alice Miller",
             },
 
             // Anonymous feedback with mixed sentiment
             new()
             {
-                ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
-                Comment = "The product has **some great features**, but it also has **some flaws**.",
+                ProductId = Guid.Parse("46E96B3C-4028-4FD5-B38A-981237BD6F9D"),
+                Comment = "The Viper is a good mouse, but I can't afford it. It's not for me.",
                 UserName = "Joane Miller",
             },
 

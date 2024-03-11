@@ -11,7 +11,7 @@
             <div class="flex p-2">
 
                 <!-- Prompt category details -->
-                <div class="flex flex-col items-start gap-y-2 w-full">
+                <div class="flex items-start justify-between gap-y-2 w-full">
 
                     <div class="flex flex-col">
                         <h5 class="text-sm text-tertiaryColor"> {{ LayoutConstants.StartedTime }}
@@ -26,37 +26,13 @@
 
                 </div>
 
-                <vertical-divider :type="DividerType.ContentLength"/>
-
-                <!-- Prompt selection -->
-                <div class="w-full p-2 py-5 flex flex-col item-center">
-
-                </div>
-
-                <vertical-divider :type="DividerType.ContentLength"/>
-
-                <!-- Prompt execution result -->
-                <div class="w-full p-2 py-5 flex flex-col">
-
-                </div>
-
             </div>
 
         </template>
 
         <template v-slot:expandingContent>
-
-            <!-- Workflow execution results -->
-
-            <!--            <app-table>-->
-
-            <!--            </app-table>-->
-
-
-            <!--            <div v-for="test in 10">hi</div>-->
-
+            <app-table class="w-full" :data="feedbackResultsTableData"/>
         </template>
-
 
     </expanding-card-base>
 
@@ -65,20 +41,22 @@
 <script setup lang="ts">
 
 import {FeedbackAnalysisWorkflowResult} from "@/modules/analysisWorkflows/models/FeedbackAnalysisWorkflowResult";
-import {type PropType, ref} from "vue";
+import {computed, type PropType, ref} from "vue";
 import {ButtonType} from "@/common/components/appButton/ButtonType";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
-import {DividerType} from "@/common/components/dividers/DividerType";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import AppButton from "@/common/components/appButton/AppButton.vue";
-import VerticalDivider from "@/common/components/dividers/VerticalDivider.vue";
 import ExpandingCardBase from "@/common/components/expandingCardBase/ExpandingCardBase.vue";
 import {DateTimeFormatterService} from "@/infrastructure/services/dateTime/DateTimeFormatterService";
+import {TableRowData} from "@/common/components/appTable/TableRowData";
+import {TableAction} from "@/common/components/appTable/TableAction";
+import type {FeedbackAnalysisResult} from "@/modules/analysisWorkflows/models/FeedbackAnalysisResult";
+import {TableData} from "@/common/components/appTable/TableData";
+import AppTable from "@/common/components/appTable/AppTable.vue";
 
 const dateTimeFormatterService = new DateTimeFormatterService();
 
-const isExpanded = ref<boolean>(false);
 
 const props = defineProps({
     result: {
@@ -87,4 +65,36 @@ const props = defineProps({
     }
 });
 
+// Component states
+const isExpanded = ref<boolean>(false);
+
+// Feedback analysis result states
+const feedbackResultsTableData = computed(() => {
+    const tableData = new TableData([
+        "Username",
+        "Is Relevant",
+    ], []);
+
+    if (props.result.results.length > 0) {
+        tableData.rows = props.result.results.map(result => mapFeedbackAnalysisResultToTableRowData(result));
+    }
+
+    return tableData;
+});
+
+const mapFeedbackAnalysisResultToTableRowData = (result: FeedbackAnalysisResult) => {
+    console.log('test', result.feedbackRelevance);
+
+    return new TableRowData([
+            'John',
+            // ${result.version}.${result.revision}`,
+            result.feedbackRelevance.isRelevant,
+            // result.averageAccuracy,
+            // result.executionsCount
+        ],
+        [
+            new TableAction(() => console.log(result.id), ButtonType.Secondary, 'fas fa-paperclip')
+        ]
+    );
+};
 </script>

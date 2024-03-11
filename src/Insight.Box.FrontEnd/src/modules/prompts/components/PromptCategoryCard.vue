@@ -155,7 +155,7 @@ const loadAllPromptResultsAsync = async () => {
     if (response.response) {
         promptExecutionResults.value = response.response;
         promptResultsTableData.value.rows = promptExecutionResults.value.map(result => {
-            return convertResultToTableRowData(result);
+            return mapResultToTableRowData(result);
         });
     }
 };
@@ -165,13 +165,11 @@ const loadPromptResultAsync = async (promptId: string) => {
 
     if (response.response) {
         promptExecutionResults.value = response.response;
-        promptResultsTableData.value.rows = promptExecutionResults.value.map(result => {
-            return convertResultToTableRowData(result);
-        });
+        promptResultsTableData.value.rows = promptExecutionResults.value.map(result => mapResultToTableRowData(result));
     }
 };
 
-const convertResultToTableRowData = (result: PromptExecutionResult) => {
+const mapResultToTableRowData = (result: PromptExecutionResult) => {
     return new TableRowData([
             `${result.version}.${result.revision}`,
             result.averageExecutionTime,
@@ -196,12 +194,12 @@ const loadPromptExecutionHistoryAsync = async () => {
         promptExecutionHistories.value = response.response;
 
         promptHistoriesTableData.value.rows = promptExecutionHistories.value.map(result => {
-            return convertHistoryToTableRowData(result);
+            return mapHistoryToTableRowData(result);
         });
     }
 };
 
-const convertHistoryToTableRowData = (history: PromptsExecutionHistory) => {
+const mapHistoryToTableRowData = (history: PromptsExecutionHistory) => {
     return new TableRowData([
             dateTimeFormatterService.formatHumanize(history.executionTime),
             history.executionDurationInMilliseconds,
