@@ -7,6 +7,9 @@ export class Action {
         this.callBack = callback;
     }
 
+    /*
+     * Action callback
+     */
     public callBack: () => void;
 }
 
@@ -17,6 +20,9 @@ export class NotificationSource {
 
     private listeners: Action[] = [];
 
+    /*
+     * Updates listeners about notification
+     */
     public updateListeners = () => {
         this.listeners.forEach((listener: Action) => {
 
@@ -24,6 +30,9 @@ export class NotificationSource {
         });
     }
 
+    /*
+     * Adds listener to the source
+     */
     public addListener = (callback: () => void) => {
         this.listeners.push(new Action(callback));
     }

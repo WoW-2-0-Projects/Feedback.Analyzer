@@ -13,7 +13,9 @@ using Feedback.Analyzer.Domain.Common.Events;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
+using Feedback.Analyzer.Application.PromptsHistory.Services;
 using Feedback.Analyzer.Domain.Constants;
+using Feedback.Analyzer.Infrastructure.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.Identity.Services;
@@ -24,6 +26,8 @@ using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
+using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
+using Feedback.Analyzer.Infrastructure.PromptsHistory.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
@@ -276,7 +280,65 @@ public static partial class HostConfiguration
 
         return builder;
     }
+    
+        /// <summary>
+        /// Adds client-related infrastructure services to the web application builder.
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns> </returns>
+        private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
+        {
+            // Register repositories
+            builder.Services
+                .AddScoped<IClientRepository, ClientRepository>()
+                .AddScoped<IOrganizationRepository, OrganizationRepository>()
+                .AddScoped<IProductRepository, ProductRepository>();
+            
+            // Register services
+            builder.Services
+                .AddScoped<IClientService, ClientService>()
+                .AddScoped<IOrganizationService, OrganizationService>()
+                .AddScoped<IProductService, ProductService>();
+    
+            return builder;
+        }
+    /// <summary>
+    /// Adds feedback-related infrastructure services to the web application builder.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddFeedbackInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Register repositories
+        builder.Services
+               .AddScoped<ICustomerFeedbackRepository, CustomerFeedbackRepository>();
+        
+        // Register services
+        builder.Services
+               .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>();
 
+        return builder;
+    }
+
+    private static WebApplicationBuilder AddPromptAnalysisInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Register repositories
+        builder.Services
+            .AddScoped<IPromptRepository, PromptRepository>()
+            .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>()
+            .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>()
+            .AddScoped<IAnalysisWorkflowRepository, AnalysisWorkflowRepository>()
+            .AddScoped<IFeedbackAnalysisWorkflowRepository, FeedbackAnalysisWorkflowRepository>();
+        
+        // Register foundation services
+        builder.Services
+               .AddScoped<IPromptService, PromptService>()
+               .AddScoped<IPromptCategoryService, PromptCategoryService>()
+               .AddScoped<IPromptExecutionHistoryService, PromptExecutionHistoryService>()
+               .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>();
+
+        return builder;
+    }
     /// <summary>
     /// Configures Request Context tool for the web application.
     /// </summary>

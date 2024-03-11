@@ -22,6 +22,109 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("DeletedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("ModifiedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Prompt")
+                        .IsRequired()
+                        .HasMaxLength(32768)
+                        .HasColumnType("character varying(32768)");
+
+                    b.Property<int>("Revision")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId", "Version", "Revision")
+                        .IsUnique();
+
+                    b.ToTable("Prompts");
+                });
+
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<Guid?>("SelectedPromptId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Category")
+                        .IsUnique();
+
+                    b.HasIndex("SelectedPromptId")
+                        .IsUnique();
+
+                    b.ToTable("PromptCategories");
+                });
+
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisWorkflow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("DeletedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("ModifiedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AnalysisWorkflows");
+                });
+
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Client", b =>
                 {
                     b.Property<Guid>("Id")
@@ -34,7 +137,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<DateTimeOffset?>("DeletedTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
@@ -62,7 +165,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.CustomerFeedback", b =>
@@ -100,7 +203,22 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Feedbacks", (string)null);
+                    b.ToTable("Feedbacks");
+                });
+
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("FeedbackAnalysisWorkflows");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>
@@ -132,7 +250,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Organizations", (string)null);
+                    b.ToTable("Organizations");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Product", b =>
@@ -170,7 +288,57 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasIndex("OrganizationId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.PromptExecutionHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Exception")
+                        .HasMaxLength(32768)
+                        .HasColumnType("character varying(32768)");
+
+                    b.Property<TimeSpan>("ExecutionDuration")
+                        .HasColumnType("interval");
+
+                    b.Property<DateTimeOffset>("ExecutionTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("PromptId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Result")
+                        .HasMaxLength(32768)
+                        .HasColumnType("character varying(32768)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PromptId");
+
+                    b.ToTable("PromptExecutionHistories");
+                });
+
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", b =>
+                {
+                    b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", "Category")
+                        .WithMany("Prompts")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", b =>
+                {
+                    b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", "SelectedPrompt")
+                        .WithOne()
+                        .HasForeignKey("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", "SelectedPromptId");
+
+                    b.Navigation("SelectedPrompt");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.CustomerFeedback", b =>
@@ -180,6 +348,25 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
+                {
+                    b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisWorkflow", "AnalysisWorkflow")
+                        .WithOne()
+                        .HasForeignKey("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Feedback.Analyzer.Domain.Entities.Product", "Product")
+                        .WithMany("Workflows")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AnalysisWorkflow");
 
                     b.Navigation("Product");
                 });
@@ -206,6 +393,27 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("Organization");
                 });
 
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.PromptExecutionHistory", b =>
+                {
+                    b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", "Prompt")
+                        .WithMany("ExecutionHistories")
+                        .HasForeignKey("PromptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Prompt");
+                });
+
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPrompt", b =>
+                {
+                    b.Navigation("ExecutionHistories");
+                });
+
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", b =>
+                {
+                    b.Navigation("Prompts");
+                });
+
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Client", b =>
                 {
                     b.Navigation("Organizations");
@@ -219,6 +427,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Product", b =>
                 {
                     b.Navigation("CustomerFeedbacks");
+
+                    b.Navigation("Workflows");
                 });
 #pragma warning restore 612, 618
         }

@@ -64,9 +64,6 @@ onBeforeMount(async () => {
     await loadProductsAsync();
 });
 
-/*
- * Loads products
- */
 const loadProductsAsync = async () => {
     isLoading.value = true;
 
@@ -81,9 +78,6 @@ const loadProductsAsync = async () => {
     isLoading.value = false;
 };
 
-/*
- * Handles product modal submit
- */
 const onProductModalSubmit = async(product: Product) => {
     if(isCreate.value) {
         await createProductAsync(product);
@@ -92,9 +86,6 @@ const onProductModalSubmit = async(product: Product) => {
     }
 }
 
-/*
- * Creates a product
- */
 const createProductAsync = async (product: Product) => {
     isSearchBarLoading.value = true;
 
@@ -110,9 +101,6 @@ const createProductAsync = async (product: Product) => {
     isSearchBarLoading.value = false;
 };
 
-/*
- * Updates product
- */
 const updateProductAsync = async (product: Product) => {
     isSearchBarLoading.value = true;
 
@@ -128,10 +116,6 @@ const closeProductModal = () => {
     productModalActive.value = false;
 };
 
-
-/*
- * Scroll event handler
- */
 const onScroll = async () => {
 };
 

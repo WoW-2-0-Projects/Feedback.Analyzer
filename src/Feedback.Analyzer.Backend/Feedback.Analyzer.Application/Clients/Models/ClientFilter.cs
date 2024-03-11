@@ -7,12 +7,6 @@ namespace Feedback.Analyzer.Application.Clients.Models;
 /// </summary>
 public class ClientFilter : FilterPagination
 {
-    public ClientFilter()
-    {
-        PageSize = int.MaxValue;
-        PageToken = 1;
-    }
-    
     /// <summary>
     /// Overrides base GetHashCode method
     /// </summary>
