@@ -6,6 +6,10 @@ using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
+/// <summary>
+/// Provides refresh token repository functionality using a cache storage
+/// </summary>
+/// <param name="cacheBroker"></param>
 public class RefreshTokenRepository(ICacheBroker cacheBroker) : IRefreshTokenRepository
 {
     public async ValueTask<RefreshToken> CreateAsync(
