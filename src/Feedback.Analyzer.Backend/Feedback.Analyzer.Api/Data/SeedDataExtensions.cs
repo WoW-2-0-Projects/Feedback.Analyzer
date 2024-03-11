@@ -1,3 +1,4 @@
+using Feedback.Analyzer.Application.Common.Identity.Services;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Persistence.DataContexts;
@@ -59,7 +60,7 @@ public static class SeedDataExtensions
                 FirstName = "John",
                 LastName = "Doe",
                 EmailAddress = "example@gmail.com",
-                Password = "abc1234567"
+                PasswordHash = "$2a$12$pHdneNbJGp4SnN1ovHrNqevf6I.k3Gy.7OMJoWWB0RByv0foi4fgy" // qwerty123
             },
             new()
             {
@@ -67,7 +68,7 @@ public static class SeedDataExtensions
                 FirstName = "Bob",
                 LastName = "Richard",
                 EmailAddress = "tastBobRichard@gmail.com",
-                Password = "asdf1234"
+                PasswordHash = "$2a$12$LxSqe5AE7AtglesHHK5NROFdJQdA1r1XKqhzg4q/tMTZjVEH0PNSK" //asdf1234
             }
         };
 

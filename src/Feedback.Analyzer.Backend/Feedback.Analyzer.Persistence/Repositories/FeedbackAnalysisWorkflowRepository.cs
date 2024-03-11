@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
@@ -10,14 +11,14 @@ namespace Feedback.Analyzer.Persistence.Repositories;
 /// <summary>
 /// Represents a repository interface for managing feedback analysis workflows.
 /// </summary>
-public class FeedbackAnalysisWorkflowRepository(AppDbContext appDbContext)
-    : EntityRepositoryBase<FeedbackAnalysisWorkflow, AppDbContext>(appDbContext), IFeedbackAnalysisWorkflowRepository
+public class FeedbackAnalysisWorkflowRepository(AppDbContext appDbContext, ICacheBroker cacheBroker)
+    : EntityRepositoryBase<FeedbackAnalysisWorkflow, AppDbContext>(appDbContext, cacheBroker), IFeedbackAnalysisWorkflowRepository
 {
     public new IQueryable<FeedbackAnalysisWorkflow> Get(
         Expression<Func<FeedbackAnalysisWorkflow, bool>>? predicate = default, QueryOptions queryOptions = default)
         => base.Get(predicate, queryOptions);
 
-    public new ValueTask<FeedbackAnalysisWorkflow> GetByIdAsync(
+    public new ValueTask<FeedbackAnalysisWorkflow?> GetByIdAsync(
         Guid workflowId, 
         QueryOptions queryOptions = default, 
         CancellationToken cancellationToken = default)
