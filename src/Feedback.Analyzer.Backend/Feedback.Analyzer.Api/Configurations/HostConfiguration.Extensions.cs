@@ -2,15 +2,17 @@ using System.Reflection;
 using System.Text;
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Api.Middlewares;
+using Feedback.Analyzer.Application.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.Caching;
 using Feedback.Analyzer.Application.Common.EventBus.Brokers;
 using Feedback.Analyzer.Application.Common.Identity.Services;
+using Feedback.Analyzer.Application.Common.PromptCategory.Services;
+using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.Settings;
+using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.Serializers;
 using Feedback.Analyzer.Domain.Brokers;
-using Feedback.Analyzer.Domain.Common.Events;
-using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Application.PromptsHistory.Services;
@@ -19,11 +21,12 @@ using Feedback.Analyzer.Infrastructure.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.Identity.Services;
+using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
+using Feedback.Analyzer.Infrastructure.Common.PromptsCategories.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.RequestContexts.Brokers;
 using Feedback.Analyzer.Infrastructure.Serializers;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
-using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
@@ -48,6 +51,30 @@ public static partial class HostConfiguration
     {
         Assemblies = Assembly.GetExecutingAssembly().GetReferencedAssemblies().Select(Assembly.Load).ToList();
         Assemblies.Add(Assembly.GetExecutingAssembly());
+    }
+    
+    ///<summary>
+    /// Configures and adds Serializers to web application.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddSerializers(this WebApplicationBuilder builder)
+    {
+        // register json serialization settings
+        builder.Services.AddSingleton<IJsonSerializationSettingsProvider, JsonSerializationSettingsProvider>();
+
+        return builder;
+    }
+        
+    /// <summary>
+    /// Configures AutoMapper for object-to-object mapping using the specified profile.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddMappers(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddAutoMapper(Assemblies);
+        return builder;
     }
 
     /// <summary>
@@ -92,30 +119,6 @@ public static partial class HostConfiguration
 
         return builder;
     }
-
-    ///<summary>
-    /// Configures and adds Serializers to web application.
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <returns></returns>
-    private static WebApplicationBuilder AddSerializers(this WebApplicationBuilder builder)
-    {
-        // register json serialization settings
-        builder.Services.AddSingleton<IJsonSerializationSettingsProvider, JsonSerializationSettingsProvider>();
-
-        return builder;
-    }
-    
-    /// <summary>
-    /// Configures AutoMapper for object-to-object mapping using the specified profile.
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <returns></returns>
-    private static WebApplicationBuilder AddMappers(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddAutoMapper(Assemblies);
-        return builder;
-    }
     
     /// <summary>
     /// Adds persistence-related services to the web application builder.
@@ -141,38 +144,6 @@ public static partial class HostConfiguration
     }
     
     /// <summary>
-    /// Extension method for adding event bus services to the application.
-    /// </summary>
-    private static WebApplicationBuilder AddEventBus(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddSingleton<IEventBusBroker, EventBusBroker>();
-        return builder;
-    }
-    
-    /// <summary>
-    /// Configures the Dependency Injection container to include validators from referenced assemblies.
-    /// Adds client-related infrastructure services to the web application builder.
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <returns> </returns>
-    private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
-    {
-        // Register repositories
-        builder.Services
-            .AddScoped<IClientRepository, ClientRepository>()
-            .AddScoped<IOrganizationRepository, OrganizationRepository>()
-            .AddScoped<IProductRepository, ProductRepository>();
-        
-        // Register services
-        builder.Services
-            .AddScoped<IClientService, ClientService>()
-            .AddScoped<IOrganizationService, OrganizationService>()
-            .AddScoped<IProductService, ProductService>();
-
-        return builder;
-    }
-    
-    /// <summary>
     /// Adds MediatR services to the application with custom service registrations.
     /// </summary>
     /// <param name="builder"></param>
@@ -185,37 +156,15 @@ public static partial class HostConfiguration
     }
     
     /// <summary>
-    /// Configures CORS for the web application.
+    /// Extension method for adding event bus services to the application.
     /// </summary>
-    /// <param name="builder"></param>
-    /// <returns></returns>
-    private static WebApplicationBuilder AddCors(this WebApplicationBuilder builder)
+    private static WebApplicationBuilder AddEventBus(this WebApplicationBuilder builder)
     {
-        // Register settings
-        builder.Services.Configure<CorsSettings>(builder.Configuration.GetSection(nameof(CorsSettings)));
-        var corsSettings = builder.Configuration.GetSection(nameof(CorsSettings)).Get<CorsSettings>()
-            ?? throw new ApplicationException("Cors settings are not configured");
-        
-        builder.Services.AddCors(options => options.AddPolicy("AllowSpecificOrigin",
-            policy =>
-            {
-                policy.WithOrigins(corsSettings.AllowedOrigins);
-                    
-                if(corsSettings.AllowAnyHeaders)
-                   policy.AllowAnyHeader();
-                
-                if(corsSettings.AllowAnyMethods)
-                    policy.AllowAnyMethod();
-                
-                if(corsSettings.AllowCredentials)
-                    policy.AllowCredentials();
-            }
-        ));
-
+        builder.Services.AddSingleton<IEventBusBroker, EventBusBroker>();
         return builder;
     }
-
-    /// <summary>
+    
+        /// <summary>
     /// Configures devTools including controllers
     /// Configures IdentityInfrastructure including controllers
     /// </summary>
@@ -269,39 +218,28 @@ public static partial class HostConfiguration
     }
     
     /// <summary>
+    /// Configures the Dependency Injection container to include validators from referenced assemblies.
     /// Adds client-related infrastructure services to the web application builder.
     /// </summary>
     /// <param name="builder"></param>
-    /// <returns>Application builder</returns>
-    private static WebApplicationBuilder AddDevTools(this WebApplicationBuilder builder)
+    /// <returns> </returns>
+    private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
     {
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        // Register repositories
+        builder.Services
+            .AddScoped<IClientRepository, ClientRepository>()
+            .AddScoped<IOrganizationRepository, OrganizationRepository>()
+            .AddScoped<IProductRepository, ProductRepository>();
+        
+        // Register services
+        builder.Services
+            .AddScoped<IClientService, ClientService>()
+            .AddScoped<IOrganizationService, OrganizationService>()
+            .AddScoped<IProductService, ProductService>();
 
         return builder;
     }
     
-        /// <summary>
-        /// Adds client-related infrastructure services to the web application builder.
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <returns> </returns>
-        private static WebApplicationBuilder AddClientInfrastructure(this WebApplicationBuilder builder)
-        {
-            // Register repositories
-            builder.Services
-                .AddScoped<IClientRepository, ClientRepository>()
-                .AddScoped<IOrganizationRepository, OrganizationRepository>()
-                .AddScoped<IProductRepository, ProductRepository>();
-            
-            // Register services
-            builder.Services
-                .AddScoped<IClientService, ClientService>()
-                .AddScoped<IOrganizationService, OrganizationService>()
-                .AddScoped<IProductService, ProductService>();
-    
-            return builder;
-        }
     /// <summary>
     /// Adds feedback-related infrastructure services to the web application builder.
     /// </summary>
@@ -311,15 +249,15 @@ public static partial class HostConfiguration
     {
         // Register repositories
         builder.Services
-               .AddScoped<ICustomerFeedbackRepository, CustomerFeedbackRepository>();
+            .AddScoped<ICustomerFeedbackRepository, CustomerFeedbackRepository>();
         
         // Register services
         builder.Services
-               .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>();
+            .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>();
 
         return builder;
     }
-
+    
     private static WebApplicationBuilder AddPromptAnalysisInfrastructure(this WebApplicationBuilder builder)
     {
         // Register repositories
@@ -339,6 +277,7 @@ public static partial class HostConfiguration
 
         return builder;
     }
+    
     /// <summary>
     /// Configures Request Context tool for the web application.
     /// </summary>
@@ -352,6 +291,50 @@ public static partial class HostConfiguration
 
         builder.Services.Configure<RequestClientContextSettings>(
             builder.Configuration.GetSection(nameof(RequestClientContextSettings)));
+
+        return builder;
+    }
+    
+    /// <summary>
+    /// Configures CORS for the web application.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddCors(this WebApplicationBuilder builder)
+    {
+        // Register settings
+        builder.Services.Configure<CorsSettings>(builder.Configuration.GetSection(nameof(CorsSettings)));
+        var corsSettings = builder.Configuration.GetSection(nameof(CorsSettings)).Get<CorsSettings>()
+                           ?? throw new ApplicationException("Cors settings are not configured");
+        
+        builder.Services.AddCors(options => options.AddPolicy("AllowSpecificOrigin",
+            policy =>
+            {
+                policy.WithOrigins(corsSettings.AllowedOrigins);
+                    
+                if(corsSettings.AllowAnyHeaders)
+                    policy.AllowAnyHeader();
+                
+                if(corsSettings.AllowAnyMethods)
+                    policy.AllowAnyMethod();
+                
+                if(corsSettings.AllowCredentials)
+                    policy.AllowCredentials();
+            }
+        ));
+
+        return builder;
+    }
+    
+    /// <summary>
+    /// Adds client-related infrastructure services to the web application builder.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns>Application builder</returns>
+    private static WebApplicationBuilder AddDevTools(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
         return builder;
     }
