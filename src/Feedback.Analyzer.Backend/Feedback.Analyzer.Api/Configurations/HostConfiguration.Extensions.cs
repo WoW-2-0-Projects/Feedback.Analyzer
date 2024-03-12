@@ -41,6 +41,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
@@ -259,7 +260,13 @@ public static partial class HostConfiguration
         return builder;
     }
 
-    private static WebApplicationBuilder AddPromptAnalysisInfrastructure(this WebApplicationBuilder builder)
+    /// <summary>
+    /// Adds Semantic Analysis infrastructure to the web application builder.
+    /// Registers brokers, repositories, foundation services, and processing services required for semantic analysis.
+    /// </summary>
+    /// <param name="builder">The <see cref="WebApplicationBuilder"/> to which the services are added.</param>
+    /// <returns>The same instance of the <see cref="WebApplicationBuilder"/> for chaining.</returns>
+    private static WebApplicationBuilder AddSemanticAnalysisInfrastructure(this WebApplicationBuilder builder)
     {
         // Register brokers
         builder.Services

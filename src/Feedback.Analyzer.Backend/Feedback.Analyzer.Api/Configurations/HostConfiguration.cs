@@ -21,7 +21,6 @@ public static partial class HostConfiguration
             .AddClientInfrastructure()
             .AddFeedbackInfrastructure()
             .AddSemanticAnalysisInfrastructure()
-            .AddPromptAnalysisInfrastructure()
             .AddRequestContextTools()
             .AddCors()
             .AddDevTools()
