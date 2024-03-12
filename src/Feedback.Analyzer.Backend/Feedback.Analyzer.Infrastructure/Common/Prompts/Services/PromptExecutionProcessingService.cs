@@ -5,34 +5,33 @@ using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.PromptsHistory.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Exceptions;
+using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
 using Microsoft.SemanticKernel;
 using Newtonsoft.Json;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 
+/// <summary>
+/// Service for executing prompts asynchronously and handling their history.
+/// </summary>
+/// <param name="promptService">The prompt service.</param>
+/// <param name="promptExecutionBroker">The prompt execution broker.</param>
+/// <param name="promptsExecutionHistoryService">The prompt execution history service.</param>
 public class PromptExecutionProcessingService(
     IPromptService promptService,
     IPromptExecutionBroker promptExecutionBroker,
     IPromptExecutionHistoryService promptsExecutionHistoryService
 ) : IPromptExecutionProcessingService
 {
+    
     public async ValueTask<IImmutableList<PromptExecutionHistory>> ExecuteAsync(
-        Guid promptId,
-        Dictionary<string, string> arguments,
+        AnalysisPrompt prompt,
+        Dictionary<string,string> arguments,
         uint executionCount = 1,
         CancellationToken cancellationToken = default
     )
     {
-        // Query prompt and feedback
-        var prompt = await promptService.GetByIdAsync(promptId, cancellationToken: cancellationToken) ??
-                     throw new InvalidOperationException($"Could not execute prompt, prompt with id {promptId} not found.");
-
-        // Map arguments to kernel arguments
-        var kernelArguments = new KernelArguments();
-        foreach (var keyValuePair in arguments)
-            kernelArguments.Add(keyValuePair.Key, keyValuePair.Value);
-
         // Execute prompt
         var executionResults = new List<(FuncResult<string?> PromptResult, double ElapsedMilliseconds)>();
 
@@ -42,7 +41,7 @@ public class PromptExecutionProcessingService(
             async (_, _) =>
             {
                 var stopWatch = new Stopwatch();
-                var promptResult = await promptExecutionBroker.ExecutePromptAsync(prompt.Prompt, kernelArguments, cancellationToken);
+                var promptResult = await promptExecutionBroker.ExecutePromptAsync(prompt.Prompt, arguments, cancellationToken);
                 stopWatch.Stop();
                 var elapsedMilliseconds = stopWatch.Elapsed.TotalMilliseconds;
 
@@ -52,7 +51,7 @@ public class PromptExecutionProcessingService(
         );
 
         // Map to history
-        var histories = executionResults.Select(result => MapToHistory(promptId, result.PromptResult, result.ElapsedMilliseconds)).ToImmutableList();
+        var histories = executionResults.Select(result => MapToHistory(prompt.Id, result.PromptResult, result.ElapsedMilliseconds)).ToImmutableList();
 
         var executionHistories = new List<PromptExecutionHistory>();
         
@@ -73,6 +72,13 @@ public class PromptExecutionProcessingService(
         return executionHistories.ToImmutableList();
     }
 
+    /// <summary>
+    /// Maps prompt execution result to execution history
+    /// </summary>
+    /// <param name="promptId"></param>
+    /// <param name="result"></param>
+    /// <param name="elapsedMilliseconds"></param>
+    /// <returns></returns>
     private PromptExecutionHistory MapToHistory(Guid promptId, FuncResult<string?> result, double elapsedMilliseconds)
     {
         return new PromptExecutionHistory
