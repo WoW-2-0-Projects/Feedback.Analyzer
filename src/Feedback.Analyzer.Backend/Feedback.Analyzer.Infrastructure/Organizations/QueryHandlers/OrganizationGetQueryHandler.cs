@@ -15,7 +15,7 @@ public class OrganizationGetQueryHandler(IOrganizationService organizationServic
 {
     public async Task<ICollection<OrganizationDto>> Handle(OrganizationGetQuery organizationGetQuery, CancellationToken cancellationToken)
     {
-        var matchedOrganizations =  await organizationService.Get(organizationGetQuery.Filter, new QueryOptions() { AsNoTracking = true }).ToListAsync(cancellationToken);
+        var matchedOrganizations =  await organizationService.Get(organizationGetQuery.Filter, new QueryOptions() { TrackingMode = QueryTrackingMode.AsNoTracking }).ToListAsync(cancellationToken);
         
         return mapper.Map<ICollection<OrganizationDto>>(matchedOrganizations);
     }
