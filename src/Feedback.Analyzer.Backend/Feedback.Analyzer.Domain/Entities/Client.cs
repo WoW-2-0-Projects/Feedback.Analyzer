@@ -25,7 +25,7 @@ public class Client : AuditableEntity
     /// <summary>
     /// Gets or sets the password of the client's email address.
     /// </summary> 
-    public string Password { get; set; } = default!;
+    public string PasswordHash { get; set; } = default!;
 
     /// <summary>
     /// Gets or sets a collection of Organizations.

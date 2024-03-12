@@ -1,6 +1,5 @@
-using System.Text;
-using Feedback.Analyzer.Application.Products.Commands;
 namespace Feedback.Analyzer.Api.Configurations;
+
 public static partial class HostConfiguration
 {
     /// <summary>
@@ -11,18 +10,23 @@ public static partial class HostConfiguration
     public static ValueTask<WebApplicationBuilder> ConfigureAsync(this WebApplicationBuilder builder)
     {
         builder
-            .AddValidators()
+            .AddSerializers()
             .AddMappers()
+            .AddValidators()
+            .AddCaching()
             .AddPersistence()
+            .AddMediator()
+            .AddEventBus()
+            .AddIdentityInfrastructure()
             .AddClientInfrastructure()
             .AddFeedbackInfrastructure()
             .AddSemanticAnalysisInfrastructure()
             .AddPromptAnalysisInfrastructure()
-            .AddMediator()
+            .AddRequestContextTools()
             .AddCors()
             .AddDevTools()
             .AddExposers();
-        
+            
         return new(builder);
     }
 

@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
@@ -10,7 +11,7 @@ namespace Feedback.Analyzer.Persistence.Repositories;
 /// <summary>
 /// Represents a repository for managing analysis workflows in the database.
 /// </summary>
-public class AnalysisWorkflowRepository(AppDbContext appDbContext) : EntityRepositoryBase<AnalysisWorkflow, AppDbContext>(appDbContext), IAnalysisWorkflowRepository
+public class AnalysisWorkflowRepository(AppDbContext appDbContext, ICacheBroker cacheBroker) : EntityRepositoryBase<AnalysisWorkflow, AppDbContext>(appDbContext, cacheBroker), IAnalysisWorkflowRepository
 {
     public new IQueryable<AnalysisWorkflow> Get(Expression<Func<AnalysisWorkflow, bool>>? predicate = default, QueryOptions queryOptions = default)
         => base.Get(predicate, queryOptions);
