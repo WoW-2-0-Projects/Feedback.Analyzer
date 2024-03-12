@@ -35,7 +35,7 @@ public class ClientValidator : AbstractValidator<Client>
                     .MaximumLength(128)
                     .Matches(validationSettingsValue.EmailRegexPattern);
 
-                RuleFor(client => client.Password).NotEmpty();
+                RuleFor(client => client.PasswordHash).NotEmpty();
             }
         );
         
@@ -62,7 +62,7 @@ public class ClientValidator : AbstractValidator<Client>
                     .MaximumLength(128)
                     .Matches(validationSettingsValue.EmailRegexPattern);
 
-                RuleFor(client => client.Password).NotEmpty();
+                RuleFor(client => client.PasswordHash).NotEmpty();
             }
         );
 
