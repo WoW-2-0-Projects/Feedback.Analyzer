@@ -4,7 +4,7 @@ namespace Feedback.Analyzer.Application.Common.Workflows.Events;
 
 public class ExecuteWorkflowSinglePromptEvent : Event
 {
-    public Guid WorkflowId { get; set; }
+    public Guid WorkflowId { get; init; }
     
-    public Guid PromptId { get; set; }
+    public Guid PromptId { get; init; }
 }

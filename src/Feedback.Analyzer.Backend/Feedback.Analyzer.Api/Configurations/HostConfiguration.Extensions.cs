@@ -188,11 +188,12 @@ public static partial class HostConfiguration
     }
     
     /// <summary>
-    /// Configures exposers including controllers
+    /// Adds semantic analysis infrastructure to the web application builder.
     /// </summary>
-    /// <param name="builder">Application builder</param>
+    /// <param name="builder">The <see cref="WebApplicationBuilder"/> to which the infrastructure is added.</param>
+    /// <returns>The modified <see cref="WebApplicationBuilder"/>.</returns>
     /// <returns></returns>
-    private static WebApplicationBuilder AddSemanticKernelInfrastructure(this WebApplicationBuilder builder)
+    private static WebApplicationBuilder AddSemanticAnalysisInfrastructure(this WebApplicationBuilder builder)
     {
         // Create kernel builder
         var kernelBuilder = Kernel.CreateBuilder();
