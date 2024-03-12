@@ -3,6 +3,7 @@ using System;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240312103324_Add_WorkflowExecutionOption_and_AnalysisWorkflow_Relation")]
+    partial class Add_WorkflowExecutionOption_and_AnalysisWorkflow_Relation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -339,13 +342,16 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("WorkflowExecutionOptionId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AnalysisPromptCategoryId");
 
                     b.HasIndex("AnalysisWorkflowId");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("WorkflowExecutionOptionId");
 
                     b.ToTable("WorkflowExecutionOptions");
                 });
@@ -449,7 +455,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.HasOne("Feedback.Analyzer.Domain.Entities.WorkflowExecutionOption", null)
                         .WithMany("ChildExecutionOptions")
-                        .HasForeignKey("ParentId");
+                        .HasForeignKey("WorkflowExecutionOptionId");
 
                     b.Navigation("AnalysisPromptCategory");
 
