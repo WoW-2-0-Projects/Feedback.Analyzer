@@ -209,6 +209,11 @@ public static partial class HostConfiguration
         return builder;
     }
 
+    /// <summary>
+    /// Extension method to add Prompt Analysis infrastructure services to the application.
+    /// </summary>
+    /// <param name="builder">The <see cref="WebApplicationBuilder"/> instance.</param>
+    /// <returns>The <see cref="WebApplicationBuilder"/> instance with added Prompt Analysis infrastructure services.</returns>
     private static WebApplicationBuilder AddPromptAnalysisInfrastructure(this WebApplicationBuilder builder)
     {
         // Register brokers
