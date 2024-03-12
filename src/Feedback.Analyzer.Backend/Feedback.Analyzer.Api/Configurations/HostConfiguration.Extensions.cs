@@ -8,6 +8,7 @@ using Feedback.Analyzer.Application.Common.Caching;
 using Feedback.Analyzer.Application.Common.EventBus.Brokers;
 using Feedback.Analyzer.Application.Common.Identity.Services;
 using Feedback.Analyzer.Application.Common.PromptCategory.Services;
+using Feedback.Analyzer.Application.Common.Prompts.Brokers;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
@@ -21,6 +22,7 @@ using Feedback.Analyzer.Infrastructure.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.Identity.Services;
+using Feedback.Analyzer.Infrastructure.Common.Prompts.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.PromptsCategories.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
@@ -40,6 +42,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.SemanticKernel;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
@@ -257,9 +260,39 @@ public static partial class HostConfiguration
 
         return builder;
     }
-    
-    private static WebApplicationBuilder AddPromptAnalysisInfrastructure(this WebApplicationBuilder builder)
+
+    /// <summary>
+    /// Configures exposers including controllers
+    /// </summary>
+    /// <param name="builder">Application builder</param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddSemanticKernelInfrastructure(this WebApplicationBuilder builder)
     {
+        // Create kernel builder
+        var kernelBuilder = Kernel.CreateBuilder();
+
+        // Add OpenAI connector
+        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-3.5-turbo", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
+
+        // Build kernel
+        var kernel = kernelBuilder.Build();
+
+        builder.Services.AddSingleton(kernel);
+
+        return builder;
+    }
+    
+    /// <summary>
+    /// Adds Semantic Analysis infrastructure to the web application builder.
+    /// Registers brokers, repositories, foundation services, and processing services required for semantic analysis.
+    /// </summary>
+    /// <param name="builder">The <see cref="WebApplicationBuilder"/> to which the services are added.</param>
+    /// <returns>The same instance of the <see cref="WebApplicationBuilder"/> for chaining.</returns>
+    private static WebApplicationBuilder AddSemanticAnalysisInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Register brokers
+        builder.Services
+               .AddScoped<IPromptExecutionBroker, PromptExecutionBroker>();
         // Register repositories
         builder.Services
             .AddScoped<IPromptRepository, PromptRepository>()
@@ -275,6 +308,10 @@ public static partial class HostConfiguration
                .AddScoped<IPromptExecutionHistoryService, PromptExecutionHistoryService>()
                .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>();
 
+        // Register processing services
+        builder.Services
+               .AddScoped<IPromptExecutionProcessingService, PromptExecutionProcessingService>();
+        
         return builder;
     }
     
