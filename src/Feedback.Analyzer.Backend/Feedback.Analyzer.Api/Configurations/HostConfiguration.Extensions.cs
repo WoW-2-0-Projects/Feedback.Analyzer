@@ -1,23 +1,26 @@
 using System.Reflection;
 using Feedback.Analyzer.Api.Data;
-using Feedback.Analyzer.Application.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Application.Clients.Services;
+using Feedback.Analyzer.Application.Common.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Application.Common.PromptCategory.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Application.PromptsHistory.Services;
 using Feedback.Analyzer.Domain.Constants;
-using Feedback.Analyzer.Infrastructure.AnalysisWorkflows.Services;
+using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
+using Feedback.Analyzer.Infrastructure.Common.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.PromptsCategories.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
+using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Infrastructure.PromptsHistory.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
@@ -86,8 +89,6 @@ public static partial class HostConfiguration
 
         return builder;
     }
-    
-   
     
     /// <summary>
     /// Adds MediatR services to the application with custom service registrations.
@@ -199,7 +200,9 @@ public static partial class HostConfiguration
                .AddScoped<IPromptService, PromptService>()
                .AddScoped<IPromptCategoryService, PromptCategoryService>()
                .AddScoped<IPromptExecutionHistoryService, PromptExecutionHistoryService>()
-               .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>();
+               .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>()
+               .AddScoped<IFeedbackAnalysisWorkflowService, FeedbackAnalysisWorkflowService>()
+               .AddScoped<FeedbackAnalysisWorkflowProcessingService>();
 
         return builder;
     }

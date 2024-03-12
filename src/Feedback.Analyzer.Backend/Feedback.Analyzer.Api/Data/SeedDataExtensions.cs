@@ -208,7 +208,8 @@ public static class SeedDataExtensions
 
         await appDbContext.AnalysisWorkflows.AddRangeAsync(analysisWorkflow);
     }
-     /// <summary>
+    
+    /// <summary>
     /// Seeds prompt categories
     /// </summary>
     /// <param name="appDbContext"></param>
