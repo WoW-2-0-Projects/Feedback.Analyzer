@@ -17,4 +17,9 @@ public class AnalysisWorkflow : AuditableEntity
     /// Gets or sets the type of the analysis workflow.
     /// </summary>
     public WorkflowType Type { get; set; }
+
+    /// <summary>
+    /// Gets or sets the collection of workflow execution options associated with this workflow.
+    /// </summary>
+    public IEnumerable<WorkflowExecutionOption> WorkflowExecutionOptions { get; set; } = default!;
 }
