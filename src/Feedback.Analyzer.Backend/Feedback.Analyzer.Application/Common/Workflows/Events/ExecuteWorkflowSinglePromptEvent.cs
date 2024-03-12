@@ -7,7 +7,13 @@ namespace Feedback.Analyzer.Application.Common.Workflows.Events;
 /// </summary>
 public class ExecuteWorkflowSinglePromptEvent : Event
 {
+    /// <summary>
+    /// Gets or sets the unique identifier of the workflow associated with the event.
+    /// </summary>
     public Guid WorkflowId { get; init; }
     
+    /// <summary>
+    /// Gets or sets the unique identifier of the prompt associated with the event.
+    /// </summary>
     public Guid PromptId { get; init; }
 }
