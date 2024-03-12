@@ -27,6 +27,13 @@ public interface IAnalysisWorkflowRepository
     /// <returns>A task representing the asynchronous operation, returning the retrieved AnalysisWorkflow or null if not found.</returns>
     ValueTask<AnalysisWorkflow?> GetByIdAsync(Guid analysisWorkflowId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Checks the existence of a feedback analysis workflow by its ID asynchronously.
+    /// </summary>
+    /// <param name="workflowId">The ID of the feedback analysis workflow to check.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel the asynchronous operation (optional).</param>
+    /// <returns>A ValueTask representing the asynchronous operation, containing the feedback analysis workflow if it exists.</returns>
+    ValueTask<bool> CheckByIdAsync(Guid workflowId, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Creates a new analysis workflow asynchronously.
@@ -37,7 +44,6 @@ public interface IAnalysisWorkflowRepository
     /// <returns>A task representing the asynchronous operation, returning the created AnalysisWorkflow.</returns>
     ValueTask<AnalysisWorkflow> CreateAsync(AnalysisWorkflow analysisWorkflow, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
 
-    
     /// <summary>
     /// Updates an existing analysis workflow asynchronously.
     /// </summary>
@@ -47,7 +53,6 @@ public interface IAnalysisWorkflowRepository
     /// <returns>A task representing the asynchronous operation, returning the updated AnalysisWorkflow.</returns>
     ValueTask<AnalysisWorkflow> UpdateAsync(AnalysisWorkflow analysisWorkflow, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
 
-    
     /// <summary>
     /// Deletes an analysis workflow asynchronously.
     /// </summary>

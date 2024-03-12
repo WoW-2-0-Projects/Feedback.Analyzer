@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Entities;
 using Feedback.Analyzer.Domain.Common.Queries;
@@ -40,20 +40,35 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     /// <summary>
     /// Asynchronously retrieves an entity from the repository by its ID.
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="entityId"></param>
     /// <param name="queryOptions"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>A ValueTask,TEntity,representing the asynchronous operation. The result will be the found entity, or null if not found.</returns>
-    protected async ValueTask<TEntity?> GetByIdAsync(Guid id, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
+    protected async ValueTask<TEntity?> GetByIdAsync(Guid entityId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
     {
         var initialQuery = DbContext.Set<TEntity>().AsQueryable();
 
         if (queryOptions.AsNoTracking)
             initialQuery = initialQuery.AsNoTracking();
 
-        var foundEntity = await initialQuery.FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
+        var foundEntity = await initialQuery.FirstOrDefaultAsync(entity => entity.Id == entityId, cancellationToken);
 
         return foundEntity;
+    }
+    
+    /// <summary>
+    /// Asynchronously retrieves an entity from the repository by its ID.
+    /// </summary>
+    /// <param name="entityId">Entity id</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>A ValueTask,TEntity,representing the asynchronous operation. The result will be the found entity, or null if not found.</returns>
+    protected async ValueTask<bool> CheckByIdAsync(Guid entityId, CancellationToken cancellationToken = default)
+    {
+        var foundEntity = await DbContext.Set<TEntity>()
+            .Select(entity => entity.Id)
+            .FirstOrDefaultAsync(foundEntityId => foundEntityId == entityId, cancellationToken);
+
+        return foundEntity != Guid.Empty;
     }
 
     /// <summary>
@@ -135,17 +150,17 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     /// <summary>
     /// Asynchronously deletes an existing entity from the repository by its ID.
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="entityId"></param>
     /// <param name="commandOptions"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>A ValueTask,TEntity, representing the asynchronous operation. The result will be the deleted entity, or null if not found.</returns>
     protected async ValueTask<TEntity?> DeleteByIdAsync(
-        Guid id,
+        Guid entityId,
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default
     )
     {
-        var entity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken) ??
+        var entity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(entity => entity.Id == entityId, cancellationToken) ??
                      throw new InvalidOperationException();
 
         DbContext.Set<TEntity>().Remove(entity);
