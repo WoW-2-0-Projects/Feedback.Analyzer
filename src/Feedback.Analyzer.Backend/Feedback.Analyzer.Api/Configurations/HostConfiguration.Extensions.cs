@@ -42,6 +42,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.SemanticKernel;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
@@ -260,6 +261,27 @@ public static partial class HostConfiguration
         return builder;
     }
 
+    /// <summary>
+    /// Configures exposers including controllers
+    /// </summary>
+    /// <param name="builder">Application builder</param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddSemanticKernelInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Create kernel builder
+        var kernelBuilder = Kernel.CreateBuilder();
+
+        // Add OpenAI connector
+        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-3.5-turbo", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
+
+        // Build kernel
+        var kernel = kernelBuilder.Build();
+
+        builder.Services.AddSingleton(kernel);
+
+        return builder;
+    }
+    
     /// <summary>
     /// Adds Semantic Analysis infrastructure to the web application builder.
     /// Registers brokers, repositories, foundation services, and processing services required for semantic analysis.
