@@ -57,8 +57,11 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
         if (predicate is not null)
             initialQuery = initialQuery.Where(predicate);
 
-        if (queryOptions.AsNoTracking)
+        if (queryOptions.TrackingMode == QueryTrackingMode.AsNoTracking)
             initialQuery = initialQuery.AsNoTracking();
+
+        else if (queryOptions.TrackingMode == QueryTrackingMode.AsNoTrackingWithIdentityResolution)
+            initialQuery = initialQuery.AsNoTrackingWithIdentityResolution();
 
         return initialQuery;
     }
@@ -82,8 +85,11 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
         {
             var initialQuery = DbContext.Set<TEntity>().AsQueryable();
 
-            if (queryOptions.AsNoTracking)
+            if (queryOptions.TrackingMode == QueryTrackingMode.AsNoTracking)
                 initialQuery = initialQuery.AsNoTracking();
+
+            else if (queryOptions.TrackingMode == QueryTrackingMode.AsNoTrackingWithIdentityResolution)
+                initialQuery = initialQuery.AsNoTrackingWithIdentityResolution();
 
             foundEntity = await initialQuery.FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
 
@@ -111,8 +117,11 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     {
         var initialQuery = DbContext.Set<TEntity>().Where(entity => ids.Contains(entity.Id));
 
-        if (queryOptions.AsNoTracking)
+        if (queryOptions.TrackingMode == QueryTrackingMode.AsNoTracking)
             initialQuery = initialQuery.AsNoTracking();
+
+        else if (queryOptions.TrackingMode == QueryTrackingMode.AsNoTrackingWithIdentityResolution)
+            initialQuery = initialQuery.AsNoTrackingWithIdentityResolution();
 
         return await initialQuery.ToListAsync(cancellationToken: cancellationToken);
     }

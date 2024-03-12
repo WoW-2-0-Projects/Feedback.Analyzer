@@ -28,7 +28,7 @@ public class AuthService(
     public async ValueTask<bool> SignUpAsync(SignUpDetails signUpDetails, CancellationToken cancellationToken = default)
     {
         //Check that the user is in the database at the entered email address
-        var foundUserId = await clientService.Get(queryOptions: new QueryOptions(){AsNoTracking = true})
+        var foundUserId = await clientService.Get(queryOptions: new QueryOptions(){ TrackingMode = QueryTrackingMode.AsNoTracking })
             .FirstOrDefaultAsync(client => client.EmailAddress == signUpDetails.EmailAddress, cancellationToken);
        
         if (foundUserId is not null)
@@ -53,7 +53,7 @@ public class AuthService(
         // Query user by email address
         var foundUser = 
             await clientService.Get(user => user.EmailAddress == signInDetails.EmailAddress,
-                queryOptions: new QueryOptions { AsNoTracking = true })
+                queryOptions: new QueryOptions { TrackingMode = QueryTrackingMode.AsNoTracking })
             .FirstOrDefaultAsync(cancellationToken: cancellationToken);
         
         if (foundUser is null || !passwordHasherService.ValidatePassword(signInDetails.Password, foundUser.PasswordHash))
@@ -114,7 +114,7 @@ public class AuthService(
                 user => user.Id == accessToken.Value.AccessToken.ClientId,
                 new QueryOptions
                 {
-                    AsNoTracking = true
+                    TrackingMode = QueryTrackingMode.AsNoTracking
                 }
             )
             .FirstOrDefaultAsync(cancellationToken: cancellationToken) ?? throw new InvalidOperationException();

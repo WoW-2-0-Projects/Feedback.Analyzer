@@ -17,7 +17,7 @@ public class ProductGetByIdQueryHandler(IProductService productService, IMapper 
     {
         var foundProduct = await productService.GetByIdAsync(request.ProductId, new QueryOptions()
         {
-            AsNoTracking = true
+            TrackingMode = QueryTrackingMode.AsNoTracking
         }, cancellationToken
             );
 
