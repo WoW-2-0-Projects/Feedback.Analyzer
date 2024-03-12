@@ -3,7 +3,7 @@ using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Application.AnalysisWorkflows.Services;
+namespace Feedback.Analyzer.Application.Common.AnalysisWorkflows.Services;
 
 /// <summary>
 /// Represents a service interface for managing analysis workflows.
@@ -25,9 +25,16 @@ public interface IAnalysisWorkflowService
     /// <param name="queryOptions">Query options to specify how the analysis workflow should be retrieved.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the asynchronous operation, returning the retrieved AnalysisWorkflow.</returns>
-    ValueTask<AnalysisWorkflow> GetByIdAsync(Guid analysisWorkflowId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default);
+    ValueTask<AnalysisWorkflow?> GetByIdAsync(Guid analysisWorkflowId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default);
 
-
+    /// <summary>
+    /// Checks the existence of an analysis workflow by its ID asynchronously.
+    /// </summary>
+    /// <param name="analysisId">The ID of the analysis workflow to check.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel the asynchronous operation (optional).</param>
+    /// <returns>A <c>ValueTask</c> representing the asynchronous operation, containing the analysis workflow if it exists.</returns>
+    ValueTask<bool> CheckByIdAsync(Guid analysisId, CancellationToken cancellationToken = default);
+    
     /// <summary>
     /// Asynchronously creates a new analysis workflow.
     /// </summary>
