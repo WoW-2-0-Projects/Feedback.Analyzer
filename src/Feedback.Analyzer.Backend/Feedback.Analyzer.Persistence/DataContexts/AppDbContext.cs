@@ -20,6 +20,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     #region FeedbackInfrastructure
     public DbSet<CustomerFeedback> Feedbacks => Set<CustomerFeedback>();
 
+    public DbSet<FeedbackAnalysisResult> FeedbackAnalysisResults => Set<FeedbackAnalysisResult>();
+
     #endregion
 
     #region PromptsInfrastructure
