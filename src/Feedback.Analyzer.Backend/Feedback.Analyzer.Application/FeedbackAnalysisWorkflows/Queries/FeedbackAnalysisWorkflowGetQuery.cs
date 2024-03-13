@@ -11,5 +11,5 @@ public record FeedbackAnalysisWorkflowGetQuery  : IQuery<ICollection<FeedbackAna
     /// <summary>
     /// Gets or sets the filter criteria for retrieving feedback analysis workflows.
     /// </summary>
-    public FeedbackAnalysisWorkflowFilter FeedbackAnalysisWorkflowFilter { get; set; } = default!;
+    public FeedbackAnalysisWorkflowFilter Filter { get; set; } = default!;
 }

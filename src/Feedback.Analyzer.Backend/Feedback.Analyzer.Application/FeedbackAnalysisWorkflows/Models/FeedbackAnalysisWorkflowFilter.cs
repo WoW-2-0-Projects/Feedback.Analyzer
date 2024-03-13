@@ -2,6 +2,9 @@
 
 namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 
+/// <summary>
+/// Represents a filter for querying feedback analysis workflows with pagination support.
+/// </summary>
 public class FeedbackAnalysisWorkflowFilter : FilterPagination
 {
     /// <summary>

@@ -7,6 +7,9 @@ using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.CommandHandlers;
 
+/// <summary>
+/// Represents a command handler for updating feedback analysis workflows.
+/// </summary>  
 public class FeedbackAnalysisWorkflowUpdateCommandHandler(
     IMapper mapper,
     FeedbackAnalysisWorkflowProcessingService feedbackAnalysisWorkflowProcessingService)

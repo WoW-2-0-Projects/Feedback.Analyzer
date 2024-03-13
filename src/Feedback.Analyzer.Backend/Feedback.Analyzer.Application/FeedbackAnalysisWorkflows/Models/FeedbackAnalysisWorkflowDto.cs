@@ -6,8 +6,13 @@ namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 /// <summary>
 /// Represents a data transfer object (DTO) for feedback analysis workflow
 /// </summary>
-public class FeedbackAnalysisWorkflowDto : Entity
+public class FeedbackAnalysisWorkflowDto 
 {
+    /// <summary>
+    /// Gets or sets the unique identifier of the entity.
+    /// </summary>
+    public Guid Id { get; set; }
+    
     /// <summary>
     /// Gets or sets the Id of product associated with the feedback analysis workflow
     /// </summary>

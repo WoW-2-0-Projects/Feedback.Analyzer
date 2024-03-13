@@ -11,5 +11,5 @@ public record FeedbackAnalysisWorkflowGetByIdQuery : IQuery<FeedbackAnalysisWork
     /// <summary>
     /// Gets or sets the ID of the feedback analysis workflow to retrieve.
     /// </summary>
-    public Guid FeedbackAnalysisWorkflowId { get; set; }
+    public Guid Id { get; set; }
 }

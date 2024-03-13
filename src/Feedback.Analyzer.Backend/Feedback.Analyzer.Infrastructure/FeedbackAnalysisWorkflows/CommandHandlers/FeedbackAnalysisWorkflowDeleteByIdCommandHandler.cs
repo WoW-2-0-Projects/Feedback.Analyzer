@@ -13,7 +13,7 @@ public class FeedbackAnalysisWorkflowDeleteByIdCommandHandler(IMapper mapper, IF
 {
     public async Task<bool> Handle(FeedbackAnalysisWorkflowDeleteByIdCommand request, CancellationToken cancellationToken)
     {
-        await feedbackAnalysisWorkflowService.DeleteByIdAsync(request.FeedbackAnalysisWorkflowId, cancellationToken: cancellationToken);
+        await feedbackAnalysisWorkflowService.DeleteByIdAsync(request.Id, cancellationToken: cancellationToken);
         return true;
     }
 }

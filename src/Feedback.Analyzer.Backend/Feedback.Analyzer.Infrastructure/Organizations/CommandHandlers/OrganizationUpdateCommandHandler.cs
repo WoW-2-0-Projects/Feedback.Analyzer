@@ -11,7 +11,7 @@ namespace Feedback.Analyzer.Infrastructure.Organizations.CommandHandlers;
 /// Handles the execution of the <see cref="OrganizationUpdateCommand"/>. Responsible 
 /// for coordinating the modification of an existing organization.
 /// </summary>
-public class xOrganizationUpdateCommandHandler(IMapper mapper, IOrganizationService organizationService) : ICommandHandler<OrganizationUpdateCommand, OrganizationDto>
+public class OrganizationUpdateCommandHandler(IMapper mapper, IOrganizationService organizationService) : ICommandHandler<OrganizationUpdateCommand, OrganizationDto>
 {
     public async Task<OrganizationDto> Handle(OrganizationUpdateCommand request, CancellationToken cancellationToken)
     {

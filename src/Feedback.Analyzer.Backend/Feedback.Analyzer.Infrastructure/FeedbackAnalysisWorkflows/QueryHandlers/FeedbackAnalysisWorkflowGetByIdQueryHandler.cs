@@ -18,7 +18,7 @@ public class FeedbackAnalysisWorkflowGetByIdQueryHandler(
         CancellationToken cancellationToken)
     {
         var foundFeedbackAnalysisWorkflow = await feedbackAnalysisWorkflowService.GetByIdAsync(
-            request.FeedbackAnalysisWorkflowId,
+            request.Id,
             new QueryOptions
             {
                 AsNoTracking = true

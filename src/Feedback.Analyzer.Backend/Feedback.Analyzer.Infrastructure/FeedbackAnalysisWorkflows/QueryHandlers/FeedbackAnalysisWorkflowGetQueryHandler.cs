@@ -16,7 +16,7 @@ public class FeedbackAnalysisWorkflowGetQueryHandler(IMapper mapper, IFeedbackAn
     public async Task<ICollection<FeedbackAnalysisWorkflowDto>> Handle(FeedbackAnalysisWorkflowGetQuery request, CancellationToken cancellationToken)
     {
         var matchedFeedbackAnalysisWorkflows = await feedbackAnalysisWorkflowService.Get(
-            request.FeedbackAnalysisWorkflowFilter,
+            request.Filter,
             new QueryOptions
             {
                 AsNoTracking = true
