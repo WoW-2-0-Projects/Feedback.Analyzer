@@ -1,42 +1,30 @@
-    <template>
+<template>
 
-    <div class="relative" @focusin="onFocusIn" @focusout="onFocusOut">
+    <div class="relative h-fit w-fit" @focusin="onFocusIn" @focusout="onFocusOut">
 
-        <input type="text" name="input" v-model="searchValue"
-               class="w-full rounded-md peer text-md theme-action-layout theme-action-padding theme-input-bg theme-action-style theme-input-placeholder
+        <input type="text" name="input" v-model="searchValue" autocomplete="off"
+               :class="size === ActionComponentSize.Medium ? 'action-layout text-md' : 'action-small-layout text-sm'"
+               class="w-full rounded-md peer  theme-action-padding theme-input-bg theme-action-style theme-input-placeholder
                  theme-action-transition theme-action-border-round theme-input-border theme-action-content"
                :placeholder="placeholder"/>
 
         <!-- Form input label -->
-        <label for="input" class="absolute top-4 z-10 transform
-                -translate-y-4 scale-75 origin-[0] start-2.5
+        <label for="input" :class="labelStyles" class="absolute z-10 transform scale-75 origin-[0] start-2.5
                     peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto
                     peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
-                    text-sm theme-input-label theme-action-transition">
+                     theme-input-label theme-action-transition">
             {{ label }}
         </label>
 
         <!-- Expand / Collapse icon -->
-        <svg :class="{ 'rotate-180': isOpen, 'transition-transform': true }"
-             class="theme-action-content theme-focus-content theme-action-transition absolute top-1/2 right-4 z-10 text-sm theme-text-secondary transform -translate-y-1/2"
-             xmlns="http://www.w3.org/2000/svg"
-             viewBox="0 0 32 32"
-             aria-hidden="true"
-             role="presentation"
-             focusable="false"
-             style="display: block;
-            fill: none;
-            height: 16px;
-            width: 16px;
-            stroke: currentcolor;
-            stroke-width: 4;
-            overflow: visible;">
-            <path fill="none" d="M28 12 16.7 23.3a1 1 0 0 1-1.4 0L4 12"></path>
-        </svg>
+        <expand-icon :isOpen="isOpen" class="absolute top-1/2 -translate-y-1/2 right-4"/>
 
         <!-- Drop down options -->
-        <div v-show="isOpen"
-             class="absolute mt-2 w-full focus:outline-none appearance-none rounded-md theme-modal-shadow  theme-bg-secondary theme-input-border-focus z-10 overflow-hidden theme-input">
+        <div
+            class="absolute mt-2 w-full focus:outline-none theme-modal-bg appearance-none rounded-md text-secondaryContentColor
+                    theme-modal-shadow theme-action-secondary theme-input-border-focus overflow-hidden theme-input"
+             v-show="isOpen"
+        >
             <ul>
                 <li v-for="(value, index) in searchedOptions" :key="index" @mousedown="onSelected(value)"
                     class="px-4 py-4 cursor-pointer theme-input-hover"
@@ -55,14 +43,20 @@
 
 <script setup lang="ts">
 
-import {onMounted, type PropType, ref, watch, watchEffect} from "vue";
-import type {DropDownValue} from "@/common/components/forms/formDropDown/DropDownValue";
+import {computed, onMounted, type PropType, ref, watch} from "vue";
+import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
+import type {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
+import ExpandIcon from "@/common/components/icons/ExpandIcon.vue";
 
 const props = defineProps({
     values: {
-        type: Array as () => PropType<Array<DropDownValue>>,
+        type: Array as PropType<Array<DropDownValue>>,
         required: true,
         default: []
+    },
+    size: {
+        type: Number as PropType<ActionComponentSize>,
+        default: ActionComponentSize.Medium
     },
     modelValue: {
         type: Object as () => DropDownValue | null
@@ -77,6 +71,21 @@ const props = defineProps({
     }
 });
 
+const labelStyles = computed(() => {
+    let styles = '';
+
+    switch (props.size) {
+        case ActionComponentSize.Medium:
+            styles += ' text-md top-4 -translate-y-4 peer-focus:-translate-y-4';
+            break;
+        case ActionComponentSize.Small:
+            styles += ' text-sm top-3 -translate-y-3 peer-focus:-translate-y-[14px]';
+            break;
+    }
+
+    return styles;
+});
+
 const emit = defineEmits(['update:modelValue']);
 
 // Component states
@@ -89,17 +98,17 @@ onMounted(() => {
 });
 
 // Watcher for search value
-watch(searchValue, (newValue) => {
-    if (!newValue || newValue === '')
-        searchedOptions.value = props.values;
-    else
-        searchOption(newValue);
-});
+watch(() => [searchValue, props.values], () => searchOption());
 
 // Filters the options based on the search value
-const searchOption = (key: string) => {
-    searchedOptions.value = props.values.filter((value) => {
-        return value.key.toLowerCase().includes(key.toLowerCase());
+const searchOption = () => {
+    if (!searchValue.value || searchValue.value === '') {
+        searchedOptions.value = props.values;
+        return;
+    }
+
+    searchedOptions.value = props.values.filter((option) => {
+        return option.key.toLowerCase().includes(searchValue.value.toLowerCase());
     });
 };
 

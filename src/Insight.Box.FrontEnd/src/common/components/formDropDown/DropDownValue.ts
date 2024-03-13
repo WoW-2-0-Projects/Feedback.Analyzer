@@ -1,14 +1,19 @@
 /*
  * Represents a key-value pair for a dropdown
  */
-export class DropDownValue {
+export class DropDownValue<TKey, TValue> {
     /*
      * The key of the dropdown
      */
-    public key: string;
+    public key: TKey;
 
     /*
      * The value of the dropdown
      */
-    public value: object;
+    public value: TValue;
+
+    constructor(key: TKey, value: TValue) {
+        this.key = key;
+        this.value = value;
+    }
 }
