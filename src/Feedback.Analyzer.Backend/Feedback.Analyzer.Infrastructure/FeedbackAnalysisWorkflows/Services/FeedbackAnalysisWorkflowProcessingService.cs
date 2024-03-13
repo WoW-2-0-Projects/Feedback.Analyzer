@@ -5,6 +5,9 @@ using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 
+/// <summary>
+/// Service responsible for processing feedback analysis workflows.
+/// </summary>
 public class FeedbackAnalysisWorkflowProcessingService(
     IMapper mapper,
     IFeedbackAnalysisWorkflowService feedbackAnalysisWorkflowService,

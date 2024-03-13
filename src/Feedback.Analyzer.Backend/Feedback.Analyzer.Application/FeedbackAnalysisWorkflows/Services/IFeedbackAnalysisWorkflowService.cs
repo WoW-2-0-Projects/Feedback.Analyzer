@@ -56,18 +56,6 @@ public interface IFeedbackAnalysisWorkflowService
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Updates a feedback analysis workflow asynchronously.
-    /// </summary>
-    /// <param name="feedbackAnalysisWorkflow">The feedback analysis workflow to update.</param>
-    /// <param name="commandOptions">The command options for controlling the update process (optional).</param>
-    /// <param name="cancellationToken">The cancellation token to cancel the asynchronous operation (optional).</param>
-    /// <returns>A ValueTask representing the asynchronous operation, containing the updated feedback analysis workflow.</returns>
-    ValueTask<FeedbackAnalysisWorkflow> UpdateAsync(
-        FeedbackAnalysisWorkflow feedbackAnalysisWorkflow,
-        CommandOptions commandOptions = default,
-        CancellationToken cancellationToken = default);
-
-    /// <summary>
     /// Deletes a feedback analysis workflow asynchronously.
     /// </summary>
     /// <param name="feedbackAnalysisWorkflow">The feedback analysis workflow to delete.</param>

@@ -12,6 +12,9 @@ using FluentValidation;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 
+/// <summary>
+/// Service responsible for managing feedback analysis workflows.
+/// </summary>
 public class FeedbackAnalysisWorkflowService(
     IFeedbackAnalysisWorkflowRepository feedbackAnalysisWorkflowRepository,
      FeedbackAnalysisWorkflowValidator analysisWorkflowValidator
@@ -50,18 +53,7 @@ public class FeedbackAnalysisWorkflowService(
             cancellationToken);
     }
 
-    public async ValueTask<FeedbackAnalysisWorkflow> UpdateAsync(
-        FeedbackAnalysisWorkflow feedbackAnalysisWorkflow,
-        CommandOptions commandOptions = default,
-        CancellationToken cancellationToken = default)
-    {
-        var foundAnalysisWorkflow = await GetByIdAsync(feedbackAnalysisWorkflow.Id, cancellationToken: cancellationToken) ?? throw new InvalidOperationException();
-        
-        foundAnalysisWorkflow.AnalysisWorkflow.Name = feedbackAnalysisWorkflow.AnalysisWorkflow.Name;
-        foundAnalysisWorkflow.AnalysisWorkflow.Type = feedbackAnalysisWorkflow.AnalysisWorkflow.Type;
-       
-        return await feedbackAnalysisWorkflowRepository.UpdateAsync(feedbackAnalysisWorkflow, commandOptions, cancellationToken);
-    }
+    
 
     public ValueTask<FeedbackAnalysisWorkflow> DeleteAsync(
         FeedbackAnalysisWorkflow feedbackAnalysisWorkflow,
