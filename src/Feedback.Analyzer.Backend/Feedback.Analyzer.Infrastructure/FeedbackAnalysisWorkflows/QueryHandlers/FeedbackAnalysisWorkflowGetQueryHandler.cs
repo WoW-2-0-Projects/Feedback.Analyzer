@@ -20,7 +20,10 @@ public class FeedbackAnalysisWorkflowGetQueryHandler(IMapper mapper, IFeedbackAn
             new QueryOptions
             {
                 AsNoTracking = true
-            }).ToListAsync(cancellationToken);
+            })
+            .Include(workflow => workflow.AnalysisWorkflow)
+            .ToListAsync(cancellationToken);
+        
         return mapper.Map<ICollection<FeedbackAnalysisWorkflowDto>>(matchedFeedbackAnalysisWorkflows);
     }
 }
