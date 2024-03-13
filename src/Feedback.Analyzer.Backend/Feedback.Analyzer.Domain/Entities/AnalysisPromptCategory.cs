@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Feedback.Analyzer.Domain.Common.Entities;
 using Feedback.Analyzer.Domain.Enums;
 

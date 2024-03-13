@@ -1,4 +1,5 @@
-﻿using Feedback.Analyzer.Domain.Common.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Feedback.Analyzer.Domain.Common.Entities;
 
 namespace Feedback.Analyzer.Domain.Entities;
 

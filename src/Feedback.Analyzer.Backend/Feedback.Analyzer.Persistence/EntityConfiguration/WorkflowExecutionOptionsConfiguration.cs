@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Feedback.Analyzer.Persistence.EntityConfiguration;
 
-public class EntityExecutionOptionsConfiguration : IEntityTypeConfiguration<WorkflowExecutionOption>
+public class WorkflowExecutionOptionsConfiguration : IEntityTypeConfiguration<WorkflowExecutionOption>
 {
     public void Configure(EntityTypeBuilder<WorkflowExecutionOption> builder)
     {
