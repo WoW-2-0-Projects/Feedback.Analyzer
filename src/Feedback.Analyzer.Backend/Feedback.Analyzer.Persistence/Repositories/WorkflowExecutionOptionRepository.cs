@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
+/// <summary>
+/// Repository class for managing workflow execution options.
+/// </summary>
 public class WorkflowExecutionOptionRepository(AppDbContext dbContext, ICacheBroker cacheBroker)
     : EntityRepositoryBase<WorkflowExecutionOption, AppDbContext>(dbContext, cacheBroker),
       IWorkflowExecutionOptionRepository
@@ -65,6 +68,4 @@ public class WorkflowExecutionOptionRepository(AppDbContext dbContext, ICacheBro
         );
         return childrenOptions;
     }
-    
-    
 }
