@@ -1,0 +1,14 @@
+.card {
+}
+
+.card-round {
+  @apply rounded-xl;
+}
+
+.card-bg {
+  @apply bg-primaryColor;
+}
+
+.card-shadow {
+  @apply shadow-lg;
+}

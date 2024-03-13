@@ -1,12 +1,13 @@
 <template>
 
-    <button type="button" :class="componentStyles"
-            class="text-md text-nowrap overflow-hidden
-                   theme-action-content theme-action-shadow">
+    <button ref="component" type="button" :class="componentStyles" :disabled="disabled"
+            class="text-md text-nowrap overflow-hidden theme-action-content theme-action-shadow">
         <span class="h-full w-full inline-flex items-center theme-action-overlay theme-action-transition"
               :class="contentStyles">
             <i v-if="icon" :class="icon"></i>
-            {{ text }}
+            <span class="theme-action-transition" :class="hideText ? 'w-0 opacity-0' : 'w-fit opacity-100'">
+                {{ text }}
+            </span>
         </span>
     </button>
 
@@ -15,9 +16,10 @@
 <script setup lang="ts">
 
 import {ButtonType} from "@/common/components/appButton/ButtonType";
-import {computed, type PropType} from "vue";
+import {computed, type PropType, ref} from "vue";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
+import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 
 const props = defineProps({
     type: {
@@ -44,27 +46,65 @@ const props = defineProps({
         type: Number as PropType<ButtonLayout>,
         default: ButtonLayout.Rectangle
     },
+    size: {
+        type: Number as PropType<ActionComponentSize>,
+        default: ActionComponentSize.Medium
+    },
+    hideText: {
+        type: Boolean,
+        default: false
+    }
 });
+
+const component = ref<HTMLButtonElement>();
+const actualLayout = ref<ButtonLayout>(props.layout);
 
 const componentStyles = computed(() => {
     let styles = ''
 
-    switch (props.type) {
-        case ButtonType.Primary:
-            styles += 'theme-btn-bg-primary ';
+    // Add button type styles
+    if (props.disabled) {
+        styles += ' theme-action-disabled cursor-not-allowed';
+    } else
+        switch (props.type) {
+            case ButtonType.Primary:
+                styles += ' theme-action-primary';
+                break;
+            case ButtonType.Secondary:
+                styles += ' theme-action-secondary';
+                break;
+            case ButtonType.Danger :
+                styles += ' theme-action-danger';
+                break;
+            case ButtonType.Success :
+                styles += ' theme-action-success';
+                break;
+        }
+
+    //  Add button layout styles
+    if (actualLayout.value === ButtonLayout.Rectangle)
+        styles += ' theme-action-border-round action-layout';
+    else if (actualLayout.value === ButtonLayout.Square)
+        styles += ' theme-action-border-round aspect-square ';
+    else if (actualLayout.value === ButtonLayout.Circle)
+        styles += ' flex items-center justify-center action-circle-layout';
+
+    // Add button size styles
+    switch (props.size) {
+        case ActionComponentSize.Medium:
+            styles += ' action-layout';
             break;
-        case ButtonType.Secondary:
-            styles += 'theme-btn-bg-secondary ';
+        case ActionComponentSize.Small:
+            styles += ' action-small-layout';
             break;
-        case ButtonType.Danger :
-            styles += 'theme-btn-bg-danger ';
+        case ActionComponentSize.ExtraSmall:
+            styles += ' action-extra-small-layout';
             break;
     }
 
-    if (props.layout === ButtonLayout.Rectangle)
-        styles += 'theme-action-border-round theme-action-layout';
-    else if (props.layout === ButtonLayout.Circle)
-        styles += ' flex items-center justify-center theme-action-circle-layout';
+    if((!(props.text && props.icon) || props.hideText) && !styles.includes('aspect-square')) {
+        styles += ' aspect-square';
+    }
 
     return styles;
 });
@@ -72,13 +112,14 @@ const componentStyles = computed(() => {
 const contentStyles = computed(() => {
     let styles = ' ';
 
-    if (props.layout === ButtonLayout.Rectangle)
-        styles += ' theme-action-padding justify-around ';
-    else if (props.layout === ButtonLayout.Circle)
-        styles += 'justify-center ';
+    // Add button layout styles
+    if (actualLayout.value === ButtonLayout.Rectangle)
+        styles += ' theme-action-padding';
 
-    if (props.icon)
-        styles += ' gap-2';
+    if (props.icon && props.text && !props.hideText)
+        styles += ' justify-around gap-2';
+    else
+        styles += ' justify-center';
 
     return styles;
 });

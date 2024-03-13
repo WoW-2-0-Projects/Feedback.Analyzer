@@ -1,39 +1,47 @@
 /*
  * Represents an abstract callback
  */
-export class Action {
-
-    constructor(callback: () => void) {
-        this.callBack = callback;
-    }
+export class Action<TArgs> {
 
     /*
      * Action callback
      */
     public callBack: () => void;
+
+    constructor(callback: () => void) {
+        this.callBack = callback;
+    }
+
+
+    /*
+     * Sets callback
+    */
+    public setCallback(callback: (args: TArgs) => void) {
+        this.callback = callback;
+    }
 }
 
 /*
  * Represents notification source
  */
-export class NotificationSource {
+export class NotificationSource<TArgs> {
 
-    private listeners: Action[] = [];
+    private listeners: Action<TArgs>[] = [];
 
     /*
      * Updates listeners about notification
      */
-    public updateListeners = () => {
-        this.listeners.forEach((listener: Action) => {
+    public updateListeners = (args: TArgs) => {
+        this.listeners.forEach((listener: Action<TArgs>) => {
 
-            listener.callBack();
+            listener.callBack(args);
         });
     }
 
     /*
      * Adds listener to the source
      */
-    public addListener = (callback: () => void) => {
-        this.listeners.push(new Action(callback));
+    public addListener = (callback: (args: TArgs) => void) => {
+        this.listeners.push(new Action<TArgs>(callback));
     }
 }
