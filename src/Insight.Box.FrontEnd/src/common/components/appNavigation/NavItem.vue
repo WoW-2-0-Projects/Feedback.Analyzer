@@ -1,7 +1,7 @@
 <template>
 
     <div class="py-1 px-4 rounded-full bg-secondaryContentColor text-secondaryContentColor uppercase"
-        :class="isCurrentRouteSelected ? 'bg-opacity-30' : 'bg-opacity-0 text-opacity-50' "
+        :class="isCurrentRouteSelected ? 'bg-opacity-20' : 'bg-opacity-0 text-opacity-50' "
     >
         <router-link class="text-base" :to="route.path">{{ route.name }}</router-link>
     </div>
