@@ -1,4 +1,4 @@
-﻿using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Commands;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Commands;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +19,7 @@ public class FeedbackAnalysisWorkflowController(IMediator mediator) : Controller
     [HttpGet("{feedbackAnalysisWorkflowId:guid}")]
     public async ValueTask<IActionResult> GetFeedbackAnalysisWorkflowById([FromRoute] Guid feedbackAnalysisWorkflowId, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new FeedbackAnalysisWorkflowGetByIdQuery() {FeedbackAnalysisWorkflowId = feedbackAnalysisWorkflowId}, cancellationToken);
+        var result = await mediator.Send(new FeedbackAnalysisWorkflowGetByIdQuery { Id = feedbackAnalysisWorkflowId}, cancellationToken);
 
         return result is not null ? Ok(result) : NoContent();
     }
@@ -46,7 +46,7 @@ public class FeedbackAnalysisWorkflowController(IMediator mediator) : Controller
     public async ValueTask<IActionResult> DeleteFeedbackAnalysisWorkflowByIdAsync(
         [FromRoute] Guid feedbackAnalysisWorkflowId, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new FeedbackAnalysisWorkflowDeleteByIdCommand {FeedbackAnalysisWorkflowId = feedbackAnalysisWorkflowId}, cancellationToken);
+        var result = await mediator.Send(new FeedbackAnalysisWorkflowDeleteByIdCommand { Id = feedbackAnalysisWorkflowId }, cancellationToken);
         return result ? Ok() : BadRequest();
     }
 }
