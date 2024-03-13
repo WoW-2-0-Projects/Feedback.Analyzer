@@ -1,29 +1,24 @@
 <template>
 
-    <div class="h-20 w-full content-padding flex items-center justify-center">
+    <div class="h-20 w-full flex items-center justify-between">
 
-        <template>
+        <main-logo/>
 
-            <!-- Site logo -->
+        <app-navigation/>
 
-            <!-- Site title -->
+        <div/>
 
-        </template>
-
-        <!-- Site navigation -->
-        <div class="flex gap-10 text-md text-textColorSecondary">
-
-            <span>Dashboard</span>
-            <span>Organizations</span>
-            <span>Products</span>
-            <span>Workflows</span>
-
+        <div>
+            hi
         </div>
-
-        <!-- Notifications -->
-
-        <!-- Profile menu -->
 
     </div>
 
 </template>
+
+<script setup lang="ts">
+
+import MainLogo from "@/common/components/mainLogo/MainLogo.vue";
+import AppNavigation from "@/common/components/appNavigation/AppNavigation.vue";
+
+</script>

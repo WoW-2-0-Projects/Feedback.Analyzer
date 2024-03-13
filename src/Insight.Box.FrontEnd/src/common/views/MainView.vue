@@ -1,11 +1,8 @@
 <template>
 
     <!-- View content -->
-    <div class="view theme-view-bg content-padding">
-
-        <!-- Site header -->
+    <div class="view content-padding bg-primaryColor">
         <main-header/>
-
         <router-view/>
     </div>
 
