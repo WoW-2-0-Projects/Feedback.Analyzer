@@ -327,25 +327,15 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AnalysisPromptCategoryId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("AnalysisWorkflowId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsDisabled")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("AnalysisPromptCategoryId");
-
                     b.HasIndex("AnalysisWorkflowId");
-
-                    b.HasIndex("ParentId");
 
                     b.ToTable("WorkflowExecutionOptions");
                 });
@@ -435,23 +425,11 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowExecutionOption", b =>
                 {
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", "AnalysisPromptCategory")
-                        .WithMany("WorkflowExecutionOptions")
-                        .HasForeignKey("AnalysisPromptCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Feedback.Analyzer.Domain.Entities.AnalysisWorkflow", "Workflow")
                         .WithMany("WorkflowExecutionOptions")
                         .HasForeignKey("AnalysisWorkflowId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.WorkflowExecutionOption", null)
-                        .WithMany("ChildExecutionOptions")
-                        .HasForeignKey("ParentId");
-
-                    b.Navigation("AnalysisPromptCategory");
 
                     b.Navigation("Workflow");
                 });
@@ -464,8 +442,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisPromptCategory", b =>
                 {
                     b.Navigation("Prompts");
-
-                    b.Navigation("WorkflowExecutionOptions");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.AnalysisWorkflow", b =>
@@ -488,11 +464,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("CustomerFeedbacks");
 
                     b.Navigation("Workflows");
-                });
-
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowExecutionOption", b =>
-                {
-                    b.Navigation("ChildExecutionOptions");
                 });
 #pragma warning restore 612, 618
         }
