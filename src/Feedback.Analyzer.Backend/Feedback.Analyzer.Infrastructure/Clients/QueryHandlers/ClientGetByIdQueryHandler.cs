@@ -17,7 +17,7 @@ public class ClientGetByIdQueryHandler(IClientService clientService, IMapper map
             request.ClientId,
             new QueryOptions()
             {
-                AsNoTracking = true
+                TrackingMode = QueryTrackingMode.AsNoTracking
             },
             cancellationToken
         );

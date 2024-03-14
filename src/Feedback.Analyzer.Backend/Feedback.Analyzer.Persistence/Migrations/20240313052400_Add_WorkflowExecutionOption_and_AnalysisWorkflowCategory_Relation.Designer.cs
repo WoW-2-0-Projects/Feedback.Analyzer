@@ -3,6 +3,7 @@ using System;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240313052400_Add_WorkflowExecutionOption_and_AnalysisWorkflowCategory_Relation")]
+    partial class Add_WorkflowExecutionOption_and_AnalysisWorkflowCategory_Relation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,34 +209,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.ToTable("Feedbacks");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("CreatedTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("CustomerFeedbackId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset?>("ModifiedTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerFeedbackId");
-
-                    b.ToTable("FeedbackAnalysisResults");
-                });
-
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
                 {
                     b.Property<Guid>("Id")
@@ -364,16 +339,11 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<bool>("IsDisabled")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AnalysisPromptCategoryId");
 
                     b.HasIndex("AnalysisWorkflowId");
-
-                    b.HasIndex("ParentId");
 
                     b.ToTable("WorkflowExecutionOptions");
                 });
@@ -407,156 +377,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult", b =>
-                {
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.CustomerFeedback", "CustomerFeedback")
-                        .WithMany("FeedbackAnalysisResults")
-                        .HasForeignKey("CustomerFeedbackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackActionablePoints", "FeedbackActionablePoints", b1 =>
-                        {
-                            b1.Property<Guid>("FeedbackAnalysisResultId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string[]>("ActionablePoints")
-                                .IsRequired()
-                                .HasColumnType("text[]");
-
-                            b1.Property<string[]>("GenericPoints")
-                                .IsRequired()
-                                .HasColumnType("text[]");
-
-                            b1.Property<string[]>("NonActionablePoints")
-                                .IsRequired()
-                                .HasColumnType("text[]");
-
-                            b1.Property<string[]>("SpecificPoints")
-                                .IsRequired()
-                                .HasColumnType("text[]");
-
-                            b1.HasKey("FeedbackAnalysisResultId");
-
-                            b1.ToTable("FeedbackAnalysisResults");
-
-                            b1.WithOwner()
-                                .HasForeignKey("FeedbackAnalysisResultId");
-                        });
-
-                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackEntities", "FeedbackEntities", b1 =>
-                        {
-                            b1.Property<Guid>("FeedbackAnalysisResultId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string[]>("Facts")
-                                .IsRequired()
-                                .HasColumnType("text[]");
-
-                            b1.Property<string[]>("Questions")
-                                .IsRequired()
-                                .HasColumnType("text[]");
-
-                            b1.HasKey("FeedbackAnalysisResultId");
-
-                            b1.ToTable("FeedbackAnalysisResults");
-
-                            b1.WithOwner()
-                                .HasForeignKey("FeedbackAnalysisResultId");
-                        });
-
-                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackMetrics", "FeedbackMetrics", b1 =>
-                        {
-                            b1.Property<Guid>("FeedbackAnalysisResultId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<float>("Ces")
-                                .HasColumnType("real");
-
-                            b1.Property<float>("Csat")
-                                .HasColumnType("real");
-
-                            b1.Property<float>("Nps")
-                                .HasColumnType("real");
-
-                            b1.HasKey("FeedbackAnalysisResultId");
-
-                            b1.ToTable("FeedbackAnalysisResults");
-
-                            b1.WithOwner()
-                                .HasForeignKey("FeedbackAnalysisResultId");
-                        });
-
-                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackOpinion", "FeedbackOpinion", b1 =>
-                        {
-                            b1.Property<Guid>("FeedbackAnalysisResultId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string[]>("NegativeOpinionPoints")
-                                .IsRequired()
-                                .HasColumnType("text[]");
-
-                            b1.Property<int>("OverallOpinion")
-                                .HasColumnType("integer");
-
-                            b1.Property<string[]>("PositiveOpinionPoints")
-                                .IsRequired()
-                                .HasColumnType("text[]");
-
-                            b1.HasKey("FeedbackAnalysisResultId");
-
-                            b1.ToTable("FeedbackAnalysisResults");
-
-                            b1.WithOwner()
-                                .HasForeignKey("FeedbackAnalysisResultId");
-                        });
-
-                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackRelevance", "FeedbackRelevance", b1 =>
-                        {
-                            b1.Property<Guid>("FeedbackAnalysisResultId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("ExtractedRelevantContent")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<bool>("IsRelevant")
-                                .HasColumnType("boolean");
-
-                            b1.Property<string>("PiiRedactedContent")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<string[]>("RecognizedLanguages")
-                                .IsRequired()
-                                .HasColumnType("text[]");
-
-                            b1.HasKey("FeedbackAnalysisResultId");
-
-                            b1.ToTable("FeedbackAnalysisResults");
-
-                            b1.WithOwner()
-                                .HasForeignKey("FeedbackAnalysisResultId");
-                        });
-
-                    b.Navigation("CustomerFeedback");
-
-                    b.Navigation("FeedbackActionablePoints")
-                        .IsRequired();
-
-                    b.Navigation("FeedbackEntities")
-                        .IsRequired();
-
-                    b.Navigation("FeedbackMetrics")
-                        .IsRequired();
-
-                    b.Navigation("FeedbackOpinion")
-                        .IsRequired();
-
-                    b.Navigation("FeedbackRelevance")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
@@ -625,10 +445,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.WorkflowExecutionOption", null)
-                        .WithMany("ChildExecutionOptions")
-                        .HasForeignKey("ParentId");
-
                     b.Navigation("AnalysisPromptCategory");
 
                     b.Navigation("Workflow");
@@ -656,11 +472,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("Organizations");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.CustomerFeedback", b =>
-                {
-                    b.Navigation("FeedbackAnalysisResults");
-                });
-
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>
                 {
                     b.Navigation("Products");
@@ -671,11 +482,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("CustomerFeedbacks");
 
                     b.Navigation("Workflows");
-                });
-
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.WorkflowExecutionOption", b =>
-                {
-                    b.Navigation("ChildExecutionOptions");
                 });
 #pragma warning restore 612, 618
         }
