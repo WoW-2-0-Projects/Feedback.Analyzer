@@ -11,6 +11,7 @@ using Feedback.Analyzer.Application.Common.PromptCategory.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
+using Feedback.Analyzer.Application.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Application.Serializers;
 using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Application.Organizations.Services;
@@ -30,6 +31,7 @@ using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
+using Feedback.Analyzer.Infrastructure.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Infrastructure.PromptsHistory.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
@@ -249,11 +251,13 @@ public static partial class HostConfiguration
     {
         // Register repositories
         builder.Services
-            .AddScoped<ICustomerFeedbackRepository, CustomerFeedbackRepository>();
+            .AddScoped<ICustomerFeedbackRepository, CustomerFeedbackRepository>()
+            .AddScoped<IFeedbackAnalysisResultRepository, FeedbackAnalysisResultRepository>();
         
         // Register services
         builder.Services
-            .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>();
+            .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>()
+            .AddScoped<IFeedbackAnalysisResultService, FeedbackAnalysisResultService>();
 
         return builder;
     }
