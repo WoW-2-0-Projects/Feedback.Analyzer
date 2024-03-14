@@ -24,16 +24,4 @@ public class FeedbackAnalysisResultRepository(AppDbContext appDbContext, ICacheB
     {
         return base.GetByIdAsync(feedbackId, queryOptions, cancellationToken);
     }
-
-    public new ValueTask<FeedbackAnalysisResult> CreateAsync(FeedbackAnalysisResult feedbackAnalysisResult, CommandOptions commandOptions = default,
-        CancellationToken cancellationToken = default)
-    {
-        return base.CreateAsync(feedbackAnalysisResult, commandOptions, cancellationToken);
-    }
-
-    public new ValueTask<FeedbackAnalysisResult?> DeleteByIdAsync(Guid feedbackId, CommandOptions commandOptions = default,
-        CancellationToken cancellationToken = default)
-    {
-        return base.DeleteByIdAsync(feedbackId, commandOptions, cancellationToken);
-    }
 }
