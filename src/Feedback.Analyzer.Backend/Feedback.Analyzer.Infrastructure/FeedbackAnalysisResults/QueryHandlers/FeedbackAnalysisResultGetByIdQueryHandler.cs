@@ -18,7 +18,7 @@ public class FeedbackAnalysisResultGetByIdQueryHandler(IMapper mapper, IFeedback
             request.WorkflowResultId,
             new QueryOptions()
             {
-                AsNoTracking = true
+                TrackingMode = QueryTrackingMode.AsNoTracking,
             },
             cancellationToken
         );
