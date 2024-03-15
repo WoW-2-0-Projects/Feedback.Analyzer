@@ -9,7 +9,7 @@ body {
 }
 
 .view {
-  @apply h-screen w-screen;
+  @apply min-h-screen w-screen;
 }
 
 .tab {
@@ -22,7 +22,11 @@ body {
 
 /* Theme styles */
 
-.theme-view-bg {
+.theme-bg {
+  @apply bg-secondaryColor;
+}
+
+.theme-gradient-bg {
   @apply bg-gradient-to-br from-30% from-secondaryColor to-primaryColor;
 }
 

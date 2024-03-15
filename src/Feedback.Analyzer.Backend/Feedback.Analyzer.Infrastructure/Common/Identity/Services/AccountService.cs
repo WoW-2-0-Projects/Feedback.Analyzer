@@ -13,12 +13,12 @@ public class AccountService(IEventBusBroker eventBusBroker, IClientService clien
 {
     public async ValueTask<Client?> GetUserByEmailAddressAsync(
         string emailAddress,
-        QueryTrackingMode trackingMode = QueryTrackingMode.AsTracking,
+        QueryOptions options = default,
         CancellationToken cancellationToken = default
         )
     {
         return await clientRepository
-            .Get(queryOptions: new QueryOptions{ TrackingMode = trackingMode})
+            .Get(queryOptions: new QueryOptions{ TrackingMode = QueryTrackingMode.AsNoTracking})
             .FirstOrDefaultAsync(client => client.EmailAddress == emailAddress, cancellationToken: cancellationToken);
     }
 

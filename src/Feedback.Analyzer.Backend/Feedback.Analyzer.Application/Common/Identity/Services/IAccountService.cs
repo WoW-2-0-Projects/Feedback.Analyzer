@@ -17,7 +17,7 @@ public interface IAccountService
     /// <returns>A <see cref="ValueTask"/> containing the retrieved user or null if not found.</returns>
     ValueTask<Client?> GetUserByEmailAddressAsync(
         string emailAddress,
-        QueryTrackingMode trackingMode = QueryTrackingMode.AsTracking,
+        QueryOptions options = default,
         CancellationToken cancellationToken = default
     );
 

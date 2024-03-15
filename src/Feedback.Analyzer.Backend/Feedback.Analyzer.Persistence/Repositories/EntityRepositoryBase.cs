@@ -5,6 +5,7 @@ using Feedback.Analyzer.Domain.Common.Entities;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.Caching.Models;
+using Feedback.Analyzer.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
@@ -57,13 +58,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
         if (predicate is not null)
             initialQuery = initialQuery.Where(predicate);
 
-        if (queryOptions.TrackingMode == QueryTrackingMode.AsNoTracking)
-            initialQuery = initialQuery.AsNoTracking();
-
-        else if (queryOptions.TrackingMode == QueryTrackingMode.AsNoTrackingWithIdentityResolution)
-            initialQuery = initialQuery.AsNoTrackingWithIdentityResolution();
-
-        return initialQuery;
+        return initialQuery.ApplyTrackingMode(queryOptions.TrackingMode);
     }
     
     /// <summary>
@@ -85,12 +80,8 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
         {
             var initialQuery = DbContext.Set<TEntity>().AsQueryable();
 
-            if (queryOptions.TrackingMode == QueryTrackingMode.AsNoTracking)
-                initialQuery = initialQuery.AsNoTracking();
-
-            else if (queryOptions.TrackingMode == QueryTrackingMode.AsNoTrackingWithIdentityResolution)
-                initialQuery = initialQuery.AsNoTrackingWithIdentityResolution();
-
+            initialQuery.ApplyTrackingMode(queryOptions.TrackingMode);
+            
             foundEntity = await initialQuery.FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
 
             if (cacheEntryOptions is not null && foundEntity is not null)
@@ -117,11 +108,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     {
         var initialQuery = DbContext.Set<TEntity>().Where(entity => ids.Contains(entity.Id));
 
-        if (queryOptions.TrackingMode == QueryTrackingMode.AsNoTracking)
-            initialQuery = initialQuery.AsNoTracking();
-
-        else if (queryOptions.TrackingMode == QueryTrackingMode.AsNoTrackingWithIdentityResolution)
-            initialQuery = initialQuery.AsNoTrackingWithIdentityResolution();
+        initialQuery.ApplyTrackingMode(queryOptions.TrackingMode);
 
         return await initialQuery.ToListAsync(cancellationToken: cancellationToken);
     }
