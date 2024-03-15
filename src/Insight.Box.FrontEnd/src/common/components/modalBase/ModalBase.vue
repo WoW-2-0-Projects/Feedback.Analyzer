@@ -9,9 +9,10 @@
 
             <!-- Modal container -->
             <div
-                class="fixed inset-0 w-fit h-fit z-40 top-1/2 left-1/3 -translate-x-1/2 overflow-auto no-scrollbar
+                class="fixed inset-0 w-fit h-fit z-40 top-1/2 overflow-auto no-scrollbar
                     theme-modal-bg modal-border-round theme-modal-border" @click.stop
-                :class="props.isActive ? 'animate-fadeIn' : 'animate-fadeOut'">
+                :class="props.isActive ? 'animate-fadeIn' : 'animate-fadeOut'"
+            >
                 <div class="w-full h-full relative pt-20">
 
                     <close-button class="absolute top-5 right-5" @click="emit('closeModal')"/>
@@ -54,7 +55,7 @@ const emit = defineEmits(['closeModal']);
 
 onBeforeMount(() => setStyles());
 watch(() => props.isActive, () => setStyles());
-onBeforeUnmount(() => timerService.clearTimer(timer));
+onBeforeUnmount(() => timerService.clearTimer(timer.value));
 
 const setStyles = () => {
     documentService.handleBodyOverflow(props.isActive);
