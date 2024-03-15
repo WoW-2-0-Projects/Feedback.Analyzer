@@ -12,24 +12,24 @@
 // /// <summary>
 // ///  Represents event handler for before prompt execution hook event
 // /// </summary>
-// public class AfterPromptExecutionEventHandler : IEventHandler<AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>>
+// public class AfterPromptExecutionEventHandler : EventHandlerBase<AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>>
 // {
-//     public Task Handle(AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext> notification, CancellationToken cancellationToken)
+//     protected override ValueTask HandleAsync(AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext> @event, CancellationToken cancellationToken)
 //     {
-//         if (notification.Context is not SingleFeedbackAnalysisWorkflowContext context)
-//             return Task.CompletedTask;
+//         if (@event.Context is not SingleFeedbackAnalysisWorkflowContext context)
+//             return ValueTask.CompletedTask;
 //
 //         // TODO : add throwing exception if status is null
 //
-//         if (notification.Prompt.Category.Category == FeedbackAnalysisPromptCategory.RelevanceAnalysis)
+//         if (@event.Prompt.Category.Category == FeedbackAnalysisPromptCategory.RelevanceAnalysis)
 //         {
-//             var lastHistory = context.GetLastHistory(notification.Prompt.CategoryId) ?? throw new InvalidOperationException(
-//                 $"No history found for the category - {notification.Prompt.Category.Category.GetDisplayName()}"
+//             var lastHistory = context.GetLastHistory(@event.Prompt.CategoryId) ?? throw new InvalidOperationException(
+//                 $"No history found for the category - {@event.Prompt.Category.Category.GetDisplayName()}"
 //             );
 //
 //             if (lastHistory.Result is null)
 //                 throw new InvalidOperationException(
-//                     $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null"
+//                     $"Result of the last history is null for the category - {@event.Prompt.Category.Category.GetDisplayName()} is null"
 //                 );
 //
 //             context.Result.FeedbackRelevance.IsRelevant = JsonConvert.DeserializeObject<bool>(lastHistory.Result!);
@@ -38,44 +38,39 @@
 //                 throw new InvalidOperationException("Feedback is not relevant");
 //         }
 //
-//         if (notification.Prompt.Category.Category == FeedbackAnalysisPromptCategory.RelevantContentExtraction)
+//         if (@event.Prompt.Category.Category == FeedbackAnalysisPromptCategory.RelevantContentExtraction)
 //         {
-//             var lastHistory = context.GetLastHistory(notification.Prompt.CategoryId) ?? throw new InvalidOperationException(
-//                 $"No history found for the category - {notification.Prompt.Category.Category.GetDisplayName()}"
+//             var lastHistory = context.GetLastHistory(@event.Prompt.CategoryId) ?? throw new InvalidOperationException(
+//                 $"No history found for the category - {@event.Prompt.Category.Category.GetDisplayName()}"
 //             );
 //
 //             if (lastHistory.Result is null)
 //                 throw new InvalidOperationException(
-//                     $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null"
+//                     $"Result of the last history is null for the category - {@event.Prompt.Category.Category.GetDisplayName()} is null"
 //                 );
 //
 //             context.Result.FeedbackRelevance.ExtractedRelevantContent = lastHistory.Result;
 //         }
 //
-//         if (notification.Prompt.Category.Category == FeedbackAnalysisPromptCategory.PersonalInformationRedaction)
+//         if (@event.Prompt.Category.Category == FeedbackAnalysisPromptCategory.PersonalInformationRedaction)
 //         {
-//             var lastHistory = context.GetLastHistory(notification.Prompt.CategoryId) ?? throw new InvalidOperationException(
-//                 $"No history found for the category - {notification.Prompt.Category.Category.GetDisplayName()}"
+//             var lastHistory = context.GetLastHistory(@event.Prompt.CategoryId) ?? throw new InvalidOperationException(
+//                 $"No history found for the category - {@event.Prompt.Category.Category.GetDisplayName()}"
 //             );
 //
 //             if (lastHistory.Result is null)
 //                 throw new InvalidOperationException(
-//                     $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null"
+//                     $"Result of the last history is null for the category - {@event.Prompt.Category.Category.GetDisplayName()} is null"
 //                 );
 //
 //             context.Result.FeedbackRelevance.PiiRedactedContent = lastHistory.Result;
 //         }
 //
-//         if (notification.Prompt.Category.Category == FeedbackAnalysisPromptCategory.OpinionMining)
+//         if (@event.Prompt.Category.Category == FeedbackAnalysisPromptCategory.OpinionMining)
 //         {
 //             context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
 //         }
 //
-//         return Task.CompletedTask;
-//     }
-//
-//     public Task Consume(ConsumeContext<AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>> context)
-//     {
-//         throw new NotImplementedException();
+//         return ValueTask.CompletedTask;
 //     }
 // }

@@ -1,6 +1,5 @@
 using System.Reflection;
 using System.Text;
-
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.AnalysisWorkflows.Services;
@@ -10,7 +9,6 @@ using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.PromptCategories.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Brokers;
 using Feedback.Analyzer.Application.Common.Prompts.Commands;
-using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.PromptsHistory.Services;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Common.WorkflowExecutionOptions.Services;
@@ -20,7 +18,6 @@ using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Constants;
-using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
@@ -28,7 +25,6 @@ using Feedback.Analyzer.Infrastructure.Common.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.PromptCategories.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Brokers;
-using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.PromptsHistory.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Common.WorkflowExecutionOptions.Services;
@@ -36,6 +32,7 @@ using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflowResults.Services;
+using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandlers;
 using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
@@ -93,44 +90,17 @@ public static partial class HostConfiguration
     /// <returns></returns>
     private static WebApplicationBuilder AddEventBus(this WebApplicationBuilder builder)
     {
-        // services.AddMassTransit(x =>
-        // {
-        //     x.AddConsumer<MyMessageConsumer>(); // Replace MyMessageConsumer with your consumer class
-        //
-        //     // Using In-Memory Transport
-        //     x.UsingInMemory((context, cfg) =>
-        //     {
-        //         cfg.TransportConcurrencyLimit = 10; // Adjust as needed
-        //         cfg.ConfigureEndpoints(context);
-        //     });
-        // });
-        //
-        // // Add MassTransit hosted service
-        // services.AddMassTransitHostedService();
-        
         builder
             .Services
             .AddMassTransit(configuration =>
             {
-                configuration.SetKebabCaseEndpointNameFormatter();
-                configuration.SetInMemorySagaRepositoryProvider();
-
-                // var entryAssembly = Assembly.GetEntryAssembly();
-                // configuration
-
-                configuration.AddConsumers(Assemblies.ToArray());
-                configuration.AddSagaStateMachines(Assemblies.ToArray());
-                configuration.AddSagas(Assemblies.ToArray());
-                configuration.AddActivities(Assemblies.ToArray());
-
+                configuration.AddConsumer<ExecuteWorkflowSinglePromptEventHandler>();
                 configuration.UsingInMemory((context, cfg) =>
                 {
-                    // cfg.UseConcurrencyLimit(10);
                     cfg.ConfigureEndpoints(context);
                 });
             });
 
-        // builder.Services.AddSingleton<IEventBusBroker, RabbitMqEventBusBroker>();
         builder.Services.AddSingleton<IEventBusBroker, MassTransitEventBusBroker>();
         
         return builder;
