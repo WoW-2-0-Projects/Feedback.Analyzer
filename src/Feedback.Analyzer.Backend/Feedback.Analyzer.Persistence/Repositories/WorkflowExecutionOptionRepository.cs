@@ -20,7 +20,6 @@ public class WorkflowExecutionOptionRepository(AppDbContext dbContext, ICacheBro
         CancellationToken cancellationToken = default)
     {
         var executionOption = await Get(executionOption => executionOption.Id == optionId, queryOptions)
-                                    .Include(executionOption => executionOption.Workflow)
                                     .Include(executionOption => executionOption.AnalysisPromptCategory)
                                     .ThenInclude(category => category.SelectedPrompt)
                                     .Include(executionOption => executionOption.ChildExecutionOptions)
