@@ -9,7 +9,7 @@
 
             <!-- Modal container -->
             <div
-                class="fixed inset-0 w-fit h-fit z-40 top-1/2 overflow-auto no-scrollbar
+                class="fixed inset-0 w-fit h-fit z-40 top-1/2 left-1/2 overflow-auto no-scrollbar
                     theme-modal-bg modal-border-round theme-modal-border" @click.stop
                 :class="props.isActive ? 'animate-fadeIn' : 'animate-fadeOut'"
             >
