@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Feedback.Analyzer.Application.FeedbackAnalysisResults.Models;
 using Feedback.Analyzer.Application.FeedbackAnalysisResults.Services;
+using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.Extensions;
@@ -28,5 +29,11 @@ public class FeedbackAnalysisResultService(IFeedbackAnalysisResultRepository fee
         CancellationToken cancellationToken = default)
     {
         return feedbackAnalysisResultRepository.GetByIdAsync(feedbackId, queryOptions, cancellationToken);
+    }
+
+    public ValueTask<FeedbackAnalysisResult> CreateAsync(FeedbackAnalysisResult feedbackAnalysisResult, CommandOptions commandOptions = default,
+        CancellationToken cancellationToken = default)
+    {
+        return feedbackAnalysisResultRepository.CreateAsync(feedbackAnalysisResult, commandOptions, cancellationToken);
     }
 }

@@ -36,4 +36,13 @@ public interface IFeedbackAnalysisResultService
     /// <param name="cancellationToken">A cancellation token to cancel the asynchronous operation.</param>
     /// <returns>A <see cref="ValueTask{TResult}"/> representing the asynchronous operation, containing the feedback analysis result, or null if not found.</returns>
     ValueTask<FeedbackAnalysisResult?> GetByIdAsync(Guid feedbackId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Asynchronously creates a new feedback analysis result.
+    /// </summary>
+    /// <param name="feedbackAnalysisResult">The feedback analysis result to create.</param>
+    /// <param name="commandOptions">Options for the command.</param>
+    /// <param name="cancellationToken">A cancellation token to cancel the asynchronous operation.</param>
+    /// <returns>A <see cref="ValueTask{TResult}"/> representing the asynchronous operation, containing the created feedback analysis result.</returns>
+    ValueTask<FeedbackAnalysisResult> CreateAsync(FeedbackAnalysisResult feedbackAnalysisResult, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
 }
