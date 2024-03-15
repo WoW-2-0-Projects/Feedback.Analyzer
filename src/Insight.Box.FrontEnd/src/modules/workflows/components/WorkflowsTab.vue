@@ -4,7 +4,7 @@
     <div class="tab pt-10">
 
         <!-- Workflows search bar -->
-        <workflows-search-bar :workflowsQuery="workflowsQuery"/>
+        <workflows-search-bar :workflowsQuery="workflowsQuery" @addWorkflow="openWorkflowModal"/>
 
     </div>
 
@@ -40,5 +40,7 @@ const loadWorkflowsAsync = async () => {
         workflows.value.push(...response.response);
     }
 };
+
+const openWorkflowModal = () => {};
 
 </script>
