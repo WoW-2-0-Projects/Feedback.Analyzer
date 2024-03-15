@@ -18,7 +18,7 @@ public class CheckUserExistenceQueryHandler(IClientService userService)
                 user => user.EmailAddress == request.EmailAddress,
                 new QueryOptions
                 {
-                    AsNoTracking = true
+                    TrackingMode = QueryTrackingMode.AsNoTracking
                 }
             )
             .Select(user => user.FirstName)

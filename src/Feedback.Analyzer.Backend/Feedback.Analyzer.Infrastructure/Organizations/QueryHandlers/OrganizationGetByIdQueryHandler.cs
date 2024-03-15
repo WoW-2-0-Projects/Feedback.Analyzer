@@ -14,7 +14,7 @@ public class OrganizationGetByIdQueryHandler(IOrganizationService organizationSe
             request.OrganizationId,
             new QueryOptions()
             {
-                AsNoTracking = true
+                TrackingMode = QueryTrackingMode.AsNoTracking
             },
             cancellationToken
         );

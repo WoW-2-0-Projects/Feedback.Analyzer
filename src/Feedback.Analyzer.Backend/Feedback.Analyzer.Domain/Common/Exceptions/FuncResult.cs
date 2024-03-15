@@ -1,10 +1,10 @@
-﻿namespace Feedback.Analyzer.Domain.Common.Exceptions;
+namespace Feedback.Analyzer.Domain.Common.Exceptions;
 
 /// <summary>
 /// Represents the result of a function that can return either data of type T or an exception.
 /// </summary>
 /// <typeparam name="T">The type of the data returned on success.</typeparam>
-public class FuncResult<T>
+public record FuncResult<T>
 {
     /// <summary>
     /// Gets the data result when the operation is successful.
