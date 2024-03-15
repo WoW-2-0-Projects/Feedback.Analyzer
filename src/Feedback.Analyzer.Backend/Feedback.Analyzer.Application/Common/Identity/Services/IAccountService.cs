@@ -1,4 +1,5 @@
-﻿using Feedback.Analyzer.Domain.Entities;
+﻿using Feedback.Analyzer.Domain.Common.Queries;
+using Feedback.Analyzer.Domain.Entities;
 
 namespace Feedback.Analyzer.Application.Common.Identity.Services;
 
@@ -14,8 +15,11 @@ public interface IAccountService
     /// <param name="asNoTracking">Indicates whether to disable change tracking. Default is false.</param>
     /// <param name="cancellationToken">Cancellation token for asynchronous operations.</param>
     /// <returns>A <see cref="ValueTask"/> containing the retrieved user or null if not found.</returns>
-    ValueTask<Client?> GetUserByEmailAddressAsync(string emailAddress, bool asNoTracking = false,
-        CancellationToken cancellationToken = default);
+    ValueTask<Client?> GetUserByEmailAddressAsync(
+        string emailAddress,
+        QueryOptions options = default,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Creates a new user.
