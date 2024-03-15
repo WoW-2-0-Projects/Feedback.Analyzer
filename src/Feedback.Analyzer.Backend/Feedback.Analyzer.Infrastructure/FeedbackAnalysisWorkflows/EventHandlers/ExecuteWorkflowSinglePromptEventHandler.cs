@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandlers;
 
-public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory serviceScopeFactory) : IEventHandler<ExecuteWorkflowSinglePromptEvent>
+public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory serviceScopeFactory) : IEventConsumer<ExecuteWorkflowSinglePromptEvent>
 {
     public async Task Handle(ExecuteWorkflowSinglePromptEvent notification, CancellationToken cancellationToken)
     {

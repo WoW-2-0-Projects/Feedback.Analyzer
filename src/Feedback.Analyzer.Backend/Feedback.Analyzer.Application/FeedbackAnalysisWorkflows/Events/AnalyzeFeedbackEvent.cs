@@ -6,7 +6,7 @@ namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 /// <summary>
 /// Represents feedback analysis event
 /// </summary>
-public record AnalyzeFeedbackEvent : Event
+public record AnalyzeFeedbackEvent : Contract
 {
     /// <summary>
     /// Gets feedback analysis workflow context

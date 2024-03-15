@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandlers;
 
-public class AnalyzeFeedbackEventHandler(IServiceScopeFactory serviceScopeFactory) : IEventHandler<AnalyzeFeedbackEvent>
+public class AnalyzeFeedbackEventHandler(IServiceScopeFactory serviceScopeFactory) : IEventConsumer<AnalyzeFeedbackEvent>
 {
     public async Task Handle(AnalyzeFeedbackEvent notification, CancellationToken cancellationToken)
     {

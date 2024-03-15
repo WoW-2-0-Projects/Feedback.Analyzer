@@ -11,7 +11,7 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandle
 /// <summary>
 ///  Represents event handler for before prompt execution hook event
 /// </summary>
-public class AfterPromptExecutionEventHandler : IEventHandler<AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>>
+public class AfterPromptExecutionEventHandler : IEventConsumer<AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>>
 {
     public Task Handle(AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext> notification, CancellationToken cancellationToken)
     {

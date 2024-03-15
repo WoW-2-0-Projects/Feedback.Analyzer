@@ -8,7 +8,7 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandle
 /// <summary>
 /// Represents workflow execution event handler
 /// </summary>
-public class AnalyzeWorkflowFeedbacksEventHandler(IServiceScopeFactory serviceScopeFactory) : IEventHandler<AnalyzeWorkflowFeedbacksEvent>
+public class AnalyzeWorkflowFeedbacksEventHandler(IServiceScopeFactory serviceScopeFactory) : IEventConsumer<AnalyzeWorkflowFeedbacksEvent>
 {
     public async Task Handle(AnalyzeWorkflowFeedbacksEvent notification, CancellationToken cancellationToken)
     {

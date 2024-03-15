@@ -5,7 +5,7 @@ namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 /// <summary>
 /// Represents workflow execution event
 /// </summary>
-public record AnalyzeWorkflowFeedbacksEvent : Event
+public record AnalyzeWorkflowFeedbacksEvent : Contract
 {
     /// <summary>
     /// Gets workflow Id
