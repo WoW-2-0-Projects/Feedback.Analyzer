@@ -5,7 +5,7 @@ namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 /// <summary>
 /// Represents workflow execution event
 /// </summary>
-public record AnalyzeWorkflowFeedbacksEventBase : EventBase
+public record AnalyzeWorkflowFeedbacksEvent : EventBase
 {
     /// <summary>
     /// Gets workflow Id

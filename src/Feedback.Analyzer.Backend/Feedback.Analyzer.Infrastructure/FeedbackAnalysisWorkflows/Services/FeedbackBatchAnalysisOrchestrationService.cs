@@ -91,7 +91,7 @@ public class FeedbackBatchAnalysisOrchestrationService(
             )
             .Select(
                 feedbackAnalysisContext => eventBusBroker.PublishAsync(
-                    new AnalyzeFeedbackEventBase
+                    new AnalyzeFeedbackEvent
                     {
                         Context = feedbackAnalysisContext
                     }

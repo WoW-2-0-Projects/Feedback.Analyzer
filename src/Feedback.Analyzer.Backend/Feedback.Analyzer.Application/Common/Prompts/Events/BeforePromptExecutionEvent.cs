@@ -5,10 +5,10 @@ using Feedback.Analyzer.Domain.Entities;
 namespace Feedback.Analyzer.Application.Common.Prompts.Events;
 
 /// <summary>
-/// Represents the prompt execution hook event that is triggered after the prompt execution.
+/// Represents the prompt execution hook event that is triggered before the prompt execution.
 /// </summary>
 /// <typeparam name="TWorkflow"></typeparam>
-public record AfterPromptExecutionEventBase<TWorkflow> : EventBase where TWorkflow : WorkflowContext
+public record BeforePromptExecutionEvent<TWorkflow> : EventBase where TWorkflow : WorkflowContext
 {
     /// <summary>
     /// Gets execution context
@@ -16,7 +16,7 @@ public record AfterPromptExecutionEventBase<TWorkflow> : EventBase where TWorkfl
     public WorkflowContext Context { get; init; } = default!;
 
     /// <summary>
-    /// Gets prompt that was executed
+    /// Gets prompt that will be executed
     /// </summary>
     public AnalysisPrompt Prompt { get; init; } = default!;
 }

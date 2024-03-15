@@ -93,26 +93,41 @@ public static partial class HostConfiguration
     /// <returns></returns>
     private static WebApplicationBuilder AddEventBus(this WebApplicationBuilder builder)
     {
+        // services.AddMassTransit(x =>
+        // {
+        //     x.AddConsumer<MyMessageConsumer>(); // Replace MyMessageConsumer with your consumer class
+        //
+        //     // Using In-Memory Transport
+        //     x.UsingInMemory((context, cfg) =>
+        //     {
+        //         cfg.TransportConcurrencyLimit = 10; // Adjust as needed
+        //         cfg.ConfigureEndpoints(context);
+        //     });
+        // });
+        //
+        // // Add MassTransit hosted service
+        // services.AddMassTransitHostedService();
+        
         builder
             .Services
             .AddMassTransit(configuration =>
             {
                 configuration.SetKebabCaseEndpointNameFormatter();
-
                 configuration.SetInMemorySagaRepositoryProvider();
 
-                var entryAssembly = Assembly.GetEntryAssembly();
+                // var entryAssembly = Assembly.GetEntryAssembly();
+                // configuration
 
-                configuration.AddConsumers(entryAssembly);
-                configuration.AddSagaStateMachines(entryAssembly);
-                configuration.AddSagas(entryAssembly);
-                configuration.AddActivities(entryAssembly);
+                configuration.AddConsumers(Assemblies.ToArray());
+                configuration.AddSagaStateMachines(Assemblies.ToArray());
+                configuration.AddSagas(Assemblies.ToArray());
+                configuration.AddActivities(Assemblies.ToArray());
 
                 configuration.UsingInMemory((context, cfg) =>
                 {
+                    // cfg.UseConcurrencyLimit(10);
                     cfg.ConfigureEndpoints(context);
                 });
-
             });
 
         // builder.Services.AddSingleton<IEventBusBroker, RabbitMqEventBusBroker>();

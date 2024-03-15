@@ -1,3 +1,4 @@
+using Feedback.Analyzer.Application.Common.EventBus.Brokers;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Queries;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Queries;
@@ -8,7 +9,7 @@ namespace Feedback.Analyzer.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class WorkflowsController(IMediator mediator) : ControllerBase
+public class WorkflowsController(IMediator mediator, IEventBusBroker eventBusBroker) : ControllerBase
 {
     [HttpGet]
     public async ValueTask<IActionResult> GetWorkflows([FromQuery] FeedbackWorkflowGetQuery query, CancellationToken cancellationToken)
@@ -40,20 +41,21 @@ public class WorkflowsController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken
     )
     {
-        var executePromptEvent = new ExecuteWorkflowSinglePromptEventBase
+        var executePromptEvent = new ExecuteWorkflowSinglePromptEvent
         {
             PromptId = promptId,
             WorkflowId = workflowId
         };
-
-        await mediator.Publish(executePromptEvent, cancellationToken);
+        
+        await eventBusBroker.PublishAsync(executePromptEvent);
+        // await mediator.Publish(executePromptEvent, cancellationToken);
         return Accepted(executePromptEvent.Id);
     }
 
     [HttpPost("{workflowId:guid}/execute")]
     public async ValueTask<IActionResult> ExecuteWorkflowAsync([FromRoute] Guid workflowId, CancellationToken cancellationToken)
     {
-        var executeWorkflowEvent = new AnalyzeWorkflowFeedbacksEventBase
+        var executeWorkflowEvent = new AnalyzeWorkflowFeedbacksEvent
         {
             WorkflowId = workflowId
         };

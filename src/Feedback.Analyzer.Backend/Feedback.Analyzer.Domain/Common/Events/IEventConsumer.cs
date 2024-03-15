@@ -8,7 +8,7 @@ namespace Feedback.Analyzer.Domain.Common.Events;
 /// </summary>
 /// <typeparam name="TEvent">The type of event being handled.</typeparam>
 public interface IEventHandler<in TEvent> : IEventHandler, 
-    INotificationHandler<TEvent>, 
+    // INotificationHandler<TEvent>, 
     IConsumer<TEvent>
     where TEvent : class, INotification 
 {
