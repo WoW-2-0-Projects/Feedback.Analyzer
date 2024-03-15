@@ -43,15 +43,16 @@ export class RouterService {
                 name: 'Products',
                 path: '/products',
                 component: () => import('../../../modules/products/components/ProductsTab.vue')
-            }
+            },
             // {
             //     name: 'Prompts',
             //     path: '/prompts',
             // },
-            // {
-            //     name: 'Workflows',
-            //     path: '/workflows',
-            // }
+            {
+                name: 'Workflows',
+                path: '/workflows',
+                component: () => import('../../../modules/workflows/components/WorkflowsTab.vue')
+            }
         ]
     }
 }

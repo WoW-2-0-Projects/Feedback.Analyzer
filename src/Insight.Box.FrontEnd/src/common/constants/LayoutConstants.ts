@@ -38,6 +38,7 @@ export class LayoutConstants {
     public static readonly Progress = 'Progress';
     public static readonly StartedTime = 'Started';
     public static readonly FinishedTime = 'Finished';
+    public static readonly SearchWorkflows = 'Search workflows ...';
 
     /* Forms */
     public static readonly Submit = 'Submit';
