@@ -24,7 +24,7 @@ public class FeedbackAnalysisWorkflowGetByIdQueryHandler(
             workflow => workflow.Id == request.Id,
             new QueryOptions
             {
-                AsNoTracking = true
+                TrackingMode = QueryTrackingMode.AsNoTracking
             }
         )
         .Include(workflow => workflow.AnalysisWorkflow)

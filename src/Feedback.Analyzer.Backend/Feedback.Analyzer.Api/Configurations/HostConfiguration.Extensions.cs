@@ -318,7 +318,7 @@ public static partial class HostConfiguration
                .AddScoped<IPromptExecutionHistoryService, PromptExecutionHistoryService>()
                .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>()
                .AddScoped<IFeedbackAnalysisWorkflowService, FeedbackAnalysisWorkflowService>()
-               .AddScoped<FeedbackAnalysisWorkflowProcessingService>();
+               .AddScoped<FeedbackAnalysisWorkflowProcessingService>()
                .AddScoped<IWorkflowExecutionOptionsService, WorkflowExecutionOptionsService>();
                
 

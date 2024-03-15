@@ -80,7 +80,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
 
             initialQuery.ApplyTrackingMode(queryOptions.TrackingMode);
             
-            foundEntity = await initialQuery.FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
+            foundEntity = await initialQuery.FirstOrDefaultAsync(entity => entity.Id == entityId, cancellationToken);
 
             if (cacheEntryOptions is not null && foundEntity is not null)
                 await cacheBroker.SetAsync(foundEntity.Id.ToString(), foundEntity, cacheEntryOptions, cancellationToken);

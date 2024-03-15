@@ -19,7 +19,7 @@ public class FeedbackAnalysisWorkflowGetQueryHandler(IMapper mapper, IFeedbackAn
             request.Filter,
             new QueryOptions
             {
-                AsNoTracking = true
+                TrackingMode = QueryTrackingMode.AsNoTracking
             })
             .Include(workflow => workflow.AnalysisWorkflow)
             .ToListAsync(cancellationToken);
