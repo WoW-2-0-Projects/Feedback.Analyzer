@@ -1,24 +1,29 @@
-using Feedback.Analyzer.Application.Common.PromptCategories.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Domain.Common.Events;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Constants;
-using Feedback.Analyzer.Domain.Enums;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandlers;
 
-public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory serviceScopeFactory) : IEventHandler<ExecuteWorkflowSinglePromptEvent>
+public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory serviceScopeFactory) : 
+    IEventHandler<ExecuteWorkflowSinglePromptEvent>, IConsumer<ExecuteWorkflowSinglePromptEvent>
 {
-    public async Task Handle(ExecuteWorkflowSinglePromptEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(ExecuteWorkflowSinglePromptEvent notification, CancellationToken cancellationToken) =>
+        await HandleAsync(notification, cancellationToken);
+
+    public async Task Consume(ConsumeContext<ExecuteWorkflowSinglePromptEvent> context) =>
+        await HandleAsync(context.Message, context.CancellationToken);
+
+    private async ValueTask HandleAsync(ExecuteWorkflowSinglePromptEvent notification, CancellationToken cancellationToken)
     {
         var scopedServiceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
 
-        var promptCategoryService = scopedServiceProvider.GetRequiredService<IPromptCategoryService>();
+        var promptService = scopedServiceProvider.GetRequiredService<IPromptService>();
         var workflowService = scopedServiceProvider.GetRequiredService<IFeedbackAnalysisWorkflowService>();
         var promptExecutionProcessingService = scopedServiceProvider.GetRequiredService<IPromptExecutionProcessingService>();
 
@@ -26,7 +31,7 @@ public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory servic
                                workflow => workflow.Id == notification.WorkflowId,
                                new QueryOptions
                                {
-                                   TrackingMode = true
+                                   TrackingMode = QueryTrackingMode.AsNoTracking
                                }
                            )
                            .Include(workflow => workflow.Product)
@@ -41,6 +46,15 @@ public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory servic
             { PromptConstants.CustomerFeedback, workflow.Product.CustomerFeedbacks.First().Comment }
         };
 
-        await promptExecutionProcessingService.ExecuteAsync(notification.PromptId, arguments, cancellationToken: cancellationToken);
+        var prompt = await promptService.GetByIdAsync(
+            notification.PromptId,
+            queryOptions: new QueryOptions
+            {
+                TrackingMode = QueryTrackingMode.AsTracking
+            },
+            cancellationToken: cancellationToken
+        ) ?? throw new InvalidOperationException($"Could not execute prompt, prompt with id {notification.PromptId} not found.");
+
+        await promptExecutionProcessingService.ExecuteAsync(prompt, arguments, cancellationToken: cancellationToken);
     }
 }
