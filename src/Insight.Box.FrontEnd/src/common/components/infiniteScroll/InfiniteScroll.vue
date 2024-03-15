@@ -19,7 +19,7 @@ import {
     triggerRef
 } from 'vue';
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
-import {Action, NotificationSource} from "@/infrastructure/models/notifications/Action";
+import {Action, NotificationSource} from "@/infrastructure/models/delegates/Action";
 
 const documentService = new DocumentService();
 const scrollContainer = ref<HTMLDivElement>();

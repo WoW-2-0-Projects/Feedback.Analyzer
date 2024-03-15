@@ -16,7 +16,7 @@ public class PromptQueryHandler(IPromptService promptService, IMapper mapper) : 
     public async Task<ICollection<AnalysisPromptDto>> Handle(PromptGetQuery request, CancellationToken cancellationToken)
     {
         var matchedPrompts =  await promptService.Get(request.Filter, new QueryOptions
-            { AsNoTracking = true }).ToListAsync(cancellationToken);
+            { TrackingMode = QueryTrackingMode.AsNoTracking }).ToListAsync(cancellationToken);
         
         return mapper.Map<ICollection<AnalysisPromptDto>>(matchedPrompts);
     }

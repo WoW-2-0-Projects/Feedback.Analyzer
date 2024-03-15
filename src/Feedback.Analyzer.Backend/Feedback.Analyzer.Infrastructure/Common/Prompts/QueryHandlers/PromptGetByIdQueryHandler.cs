@@ -14,7 +14,7 @@ public class PromptGetByIdQueryHandler(IPromptService promptService, IMapper map
             request.PromptId,
             new QueryOptions
             {
-                AsNoTracking = true
+                TrackingMode = QueryTrackingMode.AsNoTracking
             },
             cancellationToken
         );

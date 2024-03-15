@@ -14,7 +14,7 @@ public class PromptExecutionHistoryGetByPromptIdQueryHandler(IPromptExecutionHis
     public async Task<IList<PromptExecutionHistoryDto>> Handle(PromptExecutionHistoryGetByPromptIdQuery request, CancellationToken cancellationToken)
     {
         var promptId = request.PromptId;
-        var result = await PromptExecutionHistoryService.GetByPromptIdAsync(promptId, new QueryOptions() { AsNoTracking = true }, cancellationToken);
+        var result = await PromptExecutionHistoryService.GetByPromptIdAsync(promptId, new QueryOptions() { TrackingMode = QueryTrackingMode.AsNoTracking }, cancellationToken);
 
         return mapper.Map<List<PromptExecutionHistoryDto>>(result);
     }

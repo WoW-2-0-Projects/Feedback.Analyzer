@@ -28,7 +28,7 @@ public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory servic
                                                 workflow => workflow.Id == notification.WorkflowId,
                                                 new QueryOptions
                                                 {
-                                                    AsNoTracking = true
+                                                    TrackingMode = QueryTrackingMode.AsNoTracking
                                                 }
                                             )
                                             .Include(workflow => workflow.AnalysisWorkflow)

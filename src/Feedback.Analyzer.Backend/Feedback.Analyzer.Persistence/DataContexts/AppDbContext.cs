@@ -20,6 +20,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     #region FeedbackInfrastructure
     public DbSet<CustomerFeedback> Feedbacks => Set<CustomerFeedback>();
 
+    public DbSet<FeedbackAnalysisResult> FeedbackAnalysisResults => Set<FeedbackAnalysisResult>();
+
     #endregion
 
     #region PromptsInfrastructure
@@ -32,6 +34,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     public DbSet<AnalysisPrompt> Prompts => Set<AnalysisPrompt>();
 
     public DbSet<AnalysisWorkflow> AnalysisWorkflows => Set<AnalysisWorkflow>();
+    
+    public DbSet<WorkflowExecutionOption> WorkflowExecutionOptions => Set<WorkflowExecutionOption>();
     
     public DbSet<AnalysisPromptCategory> PromptCategories => Set<AnalysisPromptCategory>();
 

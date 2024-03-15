@@ -20,7 +20,7 @@ public class PromptCategoryGetQueryHandler(IMapper mapper, IPromptCategoryServic
             request.Filter,
             new QueryOptions
             {
-                AsNoTracking = true
+                TrackingMode = QueryTrackingMode.AsNoTracking
             }
         )
         .Include(promptCategory => promptCategory.Prompts)

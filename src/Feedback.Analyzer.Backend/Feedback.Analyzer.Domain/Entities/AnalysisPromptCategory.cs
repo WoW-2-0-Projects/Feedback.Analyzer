@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Feedback.Analyzer.Domain.Common.Entities;
 using Feedback.Analyzer.Domain.Enums;
 
@@ -32,4 +33,9 @@ public class AnalysisPromptCategory : Entity
     /// Gets or sets the collection of prompts.
     /// </summary>
     public ICollection<AnalysisPrompt> Prompts { get; set; } = new List<AnalysisPrompt>();
+
+    /// <summary>
+    /// Gets or sets the collection of workflow execution options associated with this category.
+    /// </summary>
+    public ICollection<WorkflowExecutionOption> WorkflowExecutionOptions { get; set; } = default!;
 }
