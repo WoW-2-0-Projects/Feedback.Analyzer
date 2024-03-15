@@ -19,7 +19,7 @@ public class CustomerFeedbackGetByIdQueryHandler(ICustomerFeedbackService custom
             request.ProductId,
             new QueryOptions()
             {
-                AsNoTracking = true
+                TrackingMode = QueryTrackingMode.AsNoTracking
             },
             cancellationToken
         );

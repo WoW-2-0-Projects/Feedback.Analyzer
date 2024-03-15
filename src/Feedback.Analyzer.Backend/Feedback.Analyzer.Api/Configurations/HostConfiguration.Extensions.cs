@@ -11,8 +11,10 @@ using Feedback.Analyzer.Application.Common.PromptCategory.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Brokers;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.Settings;
+using Feedback.Analyzer.Application.Common.WorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
+using Feedback.Analyzer.Application.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Application.Serializers;
 using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Application.Organizations.Services;
@@ -27,6 +29,7 @@ using Feedback.Analyzer.Infrastructure.Common.Prompts.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.PromptsCategories.Services;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
+using Feedback.Analyzer.Infrastructure.Common.WorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Infrastructure.RequestContexts.Brokers;
 using Feedback.Analyzer.Infrastructure.Serializers;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
@@ -34,6 +37,7 @@ using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
+using Feedback.Analyzer.Infrastructure.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Infrastructure.PromptsHistory.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
@@ -254,11 +258,13 @@ public static partial class HostConfiguration
     {
         // Register repositories
         builder.Services
-            .AddScoped<ICustomerFeedbackRepository, CustomerFeedbackRepository>();
+            .AddScoped<ICustomerFeedbackRepository, CustomerFeedbackRepository>()
+            .AddScoped<IFeedbackAnalysisResultRepository, FeedbackAnalysisResultRepository>();
         
         // Register services
         builder.Services
-            .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>();
+            .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>()
+            .AddScoped<IFeedbackAnalysisResultService, FeedbackAnalysisResultService>();
 
         return builder;
     }
@@ -301,7 +307,9 @@ public static partial class HostConfiguration
             .AddScoped<IPromptCategoryRepository, PromptCategoryRepository>()
             .AddScoped<IPromptExecutionHistoryRepository, PromptExecutionHistoryRepository>()
             .AddScoped<IAnalysisWorkflowRepository, AnalysisWorkflowRepository>()
-            .AddScoped<IFeedbackAnalysisWorkflowRepository, FeedbackAnalysisWorkflowRepository>();
+            .AddScoped<IFeedbackAnalysisWorkflowRepository, FeedbackAnalysisWorkflowRepository>()
+            .AddScoped<IWorkflowExecutionOptionRepository, WorkflowExecutionOptionRepository>(); 
+
         
         // Register foundation services
         builder.Services
@@ -311,6 +319,8 @@ public static partial class HostConfiguration
                .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>()
                .AddScoped<IFeedbackAnalysisWorkflowService, FeedbackAnalysisWorkflowService>()
                .AddScoped<FeedbackAnalysisWorkflowProcessingService>();
+               .AddScoped<IWorkflowExecutionOptionsService, WorkflowExecutionOptionsService>();
+               
 
         // Register processing services
         builder.Services

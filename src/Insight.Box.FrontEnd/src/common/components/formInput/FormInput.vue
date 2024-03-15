@@ -2,28 +2,25 @@
 
     <div
         class="flex theme-input-bg relative rounded-md
-        theme-action-layout theme-action-transition theme-action-shadow theme-action-content
-        theme-action-border-round"
+        theme-action-transition theme-action-shadow theme-action-content
+        theme-action-border-round" :class="wrapperStyles"
          @focusin="focus = true"
-         @focusout="focus = false"
-         :class="focus ? 'theme-input-border-focus' : 'theme-input-border'"
-    >
+         @focusout="focus = false">
         <!-- Prefix value -->
         <span class="px-2.5 pb-2.5 pt-5 whitespace-nowrap" v-if="prefix">{{ prefix }}</span>
 
         <!-- Form input field -->
         <input :type="actualType" name="input" :value="value"
                @input="emit('update:modelValue', `${prefix}${$event.target.value}`)"
-               @keydown="onInput"
+               @keydown="onInput" :disabled="disabled"
                class="w-full px-2.5 pb-2.5 pt-5 bg-transparent appearance-none focus:outline-none peer
                    theme-input-text theme-input-placeholder theme-action-transition text-base"
                :placeholder="placeholder"/>
 
-        <!--         Form input label-->
-        <label for="input" class="absolute top-4 transform -translate-y-4 scale-75 origin-[0] start-2.5
-               theme-input-label theme-action-transition text-sm"
-               :class="prefix ? '' : 'peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 ' +
-                'rtl:peer-focus:left-auto peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0'">
+        <label for="input" :class="labelStyles" class="absolute z-10 transform scale-75 origin-[0] start-2.5
+                    peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto
+                    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+                     theme-input-label theme-action-transition">
             {{ label }}
         </label>
 
@@ -39,8 +36,9 @@
 
 <script setup lang="ts">
 
-import {computed, defineEmits, defineProps, ref, watch} from 'vue';
+import {computed, defineEmits, defineProps, type PropType, ref, watch} from 'vue';
 import {FormInputType} from "./FormInputType";
+import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 
 const props = defineProps({
     type: {
@@ -59,6 +57,10 @@ const props = defineProps({
         type: String,
         default: ''
     },
+    disabled: {
+        type: Boolean,
+        default: false
+    },
     border: {
         type: Boolean,
         default: true
@@ -67,6 +69,55 @@ const props = defineProps({
         type: String,
         default: ''
     },
+    size: {
+        type: Number as PropType<ActionComponentSize>,
+        default: ActionComponentSize.Medium
+    }
+});
+
+const wrapperStyles = computed(() => {
+    let styles = '';
+
+    if(focus) {
+        styles += ' theme-input-border-focus';
+    } else {
+        styles += ' theme-input-border';
+    }
+
+// :class="focus ? 'theme-input-border-focus' : 'theme-input-border'"
+
+    // Add button size styles
+    switch (props.size) {
+        case ActionComponentSize.Medium:
+            styles += ' action-layout';
+            break;
+        case ActionComponentSize.Small:
+            styles += ' action-small-layout';
+            break;
+        case ActionComponentSize.ExtraSmall:
+            styles += ' action-extra-small-layout';
+            break;
+    }
+
+    return styles;
+});
+
+const labelStyles = computed(() => {
+    let styles = '';
+
+    switch (props.size) {
+        case ActionComponentSize.Medium:
+            styles += ' text-md top-4 -translate-y-4 peer-focus:-translate-y-4';
+            break;
+        case ActionComponentSize.Small:
+            styles += ' text-sm top-3 -translate-y-3 peer-focus:-translate-y-[14px]';
+            break;
+        case ActionComponentSize.ExtraSmall:
+            styles += ' text-sm top-2 -translate-y-3 peer-focus:-translate-y-[10px]';
+            break;
+    }
+
+    return styles;
 });
 
 const actualType = ref<FormInputType>(props.type === FormInputType.Number ? FormInputType.Text : props.type);

@@ -5,6 +5,7 @@ using Feedback.Analyzer.Domain.Common.Entities;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.Caching.Models;
+using Feedback.Analyzer.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
@@ -57,10 +58,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
         if (predicate is not null)
             initialQuery = initialQuery.Where(predicate);
 
-        if (queryOptions.AsNoTracking)
-            initialQuery = initialQuery.AsNoTracking();
-
-        return initialQuery;
+        return initialQuery.ApplyTrackingMode(queryOptions.TrackingMode);
     }
     
     /// <summary>
@@ -79,6 +77,10 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
             var initialQuery = DbContext.Set<TEntity>().AsQueryable();
             
             foundEntity = await initialQuery.FirstOrDefaultAsync(entity => entity.Id == entityId, cancellationToken);
+
+            initialQuery.ApplyTrackingMode(queryOptions.TrackingMode);
+            
+            foundEntity = await initialQuery.FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
 
             if (cacheEntryOptions is not null && foundEntity is not null)
                 await cacheBroker.SetAsync(foundEntity.Id.ToString(), foundEntity, cacheEntryOptions, cancellationToken);
@@ -119,8 +121,7 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     {
         var initialQuery = DbContext.Set<TEntity>().Where(entity => ids.Contains(entity.Id));
 
-        if (queryOptions.AsNoTracking)
-            initialQuery = initialQuery.AsNoTracking();
+        initialQuery.ApplyTrackingMode(queryOptions.TrackingMode);
 
         return await initialQuery.ToListAsync(cancellationToken: cancellationToken);
     }
