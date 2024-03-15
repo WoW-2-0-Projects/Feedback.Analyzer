@@ -4,6 +4,7 @@ using Feedback.Analyzer.Domain.Common.Events;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Domain.Extensions;
+using MassTransit;
 using Newtonsoft.Json;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandlers;
@@ -11,9 +12,9 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandle
 /// <summary>
 ///  Represents event handler for before prompt execution hook event
 /// </summary>
-public class AfterPromptExecutionEventHandler : IEventConsumer<AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>>
+public class AfterPromptExecutionEventHandler : IEventHandler<AfterPromptExecutionEventBase<SingleFeedbackAnalysisWorkflowContext>>
 {
-    public Task Handle(AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext> notification, CancellationToken cancellationToken)
+    public Task Handle(AfterPromptExecutionEventBase<SingleFeedbackAnalysisWorkflowContext> notification, CancellationToken cancellationToken)
     {
         if (notification.Context is not SingleFeedbackAnalysisWorkflowContext context)
             return Task.CompletedTask;
@@ -71,5 +72,10 @@ public class AfterPromptExecutionEventHandler : IEventConsumer<AfterPromptExecut
         }
 
         return Task.CompletedTask;
+    }
+
+    public Task Consume(ConsumeContext<AfterPromptExecutionEventBase<SingleFeedbackAnalysisWorkflowContext>> context)
+    {
+        throw new NotImplementedException();
     }
 }

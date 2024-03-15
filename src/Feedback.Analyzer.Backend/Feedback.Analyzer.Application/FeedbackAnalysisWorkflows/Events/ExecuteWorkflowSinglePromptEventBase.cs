@@ -2,7 +2,7 @@ using Feedback.Analyzer.Domain.Common.Events;
 
 namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 
-public record ExecuteWorkflowSinglePromptEvent : Contract
+public record ExecuteWorkflowSinglePromptEventBase : EventBase
 {
     public Guid WorkflowId { get; set; }
     

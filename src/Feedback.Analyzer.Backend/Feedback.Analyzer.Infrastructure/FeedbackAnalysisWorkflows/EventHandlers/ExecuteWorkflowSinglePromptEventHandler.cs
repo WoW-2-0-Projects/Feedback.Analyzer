@@ -11,15 +11,16 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandlers;
 
 public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory serviceScopeFactory) : 
-    IEventHandler<ExecuteWorkflowSinglePromptEvent>, IConsumer<ExecuteWorkflowSinglePromptEvent>
+    IEventHandler<ExecuteWorkflowSinglePromptEventBase>,
+    IConsumer<ExecuteWorkflowSinglePromptEventBase>
 {
-    public async Task Handle(ExecuteWorkflowSinglePromptEvent notification, CancellationToken cancellationToken) =>
+    public async Task Handle(ExecuteWorkflowSinglePromptEventBase notification, CancellationToken cancellationToken) =>
         await HandleAsync(notification, cancellationToken);
 
-    public async Task Consume(ConsumeContext<ExecuteWorkflowSinglePromptEvent> context) =>
+    public async Task Consume(ConsumeContext<ExecuteWorkflowSinglePromptEventBase> context) =>
         await HandleAsync(context.Message, context.CancellationToken);
 
-    private async ValueTask HandleAsync(ExecuteWorkflowSinglePromptEvent notification, CancellationToken cancellationToken)
+    private async ValueTask HandleAsync(ExecuteWorkflowSinglePromptEventBase notification, CancellationToken cancellationToken)
     {
         var scopedServiceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
 

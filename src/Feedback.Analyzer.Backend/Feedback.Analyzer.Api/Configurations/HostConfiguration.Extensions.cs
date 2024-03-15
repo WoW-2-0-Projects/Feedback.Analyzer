@@ -42,7 +42,7 @@ using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
 using FluentValidation;
-
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.SemanticKernel;
@@ -93,11 +93,34 @@ public static partial class HostConfiguration
     /// <returns></returns>
     private static WebApplicationBuilder AddEventBus(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<IEventBusBroker, EventBusBroker>();
+        builder
+            .Services
+            .AddMassTransit(configuration =>
+            {
+                configuration.SetKebabCaseEndpointNameFormatter();
 
+                configuration.SetInMemorySagaRepositoryProvider();
+
+                var entryAssembly = Assembly.GetEntryAssembly();
+
+                configuration.AddConsumers(entryAssembly);
+                configuration.AddSagaStateMachines(entryAssembly);
+                configuration.AddSagas(entryAssembly);
+                configuration.AddActivities(entryAssembly);
+
+                configuration.UsingInMemory((context, cfg) =>
+                {
+                    cfg.ConfigureEndpoints(context);
+                });
+
+            });
+
+        // builder.Services.AddSingleton<IEventBusBroker, RabbitMqEventBusBroker>();
+        builder.Services.AddSingleton<IEventBusBroker, MassTransitEventBusBroker>();
+        
         return builder;
     }
-
+    
     /// <summary>
     /// Adds persistence-related services to the web application builder.
     /// </summary>

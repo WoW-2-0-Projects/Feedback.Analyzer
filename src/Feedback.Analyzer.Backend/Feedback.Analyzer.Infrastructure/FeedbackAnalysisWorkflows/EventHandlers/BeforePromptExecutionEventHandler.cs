@@ -3,15 +3,16 @@ using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 using Feedback.Analyzer.Domain.Common.Events;
 using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Enums;
+using MassTransit;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandlers;
 
 /// <summary>
 ///  Represents event handler for before prompt execution hook event
 /// </summary>
-public class BeforePromptExecutionEventHandler : IEventConsumer<BeforePromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>>
+public class BeforePromptExecutionEventHandler : IEventHandler<BeforePromptExecutionEventBase<SingleFeedbackAnalysisWorkflowContext>>
 {
-    public Task Handle(BeforePromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext> notification, CancellationToken cancellationToken)
+    public Task Handle(BeforePromptExecutionEventBase<SingleFeedbackAnalysisWorkflowContext> notification, CancellationToken cancellationToken)
     {
         if (notification.Context is not SingleFeedbackAnalysisWorkflowContext context)
             return Task.CompletedTask;
@@ -35,5 +36,10 @@ public class BeforePromptExecutionEventHandler : IEventConsumer<BeforePromptExec
         }
 
         return Task.CompletedTask;
+    }
+
+    public Task Consume(ConsumeContext<BeforePromptExecutionEventBase<SingleFeedbackAnalysisWorkflowContext>> context)
+    {
+        throw new NotImplementedException();
     }
 }

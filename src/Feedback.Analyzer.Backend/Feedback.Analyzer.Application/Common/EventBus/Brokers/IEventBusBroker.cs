@@ -13,7 +13,7 @@ public interface IEventBusBroker
     /// <typeparam name="TEvent">Type of the event to be published.</typeparam>
     /// <param name="event">The event to be published.</param>
     /// <returns>A <see cref="ValueTask"/> representing the asynchronous operation.</returns>
-    ValueTask PublishLocalAsync<TEvent>(TEvent @event) where TEvent : Contract;
+    ValueTask PublishLocalAsync<TEvent>(TEvent @event) where TEvent : EventBase;
 
     /// <summary>
     /// Publishes an event asynchronously.
@@ -21,5 +21,5 @@ public interface IEventBusBroker
     /// <typeparam name="TEvent">Type of the event to be published.</typeparam>
     /// <param name="event">The event to be published.</param>
     /// <returns>A <see cref="ValueTask"/> representing the asynchronous operation.</returns>
-    ValueTask PublishAsync<TEvent>(TEvent @event) where TEvent : Contract;
+    ValueTask PublishAsync<TEvent>(TEvent @event) where TEvent : EventBase;
 }

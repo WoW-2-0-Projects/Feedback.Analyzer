@@ -70,7 +70,7 @@ public class FeedbackAnalysisOrchestrationService(
     {
         // Publish before prompt execution event
         await eventBusBroker.PublishLocalAsync(
-            new BeforePromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>
+            new BeforePromptExecutionEventBase<SingleFeedbackAnalysisWorkflowContext>
             {
                 Context = context,
                 Prompt = prompt
@@ -84,7 +84,7 @@ public class FeedbackAnalysisOrchestrationService(
 
         // Publish after prompt execution event
         await eventBusBroker.PublishLocalAsync(
-            new AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>
+            new AfterPromptExecutionEventBase<SingleFeedbackAnalysisWorkflowContext>
             {
                 Context = context,
                 Prompt = prompt
