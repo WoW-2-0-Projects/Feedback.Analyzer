@@ -3,7 +3,7 @@ namespace Feedback.Analyzer.Domain.Common.Events;
 /// <summary>
 /// Represents an implementation of the IEvent interface, defining the properties for an event.
 /// </summary>
-public class Event: IEvent
+public record Event: IEvent
 {
     /// <summary>
     /// Gets or sets the unique identifier of the event.

@@ -1,4 +1,4 @@
-﻿namespace Feedback.Analyzer.Domain.Constants;
+namespace Feedback.Analyzer.Domain.Constants;
 
 /// <summary>
 /// Constants related to prompts.
