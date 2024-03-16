@@ -1,4 +1,3 @@
-using Feedback.Analyzer.Application.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.Workflows.Events;
 using Feedback.Analyzer.Domain.Common.Events;

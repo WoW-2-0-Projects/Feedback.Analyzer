@@ -92,6 +92,21 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
 
         return foundEntity;
     }
+    
+    /// <summary>
+    /// Checks if entity exists
+    /// </summary>
+    /// <param name="entityId">Entity id to check</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>True if entity exists, otherwise false</returns>
+    protected async ValueTask<bool> CheckByIdAsync(Guid entityId, CancellationToken cancellationToken = default)
+    {
+        var foundEntity = await DbContext.Set<TEntity>()
+            .Select(entity => entity.Id)
+            .FirstOrDefaultAsync(foundEntityId => foundEntityId == entityId, cancellationToken);
+
+        return foundEntity != Guid.Empty;
+    }
 
     /// <summary>
     /// Asynchronously retrieves entities from the repository by a collection of IDs.

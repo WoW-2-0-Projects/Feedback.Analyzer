@@ -19,6 +19,9 @@ public class AnalysisWorkflowRepository(AppDbContext appDbContext, ICacheBroker 
     public new ValueTask<AnalysisWorkflow?> GetByIdAsync(Guid analysisWorkflowId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)
         => base.GetByIdAsync(analysisWorkflowId, queryOptions, cancellationToken);
 
+    public new ValueTask<bool> CheckByIdAsync(Guid workflowId, CancellationToken cancellationToken = default)
+        => base.CheckByIdAsync(workflowId, cancellationToken);
+
     public new ValueTask<AnalysisWorkflow> CreateAsync(AnalysisWorkflow analysisWorkflow, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         => base.CreateAsync(analysisWorkflow, commandOptions, cancellationToken);
 
