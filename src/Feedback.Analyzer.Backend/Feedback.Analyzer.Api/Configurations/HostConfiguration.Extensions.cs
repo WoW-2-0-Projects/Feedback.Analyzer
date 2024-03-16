@@ -128,6 +128,15 @@ public static partial class HostConfiguration
     }
     
     /// <summary>
+    /// Extension method for adding event bus services to the application.
+    /// </summary>
+    private static WebApplicationBuilder AddEventBus(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<IEventBusBroker, EventBusBroker>();
+        return builder;
+    }
+    
+    /// <summary>
     /// Adds persistence-related services to the web application builder.
     /// </summary>
     /// <param name="builder"></param>
@@ -151,27 +160,6 @@ public static partial class HostConfiguration
     }
     
     /// <summary>
-    /// Adds MediatR services to the application with custom service registrations.
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <returns></returns>
-    private static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddMediatR(conf => {conf.RegisterServicesFromAssemblies(Assemblies.ToArray());});
-        
-        return builder;
-    }
-    
-    /// <summary>
-    /// Extension method for adding event bus services to the application.
-    /// </summary>
-    private static WebApplicationBuilder AddEventBus(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddSingleton<IEventBusBroker, EventBusBroker>();
-        return builder;
-    }
-    
-        /// <summary>
     /// Configures devTools including controllers
     /// Configures IdentityInfrastructure including controllers
     /// </summary>
@@ -223,6 +211,27 @@ public static partial class HostConfiguration
         
         return builder;
     }
+      
+    /// <summary>
+    /// Configures exposers including controllers
+    /// </summary>
+    /// <param name="builder">Application builder</param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddSemanticKernelInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Create kernel builder
+        var kernelBuilder = Kernel.CreateBuilder();
+
+        // Add OpenAI connector
+        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-3.5-turbo", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
+
+        // Build kernel
+        var kernel = kernelBuilder.Build();
+
+        builder.Services.AddSingleton(kernel);
+
+        return builder;
+    }
     
     /// <summary>
     /// Configures the Dependency Injection container to include validators from referenced assemblies.
@@ -266,27 +275,6 @@ public static partial class HostConfiguration
 
         return builder;
     }
-
-    /// <summary>
-    /// Configures exposers including controllers
-    /// </summary>
-    /// <param name="builder">Application builder</param>
-    /// <returns></returns>
-    private static WebApplicationBuilder AddSemanticKernelInfrastructure(this WebApplicationBuilder builder)
-    {
-        // Create kernel builder
-        var kernelBuilder = Kernel.CreateBuilder();
-
-        // Add OpenAI connector
-        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-3.5-turbo", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
-
-        // Build kernel
-        var kernel = kernelBuilder.Build();
-
-        builder.Services.AddSingleton(kernel);
-
-        return builder;
-    }
     
     /// <summary>
     /// Adds Semantic Analysis infrastructure to the web application builder.
@@ -321,6 +309,18 @@ public static partial class HostConfiguration
         // Register processing services
         builder.Services
                .AddScoped<IPromptExecutionProcessingService, PromptExecutionProcessingService>();
+        
+        return builder;
+    }
+    
+    /// <summary>
+    /// Adds MediatR services to the application with custom service registrations.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddMediatR(conf => {conf.RegisterServicesFromAssemblies(Assemblies.ToArray());});
         
         return builder;
     }
