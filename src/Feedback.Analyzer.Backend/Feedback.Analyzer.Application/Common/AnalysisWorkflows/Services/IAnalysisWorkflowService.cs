@@ -25,9 +25,16 @@ public interface IAnalysisWorkflowService
     /// <param name="queryOptions">Query options to specify how the analysis workflow should be retrieved.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the asynchronous operation, returning the retrieved AnalysisWorkflow.</returns>
-    ValueTask<AnalysisWorkflow> GetByIdAsync(Guid analysisWorkflowId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default);
+    ValueTask<AnalysisWorkflow?> GetByIdAsync(Guid analysisWorkflowId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default);
 
-
+    /// <summary>
+    /// Checks the existence of an analysis workflow by its ID asynchronously.
+    /// </summary>
+    /// <param name="analysisId">The ID of the analysis workflow to check.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel the asynchronous operation (optional).</param>
+    /// <returns>A <c>ValueTask</c> representing the asynchronous operation, containing the analysis workflow if it exists.</returns>
+    ValueTask<bool> CheckByIdAsync(Guid analysisId, CancellationToken cancellationToken = default);
+    
     /// <summary>
     /// Asynchronously creates a new analysis workflow.
     /// </summary>
@@ -55,7 +62,7 @@ public interface IAnalysisWorkflowService
     /// <param name="commandOptions">Command options to specify how the deletion operation should be handled.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the asynchronous operation, returning the deleted AnalysisWorkflow.</returns>
-    ValueTask<AnalysisWorkflow> DeleteAsync(AnalysisWorkflow analysisWorkflow, CommandOptions commandOptions = default,
+    ValueTask<AnalysisWorkflow?> DeleteAsync(AnalysisWorkflow analysisWorkflow, CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default);
 
 
@@ -66,5 +73,5 @@ public interface IAnalysisWorkflowService
     /// <param name="commandOptions">Command options to specify how the deletion operation should be handled.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the asynchronous operation, returning the deleted AnalysisWorkflow.</returns>
-    ValueTask<AnalysisWorkflow> DeleteByIdAsync(Guid analysisWorkflowId , CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
+    ValueTask<AnalysisWorkflow?> DeleteByIdAsync(Guid analysisWorkflowId , CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
 }
