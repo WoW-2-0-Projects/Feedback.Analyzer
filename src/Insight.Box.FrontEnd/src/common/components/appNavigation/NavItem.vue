@@ -34,9 +34,6 @@ onMounted(() => {
 
 const handleRouteChange = (route: RouteLocationNormalized) => {
     isCurrentRouteSelected.value = route.path === props.route.path;
-    // console.log('route changed', route.path);
-    // console.log('route changed', props.route.path);
-    // console.log('route changed', route.path === props.route.path);
 }
 
 </script>

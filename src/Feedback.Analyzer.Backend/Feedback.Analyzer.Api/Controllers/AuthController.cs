@@ -23,9 +23,9 @@ public class AuthController(IMapper mapper, IMediator mediator, IAuthService aut
     }
 
     [HttpPost("sign-in")]
-    public async Task<IActionResult> SignIn([FromBody] SignInCommand signInCommand, CancellationToken cancellationToken)
+    public async Task<IActionResult> SignIn([FromBody] SignInDetails signInDetails, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(signInCommand, cancellationToken);
+        var result = await mediator.Send(new SignInCommand {SignInDetails = signInDetails}, cancellationToken);
         return Ok(mapper.Map<IdentityTokenDto>(result));
     }
 
