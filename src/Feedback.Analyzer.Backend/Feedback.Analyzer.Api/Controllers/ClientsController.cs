@@ -23,6 +23,14 @@ public class ClientsController(IMediator mediator) : ControllerBase
         return result is not null ? Ok(result) : NoContent();
     }
 
+    [HttpGet("by-email/{emailAddress}")]
+    public async ValueTask<IActionResult> CheckClientByEmail([FromRoute] string emailAddress, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new CheckUserByEmailAddressQuery { EmailAddress = emailAddress }, cancellationToken);
+
+        return result is not null ? Ok(result) : NotFound();
+    }
+    
     [HttpPut]
     public async ValueTask<IActionResult> Update([FromBody] ClientUpdateCommand command, CancellationToken cancellationToken)
     {

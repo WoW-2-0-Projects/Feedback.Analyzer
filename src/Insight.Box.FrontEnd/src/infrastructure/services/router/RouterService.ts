@@ -21,7 +21,6 @@ export class RouterService {
             this.router = useRouter();
 
             this.router.afterEach((to) => {
-                // console.log('route change', to);
                 this.routeChangeSource.updateListeners(to);
             });
         }
