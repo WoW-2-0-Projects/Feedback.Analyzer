@@ -2,6 +2,7 @@ import type ApiClientBase from "@/infrastructure/apiClients/apiClientBase/ApiCli
 import type {SignInDetails} from "@/modules/accounts/models/SignInDetails";
 import {IdentityToken} from "@/modules/accounts/models/IdentityToken";
 import {Client} from "@/modules/accounts/models/Client";
+import type {SignUpDetails} from "@/modules/accounts/models/SignUpDetails";
 
 /**
  * Represents a client for interacting with authentication endpoints.
@@ -29,6 +30,14 @@ export class AuthEndpointsClient {
     public async signInAsync(signInDetails: SignInDetails) {
         const endpointUrl = "api/auth/sign-in";
         return await this.client.postAsync<IdentityToken>(endpointUrl, signInDetails);
+    }
+
+    /**
+     * Asynchronously signs up a new user with the provided sign-up details by sending a POST request to the authentication API endpoint.
+     */
+    public async signUpAsync(signUpDetails: SignUpDetails) {
+        const endpointUrl = "api/auth/sign-Up";
+        return await this.client.postAsync<IdentityToken>(endpointUrl, signUpDetails)
     }
 
     /**
