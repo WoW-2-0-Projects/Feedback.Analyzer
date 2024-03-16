@@ -8,7 +8,7 @@ namespace Feedback.Analyzer.Infrastructure.Clients.QueryHandlers;
 /// <summary>
 /// Query handler responsible for checking the existence of a user by email address.
 /// </summary>
-public class CheckUserExistenceQueryHandler(IClientService clientService)
+public class CheckUserByEmailAddressQueryHandler(IClientService clientService)
     : IQueryHandler<CheckUserByEmailAddressQuery, string?>
 {
     public Task<string?> Handle(CheckUserByEmailAddressQuery request, CancellationToken cancellationToken)
