@@ -8,7 +8,7 @@
 
         <div/>
 
-        <avatar-circle fullName="john doe"/>
+        <avatar-circle :fullName="accountStore.account.client.firstName + ' ' + accountStore.account.client.lastName"/>
 
     </div>
 
@@ -19,5 +19,8 @@
 import MainLogo from "@/common/components/mainLogo/MainLogo.vue";
 import AppNavigation from "@/common/components/appNavigation/AppNavigation.vue";
 import AvatarCircle from "@/common/components/avatarCircle/AvatarCircle.vue";
+import {useAccountStore} from "@/infrastructure/stores/AccountStore";
+
+const accountStore = useAccountStore();
 
 </script>

@@ -20,7 +20,12 @@
                     <form-input v-if="!isSignIn" v-model="signUpDetails.lastName" :label="LayoutConstants.LastName"
                                 :placeholder="LayoutConstants.EnterLastName"/>
 
-                    <form-input v-model="signInDetails.emailAddress" :label="LayoutConstants.EmailAddress"
+                    <form-input v-if="!isSignIn" v-model="signUpDetails.emailAddress"
+                                :label="LayoutConstants.EmailAddress"
+                                :placeholder="LayoutConstants.EnterEmailAddress"/>
+
+                    <form-input v-if="isSignIn" v-model="signInDetails.emailAddress"
+                                :label="LayoutConstants.EmailAddress"
                                 :placeholder="LayoutConstants.EnterEmailAddress"/>
 
                     <form-input v-if="foundUserName" v-model="signInDetails.password" :label="LayoutConstants.Password"
@@ -45,7 +50,7 @@
 
 <script setup lang="ts">
 
-import {defineEmits, ref, watch} from 'vue';
+import {computed, defineEmits, ref, watch} from 'vue';
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import FormInput from "@/common/components/formInput/FormInput.vue";
 import ModalBase from "@/common/components/modalBase/ModalBase.vue";
@@ -58,7 +63,7 @@ import {ButtonType} from "@/common/components/appButton/ButtonType";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 
-const  authService = new AuthenticationService();
+const authService = new AuthenticationService();
 const insightBoxApiClient = new InsightBoxApiClient();
 
 const props = defineProps({
@@ -79,50 +84,61 @@ const signInDetails = ref<SignInDetails>(new SignInDetails());
 const modalTitle = ref<string>(LayoutConstants.WelcomeToMessage);
 const isSignIn = ref<boolean>(true);
 const foundUserName = ref<string>('');
+const lastSubmittedEmailAddress = ref<string>('');
 
 const closeModal = () => {
     // Reset values;
-    if(props.isActive == true)
-         emit('closeModal');
+    if (props.isActive == true)
+        emit('closeModal');
 }
 
 const checkIfEmailAddressExists = async (emailAddress: string) => {
-    foundUserName.value = '';
+    lastSubmittedEmailAddress.value = emailAddress;
     const response = await insightBoxApiClient.clients.checkByEmailAsync(emailAddress);
-    if(response.response)
+    if (response.response)
         foundUserName.value = response.response;
 
     return foundUserName.value;
 }
 
+const currentEmailAddress = computed(() => isSignIn.value ? signInDetails.value.emailAddress : signUpDetails.value.emailAddress);
+
 const onSubmit = async () => {
-    // If user tried to sign in, but email address not found
-    if(isSignIn.value && !foundUserName.value && !(await checkIfEmailAddressExists(signInDetails.value.emailAddress))) {
-        isSignIn.value = false;
-        modalTitle.value = LayoutConstants.WelcomeToMessage;
+    if(lastSubmittedEmailAddress.value !== currentEmailAddress.value && !await checkAuthMode())
         return;
-    }
 
-    // If user tried to sign up, but email already exists
-    if(!isSignIn.value && await checkIfEmailAddressExists(signInDetails.value.emailAddress)) {
-        isSignIn.value = true;
-        modalTitle.value = LayoutConstants.WelcomeBackMessage + foundUserName.value;
-        return;
-    }
-
-    console.log(isSignIn.value)
-    if(isSignIn.value ) {
-        await signIn();
-    }
+    if(isSignIn.value)
+       await signIn()
     else
-        signUp();
+       signUp();
+}
 
+const checkAuthMode = async () => {
+   foundUserName.value = '';
 
+    if (isSignIn.value) {
+        if (!await checkIfEmailAddressExists(signInDetails.value.emailAddress)) {
+            signUpDetails.value.emailAddress = signInDetails.value.emailAddress;
+            isSignIn.value = false;
+            modalTitle.value = LayoutConstants.WelcomeToMessage;
+            return false;
+        } else
+            return false;
+    } else {
+        if (await checkIfEmailAddressExists(signUpDetails.value.emailAddress)) {
+            signInDetails.value.emailAddress = signUpDetails.value.emailAddress;
+            isSignIn.value = true;
+            modalTitle.value = LayoutConstants.WelcomeBackMessage + foundUserName.value;
+            return false;
+        }
+    }
+
+    return true;
 }
 
 const signIn = async () => {
     const response = await authService.signInAsync(signInDetails.value)
-    if(response){
+    if (response) {
         closeModal()
     }
 }

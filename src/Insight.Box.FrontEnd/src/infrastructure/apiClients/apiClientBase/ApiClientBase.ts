@@ -2,7 +2,7 @@ import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } fro
 import axios from "axios";
 import type { ProblemDetails } from "@/infrastructure/apiClients/apiClientBase/ProblemDetails";
 import { ApiResponse } from "@/infrastructure/apiClients/apiClientBase/ApiResponse";
-import  {LocalStorageService} from "@/infrastructure/services/storage/LocalStorageService";
+import  {localStorageService} from "@/infrastructure/services/storage/LocalStorageService";
 
 /*
  * Base class for API clients
@@ -13,7 +13,7 @@ export default class ApiClientBase {
      */
     public readonly client: AxiosInstance;
 
-    private readonly localStorageService: LocalStorageService;
+    private readonly localStorageService: localStorageService;
 
     /*
      * Map response delegate
@@ -22,7 +22,7 @@ export default class ApiClientBase {
 
     constructor(config: AxiosRequestConfig) {
         this.client = axios.create(config);
-        this.localStorageService = new LocalStorageService();
+        this.localStorageService = new localStorageService();
 
         // Access token interceptor
         this.client.interceptors.request.use(async (config) => {
