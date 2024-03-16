@@ -18,5 +18,10 @@ public class AnalysisWorkflowConfiguration : IEntityTypeConfiguration<AnalysisWo
             .HasConversion<string>()
             .HasMaxLength(128)
             .IsRequired();
+        
+        builder
+            .HasOne(workflow => workflow.EntryExecutionOption)
+            .WithOne()
+            .HasForeignKey<AnalysisWorkflow>(executionOptions => executionOptions.EntryExecutionOptionId);
     }
 }
