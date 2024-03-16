@@ -27,6 +27,13 @@ public interface IAnalysisWorkflowRepository
     /// <returns>A task representing the asynchronous operation, returning the retrieved AnalysisWorkflow or null if not found.</returns>
     ValueTask<AnalysisWorkflow?> GetByIdAsync(Guid analysisWorkflowId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Checks if workflow exists
+    /// </summary>
+    /// <param name="workflowId">Workflow id to check</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>True if entity exists, otherwise false</returns>
+    ValueTask<bool> CheckByIdAsync(Guid workflowId, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Creates a new analysis workflow asynchronously.

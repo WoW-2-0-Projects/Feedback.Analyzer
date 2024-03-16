@@ -3,6 +3,7 @@ using Feedback.Analyzer.Application.Common.Prompts.Events;
 using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
+using Feedback.Analyzer.Application.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Domain.Common.Queries;
@@ -10,14 +11,13 @@ using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Domain.Extensions;
-using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 
 public class FeedbackAnalysisOrchestrationService(
     IEventBusBroker eventBusBroker,
     ICustomerFeedbackService customerFeedbackService,
-    IFeedbackAnalysisResultRepository feedbackAnalysisResultRepository,
+    IFeedbackAnalysisResultService feedbackAnalysisResultService,
     IPromptExecutionProcessingService promptExecutionProcessingService
 ) : IFeedbackAnalysisOrchestrationService
 {
@@ -41,8 +41,7 @@ public class FeedbackAnalysisOrchestrationService(
         await ExecuteOptionAsync(context, context.EntryExecutionOption, cancellationToken);
         
         // Create feedback analysis result
-        // TODO: replace the repository with service. Inject service instead of repository.
-        await feedbackAnalysisResultRepository.CreateAsync(context.Result, cancellationToken: cancellationToken);
+        await feedbackAnalysisResultService.CreateAsync(context.Result, cancellationToken: cancellationToken);
     }
 
     private async ValueTask ExecuteOptionAsync(WorkflowContext context, WorkflowExecutionOption option, CancellationToken cancellationToken = default)
