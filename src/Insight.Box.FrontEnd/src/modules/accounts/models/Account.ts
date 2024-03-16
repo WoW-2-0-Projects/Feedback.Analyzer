@@ -15,10 +15,7 @@ export class Account {
      * Checks if the client is logged in.
      * @returns A boolean indicating whether the client is logged in or not.
      */
-    public isLoggedIn = () => {
-        // Log the client information for debugging purposes
-        console.log(this.client);
+    public isLoggedIn = () =>
         // Return true if the client is not null or undefined, indicating that they are logged in
-        return this.client !== null && this.client !== undefined;
-    }
+        this.client !== null && this.client !== undefined;
 }

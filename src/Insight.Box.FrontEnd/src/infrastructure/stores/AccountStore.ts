@@ -8,7 +8,6 @@ export const useAccountStore = defineStore('account' , {
     actions: {
        set(newAccount: Account) {
            this.account = newAccount;
-           console.log('set account ', this.account);
        },
        remove() {
            this.account = new Account();
