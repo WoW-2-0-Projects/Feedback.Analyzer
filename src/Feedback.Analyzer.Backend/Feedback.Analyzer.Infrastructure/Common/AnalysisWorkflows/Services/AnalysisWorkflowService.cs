@@ -7,7 +7,6 @@ using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Infrastructure.Common.AnalysisWorkflows.Validators;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using FluentValidation;
-using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
 
 namespace Feedback.Analyzer.Infrastructure.Common.AnalysisWorkflows.Services;
 
@@ -23,24 +22,27 @@ public class AnalysisWorkflowService(
         QueryOptions queryOptions = default)
         => analysisWorkflowRepository.Get(predicate, queryOptions);
 
-    public  ValueTask<AnalysisWorkflow> GetByIdAsync(
+    public ValueTask<AnalysisWorkflow?> GetByIdAsync(
         Guid analysisWorkflowId,
         QueryOptions queryOptions = default,
         CancellationToken cancellationToken = default)
         => analysisWorkflowRepository.GetByIdAsync(analysisWorkflowId, queryOptions, cancellationToken);
 
+    public ValueTask<bool> CheckByIdAsync(Guid analysisId, CancellationToken cancellationToken = default)
+        => analysisWorkflowRepository.CheckByIdAsync(analysisId, cancellationToken);
+
     public ValueTask<AnalysisWorkflow> CreateAsync(
         AnalysisWorkflow analysisWorkflow, 
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default
-        )
+    )
     {
         var validationResult = analysisWorkflowValidator
             .Validate(analysisWorkflow, 
                 options => options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
 
         if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors.ToString());
+            throw new ValidationException(validationResult.Errors);
 
         return analysisWorkflowRepository.CreateAsync(analysisWorkflow, commandOptions, cancellationToken);
     }
@@ -50,30 +52,27 @@ public class AnalysisWorkflowService(
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default)
     {
-        var validationResult = analysisWorkflowValidator
-            .Validate(analysisWorkflow, 
-                options => options.IncludeRuleSets(EntityEvent.OnUpdate.ToString()));
+        var validationResult = await analysisWorkflowValidator
+            .ValidateAsync(analysisWorkflow,
+                options => options.IncludeRuleSets(EntityEvent.OnUpdate.ToString()), cancellation: cancellationToken);
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors.ToString());
-        
-        var foundAnalysisWorkflow = await GetByIdAsync(analysisWorkflow.Id, cancellationToken: cancellationToken)
-                                    ?? throw new InvalidOperationException("Analysis workflow is not found");
+
+        var foundAnalysisWorkflow = (await GetByIdAsync(analysisWorkflow.Id, cancellationToken: cancellationToken))!;
 
         foundAnalysisWorkflow.Name = analysisWorkflow.Name;
-        foundAnalysisWorkflow.Type = analysisWorkflow.Type;
 
         return await analysisWorkflowRepository.UpdateAsync(foundAnalysisWorkflow, commandOptions, cancellationToken);
     }
 
-
-    public ValueTask<AnalysisWorkflow> DeleteAsync(
+    public ValueTask<AnalysisWorkflow?> DeleteAsync(
         AnalysisWorkflow analysisWorkflow,
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default)
         => analysisWorkflowRepository.DeleteAsync(analysisWorkflow, commandOptions, cancellationToken);
 
-    public ValueTask<AnalysisWorkflow> DeleteByIdAsync(
+    public ValueTask<AnalysisWorkflow?> DeleteByIdAsync(
         Guid analysisWorkflowId,
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default)
