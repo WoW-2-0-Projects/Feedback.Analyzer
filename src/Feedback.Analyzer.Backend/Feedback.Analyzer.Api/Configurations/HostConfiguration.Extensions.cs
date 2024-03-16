@@ -16,6 +16,7 @@ using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Common.WorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisResults.Services;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
@@ -37,6 +38,7 @@ using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Infrastructure.FeedbackAnalysisResults.Services;
+using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
@@ -287,6 +289,7 @@ public static partial class HostConfiguration
         // Register brokers
         builder.Services
                .AddScoped<IPromptExecutionBroker, PromptExecutionBroker>();
+        
         // Register repositories
         builder.Services
             .AddScoped<IPromptRepository, PromptRepository>()
@@ -296,15 +299,16 @@ public static partial class HostConfiguration
             .AddScoped<IFeedbackAnalysisWorkflowRepository, FeedbackAnalysisWorkflowRepository>()
             .AddScoped<IWorkflowExecutionOptionRepository, WorkflowExecutionOptionRepository>(); 
 
-        
         // Register foundation services
         builder.Services
-               .AddScoped<IPromptService, PromptService>()
-               .AddScoped<IPromptCategoryService, PromptCategoryService>()
-               .AddScoped<IPromptExecutionHistoryService, PromptExecutionHistoryService>()
-               .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>()
-               .AddScoped<IWorkflowExecutionOptionsService, WorkflowExecutionOptionsService>();
-               
+            .AddScoped<IPromptService, PromptService>()
+            .AddScoped<IPromptCategoryService, PromptCategoryService>()
+            .AddScoped<IPromptExecutionHistoryService, PromptExecutionHistoryService>()
+            .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>()
+            .AddScoped<IWorkflowExecutionOptionsService, WorkflowExecutionOptionsService>()
+            .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>()
+            .AddScoped<IFeedbackAnalysisWorkflowService, FeedbackAnalysisWorkflowService>()
+            .AddScoped<IFeedbackAnalysisWorkflowProcessingService, FeedbackAnalysisWorkflowProcessingService>();
 
         // Register processing services
         builder.Services
