@@ -3,6 +3,8 @@
  * Represents the layout constants
  */
 export class LayoutConstants {
+
+
     public static readonly Search = 'Search';
     public static readonly SearchHere = 'Search here...';
     public static readonly Organizations = 'Organizations';
@@ -34,13 +36,30 @@ export class LayoutConstants {
 
     /* Workflows */
     public static readonly CreateWorkflow = 'Create a workflow';
+    public static readonly AddWorkflow = 'Add workflow';
     public static readonly Results = 'Results';
     public static readonly Progress = 'Progress';
     public static readonly StartedTime = 'Started';
     public static readonly FinishedTime = 'Finished';
+    public static readonly SearchWorkflows = 'Search workflows ...';
 
     /* Forms */
     public static readonly Submit = 'Submit';
     public static readonly Cancel = 'Cancel';
     public static readonly Close = 'Close';
+
+    public  static  readonly FirstName ='First name'
+    public  static  readonly EnterFirstName ="Enter first name"
+
+    public  static  readonly LastName ='Last name'
+    public  static  readonly EnterLastName ="Enter Last name"
+
+    public  static  readonly EmailAddress ='Email address'
+    public  static  readonly EnterEmailAddress ="Enter enter email address"
+
+    public  static  readonly Password ='Password'
+    public  static  readonly EnterPassword ="Enter password"
+
+    public static WelcomeToMessage = 'Welcome to InsightBox';
+    public static WelcomeBackMessage = 'Welcome back, ';
 }

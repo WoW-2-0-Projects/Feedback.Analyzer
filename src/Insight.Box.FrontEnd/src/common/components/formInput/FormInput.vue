@@ -17,14 +17,6 @@
                    theme-input-text theme-input-placeholder theme-action-transition text-base"
                :placeholder="placeholder"/>
 
-        <!--         Form input label-->
-<!--        <label for="input" class="absolute top-4 transform -translate-y-4 scale-75 origin-[0] start-2.5-->
-<!--               theme-input-label theme-action-transition text-sm"-->
-<!--               :class="prefix ? '' : 'peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 ' +-->
-<!--                'rtl:peer-focus:left-auto peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0'">-->
-<!--            {{ label }}-->
-<!--        </label>-->
-
         <label for="input" :class="labelStyles" class="absolute z-10 transform scale-75 origin-[0] start-2.5
                     peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto
                     peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0

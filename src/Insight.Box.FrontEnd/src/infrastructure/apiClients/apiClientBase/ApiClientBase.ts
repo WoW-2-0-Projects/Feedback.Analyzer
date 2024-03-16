@@ -2,6 +2,7 @@ import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } fro
 import axios from "axios";
 import type { ProblemDetails } from "@/infrastructure/apiClients/apiClientBase/ProblemDetails";
 import { ApiResponse } from "@/infrastructure/apiClients/apiClientBase/ApiResponse";
+import  {localStorageService} from "@/infrastructure/services/storage/LocalStorageService";
 
 /*
  * Base class for API clients
@@ -12,6 +13,8 @@ export default class ApiClientBase {
      */
     public readonly client: AxiosInstance;
 
+    private readonly localStorageService: localStorageService;
+
     /*
      * Map response delegate
      */
@@ -19,6 +22,51 @@ export default class ApiClientBase {
 
     constructor(config: AxiosRequestConfig) {
         this.client = axios.create(config);
+        this.localStorageService = new localStorageService();
+
+        // Access token interceptor
+        this.client.interceptors.request.use(async (config) => {
+            const accessToken = this.localStorageService.get<string>("accessToken");
+            if (accessToken) {
+                config.headers.Authorization = `Bearer ${accessToken}`;
+            }
+
+            return config;
+        });
+
+        // Refresh token interceptor
+        this.client.interceptors.response.use((response) => {
+            return response;
+        }, async (error) => {
+
+            if (error.response.status == HttpStatusCode.Unauthorized && !error.retry) {
+
+                error._retry = true;
+
+                const refreshToken = this.localStorageService.get<string>("refreshToken");
+
+                if (refreshToken) {
+                    try {
+                        // Make a request to the refresh token endpoint
+                        const response = await axios.post('/auth/refresh-token', { refreshToken });
+                        const newAccessToken = response.data.accessToken;
+
+                        // Store the new access token in local storage
+                        this.localStorageService.set("accessToken", newAccessToken);
+
+                        // Update the Authorization header
+                        error.config.headers['Authorization'] = `Bearer ${newAccessToken}`;
+
+                        // Retry the original request
+                        return this.client.request(error.config);
+                    } catch (refreshError) {
+                    }
+                }
+            }
+
+            return Promise.reject(error);
+
+        });
 
         // Add response wrapper interceptor
         this.client.interceptors.response.use(<TResponse>(response: AxiosResponse<TResponse>) => {

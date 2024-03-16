@@ -37,12 +37,12 @@ export default {
           '100%': { opacity: '0', height: '0' },
         },
         fadeIn: {
-          '0%': { opacity: '0',  transform: 'translateY(-20%)' },
-          '100%': { opacity: '1',  transform: 'translateY(-50%)' },
+          '0%': { opacity: '0', transform: 'translateY(-20%) translateX(-50%)' },
+          '100%': { opacity: '1', transform: 'translateY(-50%) translateX(-50%)' },
         },
         fadeOut: {
-          '0%': { opacity: '1',  transform: 'translateY(-50%)'  },
-          '100%': { opacity: '0', transform: 'translateY(-20%)' },
+          '0%': { opacity: '1', transform: 'translateY(-50%) translateX(-50%)' },
+          '100%': { opacity: '0', transform: 'translateY(-20%) translateX(-50%)' },
         },
         backgroundFadeIn: {
           '0%': { opacity: '0' },
