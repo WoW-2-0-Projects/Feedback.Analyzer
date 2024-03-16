@@ -13,7 +13,7 @@ public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory servic
 {
     protected override async ValueTask HandleAsync(ExecuteWorkflowSinglePromptEvent @event, CancellationToken cancellationToken)
     {
-        var scopedServiceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
+       var scopedServiceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
 
         var promptService = scopedServiceProvider.GetRequiredService<IPromptService>();
         var workflowService = scopedServiceProvider.GetRequiredService<IFeedbackAnalysisWorkflowService>();

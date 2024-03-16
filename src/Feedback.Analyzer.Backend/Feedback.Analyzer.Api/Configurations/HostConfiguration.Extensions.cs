@@ -45,6 +45,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.SemanticKernel;
 
 using Newtonsoft.Json;
+using Feedback.Analyzer.Domain.Common.Events;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
@@ -90,11 +91,16 @@ public static partial class HostConfiguration
     /// <returns></returns>
     private static WebApplicationBuilder AddEventBus(this WebApplicationBuilder builder)
     {
-        builder
+         builder
             .Services
             .AddMassTransit(configuration =>
             {
                 configuration.AddConsumer<ExecuteWorkflowSinglePromptEventHandler>();
+                configuration.AddConsumer<AfterPromptExecutionEventHandler>();
+                configuration.AddConsumer<AnalyzeFeedbackEventHandler>();
+                configuration.AddConsumer<AnalyzeWorkflowFeedbacksEventHandler>();
+                configuration.AddConsumer<BeforePromptExecutionEventHandler>();
+
                 configuration.UsingInMemory((context, cfg) =>
                 {
                     cfg.ConfigureEndpoints(context);
