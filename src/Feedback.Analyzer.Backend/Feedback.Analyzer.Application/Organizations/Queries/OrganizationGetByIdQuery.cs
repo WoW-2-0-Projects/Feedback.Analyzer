@@ -12,5 +12,5 @@ public record OrganizationGetByIdQuery : IQuery<OrganizationDto?>
     /// <summary>
     /// The unique identifier of the organization to retrieve.
     /// </summary>
-    public Guid OrganizationId { get; set; } = Guid.Empty;
+    public Guid OrganizationId { get; set; }
 }

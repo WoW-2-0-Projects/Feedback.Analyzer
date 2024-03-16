@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using Feedback.Analyzer.Application.Common.Prompts.Brokers;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
-using Feedback.Analyzer.Application.PromptsHistory.Services;
+using Feedback.Analyzer.Application.Common.PromptsHistory.Services;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Exceptions;
 using Feedback.Analyzer.Domain.Constants;

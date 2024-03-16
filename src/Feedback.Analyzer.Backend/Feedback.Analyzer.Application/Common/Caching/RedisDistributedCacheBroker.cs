@@ -1,6 +1,6 @@
 ﻿using System.Text;
+using Feedback.Analyzer.Application.Common.Serializers;
 using Feedback.Analyzer.Application.Common.Settings;
-using Feedback.Analyzer.Application.Serializers;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.Caching.Models;
 using Force.DeepCloner;
