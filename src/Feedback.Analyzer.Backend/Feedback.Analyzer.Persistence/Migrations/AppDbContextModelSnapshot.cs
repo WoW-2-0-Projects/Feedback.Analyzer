@@ -260,7 +260,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.ToTable("FeedbackAnalysisWorkflows");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", b =>
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResults", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -459,7 +459,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", null)
+                    b.HasOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResults", null)
                         .WithMany("FeedbackAnalysisResults")
                         .HasForeignKey("FeedbackAnalysisWorkflowResultId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -626,7 +626,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", b =>
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResults", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", "Workflow")
                         .WithMany("Results")
@@ -712,7 +712,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("Results");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", b =>
+            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResults", b =>
                 {
                     b.Navigation("FeedbackAnalysisResults");
                 });
