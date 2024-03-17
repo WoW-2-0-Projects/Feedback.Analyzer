@@ -46,6 +46,7 @@ using Microsoft.SemanticKernel;
 
 using Newtonsoft.Json;
 using Feedback.Analyzer.Domain.Common.Events;
+using Feedback.Analyzer.Infrastructure.Identity.EventHandlers;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
@@ -95,11 +96,11 @@ public static partial class HostConfiguration
             .Services
             .AddMassTransit(configuration =>
             {
-                configuration.AddConsumer<ExecuteWorkflowSinglePromptEventHandler>();
-                configuration.AddConsumer<AfterPromptExecutionEventHandler>();
-                configuration.AddConsumer<AnalyzeFeedbackEventHandler>();
-                configuration.AddConsumer<AnalyzeWorkflowFeedbacksEventHandler>();
-                configuration.AddConsumer<BeforePromptExecutionEventHandler>();
+                configuration
+                .AddConsumersFromNamespaceContaining<AfterPromptExecutionEventHandler>();
+
+                configuration
+                .AddConsumersFromNamespaceContaining<UserCreatedEventHandler>();
 
                 configuration.UsingInMemory((context, cfg) =>
                 {
