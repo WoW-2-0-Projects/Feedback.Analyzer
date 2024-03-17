@@ -8,9 +8,11 @@ public class FeedbackAnalysisWorkflowResultConfiguration : IEntityTypeConfigurat
 {
     public void Configure(EntityTypeBuilder<FeedbackAnalysisWorkflowResult> builder)
     {
+        
         builder
-            .HasOne(result => result.Workflow)
+            .HasOne<FeedbackAnalysisWorkflow>(result => result.Workflow)
             .WithMany(workflow => workflow.Results)
             .HasForeignKey(result => result.WorkflowId);
+        
     }
 }

@@ -8,6 +8,9 @@ using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
+/// <summary>
+/// Repository for managing feedback analysis workflow results.
+/// </summary>
 public class FeedbackAnalysisWorkflowResultRepository(AppDbContext dbContext, ICacheBroker cacheBroker)
     :  EntityRepositoryBase<FeedbackAnalysisWorkflowResult, AppDbContext>(dbContext, cacheBroker), IFeedbackAnalysisWorkflowResultRepository
 {
