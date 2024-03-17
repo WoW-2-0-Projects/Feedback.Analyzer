@@ -5,6 +5,7 @@ using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.Products.QueryHandlers;
@@ -17,20 +18,18 @@ public class ProductGetQueryHandler(IMapper mapper, IProductService productServi
 {
     public async Task<ICollection<ProductDto>> Handle(ProductGetQuery request, CancellationToken cancellationToken)
     {
-        var clientId = requestContextProvider.GetUserId();
-        request.Filter.ClientId = clientId;
+        request.Filter.ClientId = requestContextProvider.GetUserId();
 
-        var queryOptions = new QueryOptions { TrackingMode = QueryTrackingMode.AsNoTracking };
-        var matchedProductsId = await productService
+        var queryOptions = new QueryOptions
+        {
+            TrackingMode = QueryTrackingMode.AsNoTracking
+        };
+        
+        var matchedProducts = await (await productService
             .Get(request.Filter, queryOptions)
-            .Select(product => product.Id)
-            .ToListAsync(cancellationToken);
-
-        var matchedProducts = matchedProductsId.Count > 0
-            ? await productService
-                .Get(product => matchedProductsId.Contains(product.Id), queryOptions)
-                .ToArrayAsync(cancellationToken)
-            : Array.Empty<Product>();
+            .GetFilteredEntitiesQuery(productService.Get(), cancellationToken: cancellationToken))
+            .ApplyTrackingMode(queryOptions.TrackingMode)
+            .ToListAsync(cancellationToken: cancellationToken);
 
         return mapper.Map<ICollection<ProductDto>>(matchedProducts);
     }
