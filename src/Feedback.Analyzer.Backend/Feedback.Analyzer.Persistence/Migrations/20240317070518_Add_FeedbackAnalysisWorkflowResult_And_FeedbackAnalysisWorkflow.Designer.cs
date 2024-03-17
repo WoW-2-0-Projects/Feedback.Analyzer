@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240317053002_Add_FeedbackAnalysisWorkflowResult_And_FeedbackAnalysisWorkflow")]
+    [Migration("20240317070518_Add_FeedbackAnalysisWorkflowResult_And_FeedbackAnalysisWorkflow")]
     partial class Add_FeedbackAnalysisWorkflowResult_And_FeedbackAnalysisWorkflow
     {
         /// <inheritdoc />
@@ -230,9 +230,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<DateTimeOffset?>("DeletedTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("FeedbackAnalysisWorkflowResultId")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -242,8 +239,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerFeedbackId");
-
-                    b.HasIndex("FeedbackAnalysisWorkflowResultId");
 
                     b.ToTable("FeedbackAnalysisResults");
                 });
@@ -461,10 +456,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .HasForeignKey("CustomerFeedbackId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", null)
-                        .WithMany("FeedbackAnalysisResults")
-                        .HasForeignKey("FeedbackAnalysisWorkflowResultId");
 
                     b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackActionablePoints", "FeedbackActionablePoints", b1 =>
                         {
@@ -711,11 +702,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
                 {
                     b.Navigation("Results");
-                });
-
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", b =>
-                {
-                    b.Navigation("FeedbackAnalysisResults");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>

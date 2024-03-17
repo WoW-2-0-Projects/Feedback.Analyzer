@@ -11,12 +11,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<Guid>(
-                name: "FeedbackAnalysisWorkflowResultId",
-                table: "FeedbackAnalysisResults",
-                type: "uuid",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "FeedbackAnalysisWorkflowResults",
                 columns: table => new
@@ -39,40 +33,16 @@ namespace Feedback.Analyzer.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedbackAnalysisResults_FeedbackAnalysisWorkflowResultId",
-                table: "FeedbackAnalysisResults",
-                column: "FeedbackAnalysisWorkflowResultId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_FeedbackAnalysisWorkflowResults_WorkflowId",
                 table: "FeedbackAnalysisWorkflowResults",
                 column: "WorkflowId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_FeedbackAnalysisResults_FeedbackAnalysisWorkflowResults_Fee~",
-                table: "FeedbackAnalysisResults",
-                column: "FeedbackAnalysisWorkflowResultId",
-                principalTable: "FeedbackAnalysisWorkflowResults",
-                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_FeedbackAnalysisResults_FeedbackAnalysisWorkflowResults_Fee~",
-                table: "FeedbackAnalysisResults");
-
             migrationBuilder.DropTable(
                 name: "FeedbackAnalysisWorkflowResults");
-
-            migrationBuilder.DropIndex(
-                name: "IX_FeedbackAnalysisResults_FeedbackAnalysisWorkflowResultId",
-                table: "FeedbackAnalysisResults");
-
-            migrationBuilder.DropColumn(
-                name: "FeedbackAnalysisWorkflowResultId",
-                table: "FeedbackAnalysisResults");
         }
     }
 }
