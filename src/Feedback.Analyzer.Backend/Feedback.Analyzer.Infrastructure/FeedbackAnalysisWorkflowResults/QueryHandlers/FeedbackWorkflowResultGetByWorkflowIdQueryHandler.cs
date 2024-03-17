@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflowResults.QueryHandlers;
 
+/// <summary>
+/// Handles the query to retrieve feedback analysis workflow results by workflow ID.
+/// </summary>
 public class FeedbackWorkflowResultGetByWorkflowIdQueryHandler(
     IMapper mapper,
     IFeedbackAnalysisWorkflowResultService feedbackAnalysisWorkflowResultService
