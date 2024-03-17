@@ -9,14 +9,13 @@ using Feedback.Analyzer.Infrastructure.Products.Validators;
 using Feedback.Analyzer.Persistence.Extensions;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.Products.Services;
 
 /// <summary>
 /// Implements the IProductService interface to manage product data using a product repository and validator.
 /// </summary>
-/// <param name="productRepository"></param>
-/// <param name="productValidator"></param>
 public class ProductService
     (IProductRepository productRepository,
         ProductValidator productValidator)
@@ -29,7 +28,14 @@ public class ProductService
 
         public IQueryable<Product> Get(ProductFilter productFilter, QueryOptions queryOptions = default)
         {
-            return productRepository.Get().ApplyPagination(productFilter);
+            var productsQuery = productRepository.Get().ApplyPagination(productFilter);
+            
+            if(productFilter.ClientId.HasValue)
+                productsQuery = productsQuery
+                    .Include(product => product.Organization)
+                    .Where(product => product.Organization.ClientId == productFilter.ClientId.Value);
+            
+            return productsQuery;
         }
 
         public ValueTask<Product?> GetByIdAsync(Guid productId, QueryOptions queryOptions = default, CancellationToken cancellationToken = default)

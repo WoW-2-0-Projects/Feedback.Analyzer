@@ -9,7 +9,7 @@
                :placeholder="placeholder"/>
 
         <!-- Form input label -->
-        <label for="input" :class="labelStyles" class="absolute z-10 transform scale-75 origin-[0] start-2.5
+        <label for="input" :class="labelStyles" class="absolute transform scale-75 origin-[0] start-2.5
                     peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto
                     peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
                      theme-input-label theme-action-transition">
@@ -21,7 +21,7 @@
 
         <!-- Drop down options -->
         <div
-            class="absolute mt-2 w-full focus:outline-none theme-modal-bg appearance-none rounded-md text-secondaryContentColor
+            class="absolute mt-2 w-full z-10 focus:outline-none theme-modal-bg appearance-none rounded-md text-secondaryContentColor
                     theme-modal-shadow theme-action-secondary theme-input-border-focus overflow-hidden theme-input"
              v-show="isOpen"
         >
@@ -89,9 +89,9 @@ const labelStyles = computed(() => {
 const emit = defineEmits(['update:modelValue']);
 
 // Component states
-const searchedOptions = ref(props.values);
-const searchValue = ref('');
-const isOpen = ref(false);
+const searchedOptions = ref<Array<DropDownValue>>(props.values);
+const searchValue = ref<string>('');
+const isOpen = ref<boolean>(false);
 
 onMounted(() => {
     searchValue.value = props.modelValue?.key;
@@ -99,6 +99,7 @@ onMounted(() => {
 
 // Watcher for search value
 watch(() => [searchValue, props.values], () => searchOption());
+watch(() => props.modelValue, () => searchValue.value = props.modelValue?.key);
 
 // Filters the options based on the search value
 const searchOption = () => {

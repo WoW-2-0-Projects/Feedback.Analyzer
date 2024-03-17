@@ -22,7 +22,7 @@ public class AuthService(
     IPasswordHasherService passwordHasherService,
     IPasswordGeneratorService passwordGeneratorService,
     IIdentitySecurityTokenGeneratorService identitySecurityTokenGeneratorService,
-    IRequestClientContextProvider requestClientContextProvider
+    IRequestContextProvider requestContextProvider
 ) : IAuthService
 {
     public async ValueTask<bool> SignUpAsync(SignUpDetails signUpDetails, CancellationToken cancellationToken = default)
@@ -77,7 +77,7 @@ public class AuthService(
     
     public async ValueTask<AccessToken> RefreshTokenAsync(string refreshTokenValue, CancellationToken cancellationToken = default)
     {
-        var accessTokenValue = requestClientContextProvider.GetAccessToken();
+        var accessTokenValue = requestContextProvider.GetAccessToken();
 
         if (string.IsNullOrWhiteSpace(refreshTokenValue))
             throw new ArgumentException("Invalid identity security token value", nameof(refreshTokenValue));

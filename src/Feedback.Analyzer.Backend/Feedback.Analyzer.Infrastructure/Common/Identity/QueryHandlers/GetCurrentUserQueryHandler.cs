@@ -8,12 +8,12 @@ using MediatR;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Identity.QueryHandlers;
 
-public class GetCurrentUserQueryHandler(IRequestClientContextProvider requestClientContextProvider, IClientService clientService) 
+public class GetCurrentUserQueryHandler(IRequestContextProvider requestContextProvider, IClientService clientService) 
     : IQueryHandler<GetCurrentUserQuery, Client>
 {
     public async Task<Client> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
     {
-        var userId = requestClientContextProvider.GetUserId();
+        var userId = requestContextProvider.GetUserId();
 
         var foundUser = await clientService.GetByIdAsync(userId, cancellationToken: cancellationToken);
         

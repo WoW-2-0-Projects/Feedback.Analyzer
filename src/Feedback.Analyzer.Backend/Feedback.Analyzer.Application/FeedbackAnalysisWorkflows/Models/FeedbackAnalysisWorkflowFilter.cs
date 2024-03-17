@@ -1,4 +1,5 @@
 ﻿using Feedback.Analyzer.Domain.Common.Query;
+using Feedback.Analyzer.Domain.Enums;
 
 namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 
@@ -7,6 +8,11 @@ namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 /// </summary>
 public class FeedbackAnalysisWorkflowFilter : FilterPagination
 {
+    /// <summary>
+    /// Gets or sets client id as workflow owner
+    /// </summary>
+    public Guid? ClientId { get; set; }
+
     /// <summary>
     /// Override base GetHashCode method
     /// </summary>

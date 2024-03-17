@@ -9,6 +9,7 @@ using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Validators;
 using Feedback.Analyzer.Persistence.Extensions;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 
@@ -24,13 +25,26 @@ public class FeedbackAnalysisWorkflowService(
         Expression<Func<FeedbackAnalysisWorkflow, bool>>? predicate = default,
         QueryOptions queryOptions = default)
         => feedbackAnalysisWorkflowRepository.Get(predicate, queryOptions);
-    
+
     public IQueryable<FeedbackAnalysisWorkflow> Get(
         FeedbackAnalysisWorkflowFilter feedbackAnalysisWorkflowFilter,
-        QueryOptions queryOptions = default)
-        => feedbackAnalysisWorkflowRepository.Get().ApplyPagination(feedbackAnalysisWorkflowFilter);
+        QueryOptions queryOptions = default
+    )
+    {
+        var workflowsQuery = feedbackAnalysisWorkflowRepository.Get().ApplyPagination(feedbackAnalysisWorkflowFilter);
+
+        if (feedbackAnalysisWorkflowFilter.ClientId.HasValue)
+            workflowsQuery = workflowsQuery
+                .Include(workflow => workflow.AnalysisWorkflow)
+                .Include(workflow => workflow.Product)
+                    .ThenInclude(product => product.Organization)
+                .Where(workflow => workflow.Product.Organization.ClientId == feedbackAnalysisWorkflowFilter.ClientId.Value 
+                                   || workflow.AnalysisWorkflow.Type == WorkflowType.Template);
+
+        return workflowsQuery;
+    }
     
-    public ValueTask<FeedbackAnalysisWorkflow> GetByIdAsync(
+    public ValueTask<FeedbackAnalysisWorkflow?> GetByIdAsync(
         Guid feedbackAnalysisWorkflowId,
         QueryOptions queryOptions = default,
         CancellationToken cancellationToken = default)
