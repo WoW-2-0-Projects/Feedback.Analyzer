@@ -3,6 +3,11 @@
  */
 export class Client {
 
+    /*
+     * Entity Id
+     */
+    public id: string;
+
     /**
      * The first name of the client.
      */

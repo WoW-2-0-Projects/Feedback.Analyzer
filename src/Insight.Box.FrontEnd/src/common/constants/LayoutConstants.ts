@@ -33,9 +33,14 @@ export class LayoutConstants {
     public static readonly ExecutionHistory = 'Prompt Execution History';
     public static readonly ExecutionResult = 'Prompt Execution Result';
     public static readonly ExecutionException = 'Prompt Execution Exception';
+    public static readonly ProductToAnalyze = 'Product to analyze';
 
     /* Workflows */
+    public static readonly WorkflowName = 'Workflow name';
+    public static readonly BaseWorkflow = 'Base workflow';
     public static readonly CreateWorkflow = 'Create a workflow';
+    public static readonly EnterWorkflowName = 'Enter workflow name';
+    public static readonly EditWorkflow = 'Edit workflow ';
     public static readonly AddWorkflow = 'Add workflow';
     public static readonly Results = 'Results';
     public static readonly Progress = 'Progress';

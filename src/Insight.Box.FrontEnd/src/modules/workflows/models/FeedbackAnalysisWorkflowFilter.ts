@@ -15,4 +15,10 @@ export class FeedbackAnalysisWorkflowFilter extends  FilterPagination {
     * Search keyword
     */
     public searchKeyword : string;
+
+    constructor() {
+        super();
+
+        this.searchKeyword = '';
+    }
 }
