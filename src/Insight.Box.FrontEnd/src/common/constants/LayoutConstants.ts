@@ -22,6 +22,16 @@ export class LayoutConstants {
     public static readonly EnterProductName = 'Enter product name';
     public static readonly EnterProductDescription = 'Enter product description';
 
+    /* Organization */
+
+    public static readonly CreateOrganization = 'Create an Organization';
+    public static readonly EditOrganization = 'Edit organization ';
+    public static readonly OrganizationName = 'Organization name';
+    public static readonly OrganizationDescription = 'Organization description';
+    public static readonly EnterOrganizationName = 'Enter organization name';
+    public static readonly EnterOrganizationDescription = 'Enter organization description';
+
+
     /* Prompts */
     public static readonly CreatePrompt = 'Create a prompt';
     public static readonly Trigger = 'Trigger';

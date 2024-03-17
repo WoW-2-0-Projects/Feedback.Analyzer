@@ -1,8 +1,11 @@
 import type ApiClientBase from "../../apiClientBase/ApiClientBase";
-import { Organization } from "@/modules/organizations/models/Organization";
+import {Organization} from "@/modules/organizations/models/Organization";
 import type {RequestFormatterService} from "@/infrastructure/apiClients/formatters/RequestFormatterService";
 import type {Query} from "@/infrastructure/models/query/Query";
 import type {OrganizationFilter} from "@/modules/organizations/models/OrganizationFilter";
+import type {CreateOrganizationCommand} from "@/modules/organizations/models/CreateOrganizationCommand";
+import type {DeleteOrganizationCommand} from "@/modules/organizations/models/DeleteOrganizationCommand";
+import type {UpdateOrganizationCommand} from "@/modules/organizations/models/UpdateOrganizationCommand";
 
 /*
  * Provides organization endpoints client functionality
@@ -30,4 +33,35 @@ export class OrganizationsEndpointsClient {
         const endpointUrl = this.requestFormatterService.addQueryParams('api/organizations', query);
         return await this.client.getAsync<Organization[]>(endpointUrl);
     }
+
+    /*
+     * Create an organization
+     */
+    public async createAsync(command: CreateOrganizationCommand) {
+        const endpointUrl = 'api/organizations';
+
+        return await this.client.postAsync<Organization>(endpointUrl, command);
+    }
+
+    /*
+     * Update an organization
+     */
+    public async updateAsync(command: UpdateOrganizationCommand) {
+        const endpointUrl = `api/organizations`;
+
+        return await this.client.putAsync<Organization>(endpointUrl, command);
+
+    }
+
+    /*
+     * Delete an organization
+     */
+    public async deleteAsync(command: DeleteOrganizationCommand) {
+
+        const endpointUrl = `api/organizations/${command.organizationId}`;
+
+        return await this.client.deleteAsync<boolean>(endpointUrl);
+    }
+
+
 }

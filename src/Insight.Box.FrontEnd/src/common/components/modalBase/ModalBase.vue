@@ -19,11 +19,11 @@
 
                     <!-- Modal header -->
                     <div class="absolute top-6 absolute-x-center">
-                        <slot name="header"/>
+                        <slot v-bind="$attrs" name="header"/>
                     </div>
 
                     <!-- Modal content -->
-                    <slot name="content"/>
+                    <slot v-bind="$attrs" name="content"/>
                 </div>
             </div>
         </div>
