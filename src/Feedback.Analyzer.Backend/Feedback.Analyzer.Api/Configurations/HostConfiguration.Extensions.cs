@@ -49,6 +49,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.SemanticKernel;
+using MassTransit;
+using Feedback.Analyzer.Infrastructure.Common.Workflows.EventHandlers;
+using Feedback.Analyzer.Infrastructure.Common.Identity.EventHandlers;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
@@ -128,16 +131,33 @@ public static partial class HostConfiguration
 
         return builder;
     }
-    
+
     /// <summary>
     /// Extension method for adding event bus services to the application.
     /// </summary>
     private static WebApplicationBuilder AddEventBus(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<IEventBusBroker, EventBusBroker>();
+        builder
+           .Services
+           .AddMassTransit(configuration =>
+           {
+               configuration
+               .AddConsumersFromNamespaceContaining<ExecuteWorkflowSinglePromptEventHandler>();
+
+               configuration
+               .AddConsumersFromNamespaceContaining<UserCreatedEventHandler>();
+
+               configuration.UsingInMemory((context, cfg) =>
+               {
+                   cfg.ConfigureEndpoints(context);
+               });
+           });
+
+        builder.Services.AddSingleton<IEventBusBroker, MassTransitEventBusBroker>();
+
         return builder;
     }
-    
+
     /// <summary>
     /// Adds persistence-related services to the web application builder.
     /// </summary>
