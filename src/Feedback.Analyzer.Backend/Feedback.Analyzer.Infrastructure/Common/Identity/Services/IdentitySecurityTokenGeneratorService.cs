@@ -7,7 +7,6 @@ using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Extension;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
-using Feedback.Analyzer.Persistence.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -107,16 +106,28 @@ public class IdentitySecurityTokenGeneratorService(IOptions<JwtSettings> jwtSett
         return Guid.Parse(tokenId);
     }
 
+    /// <summary>
+    /// Generates a JWT security token for the specified client and access token.
+    /// </summary>
+    /// <param name="client">The client for which the token is generated.</param>
+    /// <param name="accessToken">The access token associated with the client.</param>
+    /// <returns>A JWT security token.</returns>
     public JwtSecurityToken GetToken(Client client, AccessToken accessToken)
     {
+        // Generate claims for the client
         var claims = GetClaims(client, accessToken);
+
+        // Update access token properties
         accessToken.ClientId = client.Id;
         accessToken.ExpiryTime = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationTimeInMinutes);
 
+        // Create a security key using the JWT secret key
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
 
+        // Create signing credentials using the security key
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+        // Create and return a JWT security token
         return new JwtSecurityToken(
             issuer: _jwtSettings.ValidIssuer,
             audience: _jwtSettings.ValidAudience,
@@ -124,17 +135,29 @@ public class IdentitySecurityTokenGeneratorService(IOptions<JwtSettings> jwtSett
             notBefore: DateTime.UtcNow,
             expires: accessToken.ExpiryTime.UtcDateTime,
             signingCredentials: credentials
-            );
+        );
     }
 
+    /// <summary>
+    /// Generates a list of claims for the specified client and access token.
+    /// </summary>
+    /// <param name="client">The client for which claims are generated.</param>
+    /// <param name="accessToken">The access token associated with the client.</param>
+    /// <returns>A list of claims containing client information.</returns>
     public List<Claim> GetClaims(Client client, AccessToken accessToken)
     {
         return new List<Claim>()
         {
+            // Claim representing the email address of the client
             new(ClaimTypes.Email, client.EmailAddress),
-            
+        
+            // Claim representing the role of the client
+            new(ClaimTypes.Role, client.Role.ToString()),
+        
+            // Claim representing the client ID
             new(ClaimConstants.ClientId, client.Id.ToString()),
-            
+        
+            // Claim representing the ID of the access token
             new(JwtRegisteredClaimNames.Jti, accessToken.Id.ToString())
         };
     }
