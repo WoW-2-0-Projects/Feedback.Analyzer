@@ -6,7 +6,7 @@ namespace Feedback.Analyzer.Application.Common.Identity.Events;
 /// <summary>
 /// This class represents an event that is triggered when a user is created.
 /// </summary>
-public class ClientCreatedEvent(Client createdClient) : Event
+public record ClientCreatedEvent(Client createdClient) : EventBase
 {
     /// <summary>
     /// Gets or sets the information about the user that was created.
