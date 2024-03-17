@@ -18,6 +18,11 @@ public class FeedbackAnalysisResult : AuditableEntity
         FeedbackEntities = new FeedbackEntities();
         FeedbackMetrics = new FeedbackMetrics();
     }
+    
+    /// <summary>
+    /// Gets or sets the workflow result Id
+    /// </summary>
+    public Guid FeedbackAnalysisWorkflowResultId { get; set; }
 
     /// <summary>
     /// Gets or sets the relevance analysis result of the feedback.
