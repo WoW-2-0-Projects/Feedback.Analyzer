@@ -3,6 +3,7 @@ using System;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240317070518_Add_FeedbackAnalysisWorkflowResult_And_FeedbackAnalysisWorkflow")]
+    partial class Add_FeedbackAnalysisWorkflowResult_And_FeedbackAnalysisWorkflow
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,9 +230,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<DateTimeOffset?>("DeletedTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("FeedbackAnalysisWorkflowResultId")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -239,8 +239,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerFeedbackId");
-
-                    b.HasIndex("FeedbackAnalysisWorkflowResultId");
 
                     b.ToTable("FeedbackAnalysisResults");
                 });
@@ -456,12 +454,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.HasOne("Feedback.Analyzer.Domain.Entities.CustomerFeedback", "CustomerFeedback")
                         .WithMany("FeedbackAnalysisResults")
                         .HasForeignKey("CustomerFeedbackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", null)
-                        .WithMany("FeedbackAnalysisResults")
-                        .HasForeignKey("FeedbackAnalysisWorkflowResultId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -710,11 +702,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflow", b =>
                 {
                     b.Navigation("Results");
-                });
-
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", b =>
-                {
-                    b.Navigation("FeedbackAnalysisResults");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>

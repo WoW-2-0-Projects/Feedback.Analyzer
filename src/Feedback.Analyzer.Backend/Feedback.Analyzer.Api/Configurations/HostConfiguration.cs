@@ -14,6 +14,7 @@ public static partial class HostConfiguration
             .AddMappers()
             .AddCaching()
             .AddEventBus()
+            .AddValidators()
             .AddPersistence()
             .AddIdentityInfrastructure()
             .AddSemanticKernelInfrastructure()

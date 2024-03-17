@@ -18,5 +18,10 @@ public class FeedbackAnalysisResultConfiguration : IEntityTypeConfiguration<Feed
             .HasOne<CustomerFeedback>(result => result.CustomerFeedback)
             .WithMany(feedback => feedback.FeedbackAnalysisResults)
             .HasForeignKey(result => result.CustomerFeedbackId);
+        
+        builder
+            .HasOne<FeedbackAnalysisWorkflowResult>()
+            .WithMany(workflowResult => workflowResult.FeedbackAnalysisResults)
+            .HasForeignKey(feedbackResult => feedbackResult.FeedbackAnalysisWorkflowResultId);
     }
 }
