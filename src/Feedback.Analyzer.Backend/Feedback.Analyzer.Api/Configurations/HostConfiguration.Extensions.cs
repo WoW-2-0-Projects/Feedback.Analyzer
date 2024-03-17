@@ -2,41 +2,43 @@ using System.Reflection;
 using System.Text;
 using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Api.Middlewares;
-using Feedback.Analyzer.Application.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Application.Clients.Services;
+using Feedback.Analyzer.Application.Common.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Application.Common.Caching;
 using Feedback.Analyzer.Application.Common.EventBus.Brokers;
 using Feedback.Analyzer.Application.Common.Identity.Services;
 using Feedback.Analyzer.Application.Common.PromptCategory.Services;
 using Feedback.Analyzer.Application.Common.Prompts.Brokers;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
+using Feedback.Analyzer.Application.Common.PromptsHistory.Services;
+using Feedback.Analyzer.Application.Common.Serializers;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Common.WorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisResults.Services;
-using Feedback.Analyzer.Application.Serializers;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
-using Feedback.Analyzer.Application.PromptsHistory.Services;
 using Feedback.Analyzer.Domain.Constants;
-using Feedback.Analyzer.Infrastructure.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
+using Feedback.Analyzer.Infrastructure.Common.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.Identity.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 using Feedback.Analyzer.Infrastructure.Common.PromptsCategories.Services;
+using Feedback.Analyzer.Infrastructure.Common.PromptsHistory.Services;
+using Feedback.Analyzer.Infrastructure.Common.RequestContexts.Brokers;
+using Feedback.Analyzer.Infrastructure.Common.Serializers;
 using Feedback.Analyzer.Infrastructure.Common.Settings;
 using Feedback.Analyzer.Infrastructure.Common.WorkflowExecutionOptions.Services;
-using Feedback.Analyzer.Infrastructure.RequestContexts.Brokers;
-using Feedback.Analyzer.Infrastructure.Serializers;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Infrastructure.FeedbackAnalysisResults.Services;
-using Feedback.Analyzer.Infrastructure.PromptsHistory.Services;
+using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
@@ -128,6 +130,15 @@ public static partial class HostConfiguration
     }
     
     /// <summary>
+    /// Extension method for adding event bus services to the application.
+    /// </summary>
+    private static WebApplicationBuilder AddEventBus(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<IEventBusBroker, EventBusBroker>();
+        return builder;
+    }
+    
+    /// <summary>
     /// Adds persistence-related services to the web application builder.
     /// </summary>
     /// <param name="builder"></param>
@@ -151,27 +162,6 @@ public static partial class HostConfiguration
     }
     
     /// <summary>
-    /// Adds MediatR services to the application with custom service registrations.
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <returns></returns>
-    private static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddMediatR(conf => {conf.RegisterServicesFromAssemblies(Assemblies.ToArray());});
-        
-        return builder;
-    }
-    
-    /// <summary>
-    /// Extension method for adding event bus services to the application.
-    /// </summary>
-    private static WebApplicationBuilder AddEventBus(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddSingleton<IEventBusBroker, EventBusBroker>();
-        return builder;
-    }
-    
-        /// <summary>
     /// Configures devTools including controllers
     /// Configures IdentityInfrastructure including controllers
     /// </summary>
@@ -223,6 +213,27 @@ public static partial class HostConfiguration
         
         return builder;
     }
+      
+    /// <summary>
+    /// Configures exposers including controllers
+    /// </summary>
+    /// <param name="builder">Application builder</param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddSemanticKernelInfrastructure(this WebApplicationBuilder builder)
+    {
+        // Create kernel builder
+        var kernelBuilder = Kernel.CreateBuilder();
+
+        // Add OpenAI connector
+        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-3.5-turbo", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
+
+        // Build kernel
+        var kernel = kernelBuilder.Build();
+
+        builder.Services.AddSingleton(kernel);
+
+        return builder;
+    }
     
     /// <summary>
     /// Configures the Dependency Injection container to include validators from referenced assemblies.
@@ -266,27 +277,6 @@ public static partial class HostConfiguration
 
         return builder;
     }
-
-    /// <summary>
-    /// Configures exposers including controllers
-    /// </summary>
-    /// <param name="builder">Application builder</param>
-    /// <returns></returns>
-    private static WebApplicationBuilder AddSemanticKernelInfrastructure(this WebApplicationBuilder builder)
-    {
-        // Create kernel builder
-        var kernelBuilder = Kernel.CreateBuilder();
-
-        // Add OpenAI connector
-        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-3.5-turbo", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
-
-        // Build kernel
-        var kernel = kernelBuilder.Build();
-
-        builder.Services.AddSingleton(kernel);
-
-        return builder;
-    }
     
     /// <summary>
     /// Adds Semantic Analysis infrastructure to the web application builder.
@@ -299,6 +289,7 @@ public static partial class HostConfiguration
         // Register brokers
         builder.Services
                .AddScoped<IPromptExecutionBroker, PromptExecutionBroker>();
+        
         // Register repositories
         builder.Services
             .AddScoped<IPromptRepository, PromptRepository>()
@@ -308,19 +299,32 @@ public static partial class HostConfiguration
             .AddScoped<IFeedbackAnalysisWorkflowRepository, FeedbackAnalysisWorkflowRepository>()
             .AddScoped<IWorkflowExecutionOptionRepository, WorkflowExecutionOptionRepository>(); 
 
-        
         // Register foundation services
         builder.Services
-               .AddScoped<IPromptService, PromptService>()
-               .AddScoped<IPromptCategoryService, PromptCategoryService>()
-               .AddScoped<IPromptExecutionHistoryService, PromptExecutionHistoryService>()
-               .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>()
-               .AddScoped<IWorkflowExecutionOptionsService, WorkflowExecutionOptionsService>();
-               
+            .AddScoped<IPromptService, PromptService>()
+            .AddScoped<IPromptCategoryService, PromptCategoryService>()
+            .AddScoped<IPromptExecutionHistoryService, PromptExecutionHistoryService>()
+            .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>()
+            .AddScoped<IWorkflowExecutionOptionsService, WorkflowExecutionOptionsService>()
+            .AddScoped<IAnalysisWorkflowService, AnalysisWorkflowService>()
+            .AddScoped<IFeedbackAnalysisWorkflowService, FeedbackAnalysisWorkflowService>()
+            .AddScoped<IFeedbackAnalysisWorkflowProcessingService, FeedbackAnalysisWorkflowProcessingService>();
 
         // Register processing services
         builder.Services
                .AddScoped<IPromptExecutionProcessingService, PromptExecutionProcessingService>();
+        
+        return builder;
+    }
+    
+    /// <summary>
+    /// Adds MediatR services to the application with custom service registrations.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    private static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddMediatR(conf => {conf.RegisterServicesFromAssemblies(Assemblies.ToArray());});
         
         return builder;
     }

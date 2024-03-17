@@ -1,4 +1,3 @@
-using Feedback.Analyzer.Application.Common.Identity.Services;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
 using Feedback.Analyzer.Persistence.DataContexts;
@@ -14,8 +13,6 @@ public static class SeedDataExtensions
     /// <summary>
     /// Initializes the seed data asynchronously.
     /// </summary>
-    /// <param name="serviceProvider">The service provider.</param>
-    /// <returns>A task representing the asynchronous operation.</returns>
     public static async ValueTask InitializeSeedAsync(this IServiceProvider serviceProvider)
     {
         var appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
@@ -30,7 +27,7 @@ public static class SeedDataExtensions
             await SeedProductsAsync(appDbContext);
 
         if (!await appDbContext.Feedbacks.AnyAsync())
-            await SeedDataCustomerFeedbackAsync(appDbContext);
+            await SeedCustomerFeedbacksAsync(appDbContext);
 
         if (!await appDbContext.PromptCategories.AnyAsync())
             await SeedPromptCategoriesAsync(appDbContext);
@@ -38,13 +35,14 @@ public static class SeedDataExtensions
         if (!await appDbContext.Prompts.AnyAsync())
             await SeedAnalysisPromptAsync(appDbContext);
 
-        if (!await appDbContext.AnalysisWorkflows.AnyAsync())
-            await SeedDataAnalysisWorkflowAsync(appDbContext);
-        if (!await appDbContext.FeedbackAnalysisWorkflows.AnyAsync())
-            await SeedDataFeedbackAnalysisWorkflowAsync(appDbContext);
-
         if (!await appDbContext.WorkflowExecutionOptions.AnyAsync())
-            await SeedAnalysisWorkflows(appDbContext);
+            await SeedAnalysisExecutionOptions(appDbContext);
+        
+        if (!await appDbContext.AnalysisWorkflows.AnyAsync())
+            await SeedAnalysisWorkflowsAsync(appDbContext);
+        
+        if (!await appDbContext.FeedbackAnalysisWorkflows.AnyAsync())
+            await SeedFeedbackAnalysisWorkflowsAsync(appDbContext);
 
         if (appDbContext.ChangeTracker.HasChanges())
             await appDbContext.SaveChangesAsync();
@@ -53,8 +51,6 @@ public static class SeedDataExtensions
     /// <summary>
     /// Seeds client data asynchronously.
     /// </summary>
-    /// <param name="dbContext">The application database context.</param>
-    /// <returns>A task representing the asynchronous operation.</returns>
     private static async ValueTask SeedClientsAsync(this AppDbContext dbContext)
     {
         var clients = new List<Client>
@@ -83,7 +79,6 @@ public static class SeedDataExtensions
     /// <summary>
     /// Seeds organization data asynchronously.
     /// </summary>
-    /// <param name="appDbContext"></param>
     private static async ValueTask SeedOrganizationAsync(AppDbContext appDbContext)
     {
         var organizations = new List<Organization>
@@ -128,7 +123,6 @@ public static class SeedDataExtensions
     /// <summary>
     /// Seeds product data asynchronously.
     /// </summary>
-    /// <param name="appDbContext"></param>
     private static async ValueTask SeedProductsAsync(AppDbContext appDbContext)
     {
         var products = new List<Product>
@@ -145,15 +139,17 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
                 OrganizationId = Guid.Parse("e57f81a1-1aeb-4f1c-aae0-9f0e1dcb92c4"),
                 Name = "Macbook",
-                Description =
-                    "Macbook is suitable for software developers, designer and etc. It is so expensive but people love it.",
+                Description = "Macbook is suitable for software developers, designer and etc. It is so expensive but people love it.",
             }
         };
 
         await appDbContext.Products.AddRangeAsync(products);
     }
 
-    private static async ValueTask SeedDataCustomerFeedbackAsync(AppDbContext appDbContext)
+    /// <summary>
+    /// Seeds customer feedbacks
+    /// </summary>
+    private static async ValueTask SeedCustomerFeedbacksAsync(AppDbContext appDbContext)
     {
         var customersFeedbacks = new List<CustomerFeedback>()
         {
@@ -177,8 +173,7 @@ public static class SeedDataExtensions
             new()
             {
                 ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
-                Comment =
-                    "I found the product to be **confusing** and **difficult to navigate**. It also **lacked some features** I was hoping for.",
+                Comment = "I found the product to be **confusing** and **difficult to navigate**. It also **lacked some features** I was hoping for.",
                 UserName = "Alice Miller",
             },
 
@@ -194,59 +189,13 @@ public static class SeedDataExtensions
         await appDbContext.Feedbacks.AddRangeAsync(customersFeedbacks);
     }
 
-    private static async ValueTask SeedDataAnalysisWorkflowAsync(AppDbContext appDbContext)
-    {
-        var analysisWorkflow = new List<AnalysisWorkflow>
-        {
-            new()
-            {
-                Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
-                Name = "TemplateWorkflow",
-                Type = WorkflowType.Template
-            },
-            new()
-            {
-                Id = Guid.Parse("5912074a-11f4-4049-aea9-966dcb809bf2"),
-                Name = "TrainingWorkflow",
-                Type = WorkflowType.Template
-            }
-        };
-
-        await appDbContext.AnalysisWorkflows.AddRangeAsync(analysisWorkflow);
-    }
-
-    private static async ValueTask SeedDataFeedbackAnalysisWorkflowAsync(AppDbContext appDbContext)
-    {
-        var feedbackAnalysisWorkflows = new List<FeedbackAnalysisWorkflow>
-        {
-            new()
-            {
-                Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
-                ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
-            },
-            new()
-            {
-                Id = Guid.Parse("5912074a-11f4-4049-aea9-966dcb809bf2"),
-                ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
-            }
-        };
-
-        await appDbContext.FeedbackAnalysisWorkflows.AddRangeAsync(feedbackAnalysisWorkflows);
-    }
-
     /// <summary>
     /// Seeds prompt categories
     /// </summary>
-    /// <param name="appDbContext"></param>
     private static async ValueTask SeedPromptCategoriesAsync(AppDbContext appDbContext)
     {
         var promptCategories = new List<AnalysisPromptCategory>
         {
-            new()
-            {
-                Id = Guid.Parse("15072FC8-63C7-49EC-BF4F-3FD2A8479CF4"),
-                Category = FeedbackAnalysisPromptCategory.ContentSafetyAnalysis,
-            },
             new()
             {
                 Id = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
@@ -304,9 +253,8 @@ public static class SeedDataExtensions
     }
 
     /// <summary>
-    /// Seeds prompt categories
+    /// Seeds prompts
     /// </summary>
-    /// <param name="appDbContext"></param>
     private static async ValueTask SeedAnalysisPromptAsync(AppDbContext appDbContext)
     {
         var analysisPrompts = new List<AnalysisPrompt>()
@@ -480,50 +428,103 @@ public static class SeedDataExtensions
         appDbContext.PromptCategories.UpdateRange(categories);
     }
 
-    private static async ValueTask SeedAnalysisWorkflows(AppDbContext appDbContext)
+    /// <summary>
+    /// Seeds analysis execution options
+    /// </summary>
+    /// <param name="appDbContext"></param>
+    private static async ValueTask SeedAnalysisExecutionOptions(AppDbContext appDbContext)
     {
         // Add template workflow execution options
-        var executionOptions = new List<WorkflowExecutionOption>
+        var executionOptions = new WorkflowExecutionOption
         {
-            new WorkflowExecutionOption
+            Id = Guid.Parse("E4B16AEB-41C3-4E50-AB0B-8A883AE397C1"),
+            AnalysisPromptCategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
+            ChildExecutionOptions =
+            [
+                new WorkflowExecutionOption
+                {
+                    AnalysisPromptCategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
+                },
+                new WorkflowExecutionOption
+                {
+                    AnalysisPromptCategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
+                    ChildExecutionOptions =
+                    [
+                        new WorkflowExecutionOption
+                        {
+                            AnalysisPromptCategoryId = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
+                            ChildExecutionOptions =
+                            [
+                                new WorkflowExecutionOption
+                                {
+                                    AnalysisPromptCategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
+                                },
+                                new WorkflowExecutionOption
+                                {
+                                    AnalysisPromptCategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
+                                    ChildExecutionOptions =
+                                    [
+                                        new WorkflowExecutionOption
+                                        {
+                                            AnalysisPromptCategoryId = Guid.Parse("6F1FDE2A-CAFC-4C4D-B909-655414C8C76E"),
+                                        },
+                                    ]
+                                },
+                                new WorkflowExecutionOption
+                                {
+                                    AnalysisPromptCategoryId = Guid.Parse("33CCCA43-E803-4FA2-AFC7-7C202DE5EA0C"),
+                                    ChildExecutionOptions =
+                                    [
+                                        new WorkflowExecutionOption
+                                        {
+                                            AnalysisPromptCategoryId = Guid.Parse("2EF85588-0B12-4FB8-9027-80D45CC38EC1"),
+                                        },
+                                    ]
+                                },
+                            ]
+                        },
+                    ]
+                },
+                new WorkflowExecutionOption
+                {
+                    AnalysisPromptCategoryId = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
+                },
+            ]
+        };
+
+        await appDbContext.WorkflowExecutionOptions.AddRangeAsync(executionOptions);
+    }
+    
+    /// <summary>
+    /// Seeds analysis workflows
+    /// </summary>
+    private static async ValueTask SeedAnalysisWorkflowsAsync(AppDbContext appDbContext)
+    {
+        var templateWorkflow = new AnalysisWorkflow
+        {
+            Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
+            Name = "TemplateWorkflow",
+            Type = WorkflowType.Template,
+            EntryExecutionOptionId = Guid.Parse("E4B16AEB-41C3-4E50-AB0B-8A883AE397C1"),
+        };
+
+        await appDbContext.AnalysisWorkflows.AddRangeAsync(templateWorkflow);
+    }
+
+    /// <summary>
+    /// Seeds feedback analysis workflows
+    /// </summary>
+    private static async ValueTask SeedFeedbackAnalysisWorkflowsAsync(AppDbContext appDbContext)
+    {
+        var templateFeedbackAnalysisWorkflow = new List<FeedbackAnalysisWorkflow>
+        {
+            new()
             {
-                AnalysisPromptCategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
-                ChildExecutionOptions =
-                [
-                    new WorkflowExecutionOption
-                    {
-                        AnalysisPromptCategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
-                        ChildExecutionOptions =
-                        [
-                            new WorkflowExecutionOption
-                            {
-                                AnalysisPromptCategoryId = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
-                                ChildExecutionOptions = []
-                            },
-                        ]
-                    },
-                ]
-            }
+                Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
+                ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
+            },
         };
 
-        // Add template workflow
-        var analysisWorkflow = new AnalysisWorkflow
-        {
-            Id = Guid.Parse("7D5A3D3E-1DC7-4365-A371-CB55C83938CA"),
-            Name = "Base Workflow",
-            Type = WorkflowType.Training,
-        };
-
-        appDbContext.AnalysisWorkflows.Add(analysisWorkflow);
-
-        var feedbackAnalysisWorkflow = new FeedbackAnalysisWorkflow
-        {
-            Id = Guid.Parse("7D5A3D3E-1DC7-4365-A371-CB55C83938CA"),
-            ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
-        };
-
-        appDbContext.FeedbackAnalysisWorkflows.Add(feedbackAnalysisWorkflow);
-
-        await appDbContext.SaveChangesAsync();
+        await appDbContext.FeedbackAnalysisWorkflows.AddRangeAsync(templateFeedbackAnalysisWorkflow);
     }
 }

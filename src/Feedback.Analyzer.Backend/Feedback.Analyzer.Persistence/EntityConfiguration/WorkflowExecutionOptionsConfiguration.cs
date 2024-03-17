@@ -9,10 +9,6 @@ public class WorkflowExecutionOptionsConfiguration : IEntityTypeConfiguration<Wo
 {
     public void Configure(EntityTypeBuilder<WorkflowExecutionOption> builder)
     {
-        builder.HasOne(options => options.Workflow)
-               .WithMany(workflow => workflow.WorkflowExecutionOptions)
-               .HasForeignKey(options => options.AnalysisWorkflowId);
-        
         builder.HasOne(options => options.AnalysisPromptCategory)
                .WithMany(promptCategory => promptCategory.WorkflowExecutionOptions)
                .HasForeignKey(options => options.AnalysisPromptCategoryId);

@@ -36,10 +36,12 @@ export class LayoutConstants {
 
     /* Workflows */
     public static readonly CreateWorkflow = 'Create a workflow';
+    public static readonly AddWorkflow = 'Add workflow';
     public static readonly Results = 'Results';
     public static readonly Progress = 'Progress';
     public static readonly StartedTime = 'Started';
     public static readonly FinishedTime = 'Finished';
+    public static readonly SearchWorkflows = 'Search workflows ...';
 
     /* Forms */
     public static readonly Submit = 'Submit';
