@@ -12,6 +12,7 @@ public static partial class HostConfiguration
         builder
             .AddSerializers()
             .AddMappers()
+            .AddValidators()
             .AddCaching()
             .AddEventBus()
             .AddPersistence()
