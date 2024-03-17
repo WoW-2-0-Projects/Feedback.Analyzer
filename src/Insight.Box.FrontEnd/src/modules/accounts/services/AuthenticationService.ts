@@ -67,10 +67,6 @@ export class AuthenticationService {
 
         if(!signUpResponse.isSuccess)
             return false;
-
-        // Store security tokens
-        this.localStorageService.Set('accessToken', signUpResponse.response?.accessToken);
-        this.localStorageService.Set('refreshToken', signUpResponse.response?.refreshToken);
     }
 
     /**
