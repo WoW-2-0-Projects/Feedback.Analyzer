@@ -12,6 +12,11 @@ public class FeedbackAnalysisWorkflow : Entity
     /// Gets or sets the ID of the product associated with the feedback analysis workflow.
     /// </summary>
     public Guid ProductId { get; set; }
+    
+    /// <summary>
+    /// Gets or sets workflow owner client Id
+    /// </summary>
+    public Guid ClientId { get; set; } 
 
     /// <summary>
     /// Navigation to related analysis workflow

@@ -16,6 +16,11 @@ public class FeedbackAnalysisWorkflowConfiguration : IEntityTypeConfiguration<Fe
             .WithOne()
             .HasForeignKey<FeedbackAnalysisWorkflow>(feedbackAnalysisWorkflow => feedbackAnalysisWorkflow.Id);
         
+        builder
+            .HasOne<Client>()
+            .WithMany()
+            .HasForeignKey(workflow => workflow.ClientId);
+        
         // TODO : Add name and product Id unique index between this and AnalysisWorkflow table
         
         builder
