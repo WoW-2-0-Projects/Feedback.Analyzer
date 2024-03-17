@@ -14,6 +14,16 @@ using Feedback.Analyzer.Domain.Extensions;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 
+/// <summary>
+/// FeedbackAnalysisOrchestrationService orchestrates the workflow for analyzing customer feedback. It utilizes various services
+/// including event bus, customer feedback service, feedback analysis result service, and prompt execution processing service to
+/// execute the analysis workflow. The workflow involves executing prompts associated with the feedback and generating analysis results.
+/// It supports the execution of a single feedback analysis workflow.
+/// </summary>
+/// <param name="eventBusBroker"></param>
+/// <param name="customerFeedbackService"></param>
+/// <param name="feedbackAnalysisResultService"></param>
+/// <param name="promptExecutionProcessingService"></param>
 public class FeedbackAnalysisOrchestrationService(
     IEventBusBroker eventBusBroker,
     ICustomerFeedbackService customerFeedbackService,
