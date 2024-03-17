@@ -3,10 +3,12 @@ using Feedback.Analyzer.Domain.Common.Caching;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Entities;
 using Feedback.Analyzer.Domain.Common.Queries;
+using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.Caching.Models;
 using Feedback.Analyzer.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
@@ -231,5 +233,31 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     private string AddTypePrefix(CacheModel model)
     {
         return $"{typeof(TEntity).Name}_{model.CacheKey}";
+    }
+
+    /// <summary>
+    /// Batch updates entities matching given predicate using the provided property selectors and value selectors.
+    /// </summary>
+    /// <param name="batchUpdatePredicate">Predicate to select entities for batch update</param>
+    /// <param name="setPropertyCalls">Batch update value selectors</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Number of updated rows.</returns>
+    protected async ValueTask<int> UpdateBatchAsync(
+        Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls,
+        // IImmutableList<(Func<TEntity, object> propertySelector, Func<TEntity, object> valueSelector)> setPropertyExecutors,
+        Expression<Func<TEntity, bool>>? batchUpdatePredicate = default,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var entities = DbContext.Set<TEntity>().AsQueryable();
+
+        if (batchUpdatePredicate is not null)
+            entities = entities.Where(batchUpdatePredicate);
+
+        return await entities.ExecuteUpdateAsync(
+            setPropertyCalls,
+            // categoryPropertySelector => categoryPropertySelector.MapToSetPropertyCalls(setPropertyExecutors),
+            cancellationToken
+        );
     }
 }
