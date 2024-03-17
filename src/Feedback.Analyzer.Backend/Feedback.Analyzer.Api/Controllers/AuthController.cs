@@ -13,7 +13,7 @@ namespace Feedback.Analyzer.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(IMapper mapper, IMediator mediator, IAuthService authService, IRequestClientContextProvider requestUserContextProvider) : ControllerBase
+public class AuthController(IMapper mapper, IMediator mediator, IAuthService authService) : ControllerBase
 {
     [HttpPost("sign-up")]
     public async Task<IActionResult> SignUp([FromBody] SignUpDetails signUpDetails, CancellationToken cancellationToken)
@@ -50,6 +50,4 @@ public class AuthController(IMapper mapper, IMediator mediator, IAuthService aut
         var result = await mediator.Send(new GetCurrentUserQuery(), cancellationToken);
         return Ok(mapper.Map<ClientDto>(result));
     }
-
-    
 }

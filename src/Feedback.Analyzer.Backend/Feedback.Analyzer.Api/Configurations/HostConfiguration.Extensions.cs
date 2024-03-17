@@ -338,7 +338,7 @@ public static partial class HostConfiguration
     {
         builder.Services.AddHttpContextAccessor();
 
-        builder.Services.AddScoped<IRequestClientContextProvider, RequestClientContextProvider>();
+        builder.Services.AddScoped<IRequestContextProvider, RequestContextProvider>();
 
         return builder;
     }
