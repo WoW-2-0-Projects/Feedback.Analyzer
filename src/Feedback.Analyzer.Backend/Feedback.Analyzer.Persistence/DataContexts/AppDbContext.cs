@@ -1,6 +1,4 @@
-using System.Reflection;
 using Feedback.Analyzer.Domain.Entities;
-using Feedback.Analyzer.Persistence.EntityConfiguration;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Persistence.DataContexts;
@@ -21,6 +19,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     public DbSet<CustomerFeedback> Feedbacks => Set<CustomerFeedback>();
 
     public DbSet<FeedbackAnalysisResult> FeedbackAnalysisResults => Set<FeedbackAnalysisResult>();
+    
+    public DbSet<FeedbackAnalysisWorkflowResult> FeedbackAnalysisWorkflowResults => Set<FeedbackAnalysisWorkflowResult>();
 
     #endregion
 

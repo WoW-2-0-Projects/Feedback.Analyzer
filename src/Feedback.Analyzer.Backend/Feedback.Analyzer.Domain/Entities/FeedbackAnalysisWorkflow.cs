@@ -22,4 +22,9 @@ public class FeedbackAnalysisWorkflow : Entity
     /// Navigation to related product
     /// </summary>
     public Product Product { get; set; } = default!;
+    
+    /// <summary>
+    /// Gets or sets the collection of feedback analysis workflow results associated with this entity.
+    /// </summary>
+    public ICollection<FeedbackAnalysisWorkflowResult> Results { get; set; } = default!;
 }
