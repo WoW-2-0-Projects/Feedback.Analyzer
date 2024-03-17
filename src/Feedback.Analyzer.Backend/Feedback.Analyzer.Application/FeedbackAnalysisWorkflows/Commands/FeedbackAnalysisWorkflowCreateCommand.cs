@@ -12,4 +12,9 @@ public record FeedbackAnalysisWorkflowCreateCommand : ICommand<FeedbackAnalysisW
      /// Gets or sets the data transfer object (DTO) representing the feedback analysis workflow to be created.
      /// </summary>
      public FeedbackAnalysisWorkflowDto FeedbackAnalysisWorkflow { get; set; } = default!;
+     
+     /// <summary>
+     /// Gets or sets the base workflow id
+     /// </summary>
+     public Guid BaseWorkflowId { get; set; }
 }

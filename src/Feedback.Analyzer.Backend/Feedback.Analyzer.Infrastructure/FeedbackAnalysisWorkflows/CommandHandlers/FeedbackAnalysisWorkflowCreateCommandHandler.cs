@@ -12,22 +12,25 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.CommandHand
 /// </summary>
 public class FeedbackAnalysisWorkflowCreateCommandHandler(
     IMapper mapper,
-    IFeedbackAnalysisWorkflowProcessingService feedbackAnalysisWorkflowProcessingService)
-    : ICommandHandler<FeedbackAnalysisWorkflowCreateCommand, FeedbackAnalysisWorkflowDto>
+    IFeedbackAnalysisWorkflowProcessingService feedbackAnalysisWorkflowProcessingService
+) : ICommandHandler<FeedbackAnalysisWorkflowCreateCommand, FeedbackAnalysisWorkflowDto>
 {
-    public async Task<FeedbackAnalysisWorkflowDto> Handle(FeedbackAnalysisWorkflowCreateCommand request,
-        CancellationToken cancellationToken)
+    public async Task<FeedbackAnalysisWorkflowDto> Handle(FeedbackAnalysisWorkflowCreateCommand request, CancellationToken cancellationToken)
     {
         var feedbackAnalysisWorkflow = mapper.Map<FeedbackAnalysisWorkflow>(request.FeedbackAnalysisWorkflow);
         var analysisWorkflow = mapper.Map<AnalysisWorkflow>(request.FeedbackAnalysisWorkflow);
         
-        var updatedWorkflow =
-            await feedbackAnalysisWorkflowProcessingService.CreateAsync(feedbackAnalysisWorkflow, analysisWorkflow,
-                cancellationToken);
+        // TODO : Add product Id on frontend and workflow type based on client role
+        var createdWorkflow = await feedbackAnalysisWorkflowProcessingService.CreateAsync(
+            feedbackAnalysisWorkflow,
+            analysisWorkflow,
+            request.BaseWorkflowId,
+            cancellationToken
+        );
 
-        var createdWorkflow = mapper.Map<FeedbackAnalysisWorkflowDto>(updatedWorkflow.FeedbackAnalysisWorkflow);
-        mapper.Map(updatedWorkflow.AnalysisWorkflow, createdWorkflow);
+        var result = mapper.Map<FeedbackAnalysisWorkflowDto>(createdWorkflow.FeedbackAnalysisWorkflow);
+        mapper.Map(createdWorkflow.AnalysisWorkflow, result);
 
-        return createdWorkflow;
+        return result;
     }
 }

@@ -6,7 +6,7 @@ namespace Feedback.Analyzer.Domain.Entities;
 /// <summary>
 /// Represents an option for executing a workflow.
 /// </summary>
-public class WorkflowExecutionOption : Entity
+public class WorkflowExecutionOption : Entity, ICloneable<WorkflowExecutionOption>
 {
     /// <summary>
     /// Gets or sets the unique identifier of the analysis prompt category associated with this execution option.
@@ -32,4 +32,15 @@ public class WorkflowExecutionOption : Entity
     /// Gets or sets the list of child execution options if applicable.
     /// </summary>
     public IReadOnlyList<WorkflowExecutionOption>? ChildExecutionOptions { get; set; }
+
+    public WorkflowExecutionOption Clone()
+    {
+        return new WorkflowExecutionOption
+        {
+            AnalysisPromptCategoryId = AnalysisPromptCategoryId,
+            IsDisabled = IsDisabled,
+            ParentId = ParentId,
+            ChildExecutionOptions = ChildExecutionOptions?.Select(childWorkflow => childWorkflow.Clone()).ToList()
+        };
+    }
 }
