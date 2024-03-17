@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Feedback.Analyzer.Application.Products.Models;
 using Feedback.Analyzer.Application.Products.Services;
+using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
@@ -18,7 +19,8 @@ namespace Feedback.Analyzer.Infrastructure.Products.Services;
 /// </summary>
 public class ProductService
     (IProductRepository productRepository,
-        ProductValidator productValidator)
+        ProductValidator productValidator,
+        IRequestContextProvider requestContextProvider)
     : IProductService
 {
         public IQueryable<Product> Get(Expression<Func<Product, bool>>? predicate, QueryOptions queryOptions = default)
@@ -45,8 +47,10 @@ public class ProductService
 
         public ValueTask<Product> CreateAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
+            ValidateClientId(product.Organization.ClientId);
+
             var validationResult = productValidator.Validate(product,
-                options => options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
+                    options => options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
 
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors);
@@ -56,21 +60,36 @@ public class ProductService
 
         public async ValueTask<Product> UpdateAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
-            var foundProduct = await GetByIdAsync(product.Id, cancellationToken: cancellationToken) ?? throw new InvalidOperationException();
+            ValidateClientId(product.Organization.ClientId);
 
-            foundProduct.Name = product.Name;
-            foundProduct.Description = product.Description;
+            var validationResult = productValidator.Validate(product,
+                    options => options.IncludeRuleSets(EntityEvent.OnUpdate.ToString()));
 
-            return await productRepository.UpdateAsync(foundProduct, commandOptions, cancellationToken);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
+            return await productRepository.UpdateAsync(product, commandOptions, cancellationToken);
         }
 
         public ValueTask<Product?> DeleteAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
+            ValidateClientId(product.Organization.ClientId);
+
             return productRepository.DeleteAsync(product, commandOptions, cancellationToken);
         }
 
-        public ValueTask<Product?> DeleteByIdAsync(Guid productId, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+        public async ValueTask<Product?> DeleteByIdAsync(Guid productId, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
-            return productRepository.DeleteByIdAsync(productId, commandOptions, cancellationToken);
+            var product = await productRepository.GetByIdAsync(productId, cancellationToken: cancellationToken);
+
+            ValidateClientId(product.Organization.ClientId); ;
+
+            return await productRepository.DeleteByIdAsync(productId, commandOptions, cancellationToken);
+        }
+
+        private void ValidateClientId(Guid currentProductClientId)
+        {
+            if (currentProductClientId == Guid.Empty || currentProductClientId != requestContextProvider.GetUserId())
+                throw new UnauthorizedAccessException("Client id must match the current user id");
         }
 }
