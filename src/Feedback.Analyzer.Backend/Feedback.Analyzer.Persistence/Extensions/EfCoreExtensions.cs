@@ -37,8 +37,8 @@ public static class EfCoreExtensions
     /// <typeparam name="TSource">Query source type</typeparam>
     /// <returns>New query with entities Id predicate</returns>
     public static async ValueTask<IQueryable<TSource>> GetFilteredEntitiesQuery<TSource>(
-        this IQueryable<TSource> source,
-        IQueryable<TSource> filteredSource,
+        this IQueryable<TSource> filteredSource,
+        IQueryable<TSource> source,
         CancellationToken cancellationToken = default
     ) where TSource : class, IEntity
     {

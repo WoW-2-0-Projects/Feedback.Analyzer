@@ -19,11 +19,7 @@ public class ProductGetQueryHandler(IMapper mapper, IProductService productServi
     public async Task<ICollection<ProductDto>> Handle(ProductGetQuery request, CancellationToken cancellationToken)
     {
         request.Filter.ClientId = requestContextProvider.GetUserId();
-
-        var queryOptions = new QueryOptions
-        {
-            TrackingMode = QueryTrackingMode.AsNoTracking
-        };
+        var queryOptions = new QueryOptions(QueryTrackingMode.AsNoTracking);
         
         var matchedProducts = await (await productService
             .Get(request.Filter, queryOptions)
