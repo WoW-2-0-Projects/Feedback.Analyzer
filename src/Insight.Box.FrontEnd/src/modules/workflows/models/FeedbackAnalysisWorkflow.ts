@@ -1,6 +1,6 @@
 import type {IDropDownValue} from "@/common/components/formDropDown/IDropDownValue";
 import type {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
-import type {WorkflowType} from "@/modules/workflows/models/WorkflowType";
+import {WorkflowType} from "@/modules/workflows/models/WorkflowType";
 
 /**
  * Represents a data transfer object (DTO) for a feedback execution workflow.
@@ -25,6 +25,11 @@ export class FeedbackAnalysisWorkflow implements IDropDownValue<string, Feedback
      * The type of the feedback execution workflow.
      */
     public type: WorkflowType;
+
+    constructor() {
+        this.name = '';
+        this.type = WorkflowType.Training;
+    }
 
     public toDropDownValue(): DropDownValue<string, FeedbackAnalysisWorkflow>{
         return new DropDownValue(this.id, this);
