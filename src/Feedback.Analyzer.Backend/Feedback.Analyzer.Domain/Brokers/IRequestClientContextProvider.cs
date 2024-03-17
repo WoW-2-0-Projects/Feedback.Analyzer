@@ -1,19 +1,18 @@
 namespace Feedback.Analyzer.Domain.Brokers;
 
 /// <summary>
-/// Provides methods to retrieve client context information for the current request.
+/// Defines request context data provider
 /// </summary>
-public interface IRequestClientContextProvider
+public interface IRequestContextProvider
 {
     /// <summary>
-    /// Gets the unique identifier of the user associated with the current request.
+    /// Gets current logged in user Id
     /// </summary>
-    /// <returns>The unique identifier of the user.</returns>
+    /// <returns>Id of logged in user for the request</returns>
     Guid GetUserId();
 
     /// <summary>
-    /// Gets the access token associated with the current request, if available.
+    /// Gets current user access token
     /// </summary>
-    /// <returns>The access token associated with the request, or <c>null</c> if not available.</returns>
     string? GetAccessToken();
 }

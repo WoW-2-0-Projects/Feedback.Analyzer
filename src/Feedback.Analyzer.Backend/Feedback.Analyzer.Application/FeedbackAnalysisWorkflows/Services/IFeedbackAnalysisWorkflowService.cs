@@ -38,7 +38,7 @@ public interface IFeedbackAnalysisWorkflowService
     /// <param name="queryOptions">The query options for controlling the retrieval process (optional).</param>
     /// <param name="cancellationToken">The cancellation token to cancel the asynchronous operation (optional).</param>
     /// <returns>A ValueTask representing the asynchronous operation, containing the retrieved feedback analysis workflow.</returns>
-    ValueTask<FeedbackAnalysisWorkflow> GetByIdAsync(
+    ValueTask<FeedbackAnalysisWorkflow?> GetByIdAsync(
         Guid feedbackAnalysisWorkflowId,
         QueryOptions queryOptions = default,
         CancellationToken cancellationToken = default);

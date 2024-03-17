@@ -16,6 +16,7 @@ using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Common.WorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisResults.Services;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Application.Organizations.Services;
@@ -38,6 +39,7 @@ using Feedback.Analyzer.Infrastructure.Organizations.Services;
 using Feedback.Analyzer.Infrastructure.Products.Services;
 using Feedback.Analyzer.Infrastructure.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Infrastructure.FeedbackAnalysisResults.Services;
+using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflowResults.Services;
 using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories;
@@ -274,7 +276,8 @@ public static partial class HostConfiguration
         // Register services
         builder.Services
             .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>()
-            .AddScoped<IFeedbackAnalysisResultService, FeedbackAnalysisResultService>();
+            .AddScoped<IFeedbackAnalysisResultService, FeedbackAnalysisResultService>()
+            .AddScoped<IFeedbackAnalysisWorkflowResultService, FeedbackAnalysisWorkflowResultService>();
 
         return builder;
     }
@@ -339,7 +342,7 @@ public static partial class HostConfiguration
     {
         builder.Services.AddHttpContextAccessor();
 
-        builder.Services.AddScoped<IRequestClientContextProvider, RequestClientContextProvider>();
+        builder.Services.AddScoped<IRequestContextProvider, RequestContextProvider>();
 
         return builder;
     }

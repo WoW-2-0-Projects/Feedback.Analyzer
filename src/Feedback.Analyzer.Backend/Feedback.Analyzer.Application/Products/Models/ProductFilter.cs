@@ -8,6 +8,11 @@ namespace Feedback.Analyzer.Application.Products.Models;
 public class ProductFilter : FilterPagination
 {
     /// <summary>
+    /// Gets or sets product owner client id.
+    /// </summary>
+    public Guid? ClientId { get; set; }
+    
+    /// <summary>
     /// Initializes a new instance of the Filter class with default pagination values for retrieving all products from the first page.
     /// </summary>
     public ProductFilter()

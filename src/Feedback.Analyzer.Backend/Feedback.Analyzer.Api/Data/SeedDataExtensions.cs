@@ -521,7 +521,7 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
-                ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
+                ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c")
             },
         };
 
