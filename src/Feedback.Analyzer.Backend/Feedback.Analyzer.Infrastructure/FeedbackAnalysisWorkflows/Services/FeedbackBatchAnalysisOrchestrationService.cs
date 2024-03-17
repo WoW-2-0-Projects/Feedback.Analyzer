@@ -3,13 +3,13 @@ using AutoMapper.QueryableExtensions;
 using Feedback.Analyzer.Application.Common.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Application.Common.EventBus.Brokers;
 using Feedback.Analyzer.Application.Common.WorkflowExecutionOptions.Services;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Domain.Enums;
-using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
@@ -23,7 +23,7 @@ public class FeedbackBatchAnalysisOrchestrationService(
     IAnalysisWorkflowService analysisWorkflowService,
     IFeedbackAnalysisWorkflowService feedbackAnalysisWorkflowService,
     IWorkflowExecutionOptionsService workflowExecutionOptionsService,
-    IFeedbackAnalysisWorkflowResultRepository feedbackAnalysisWorkflowResultRepository
+    IFeedbackAnalysisWorkflowResultService feedbackAnalysisWorkflowResultService
 ) : IFeedbackBatchAnalysisOrchestrationService
 {
     public async ValueTask RunWorkflowAsync(Guid workflowId, CancellationToken cancellationToken = default)
@@ -73,7 +73,7 @@ public class FeedbackBatchAnalysisOrchestrationService(
             StartedTime = DateTimeOffset.UtcNow
         };
 
-        var createdWorkflowResult = await feedbackAnalysisWorkflowResultRepository.CreateAsync(workflowResult, cancellationToken: cancellationToken);
+        var createdWorkflowResult = await feedbackAnalysisWorkflowResultService.CreateAsync(workflowResult, cancellationToken: cancellationToken);
 
         // Create and publish event for each feedback
         var analyzeFeedbackEventPublishTasks = workflowContext.FeedbacksId
