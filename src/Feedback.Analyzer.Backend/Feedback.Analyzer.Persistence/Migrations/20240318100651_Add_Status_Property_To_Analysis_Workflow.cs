@@ -5,7 +5,7 @@
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Add_Status_Property_To_Workflow_Analysis : Migration
+    public partial class Add_Status_Property_To_Analysis_Workflow : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240317093428_Add_Status_Property_To_Workflow_Analysis")]
-    partial class Add_Status_Property_To_Workflow_Analysis
+    [Migration("20240318100651_Add_Status_Property_To_Analysis_Workflow")]
+    partial class Add_Status_Property_To_Analysis_Workflow
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -174,6 +174,13 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasDefaultValue("Client");
 
                     b.HasKey("Id");
 
