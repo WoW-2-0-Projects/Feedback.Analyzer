@@ -61,7 +61,8 @@ public static class SeedDataExtensions
                 FirstName = "John",
                 LastName = "Doe",
                 EmailAddress = "example@gmail.com",
-                PasswordHash = "$2a$12$pHdneNbJGp4SnN1ovHrNqevf6I.k3Gy.7OMJoWWB0RByv0foi4fgy" // qwerty123
+                PasswordHash = "$2a$12$pHdneNbJGp4SnN1ovHrNqevf6I.k3Gy.7OMJoWWB0RByv0foi4fgy", // qwerty123
+                Role = Role.Admin
             },
             new()
             {
@@ -69,7 +70,8 @@ public static class SeedDataExtensions
                 FirstName = "Bob",
                 LastName = "Richard",
                 EmailAddress = "tastBobRichard@gmail.com",
-                PasswordHash = "$2a$12$LxSqe5AE7AtglesHHK5NROFdJQdA1r1XKqhzg4q/tMTZjVEH0PNSK" //asdf1234
+                PasswordHash = "$2a$12$LxSqe5AE7AtglesHHK5NROFdJQdA1r1XKqhzg4q/tMTZjVEH0PNSK", //asdf1234
+                Role = Role.Admin
             }
         };
 

@@ -1,4 +1,5 @@
 ﻿using Feedback.Analyzer.Domain.Common.Entities;
+using Feedback.Analyzer.Domain.Enums;
 
 namespace Feedback.Analyzer.Domain.Entities;
 
@@ -27,6 +28,11 @@ public class Client : AuditableEntity
     /// </summary> 
     public string PasswordHash { get; set; } = default!;
 
+    /// <summary>
+    /// Gets or sets the role of the client.
+    /// </summary>
+    public Role Role { get; set; }
+    
     /// <summary>
     /// Gets or sets a collection of Organizations.
     /// </summary>
