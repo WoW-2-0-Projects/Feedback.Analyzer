@@ -34,6 +34,11 @@ export class WorkflowsEndpointsClient {
         return await this.client.putAsync<FeedbackAnalysisWorkflow>(endpointUrl, command);
     }
 
+    public async deleteByIdAsync(workflowId: string) {
+        const endpointUrl =  `api/workflows/${workflowId}`;
+        return await this.client.deleteAsync(endpointUrl);
+    }
+
     public async executeSinglePromptAsync(workflowId: string, promptId: string) {
         const endpointUrl = `api/workflows/${workflowId}/execute/${promptId}`;
         return await this.client.postAsync(endpointUrl);

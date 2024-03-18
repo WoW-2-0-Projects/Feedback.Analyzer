@@ -75,14 +75,11 @@ const isFocused = ref<boolean>(false);
 const wrapperStyles = computed(() => {
     let styles = '';
 
-
     if(isFocused.value) {
         styles += ' theme-input-border-focus';
     } else {
         styles += ' theme-input-border';
     }
-
-// :class="focus ? 'theme-input-border-focus' : 'theme-input-border'"
 
     // Add button size styles
     switch (props.size) {

@@ -131,7 +131,7 @@
 
                         <app-button class="w-fit" :type="ButtonType.Danger" :layout="ButtonLayout.Rectangle"
                                     :size="ActionComponentSize.ExtraSmall" icon="fas fa-trash"
-                                    @clickd="emit('delete', workflow.id)"
+                                    @click="emit('delete', workflow.id)"
                         />
 
                     </div>
