@@ -5,6 +5,7 @@ using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
@@ -27,6 +28,12 @@ public class AnalysisWorkflowRepository(AppDbContext appDbContext, ICacheBroker 
 
     public new ValueTask<AnalysisWorkflow> UpdateAsync(AnalysisWorkflow analysisWorkflow, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         => base.UpdateAsync(analysisWorkflow, commandOptions, cancellationToken);
+
+    public ValueTask<int> UpdateBatchAsync(Expression<Func<SetPropertyCalls<AnalysisWorkflow>, SetPropertyCalls<AnalysisWorkflow>>> setPropertyCalls, Expression<Func<AnalysisWorkflow, bool>>? batchUpdatePredicate = default,
+        CancellationToken cancellationToken = default)
+    {
+        return base.UpdateBatchAsync(setPropertyCalls, batchUpdatePredicate, cancellationToken);
+    }
 
     public new ValueTask<AnalysisWorkflow?> DeleteAsync(AnalysisWorkflow analysisWorkflow, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         => base.DeleteAsync(analysisWorkflow, commandOptions, cancellationToken);
