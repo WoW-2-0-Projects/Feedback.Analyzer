@@ -12,9 +12,12 @@ export class LayoutConstants {
     public static readonly Prompts = 'Prompts';
     public static readonly Workflows = 'Workflows';
     public static readonly Summarize = 'Summarize the user input ...';
+    public static readonly Started  = 'Started';
+    public static readonly Completed  = 'Completed';
 
     /* Products */
 
+    public static readonly Product = 'Product';
     public static readonly CreateProduct = 'Create a product';
     public static readonly EditProduct = 'Edit product ';
     public static readonly ProductName = 'Product name';
@@ -47,6 +50,9 @@ export class LayoutConstants {
     public static readonly StartedTime = 'Started';
     public static readonly FinishedTime = 'Finished';
     public static readonly SearchWorkflows = 'Search workflows ...';
+    public static readonly Positive  = 'Positive';
+    public static readonly SelectBaseWorkflow  = 'Select base workflow';
+    public static readonly SelectProduct  = 'Select a product to analyze';
 
     /* Forms */
     public static readonly Submit = 'Submit';
