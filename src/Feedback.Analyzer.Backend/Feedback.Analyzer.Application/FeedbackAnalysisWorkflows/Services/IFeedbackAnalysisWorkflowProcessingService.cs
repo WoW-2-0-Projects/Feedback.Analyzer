@@ -12,12 +12,14 @@ public interface IFeedbackAnalysisWorkflowProcessingService
     /// </summary>
     /// <param name="feedbackAnalysisWorkflow">Workflow to create</param>
     /// <param name="analysisWorkflow">Related analysis workflow to create</param>
+    /// <param name="baseWorkflowId">Base workflow Id to clone execution options from</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Created feedback analysis workflow with new created, related analysis workflow</returns>
     ValueTask<(FeedbackAnalysisWorkflow FeedbackAnalysisWorkflow, AnalysisWorkflow AnalysisWorkflow)>
         CreateAsync(
             FeedbackAnalysisWorkflow feedbackAnalysisWorkflow,
             AnalysisWorkflow analysisWorkflow,
+            Guid baseWorkflowId,
             CancellationToken cancellationToken = default);
 
     /// <summary>

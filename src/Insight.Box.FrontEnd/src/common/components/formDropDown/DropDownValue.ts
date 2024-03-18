@@ -16,4 +16,8 @@ export class DropDownValue<TKey, TValue> {
         this.key = key;
         this.value = value;
     }
+
+    public static create<TKey, TValue>(key: TKey, value: TValue): DropDownValue<TKey, TValue> {
+        return new DropDownValue(key, value);
+    }
 }

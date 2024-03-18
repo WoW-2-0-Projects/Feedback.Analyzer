@@ -2,7 +2,9 @@
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Queries;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
+using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Domain.Common.Queries;
+using Feedback.Analyzer.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.QueryHandlers;
@@ -10,20 +12,24 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.QueryHandle
 /// <summary>
 /// Represents a query handler for retrieving feedback analysis workflows.
 /// </summary>
-public class FeedbackAnalysisWorkflowGetQueryHandler(IMapper mapper, IFeedbackAnalysisWorkflowService feedbackAnalysisWorkflowService)
-    : IQueryHandler<FeedbackAnalysisWorkflowGetQuery, ICollection<FeedbackAnalysisWorkflowDto>>
+public class FeedbackAnalysisWorkflowGetQueryHandler(
+    IMapper mapper,
+    IFeedbackAnalysisWorkflowService feedbackAnalysisWorkflowService,
+    IRequestContextProvider requestContextProvider
+) : IQueryHandler<FeedbackAnalysisWorkflowGetQuery, ICollection<FeedbackAnalysisWorkflowDto>>
 {
     public async Task<ICollection<FeedbackAnalysisWorkflowDto>> Handle(FeedbackAnalysisWorkflowGetQuery request, CancellationToken cancellationToken)
     {
-        var matchedFeedbackAnalysisWorkflows = await feedbackAnalysisWorkflowService.Get(
-            request.Filter,
-            new QueryOptions
-            {
-                TrackingMode = QueryTrackingMode.AsNoTracking
-            })
+        request.Filter.ClientId = requestContextProvider.GetUserId();
+        var queryOptions = new QueryOptions(QueryTrackingMode.AsNoTracking);
+
+        var matchedFeedbackAnalysisWorkflows = await (await feedbackAnalysisWorkflowService
+                .Get(request.Filter, queryOptions)
+                .GetFilteredEntitiesQuery(feedbackAnalysisWorkflowService.Get(), cancellationToken: cancellationToken))
             .Include(workflow => workflow.AnalysisWorkflow)
-            .ToListAsync(cancellationToken);
-        
+            .ApplyTrackingMode(queryOptions.TrackingMode)
+            .ToListAsync(cancellationToken: cancellationToken);
+
         return mapper.Map<ICollection<FeedbackAnalysisWorkflowDto>>(matchedFeedbackAnalysisWorkflows);
     }
 }

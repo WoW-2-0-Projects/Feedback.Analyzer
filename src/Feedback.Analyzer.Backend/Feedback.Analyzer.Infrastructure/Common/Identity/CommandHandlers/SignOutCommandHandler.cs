@@ -11,11 +11,11 @@ namespace Feedback.Analyzer.Infrastructure.Common.Identity.CommandHandlers;
 /// <summary>
 /// Represents a command handler to sign out a user.
 /// </summary>
-public class SignOutCommandHandler(IRequestClientContextProvider requestClientContextProvider, IAuthService authService) : ICommandHandler<SignOutCommand, bool>
+public class SignOutCommandHandler(IRequestContextProvider requestContextProvider, IAuthService authService) : ICommandHandler<SignOutCommand, bool>
 {
     public async Task<bool> Handle(SignOutCommand request, CancellationToken cancellationToken)
     {
-        var accessToken = requestClientContextProvider.GetAccessToken()!;
+        var accessToken = requestContextProvider.GetAccessToken()!;
         var signOutTask = () => authService.SignOutAsync(accessToken, request.RefreshToken, cancellationToken);
         var signOutResult = await signOutTask.GetValueAsync();
 
