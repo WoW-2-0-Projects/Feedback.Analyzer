@@ -110,7 +110,7 @@ const onSubmit = async () => {
     if(isSignIn.value)
        await signIn()
     else
-       signUp();
+      await signUp();
 }
 
 const checkAuthMode = async () => {
@@ -142,8 +142,10 @@ const signIn = async () => {
         closeModal()
     }
 }
-const signUp = () => {
-
+const signUp = async () => {
+    const response = await authService.signUpAsync(signUpDetails.value)
+    if(response)
+        closeModal()
 }
 
 </script>

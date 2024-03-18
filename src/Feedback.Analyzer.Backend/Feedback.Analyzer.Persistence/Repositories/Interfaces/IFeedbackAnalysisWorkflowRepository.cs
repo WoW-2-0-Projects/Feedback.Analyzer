@@ -52,7 +52,7 @@ public interface IFeedbackAnalysisWorkflowRepository
     /// <param name="commandOptions">Options for customizing the command behavior.</param>
     /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
     /// <returns>A ValueTask representing the asynchronous operation, returning the deleted FeedbackAnalysisWorkflow entity.</returns>
-    public ValueTask<FeedbackAnalysisWorkflow> DeleteAsync(FeedbackAnalysisWorkflow feedbackAnalysisWorkflow, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
+    public ValueTask<FeedbackAnalysisWorkflow?> DeleteAsync(FeedbackAnalysisWorkflow feedbackAnalysisWorkflow, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously deletes the FeedbackAnalysisWorkflow entity with the specified identifier.
@@ -61,5 +61,5 @@ public interface IFeedbackAnalysisWorkflowRepository
     /// <param name="commandOptions">Options for customizing the command behavior.</param>
     /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
     /// <returns>A ValueTask representing the asynchronous operation, returning the deleted FeedbackAnalysisWorkflow entity.</returns>
-    public ValueTask<FeedbackAnalysisWorkflow> DeleteByIdAsync(Guid workflowId, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
+    public ValueTask<FeedbackAnalysisWorkflow?> DeleteByIdAsync(Guid workflowId, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
 }

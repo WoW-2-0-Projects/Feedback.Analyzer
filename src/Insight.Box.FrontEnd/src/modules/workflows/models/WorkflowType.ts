@@ -6,15 +6,15 @@ export enum WorkflowType {
     /*
      * Refers to a template workflow.
      */
-    Template = 'Template',
+    Template = 0,
 
     /*
      * Refers to a training workflow.
      */
-    Training = 'Training',
+    Training = 1,
 
     /*
      * Refers to inference workflow
      */
-    Inference = 'Inference'
+    Inference = 2,
 }

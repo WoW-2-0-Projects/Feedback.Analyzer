@@ -216,10 +216,12 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
         CancellationToken cancellationToken = default
     )
     {
-        var entity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken) ??
-                     throw new InvalidOperationException();
+        var entity = await DbContext
+                         .Set<TEntity>()
+                         .FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken) 
+                     ?? throw new InvalidOperationException();
 
-        DbContext.Set<TEntity>().Remove(entity);
+        DbContext.Remove(entity);
 
         if (cacheEntryOptions is not null)
             await cacheBroker.DeleteAsync(entity.Id.ToString(), cancellationToken);

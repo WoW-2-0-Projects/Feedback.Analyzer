@@ -18,6 +18,7 @@ export class FeedbackAnalysisWorkflowFilter extends  FilterPagination {
 
     constructor() {
         super();
+        this.pageSize = 5;
 
         this.searchKeyword = '';
     }

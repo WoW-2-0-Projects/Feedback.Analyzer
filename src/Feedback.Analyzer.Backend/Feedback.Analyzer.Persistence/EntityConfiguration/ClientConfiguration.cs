@@ -1,4 +1,5 @@
 ﻿using Feedback.Analyzer.Domain.Entities;
+using Feedback.Analyzer.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,5 +13,12 @@ public class ClientConfiguration : IEntityTypeConfiguration<Client>
         builder.Property(client => client.LastName).HasMaxLength(64).IsRequired();
         builder.Property(client => client.EmailAddress).HasMaxLength(128).IsRequired();
         builder.Property(client => client.PasswordHash).HasMaxLength(128).IsRequired();
+        
+        builder
+            .Property(client => client.Role)
+            .HasConversion<string>()
+            .HasDefaultValue(Role.Client)
+            .HasMaxLength(64)
+            .IsRequired();
     }
 }

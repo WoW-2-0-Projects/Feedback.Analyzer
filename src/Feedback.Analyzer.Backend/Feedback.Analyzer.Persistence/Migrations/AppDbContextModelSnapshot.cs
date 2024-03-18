@@ -172,6 +172,13 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasDefaultValue("Client");
+
                     b.HasKey("Id");
 
                     b.ToTable("Clients");

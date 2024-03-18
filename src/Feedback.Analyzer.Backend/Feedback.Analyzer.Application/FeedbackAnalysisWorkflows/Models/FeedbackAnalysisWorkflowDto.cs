@@ -24,6 +24,11 @@ public class FeedbackAnalysisWorkflowDto
     public string Name { get; set; } = default!;
 
     /// <summary>
+    /// 
+    /// </summary>
+    public string ProductName { get; set; } = default!;
+
+    /// <summary>
     /// Gets or sets the type of the feedback analysis workflow.
     /// </summary>
     public WorkflowType Type { get; set; }

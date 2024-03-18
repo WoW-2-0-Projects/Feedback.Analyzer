@@ -23,7 +23,7 @@ body {
 /* Theme styles */
 
 .theme-bg {
-  @apply bg-secondaryColor;
+  @apply bg-primaryColor;
 }
 
 .theme-gradient-bg {

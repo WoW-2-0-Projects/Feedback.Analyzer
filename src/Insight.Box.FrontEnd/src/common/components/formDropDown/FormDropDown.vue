@@ -1,11 +1,14 @@
 <template>
 
-    <div class="relative h-fit w-fit" @focusin="onFocusIn" @focusout="onFocusOut">
+    <div class="relative h-fit w-fit theme-action-border-round theme-input-bg theme-action-transition
+                theme-action-shadow theme-action-content"
+         :class="wrapperStyles"
+         @focusin="onFocusIn" @focusout="onFocusOut">
 
         <input type="text" name="input" v-model="searchValue" autocomplete="off"
                :class="size === ActionComponentSize.Medium ? 'action-layout text-md' : 'action-small-layout text-sm'"
-               class="w-full rounded-md peer  theme-action-padding theme-input-bg theme-action-style theme-input-placeholder
-                 theme-action-transition theme-action-border-round theme-input-border theme-action-content"
+               class="mx-3 w-full peer theme-input theme-input-placeholder theme-action-transition
+                      theme-action-content"
                :placeholder="placeholder"/>
 
         <!-- Form input label -->
@@ -20,11 +23,7 @@
         <expand-icon :isOpen="isOpen" class="absolute top-1/2 -translate-y-1/2 right-4"/>
 
         <!-- Drop down options -->
-        <div
-            class="absolute mt-2 w-full z-10 focus:outline-none theme-modal-bg appearance-none rounded-md text-secondaryContentColor
-                    theme-modal-shadow theme-action-secondary theme-input-border-focus overflow-hidden theme-input"
-             v-show="isOpen"
-        >
+        <div class="mt-2 w-full z-50 focus:outline-none bg-[#333740] appearance-none theme-action-border-round text-secondaryContentColor theme-modal-shadow theme-action-secondary theme-input-border overflow-hidden p-2" v-show="isOpen">
             <ul>
                 <li v-for="(value, index) in searchedOptions" :key="index" @mousedown="onSelected(value)"
                     class="px-4 py-4 cursor-pointer theme-input-hover"
@@ -69,6 +68,32 @@ const props = defineProps({
         type: String,
         default: ''
     }
+});
+
+const isFocused = ref<boolean>(false);
+
+const wrapperStyles = computed(() => {
+    let styles = '';
+
+    if(isFocused.value) {
+        styles += ' theme-input-border-focus';
+    } else {
+        styles += ' theme-input-border';
+    }
+
+    // Add button size styles
+    switch (props.size) {
+        case ActionComponentSize.Medium:
+            styles += ' action-layout';
+            break;
+        case ActionComponentSize.Small:
+            styles += ' action-small-layout';
+            break;
+        case ActionComponentSize.ExtraSmall:
+            styles += ' action-extra-small-layout';
+            break;
+    }
+    return styles;
 });
 
 const labelStyles = computed(() => {
@@ -116,11 +141,13 @@ const searchOption = () => {
 const onFocusIn = () => {
     searchedOptions.value = props.values;
     searchValue.value = '';
+    isFocused.value = true;
     isOpen.value = true;
 };
 
 const onFocusOut = () => {
     searchValue.value = props.modelValue?.key;
+    isFocused.value = false;
     isOpen.value = false;
 };
 

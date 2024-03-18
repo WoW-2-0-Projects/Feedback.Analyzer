@@ -15,15 +15,16 @@
 
                 <form class="flex flex-col gap-10" @submit.prevent="onSubmit">
 
-                    <!-- Filter organization drop down -->
+                    <!-- Base workflow drop down -->
                     <form-drop-down v-if="isCreate" :label="LayoutConstants.BaseWorkflow" v-model="baseWorkflow"
-                                    :values="baseWorkflowOptions"
+                                    :values="baseWorkflowOptions" :placeholder="LayoutConstants.SelectBaseWorkflow"
                                     class="w-full"/>
 
-                    <!-- Filter organization drop down -->
-                    <form-drop-down v-if="isCreate" :label="LayoutConstants.ProductToAnalyze" v-model="product"
-                                    class="w-full"
-                                    :values="productOptions"/>
+                    <!-- Product drop down -->
+                    <form-drop-down v-if="isCreate" class="w-full" :values="productOptions"
+                                    :label="LayoutConstants.ProductToAnalyze" v-model="product"
+                                    :placeholder="LayoutConstants.SelectBaseWorkflow"
+                                    />
 
                     <!-- Modal inputs -->
                     <form-input v-model="workflow.name" :label="LayoutConstants.WorkflowName"
