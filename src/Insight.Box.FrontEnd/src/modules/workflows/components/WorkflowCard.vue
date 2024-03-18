@@ -6,16 +6,18 @@
     >
         <template v-slot:mainContent>
 
-            <div class="flex p-2 shadow-xl  card-round">
+            <div class="flex p-2 shadow-xl card-round">
 
                 <!-- Prompt category details -->
                 <div class="w-1/4 flex items-center py-10">
 
                     <div class="flex flex-col flex-grow items-center justify-between h-full">
                         <h5 class="text-2xl text-center">{{ workflow.name }}</h5>
-                        <h5 class="text-base text-center text-tertiaryContentColor">{{LayoutConstants.Product}} : {{ workflow.productName }}</h5>
+                        <h5 class="text-base text-center text-tertiaryContentColor">{{ LayoutConstants.Product }} :
+                            {{ workflow.productName }}</h5>
 
-                        <div class="flex gap-10 text-tertiaryContentColor">
+                        <div class="flex gap-5 items-center justify-center text-tertiaryContentColor cursor-cell"
+                        >
 
                             <div class="flex flex-col justify-center items-center">
                                 <h5 class="text-2xl font-bold">10</h5>
@@ -36,26 +38,17 @@
 
                         <div class="flex gap-3">
 
-                            <app-button class="w-fit" :type="ButtonType.Primary" :layout="ButtonLayout.Rectangle"
-                                        icon="fas fa-play"
-                                        :text="runButtonText"
-                                        :size="ActionComponentSize.ExtraSmall" />
+
+                            <i class="fa-solid"></i>
 
                             <app-button class="w-fit" :type="ButtonType.Primary" :layout="ButtonLayout.Rectangle"
-                                        icon="fas fa-play"
-                                        :text="runButtonText"
-                                        :size="ActionComponentSize.ExtraSmall" />
+                                        :size="ActionComponentSize.ExtraSmall" :text="runButtonText" icon="fas fa-play"
+                            />
 
-                            <app-button class="w-fit" :type="ButtonType.Primary" :layout="ButtonLayout.Rectangle"
-                                        icon="fas fa-play"
-                                        :text="runButtonText"
-                                        :size="ActionComponentSize.ExtraSmall" />
-
-<!--                            <app-button class="w-fit" :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"-->
-<!--                                        :text="workflowResults.length + ' ' +-->
-<!--                                        LayoutConstants.Results" :hideText="hideResultsButtonText"-->
-<!--                                        icon="fas fa-clock-rotate-left" @click="onToggleResultsList"-->
-<!--                                        :size="ActionComponentSize.ExtraSmall"/>-->
+                            <app-button class="w-fit" :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
+                                        :size="ActionComponentSize.ExtraSmall" icon="fas fa-clock-rotate-left"
+                                        @click="onToggleResultsList"
+                            />
 
                         </div>
 
@@ -95,6 +88,7 @@
 
                     <h5 class="text-center">Key points</h5>
 
+
                     <div class="mt-5 flex gap-2 flex-wrap">
                         <span class="bg-accentTertiaryColor px-3 py-1 rounded-full text-sm whitespace-nowrap">mouse
                             flat</span>
@@ -115,12 +109,53 @@
 
         <template v-slot:expandingContent>
 
-            <!-- Workflow execution results -->
-            <h5>Key points</h5>
-            <h5>Key points</h5>
-            <h5>Key points</h5>
-            <h5>Key points</h5>
-            <h5>Key points</h5>
+            <div class="flex flex-col w-full">
+
+                <!-- Workflow details and last run history information -->
+                <div class="flex w-full justify-between">
+
+                    <!-- Workflow details -->
+                    <div>
+                        <h5>Created : </h5>
+                        <h5>Last modified : </h5>
+                        <h5>Last executed : </h5>
+                    </div>
+
+                    <!-- Workflow actions -->
+                    <div class="flex gap-3">
+
+                        <app-button class="w-fit" :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
+                                    :size="ActionComponentSize.ExtraSmall" icon="fas fa-edit"
+                                    @click="emit('edit', workflow)"
+                        />
+
+                        <app-button class="w-fit" :type="ButtonType.Danger" :layout="ButtonLayout.Rectangle"
+                                    :size="ActionComponentSize.ExtraSmall" icon="fas fa-trash"
+                                    @clickd="emit('delete', workflow.id)"
+                        />
+
+                    </div>
+
+                    <vertical-divider :type="DividerType.ContentLength"/>
+
+                    <!-- Workflow execution results -->
+                    <h5>Modified : </h5>
+                    <h5>Key points</h5>
+
+                    <vertical-divider :type="DividerType.ContentLength"/>
+
+                    <h5>Key points</h5>
+                    <h5>Key points</h5>
+                    <h5>Key points</h5>
+
+                </div>
+
+                <!-- Workflow results history -->
+                <div>
+
+                </div>
+
+            </div>
 
         </template>
 
@@ -130,14 +165,13 @@
 
 <script setup lang="ts">
 
-import {onBeforeMount, type PropType, ref} from "vue";
+import {defineEmits, type PropType, ref} from "vue";
 import {ButtonType} from "@/common/components/appButton/ButtonType";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import VerticalDivider from "@/common/components/dividers/VerticalDivider.vue";
 import {DividerType} from "@/common/components/dividers/DividerType";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
-import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import ExpandingCardBase from "@/common/components/expandingCardBase/ExpandingCardBase.vue";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import type {FeedbackAnalysisWorkflow} from "@/modules/workflows/models/FeedbackAnalysisWorkflow";
@@ -146,8 +180,6 @@ import DoughnutChart from "@/common/components/doughnutChart/DoughnutChart.vue";
 
 const runButtonText = "Run";
 const isResultsListOpen = ref<boolean>(false);
-const insightBoxApiClient = new InsightBoxApiClient();
-const workflowResults = ref<Array<FeedbackAnalysisWorkflowResult>>([]);
 
 const props = defineProps({
     workflow: {
@@ -155,6 +187,11 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits<{
+    (e: 'update', workflow: FeedbackAnalysisWorkflow): void,
+    (e: 'delete', workflowId: string): void,
+}>();
 
 // Action button messages
 const hideResultsButtonText = ref<boolean>(false);

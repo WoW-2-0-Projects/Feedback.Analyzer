@@ -60,7 +60,7 @@ const isWorkflowsLoading = ref<boolean>(false);
 const loadNextWorkflows = ref<boolean>(false);
 
 // Workflow modal states
-const isWorkflowModalActive = ref<boolean>(true);
+const isWorkflowModalActive = ref<boolean>(false);
 const isWorkflowCreate = ref<boolean>(true);
 const workflow = ref<FeedbackAnalysisWorkflow>(new FeedbackAnalysisWorkflow());
 

@@ -1,7 +1,7 @@
 <template>
 
     <!-- View content -->
-    <div class="view content-padding bg-primaryColor">
+    <div class="view content-padding">
         <main-header/>
         <router-view/>
     </div>
