@@ -244,7 +244,6 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
     /// <returns>Number of updated rows.</returns>
     protected async ValueTask<int> UpdateBatchAsync(
         Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls,
-        // IImmutableList<(Func<TEntity, object> propertySelector, Func<TEntity, object> valueSelector)> setPropertyExecutors,
         Expression<Func<TEntity, bool>>? batchUpdatePredicate = default,
         CancellationToken cancellationToken = default
     )
@@ -256,7 +255,6 @@ public abstract class EntityRepositoryBase<TEntity, TContext>(
 
         return await entities.ExecuteUpdateAsync(
             setPropertyCalls,
-            // categoryPropertySelector => categoryPropertySelector.MapToSetPropertyCalls(setPropertyExecutors),
             cancellationToken
         );
     }

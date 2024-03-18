@@ -5,6 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandlers;
 
+/// <summary>
+/// Represents an event handler that is responsible for executing the feedback analysis workflow.
+/// </summary>
+/// <param name="serviceScopeFactory"></param>
 public class AnalyzeFeedbackEventHandler(IServiceScopeFactory serviceScopeFactory) : IEventHandler<AnalyzeFeedbackEvent>
 {
     public async Task Handle(AnalyzeFeedbackEvent notification, CancellationToken cancellationToken)
