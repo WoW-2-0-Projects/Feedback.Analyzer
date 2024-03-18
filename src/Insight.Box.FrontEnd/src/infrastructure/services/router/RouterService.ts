@@ -17,15 +17,16 @@ export class RouterService {
      * Adds route change listener
      */
     public addRouteChangeListener(callback: (route: RouteLocationNormalized) => void): void {
-        if(!this.router) {
-            this.router = useRouter();
-
-            this.router.afterEach((to) => {
-                this.routeChangeSource.updateListeners(to);
-            });
-        }
-
+        this.ensureRouteSet();
         this.routeChangeSource.addListener(callback);
+    }
+
+    /*
+     * Gets current route
+     */
+    public getCurrentRoute(): RouteLocationNormalized {
+        this.ensureRouteSet();
+        return this.router.currentRoute.value;
     }
 
     /*
@@ -53,5 +54,15 @@ export class RouterService {
                 component: () => import('../../../modules/workflows/components/WorkflowsTab.vue')
             }
         ]
+    }
+
+    private ensureRouteSet() {
+        if(!this.router) {
+            this.router = useRouter();
+
+            this.router.afterEach((to) => {
+                this.routeChangeSource.updateListeners(to);
+            });
+        }
     }
 }

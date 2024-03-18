@@ -36,13 +36,13 @@ public class FeedbackAnalysisWorkflowRepository(AppDbContext appDbContext, ICach
         CancellationToken cancellationToken = default)
         => base.UpdateAsync(feedbackAnalysisWorkflow, commandOptions, cancellationToken);
 
-    public new ValueTask<FeedbackAnalysisWorkflow> DeleteAsync(
+    public new ValueTask<FeedbackAnalysisWorkflow?> DeleteAsync(
         FeedbackAnalysisWorkflow feedbackAnalysisWorkflow,
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default)
         => base.DeleteAsync(feedbackAnalysisWorkflow, commandOptions, cancellationToken);
 
-    public new ValueTask<FeedbackAnalysisWorkflow> DeleteByIdAsync(
+    public new ValueTask<FeedbackAnalysisWorkflow?> DeleteByIdAsync(
         Guid workflowId,
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default)

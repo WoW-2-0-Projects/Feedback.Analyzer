@@ -71,7 +71,7 @@ const componentStyles = computed(() => {
                 styles += ' theme-action-primary';
                 break;
             case ButtonType.Secondary:
-                styles += ' theme-action-secondary';
+                styles += ' bg-accentTertiaryColor';
                 break;
             case ButtonType.Danger :
                 styles += ' theme-action-danger';

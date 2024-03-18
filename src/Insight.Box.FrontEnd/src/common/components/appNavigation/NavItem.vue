@@ -24,16 +24,12 @@ const props = defineProps({
     }
 });
 
-// const isCurrentRouteActive = computed(() => {
-//
-// });
-
 onMounted(() => {
+    handleRouteChange(routerService.getCurrentRoute());
     routerService.addRouteChangeListener(handleRouteChange);
 });
 
-const handleRouteChange = (route: RouteLocationNormalized) => {
+const handleRouteChange = (route: RouteLocationNormalized) =>
     isCurrentRouteSelected.value = route.path === props.route.path;
-}
 
 </script>

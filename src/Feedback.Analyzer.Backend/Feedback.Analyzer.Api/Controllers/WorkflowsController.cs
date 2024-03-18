@@ -49,10 +49,10 @@ public class WorkflowsController(IMediator mediator) : ControllerBase
 
     [HttpDelete("{workflowId:guid}")]
     public async ValueTask<IActionResult> DeleteFeedbackAnalysisWorkflowByIdAsync(
-        [FromRoute] Guid feedbackAnalysisWorkflowId, CancellationToken cancellationToken)
+        [FromRoute] Guid workflowId, CancellationToken cancellationToken)
     {
         var result =
-            await mediator.Send(new FeedbackAnalysisWorkflowDeleteByIdCommand { Id = feedbackAnalysisWorkflowId },
+            await mediator.Send(new FeedbackAnalysisWorkflowDeleteByIdCommand { Id = workflowId },
                 cancellationToken);
         return result ? Ok() : BadRequest();
     }

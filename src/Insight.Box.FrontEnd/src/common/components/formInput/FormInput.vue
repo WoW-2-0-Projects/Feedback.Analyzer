@@ -1,11 +1,10 @@
 <template>
 
     <div
-        class="flex theme-input-bg relative rounded-md
-        theme-action-transition theme-action-shadow theme-action-content
-        theme-action-border-round" :class="wrapperStyles"
-         @focusin="focus = true"
-         @focusout="focus = false">
+        class="flex theme-input-bg relative theme-action-transition
+               theme-action-shadow theme-action-content theme-action-border-round"
+        :class="wrapperStyles" @focusin="isFocused = true" @focusout="isFocused = false">
+
         <!-- Prefix value -->
         <span class="px-2.5 pb-2.5 pt-5 whitespace-nowrap" v-if="prefix">{{ prefix }}</span>
 
@@ -13,8 +12,8 @@
         <input :type="actualType" name="input" :value="value"
                @input="emit('update:modelValue', `${prefix}${$event.target.value}`)"
                @keydown="onInput" :disabled="disabled"
-               class="w-full px-2.5 pb-2.5 pt-5 bg-transparent appearance-none focus:outline-none peer
-                   theme-input-text theme-input-placeholder theme-action-transition text-base"
+               class="w-full px-2.5 pb-2.5 pt-5 peer theme-input theme-input-text
+                      theme-input-placeholder theme-action-transition text-base"
                :placeholder="placeholder"/>
 
         <label for="input" :class="labelStyles" class="absolute z-10 transform scale-75 origin-[0] start-2.5
@@ -78,7 +77,7 @@ const props = defineProps({
 const wrapperStyles = computed(() => {
     let styles = '';
 
-    if(focus) {
+    if(isFocused.value) {
         styles += ' theme-input-border-focus';
     } else {
         styles += ' theme-input-border';
@@ -121,7 +120,7 @@ const labelStyles = computed(() => {
 });
 
 const actualType = ref<FormInputType>(props.type === FormInputType.Number ? FormInputType.Text : props.type);
-const focus = ref<boolean>(false);
+const isFocused = ref<boolean>(false);
 
 const emit = defineEmits(['update:modelValue']);
 

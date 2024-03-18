@@ -34,10 +34,6 @@
   @apply px-4;
 }
 
-.theme-action-style {
-  @apply focus:outline-none appearance-none;
-}
-
 .theme-action-shadow {
   @apply drop-shadow-sm;
 }
@@ -54,6 +50,10 @@
   @apply transition-all duration-300;
 }
 
+.theme-input {
+  @apply bg-transparent appearance-none outline-none;
+}
+
 .theme-input-text {
   @apply text-primaryContentColor;
 }
@@ -63,23 +63,23 @@
 }
 
 .theme-input-border {
-  @apply border border-accentSecondaryColor focus:border-tertiaryColor;
+  @apply border border-accentSecondaryColor;
 }
 
 .theme-input-border-focus {
-  @apply border focus:border-tertiaryColor;
+  @apply border border-accentPrimaryColor;
 }
 
 .theme-action-border-round {
-  @apply rounded-lg;
+  @apply rounded-xl;
 }
 
 .theme-input-label {
-  @apply text-tertiaryColor;
+  @apply text-tertiaryContentColor;
 }
 
 .theme-input-placeholder {
-  @apply placeholder-transparent focus:placeholder-tertiaryColor
+  @apply placeholder-transparent focus:placeholder-tertiaryColor;
 }
 
 .theme-transition {
@@ -91,7 +91,7 @@
 }
 
 .theme-action-secondary {
-  @apply bg-accentSecondaryColor;
+  @apply bg-secondaryColor;
 }
 
 .theme-action-danger {

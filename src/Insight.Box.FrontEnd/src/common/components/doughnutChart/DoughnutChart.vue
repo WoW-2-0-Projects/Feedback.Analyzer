@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 
-import {onMounted, ref} from "vue";
+import {onBeforeUnmount, onMounted, ref} from "vue";
 import {ChartService} from "@/infrastructure/services/charts/ChartService";
 import ChartLabel from "@/common/components/chartLabel/ChartLabel.vue";
 
@@ -97,6 +97,11 @@ const getChartOptions = () => {
 
 onMounted(async () => {
     await chartService.render(chartContainer.value, getChartOptions());
+});
+
+onBeforeUnmount(async () => {
+    console.log('test', chartContainer.value);
+    await chartService.remove(chartContainer.value, getChartOptions());
 });
 
 </script>

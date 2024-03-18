@@ -21,6 +21,11 @@ export class FeedbackAnalysisWorkflow implements IDropDownValue<string, Feedback
      */
     public productId: string; // Use 'string' for GUIDs in TypeScript
 
+    /*
+     * Product name
+     */
+    public productName: string; // Use 'string' for GUIDs in TypeScript
+
     /**
      * The type of the feedback execution workflow.
      */
