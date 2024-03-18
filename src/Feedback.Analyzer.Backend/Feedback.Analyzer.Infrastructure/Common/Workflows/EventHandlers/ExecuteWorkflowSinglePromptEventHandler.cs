@@ -12,9 +12,9 @@ namespace Feedback.Analyzer.Infrastructure.Common.Workflows.EventHandlers;
 /// <summary>
 /// Represents a class that handles the execution of a workflow prompt in response to a single prompt event.
 /// </summary>
-public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory serviceScopeFactory) : IEventHandler<ExecuteWorkflowSinglePromptEvent>
+public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory serviceScopeFactory) : EventHandlerBase<ExecuteWorkflowSinglePromptEvent>
 {
-    public async Task Handle(ExecuteWorkflowSinglePromptEvent notification, CancellationToken cancellationToken)
+    protected override async ValueTask HandleAsync(ExecuteWorkflowSinglePromptEvent notification, CancellationToken cancellationToken)
     {
         var scopedServiceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
 

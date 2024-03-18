@@ -1,3 +1,4 @@
+using MassTransit;
 using MediatR;
 
 namespace Feedback.Analyzer.Domain.Common.Events;
@@ -6,9 +7,12 @@ namespace Feedback.Analyzer.Domain.Common.Events;
 /// Represents a handler for a specific type of event.
 /// </summary>
 /// <typeparam name="TEvent">The type of event being handled.</typeparam>
-public interface IEventHandler<in TEvent> : IEventHandler, INotificationHandler<TEvent> where TEvent : IEvent
+public interface IEventHandler<in TEvent> : IEventHandler,
+    INotificationHandler<TEvent>,
+    IConsumer<TEvent>
+    where TEvent : class, INotification
 {
-    
+
 }
 
 /// <summary>
@@ -16,5 +20,5 @@ public interface IEventHandler<in TEvent> : IEventHandler, INotificationHandler<
 /// </summary>
 public interface IEventHandler
 {
-    
+
 }

@@ -5,11 +5,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Feedback.Analyzer.Infrastructure.Common.Identity.EventHandlers;
 
-public class UserCreatedEventHandler(IEventBusBroker eventBusBroker, IServiceScopeFactory serviceScopeFactory) : IEventHandler<ClientCreatedEvent>
+/// <summary>
+/// Represents event handler for user created event
+/// </summary>
+/// <param name="serviceScopeFactory"></param>
+public class UserCreatedEventHandler(IServiceScopeFactory serviceScopeFactory) : EventHandlerBase<ClientCreatedEvent>
 {
-    public Task Handle(ClientCreatedEvent notification, CancellationToken cancellationToken)
+    protected override ValueTask HandleAsync(ClientCreatedEvent notification, CancellationToken cancellationToken)
     {
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 
 }
