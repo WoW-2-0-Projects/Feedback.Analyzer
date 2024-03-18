@@ -5,6 +5,11 @@ using MediatR;
 
 namespace Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
 
+/// <summary>
+/// Implementation of <see cref="IEventBusBroker"/> that utilizes a mass transit for publishing events
+/// </summary>
+/// <param name="bus">The bus (mass transit) instance to be used for event publication.</param>
+/// <param name="mediator">The mediator instance to be used for event local publication.</param>
 public class MassTransitEventBusBroker(IBus bus, IPublisher mediator) : IEventBusBroker
 {
     public ValueTask PublishLocalAsync<TEvent>(TEvent @event) where TEvent : EventBase
