@@ -60,7 +60,7 @@ export default {
         fadeOut: 'fadeOut 0.15s ease-out forwards',
         backgroundFadeIn: 'backgroundFadeIn 0.3s ease-out forwards',
         backgroundFadeOut: 'backgroundFadeOut 0.3s ease-out forwards',
-      },
+      }
     },
   },
   plugins: [],

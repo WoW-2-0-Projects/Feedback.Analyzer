@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandlers;
 
-public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory serviceScopeFactory) : IEventHandler<ExecuteWorkflowSinglePromptEvent>
+public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory serviceScopeFactory, IPromptService promptService) : IEventHandler<ExecuteWorkflowSinglePromptEvent>
 {
     public async Task Handle(ExecuteWorkflowSinglePromptEvent notification, CancellationToken cancellationToken)
     {
@@ -26,7 +26,7 @@ public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory servic
                                workflow => workflow.Id == notification.WorkflowId,
                                new QueryOptions
                                {
-                                   TrackingMode = true
+                                   TrackingMode = QueryTrackingMode.AsNoTracking
                                }
                            )
                            .Include(workflow => workflow.Product)
@@ -41,6 +41,8 @@ public class ExecuteWorkflowSinglePromptEventHandler(IServiceScopeFactory servic
             { PromptConstants.CustomerFeedback, workflow.Product.CustomerFeedbacks.First().Comment }
         };
 
-        await promptExecutionProcessingService.ExecuteAsync(notification.PromptId, arguments, cancellationToken: cancellationToken);
+        var prompt = await promptService.GetByIdAsync(notification.PromptId, cancellationToken: cancellationToken);
+
+        await promptExecutionProcessingService.ExecuteAsync(prompt!, arguments, cancellationToken: cancellationToken);
     }
 }
