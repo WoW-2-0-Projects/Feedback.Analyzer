@@ -7,7 +7,7 @@
         <organizations-search-bar :organizationQuery="organizationsQuery"
                                   @addOrganization="openOrganizationModal(null)"/>
 
-    <!-- Organization a gallery -->
+        <!-- Organization a gallery -->
         <div class="mt-4  flex flex-wrap justify-center gap-5">
             <organization-card v-for="organization in organizations"
                                @edit="openOrganizationModal" @delete="onDeleteOrganization"
@@ -32,7 +32,6 @@ import {onBeforeMount, ref} from "vue";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import OrganizationsSearchBar from "@/modules/organizations/components/OrganizationsSearchBar.vue";
-import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
 import {NotificationSource} from "@/infrastructure/models/notifications/Action";
 import {Organization} from "../models/Organization";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
@@ -41,7 +40,6 @@ import {Query} from "@/infrastructure/models/query/Query";
 import {OrganizationFilter} from "@/modules/organizations/models/OrganizationFilter";
 import {CreateOrganizationCommand} from "@/modules/organizations/models/CreateOrganizationCommand";
 import OrganizationModal from "@/modules/organizations/components/OrganizationModal.vue";
-import {DeleteOrganizationCommand} from "@/modules/organizations/models/DeleteOrganizationCommand";
 import {UpdateOrganizationCommand} from "@/modules/organizations/models/UpdateOrganizationCommand";
 import ConfirmationModal from "@/common/components/confirmationModal/ConfirmationModal.vue";
 import {useConfirmDialog} from "@vueuse/core";
@@ -91,8 +89,6 @@ const openOrganizationModal = async (organization: Organization | null) => {
     organizationModalActive.value = true;
 }
 
-
-
 const onOrganizationModalSubmit = async (organization: Organization) => {
     if (isCreate.value)
         await createOrganizationAsync(organization);
@@ -134,16 +130,17 @@ const updateOrganizationAsync = async (organization: Organization) => {
 }
 
 const onDeleteOrganization = async (organizationId: string) => {
+
+    isSearchBarLoading.value = true;
+
     const data = (await deleteConfirmationDialog.value.reveal()).data;
 
     if (data){
-        isSearchBarLoading.value = true;
 
-        const deleteOrganizationCommand = new DeleteOrganizationCommand(organizationId)
         const response = await
-            insightBoxApiClient.organizations.deleteAsync(deleteOrganizationCommand);
+            insightBoxApiClient.organizations.deleteAsync(organizationId);
 
-        if (response.response) {
+        if (response.isSuccess) {
             const resultId: number = organizations.value.findIndex(organization => organization.id == organizationId);
 
             if (resultId > -1)

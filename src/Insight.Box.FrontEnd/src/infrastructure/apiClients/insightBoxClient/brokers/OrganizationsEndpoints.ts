@@ -4,7 +4,6 @@ import type {RequestFormatterService} from "@/infrastructure/apiClients/formatte
 import type {Query} from "@/infrastructure/models/query/Query";
 import type {OrganizationFilter} from "@/modules/organizations/models/OrganizationFilter";
 import type {CreateOrganizationCommand} from "@/modules/organizations/models/CreateOrganizationCommand";
-import type {DeleteOrganizationCommand} from "@/modules/organizations/models/DeleteOrganizationCommand";
 import type {UpdateOrganizationCommand} from "@/modules/organizations/models/UpdateOrganizationCommand";
 
 /*
@@ -56,12 +55,10 @@ export class OrganizationsEndpointsClient {
     /*
      * Delete an organization
      */
-    public async deleteAsync(command: DeleteOrganizationCommand) {
+    public async deleteAsync(organizationId : string) {
 
-        const endpointUrl = `api/organizations/${command.organizationId}`;
+        const endpointUrl = `api/organizations/${organizationId}`;
 
-        return await this.client.deleteAsync<boolean>(endpointUrl);
+        return await this.client.deleteAsync(endpointUrl);
     }
-
-
 }
