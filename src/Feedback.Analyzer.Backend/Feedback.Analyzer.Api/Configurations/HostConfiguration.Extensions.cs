@@ -277,7 +277,8 @@ public static partial class HostConfiguration
         builder.Services
             .AddScoped<ICustomerFeedbackService, CustomerFeedbackService>()
             .AddScoped<IFeedbackAnalysisResultService, FeedbackAnalysisResultService>()
-            .AddScoped<IFeedbackAnalysisWorkflowResultService, FeedbackAnalysisWorkflowResultService>();
+            .AddScoped<IFeedbackAnalysisWorkflowResultService, FeedbackAnalysisWorkflowResultService>()
+            .AddScoped<IFeedbackBatchAnalysisOrchestrationService, FeedbackBatchAnalysisOrchestrationService>();
 
         return builder;
     }
