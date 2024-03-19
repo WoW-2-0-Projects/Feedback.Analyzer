@@ -99,7 +99,6 @@ const onOrganizationModalSubmit = async (organization: Organization) => {
 const createOrganizationAsync = async (organization: Organization) => {
     isSearchBarLoading.value = true;
 
-    organization.clientId = "54e16318-d140-4453-80c9-1a117dbe75fd";
     const createOrganizationCommand = new CreateOrganizationCommand(organization);
     const response = await insightBoxApiClient.organizations.createAsync(createOrganizationCommand);
 

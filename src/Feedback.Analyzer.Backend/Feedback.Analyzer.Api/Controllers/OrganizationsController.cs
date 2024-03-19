@@ -27,7 +27,7 @@ public class OrganizationsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> CreateOrganization([FromBody] OrganizationCreateCommand command, CancellationToken cancellationToken = default)
     {
         var result = await mediator.Send(command, cancellationToken);
-        return Ok(result);
+        return result is not null ? Ok(result) : BadRequest();
     }
 
     [HttpPut]
