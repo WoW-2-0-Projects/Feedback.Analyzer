@@ -5,7 +5,12 @@ export class Product {
     /*
      * Product id
      */
-    public id: string;
+    public id!: string;
+
+   /*
+    * Product organization id
+    */
+    public organizationId!: string;
 
     /*
      * Product name
@@ -17,8 +22,8 @@ export class Product {
      */
     public description: string = '';
 
-    /*
-     * Product organization id
-     */
-    public organizationId: string;
+    constructor() {
+        this.name = ' ';
+        this.description = ' ';
+    }
 }
