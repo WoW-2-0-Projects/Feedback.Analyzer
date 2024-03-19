@@ -30,10 +30,10 @@ public static class SeedDataExtensions
             await SeedCustomerFeedbacksAsync(appDbContext);
 
         if (!await appDbContext.PromptCategories.AnyAsync())
+        {
             await SeedPromptCategoriesAsync(appDbContext);
-
-        if (!await appDbContext.Prompts.AnyAsync())
-            await SeedAnalysisPromptAsync(appDbContext);
+            await SeedAnalysisPromptAsync(appDbContext);   
+        }
 
         if (!await appDbContext.WorkflowExecutionOptions.AnyAsync())
             await SeedAnalysisExecutionOptions(appDbContext);
@@ -266,7 +266,7 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("42204C3B-0E3E-4360-9059-94A011C29608"),
                 CategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                 Prompt = """
-                         ## Instructions"
+                         ## Instructions
 
                          Analyze user feedback and provide a relevance with the service in true or false format
 
@@ -293,7 +293,7 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("3ca01475-d736-4ac3-a326-a2580110ee0c"),
                 CategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
                 Prompt = """
-                         ## Instructions"
+                         ## Instructions
 
                          Extract only relevant parts of the customer feedback for the product
 
@@ -318,9 +318,9 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("4ca01475-d036-4ac3-a326-a2580110ee0c"),
-                CategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
+                CategoryId = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
                 Prompt = """
-                         ## Instructions"
+                         ## Instructions
 
                          Redact personal information from the customer feedback
 
@@ -348,7 +348,7 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("2ba01475-d636-4ac3-a326-a2580112ee0c"),
                 CategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
                 Prompt = """
-                         ## Instructions"
+                         ## Instructions
 
                          Recognize languages from the customer feedback
 
@@ -375,7 +375,7 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("551d1c24-24c2-45aa-9eba-383de543b24b"),
                 CategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
                 Prompt = """
-                         ## Instructions"
+                         ## Instructions
 
                          Extract positive and  negative opinion points from the user feedback.
 
@@ -411,6 +411,176 @@ public static class SeedDataExtensions
                          """,
                 Version = 5,
                 Revision = 0,
+            },
+            new()
+            {
+                Id = Guid.Parse("d2fe6123-dc50-4b4a-93a0-11f2263aa09c"),
+                CategoryId = Guid.Parse("159d0655-40ae-4ded-8c83-0ffff69a7704"),
+                Prompt = """
+                   ##Entity Identification from User Feedback:
+                   ##Objective: Extract and identify key entities from user feedback, organizing them into key phrases with associated key-value pairs for clearer understanding and action.
+                       
+                   ##Instructions:
+                   ##Extract Key Phrases:
+                        
+                    Identify Entities: Pinpoint significant nouns or phrases from the feedback that represent distinct entities, such as product features, issues, or user emotions.
+                        Key Phrases Extraction: List these as key phrases indicative of the feedback's main topics.
+                    ##Assign Key-Value Pairs:
+                        
+                        For each key phrase, determine and assign a value that best represents the sentiment, frequency, or importance mentioned in the feedback.
+                     ##Organize Information:
+                        
+                        Structure the extracted information into an easy-to-read format, prioritizing by relevance or urgency based on the feedback context.
+                   
+                    ##Product Description:
+                       {{$productDescription}}
+
+                    ##User Feedback:
+                       {{$userFeedback}}
+
+                    ##Expected Output:
+                        A list of key phrases extracted from the user feedback.
+                        Associated key-value pairs for each phrase, providing additional detail or context.
+                   ##Result:
+                     Key Phrases with Key-Value Pairs:
+                      Example:
+                        Phrase: ""Battery Life""; Value: ""Short - Negative""
+                        Phrase: ""Customer Service""; Value: ""Helpful - Positive""
+                """,
+                Version = 1,
+                Revision = 0
+            },
+            new()
+            {
+                Id = Guid.Parse("c95c1641-8f99-40c8-b42d-948d8671fc3c"),
+                CategoryId = Guid.Parse("2ef85588-0b12-4fb8-9027-80d45cc38ec1"),
+                Prompt = """
+                    Actionable Questions Analysis from User Feedback:
+                    Objective: Examine user feedback to identify actionable questions that indicate areas for improvement, clarification, or further inquiry. These questions should be ones that can lead to tangible changes or responses from the product or service team.
+
+                    Instructions:
+                    Identify Actionable Questions:
+                    Review Feedback: Carefully analyze the user feedback provided.
+
+                    Extract Actionable Questions: Identify questions that imply a need for action, such as feature requests, bug reports, or clarifications about product usage.
+
+                    Analyze and Prioritize:
+                    Assess Urgency and Relevance: Evaluate the importance and immediacy of each actionable question based on the product's current objectives and user needs.
+
+                    Categorize by Theme: Organize the questions into thematic categories such as Usability, Functionality, Customer Support, etc., to streamline the response process.
+
+                    Document Recommendations:
+                    Propose specific actions or responses to each identified question, considering the potential impact on the user experience and product development.
+                    Context Provided:
+                    Product Description: {{$productDescription}}
+                    User Feedback: {{$userFeedback}}
+                    Expected Output:
+                    Actionable Questions: A list of identified questions from the user feedback that are directly actionable, accompanied by a brief analysis of their urgency, relevance, and proposed actions.
+                    Result:
+                    [Actionable Questions Analysis]: Present a structured analysis of each actionable question identified in the user feedback. This should include the question itself, its categorized theme, the assessed urgency, and recommended actions or responses.
+                """,
+                Version = 1,
+                Revision = 0
+            },
+            new()
+            {
+                Id = Guid.Parse("8e1d69ab-c9e1-457f-aa93-f03dbe5f7256"),
+                CategoryId = Guid.Parse("33ccca43-e803-4fa2-afc7-7c202de5ea0c"),
+                Prompt = """
+                    ##Question Points Extraction from User Feedback:
+                    Objective: Identify and compile a list of questions or areas of uncertainty mentioned in user feedback, facilitating targeted inquiry and clarification.
+                     
+                 ##Instructions:
+                    Identify Questions:
+                     
+                    Review Feedback: Thoroughly examine the user feedback.
+                    Extract Questions: Look for interrogative statements or points where the user seems to seek information or clarification.
+                    Compile Questions:
+                     
+                    List out all identified questions, ensuring they retain the context needed to understand what is being asked.
+                    Categorize Questions:
+                     
+                    If applicable, categorize the questions based on common themes, such as product features, usage, support, etc.
+                
+                ##Product Description:
+                     {{$productDescription}}
+                
+                ##User Feedback:
+                     {{$userFeedback}} 
+                
+                ##Expected Output:
+                     A collection of questions extracted from the feedback, presented clearly and concisely.
+                ##Result:
+                  Collection of Questions:
+                    Example:
+                     ""How long does the battery last on a single charge?""
+                     ""Can the software be updated to fix the current lag issues?""
+                """,
+                Version = 1,
+                Revision = 0
+            },
+            new()
+            {
+                Id = Guid.Parse("7ac803e7-8fcc-4e4f-9a5e-c1e79bb32d4f"),
+                CategoryId = Guid.Parse("6f1fde2a-cafc-4c4d-b909-655414c8c76e"),
+                Prompt = """
+                    ##Detailed Feedback Analysis for Actionable Insights:
+                    ##Objective: Analyze user comments to extract and summarize their overall meaning, and categorize the feedback as either generic, specific, and/or actionable.
+                         
+                    ##Instructions:
+                       ##Summarize and Interpret Feedback:
+                         
+                         Review User Comment: Carefully read the feedback provided.
+                         Draft Overall Summary: Write a concise summary that captures the essential message or sentiment from the feedback.
+                       ##Evaluate and Classify Feedback:
+                         
+                         Assess Nature of Feedback: Determine if the feedback is generic (broad concerns or opinions) or specific (concrete, detailed observations).
+                         Determine Actionability: Identify if the feedback contains clear, implementable suggestions or improvements.
+                       ##Document Analysis and Recommendations:
+                         
+                         Based on the nature and content of the feedback, outline any direct actions that can be taken or consider broader implications for systemic improvements.
+                   
+                  ##Product Description:
+                     {{$productDescription}}
+                 
+                 ##User Feedback:
+                     {{$userFeedback}}
+                 
+                  ##Expected Output:
+                       ##Feedback Summary: A concise interpretation capturing the core message of the user's feedback.
+                       ##Classification:
+                         Nature: [Generic/Specific] – Indicate whether the feedback addresses broad concepts or specific details.
+                         Actionability: [Actionable/Non-Actionable] – State whether the feedback presents clear steps for improvement.
+                    ##Result:
+                         In this section, you would present the analysis of the user's comment based on the instructions provided. For example:
+                         
+                       ##Feedback Summary: ""The user appreciates the mouse but suggests improvements to the wheel button for better functionality.""
+                       ##Classification:
+                         Nature: Specific – The feedback points to a particular aspect of the product.
+                         Actionability: Actionable – The feedback includes a specific suggestion for product enhancement.
+                """,
+                Version = 1,
+                Revision = 0
+            },
+            new()
+            {
+                Id = Guid.Parse("ad52fe38-23f4-4aa2-bf60-c8a610089a89"),
+                CategoryId = Guid.Parse("d187624d-8af7-4495-bf7b-00084a63372e"),
+                Prompt = """
+                    ## Advanced Opinion Mining
+                
+                    Analyze the sentiment of the following user feedback based on the detailed product description provided. Classify the overall sentiment into 'Positive', 'Negative', or 'Neutral'. Consider nuanced language, contextual clues, and specific product attributes mentioned in the feedback.
+                    
+                    Product Description: {{$productDescription}}
+                    
+                    User Feedback: {{$userFeedback}}
+                    
+                    Ensure the response is concise and directly correlates to the sentiments expressed in the feedback.
+                        
+                    Result:
+                """,
+                Version = 1,
+                Revision = 0
             }
         };
 
@@ -420,7 +590,7 @@ public static class SeedDataExtensions
         categories.ForEach(
             category =>
             {
-                var prompt = analysisPrompts.FirstOrDefault(prompt => prompt.CategoryId == category.Id);
+                var prompt = analysisPrompts.Find(prompt => prompt.CategoryId == category.Id);
 
                 if (prompt is not null)
                     category.SelectedPromptId = prompt.Id;
