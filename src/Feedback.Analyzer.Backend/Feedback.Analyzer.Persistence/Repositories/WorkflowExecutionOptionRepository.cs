@@ -55,15 +55,11 @@ public class WorkflowExecutionOptionRepository(AppDbContext dbContext, ICacheBro
             .ToListAsync(cancellationToken: cancellationToken);
         
         // Load grand children
-        await Task.WhenAll(
-            childrenOptions.Select(
-                async childrenOption =>
-                {
-                    childrenOption.AnalysisPromptCategory.SelectedPrompt!.Category = childrenOption.AnalysisPromptCategory;
-                    childrenOption.ChildExecutionOptions = await LoadAllChildrenAsync(childrenOption.Id, queryOptions, cancellationToken);
-                }
-            )
-        );
+        foreach(var childrenOption in childrenOptions)
+        {
+            childrenOption.AnalysisPromptCategory.SelectedPrompt!.Category = childrenOption.AnalysisPromptCategory;
+            childrenOption.ChildExecutionOptions = await LoadAllChildrenAsync(childrenOption.Id, queryOptions, cancellationToken);
+        }
         
         return childrenOptions;
     }
