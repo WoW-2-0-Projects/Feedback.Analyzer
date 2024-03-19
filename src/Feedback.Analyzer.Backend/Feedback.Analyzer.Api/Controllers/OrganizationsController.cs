@@ -41,6 +41,6 @@ public class OrganizationsController(IMediator mediator) : ControllerBase
     public async ValueTask<IActionResult> DeleteOrganizationById([FromRoute] Guid organizationId, CancellationToken cancellationToken = default)
     {
        var result =  await mediator.Send(new OrganizationDeleteByIdCommand{ OrganizationId = organizationId}, cancellationToken);
-        return  result ? Ok(result) : BadRequest();
+        return  result ? Ok() : BadRequest();
     }
 }

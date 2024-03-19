@@ -33,8 +33,7 @@ public class OrganizationService(
 
         if (organizationFilter.ClientId.HasValue)
         {
-            organizationQuery = organizationQuery.Include(organization => organization.Client)
-                                                 .Where(organization => organization.Id == organizationFilter.ClientId);
+            organizationQuery = organizationQuery.Where(organization => organization.ClientId == organizationFilter.ClientId);
         }
         
         return organizationQuery;

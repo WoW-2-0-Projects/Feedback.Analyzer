@@ -25,12 +25,10 @@ public class OrganizationGetQueryHandler(
 
         var queryOptions = new QueryOptions(QueryTrackingMode.AsNoTracking);
 
-        var matchedOrganizations = await (await organizationService
-                                                .Get(organizationGetQuery.Filter, queryOptions)
-                                                .GetFilteredEntitiesQuery(organizationService.Get(),
-                                                    cancellationToken: cancellationToken))
+        var matchedOrganizations = await organizationService
+                                         .Get(organizationGetQuery.Filter, queryOptions)
                                          .ApplyTrackingMode(queryOptions.TrackingMode).ToListAsync(cancellationToken);
-        
+
         return mapper.Map<ICollection<OrganizationDto>>(matchedOrganizations);
     }
 }
