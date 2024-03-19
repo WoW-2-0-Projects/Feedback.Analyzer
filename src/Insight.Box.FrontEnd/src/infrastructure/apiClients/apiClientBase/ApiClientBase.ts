@@ -1,5 +1,5 @@
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import axios from "axios";
+import axios, {HttpStatusCode} from "axios";
 import type { ProblemDetails } from "@/infrastructure/apiClients/apiClientBase/ProblemDetails";
 import { ApiResponse } from "@/infrastructure/apiClients/apiClientBase/ApiResponse";
 import  {localStorageService} from "@/infrastructure/services/storage/LocalStorageService";
@@ -52,7 +52,7 @@ export default class ApiClientBase {
                         const newAccessToken = response.data.accessToken;
 
                         // Store the new access token in local storage
-                        this.localStorageService.set("accessToken", newAccessToken);
+                        this.localStorageService.Set("accessToken", newAccessToken);
 
                         // Update the Authorization header
                         error.config.headers['Authorization'] = `Bearer ${newAccessToken}`;

@@ -5,12 +5,12 @@ export class Organization {
     /*
      * Organization id
      */
-    public id: string;
+    public id!: string;
 
     /*
      * Client id of the organization
      */
-    public clientId: string;
+    public clientId!: string;
 
     /*
      * Name of the organization
@@ -25,5 +25,10 @@ export class Organization {
     /*
      * Count of products in the organization
      */
-    public productsCount: number;
+    public productsCount!: number;
+
+    constructor() {
+        this.name = '';
+        this.description = '';
+    }
 }
