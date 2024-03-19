@@ -9,6 +9,7 @@ using Feedback.Analyzer.Infrastructure.Organizations.Validators;
 using Feedback.Analyzer.Persistence.Extensions;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.Organizations.Services;
 
@@ -19,32 +20,41 @@ namespace Feedback.Analyzer.Infrastructure.Organizations.Services;
 /// <param name="organizationValidator">The validator for ensuring organization data integrity.</param>
 public class OrganizationService(
     IOrganizationRepository organizationRepository,
-    OrganizationValidator organizationValidator ) 
+    OrganizationValidator organizationValidator)
     : IOrganizationService
 {
     public IQueryable<Organization> Get(
-        Expression<Func<Organization, bool>>? predicate, QueryOptions queryOptions = default) 
+        Expression<Func<Organization, bool>>? predicate, QueryOptions queryOptions = default)
         => organizationRepository.Get(predicate, queryOptions);
-    
-    public IQueryable<Organization> Get(OrganizationFilter organizationFilter, QueryOptions queryOptions = default) 
-        => organizationRepository.Get().ApplyPagination(organizationFilter);
+
+    public IQueryable<Organization> Get(OrganizationFilter organizationFilter, QueryOptions queryOptions = default)
+    {
+        var organizationQuery = organizationRepository.Get().ApplyPagination(organizationFilter);
+
+        if (organizationFilter.ClientId.HasValue)
+        {
+            organizationQuery = organizationQuery.Where(organization => organization.ClientId == organizationFilter.ClientId);
+        }
+        
+        return organizationQuery;
+    }
 
     public ValueTask<Organization?> GetByIdAsync(
-        Guid organizationId, 
-        QueryOptions queryOptions = default, 
+        Guid organizationId,
+        QueryOptions queryOptions = default,
         CancellationToken cancellationToken = default
-        ) =>
-        organizationRepository.GetByIdAsync(organizationId, queryOptions, cancellationToken);
-    
+    ) 
+        => organizationRepository.GetByIdAsync(organizationId, queryOptions, cancellationToken);
+
 
     public ValueTask<Organization> CreateAsync(
-        Organization organization, 
+        Organization organization,
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default)
     {
         var validationResult = organizationValidator
             .Validate(organization,
-                options => 
+                options =>
                     options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
 
         if (!validationResult.IsValid)
@@ -58,8 +68,9 @@ public class OrganizationService(
         CancellationToken cancellationToken = default
     )
     {
-        var foundOrganization = await GetByIdAsync(organization.Id, cancellationToken: cancellationToken) ?? throw new InvalidOperationException();
-        
+        var foundOrganization = await GetByIdAsync(organization.Id, cancellationToken: cancellationToken) ??
+                                throw new InvalidOperationException();
+
         foundOrganization.Name = organization.Name;
         foundOrganization.Description = organization.Description;
 
@@ -70,13 +81,11 @@ public class OrganizationService(
         Organization organization,
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default)
-        =>
-        organizationRepository.DeleteAsync(organization, commandOptions, cancellationToken);
+        => organizationRepository.DeleteAsync(organization, commandOptions, cancellationToken);
 
     public ValueTask<Organization?> DeleteByIdAsync(
         Guid organizationId,
         CommandOptions commandOptions = default,
-        CancellationToken cancellationToken = default) 
-        =>
-        organizationRepository.DeleteByIdAsync(organizationId, commandOptions, cancellationToken);
+        CancellationToken cancellationToken = default)
+        => organizationRepository.DeleteByIdAsync(organizationId, commandOptions, cancellationToken);
 }
