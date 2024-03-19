@@ -9,9 +9,9 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandle
 /// Represents an event handler that is responsible for executing the feedback analysis workflow.
 /// </summary>
 /// <param name="serviceScopeFactory"></param>
-public class AnalyzeFeedbackEventHandler(IServiceScopeFactory serviceScopeFactory) : IEventHandler<AnalyzeFeedbackEvent>
+public class AnalyzeFeedbackEventHandler(IServiceScopeFactory serviceScopeFactory) : EventHandlerBase<AnalyzeFeedbackEvent>
 {
-    public async Task Handle(AnalyzeFeedbackEvent notification, CancellationToken cancellationToken)
+    protected override async ValueTask HandleAsync(AnalyzeFeedbackEvent notification, CancellationToken cancellationToken)
     {
         var scopedServiceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
         var feedbackAnalysisOrchestrationService = scopedServiceProvider.GetRequiredService<IFeedbackAnalysisOrchestrationService>();

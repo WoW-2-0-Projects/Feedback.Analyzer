@@ -11,12 +11,12 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandle
 /// <summary>
 /// Represents event handler for before prompt execution hook event
 /// </summary>
-public class AfterPromptExecutionEventHandler : IEventHandler<AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>>
+public class AfterPromptExecutionEventHandler : EventHandlerBase<AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>>
 {
-    public Task Handle(AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext> notification, CancellationToken cancellationToken)
+    protected override ValueTask HandleAsync(AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext> notification, CancellationToken cancellationToken)
     {
         if (notification.Context is not SingleFeedbackAnalysisWorkflowContext context)
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         
         switch (notification.Prompt.Category.Category)
         {
@@ -70,6 +70,6 @@ public class AfterPromptExecutionEventHandler : IEventHandler<AfterPromptExecuti
                 break;
         }
 
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 }
