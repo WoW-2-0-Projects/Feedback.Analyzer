@@ -13,11 +13,14 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandle
 /// </summary>
 public class AfterPromptExecutionEventHandler : EventHandlerBase<AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>>
 {
-    protected override ValueTask HandleAsync(AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext> notification, CancellationToken cancellationToken)
+    protected override ValueTask HandleAsync(
+        AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext> notification,
+        CancellationToken cancellationToken
+    )
     {
         if (notification.Context is not SingleFeedbackAnalysisWorkflowContext context)
             return ValueTask.CompletedTask;
-        
+
         switch (notification.Prompt.Category.Category)
         {
             case FeedbackAnalysisPromptCategory.RelevanceAnalysis:
@@ -66,8 +69,37 @@ public class AfterPromptExecutionEventHandler : EventHandlerBase<AfterPromptExec
                 break;
             }
             case FeedbackAnalysisPromptCategory.OpinionMining:
-                context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
+            {
+                var lastHistory = context.GetLastHistory(notification.Prompt.CategoryId) ?? throw new InvalidOperationException(
+                    $"No history found for the category - {notification.Prompt.Category.Category.GetDisplayName()}"
+                );
+
+                if (lastHistory.Result is null)
+                    throw new InvalidOperationException(
+                        $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null"
+                    );
+
+                context.Result.FeedbackOpinion.OverallOpinion = JsonConvert.DeserializeObject<OpinionType>(lastHistory.Result);
                 break;
+            }
+            case FeedbackAnalysisPromptCategory.OpinionPointsExtraction:
+            {
+                var lastHistory = context.GetLastHistory(notification.Prompt.CategoryId) ?? throw new InvalidOperationException(
+                    $"No history found for the category - {notification.Prompt.Category.Category.GetDisplayName()}"
+                );
+
+                if (lastHistory.Result is null)
+                    throw new InvalidOperationException(
+                        $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null"
+                    );
+
+                var points = JsonConvert.DeserializeObject<string[][]>(lastHistory.Result) ??
+                             throw new InvalidOperationException("Failed to deserialize the opinion points");
+
+                context.Result.FeedbackOpinion.PositiveOpinionPoints = points[0];
+                context.Result.FeedbackOpinion.NegativeOpinionPoints = points[1];
+                break;
+            }
         }
 
         return ValueTask.CompletedTask;

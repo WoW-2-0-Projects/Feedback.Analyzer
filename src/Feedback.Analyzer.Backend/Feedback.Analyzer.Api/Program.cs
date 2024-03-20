@@ -1,4 +1,5 @@
 using Feedback.Analyzer.Api.Configurations;
+using Feedback.Analyzer.Domain.Enums;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);

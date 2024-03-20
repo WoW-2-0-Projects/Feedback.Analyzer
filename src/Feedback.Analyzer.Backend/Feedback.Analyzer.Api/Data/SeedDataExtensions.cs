@@ -32,15 +32,15 @@ public static class SeedDataExtensions
         if (!await appDbContext.PromptCategories.AnyAsync())
         {
             await SeedPromptCategoriesAsync(appDbContext);
-            await SeedAnalysisPromptAsync(appDbContext);   
+            await SeedAnalysisPromptAsync(appDbContext);
         }
 
         if (!await appDbContext.WorkflowExecutionOptions.AnyAsync())
             await SeedAnalysisExecutionOptions(appDbContext);
-        
+
         if (!await appDbContext.AnalysisWorkflows.AnyAsync())
             await SeedAnalysisWorkflowsAsync(appDbContext);
-        
+
         if (!await appDbContext.FeedbackAnalysisWorkflows.AnyAsync())
             await SeedFeedbackAnalysisWorkflowsAsync(appDbContext);
 
@@ -91,31 +91,31 @@ public static class SeedDataExtensions
                 Name = "Razer Inc.",
                 Description = """
                               What is Razer?
-                              
-                              Razer is a global technology company at the forefront of the gaming industry. It specializes in designing and 
-                              manufacturing cutting-edge hardware, software, and services with a passionate focus on the gaming and esports 
-                              communities. Razer's iconic triple-headed snake logo is widely recognized as a symbol of excellence and innovation in 
+
+                              Razer is a global technology company at the forefront of the gaming industry. It specializes in designing and
+                              manufacturing cutting-edge hardware, software, and services with a passionate focus on the gaming and esports
+                              communities. Razer's iconic triple-headed snake logo is widely recognized as a symbol of excellence and innovation in
                               the gaming world.
-                              
+
                               Little History
-                              
+
                               1998: The Razer brand is born in San Diego, California, under a small company named kärna.
                               2005: Razer Inc. is officially founded by Min-Liang Tan (current CEO) and Robert Krakoff.
                               Through the years: Razer establishes itself as a powerhouse through strategic product releases and acquisitions.
                               CEO, Managers, Main Roles
-                              
+
                               CEO: Min-Liang Tan (Co-founder)
                               CFO: Chong Neng Tan
                               President: Richard Hashim
-                              Key Roles: Hardware engineers, software developers, product designers, marketing specialists, and esports/community 
+                              Key Roles: Hardware engineers, software developers, product designers, marketing specialists, and esports/community
                               management. What Products the Company Manufactures
-                              
-                              Gaming Laptops: High-performance gaming laptops under the Razer Blade series, known for slim designs and powerful 
-                              components. Gaming Mice: A wide variety of gaming mice catering to different grip styles, sensor technologies, and 
-                              levels of customization. Gaming Keyboards: Mechanical and membrane keyboards with features like RGB lighting, 
-                              programmable macros, and dedicated media controls. Audio: Gaming headsets, speakers, and microphones optimized for 
-                              immersive sound and clear communication. Accessories: Mousepads, gaming chairs, backpacks, and other peripherals to 
-                              complement the gaming experience. Software & Services: Razer Synapse (device configuration), Razer Chroma RGB 
+
+                              Gaming Laptops: High-performance gaming laptops under the Razer Blade series, known for slim designs and powerful
+                              components. Gaming Mice: A wide variety of gaming mice catering to different grip styles, sensor technologies, and
+                              levels of customization. Gaming Keyboards: Mechanical and membrane keyboards with features like RGB lighting,
+                              programmable macros, and dedicated media controls. Audio: Gaming headsets, speakers, and microphones optimized for
+                              immersive sound and clear communication. Accessories: Mousepads, gaming chairs, backpacks, and other peripherals to
+                              complement the gaming experience. Software & Services: Razer Synapse (device configuration), Razer Chroma RGB
                               (lighting ecosystem), Razer Cortex (game optimization), Razer Gold (virtual currency)
                               """,
                 ClientId = Guid.Parse("54e16318-d140-4453-80c9-1a117dbe75fd"),
@@ -175,9 +175,9 @@ public static class SeedDataExtensions
             {
                 ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
                 Comment = """
-                          I laid my hands on the Viper in a local store and on the spot it felt rather flat. I think I prefer something with more 
-                          hump and side area to grip onto. right now I have a basilisk v2 and think it's definetely more comfy, but that grip could 
-                          still be better.\n\nThe Synapse software is extremely greedy though. 300MB HD space and about 200MB RAM is ludicrous for a 
+                          I laid my hands on the Viper in a local store and on the spot it felt rather flat. I think I prefer something with more
+                          hump and side area to grip onto. right now I have a basilisk v2 and think it's definetely more comfy, but that grip could
+                          still be better.\n\nThe Synapse software is extremely greedy though. 300MB HD space and about 200MB RAM is ludicrous for a
                           gloryfied mouse driver.",
                           """,
                 UserName = "Silverspark",
@@ -263,51 +263,51 @@ public static class SeedDataExtensions
                 CategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                 Prompt = """
                          ## Concepts
-                         
+
                          Product description : A brief description of the product
                          Customer feedback : The customer's feedback comment about the product
                          Relevance : measure of how closely the customer's feedback is related to the product description
-                         
+
                          ## Instructions
-                         
+
                          Analyze customer feedback, compare it with product description and determine whether the customer's feedback is relevant or
                          not. Deeply analyze the description to understand the customer's feedback.
-                         
+
                          Requirements :
                          1. feedback must include at least 1 sentence about the service
                          2. even feedbacks that have non-related content counts if the rule #1 is satisfied
                          3. output a single line in the following format
-                         
+
                          true - if feedback is relevant
                          false - if feedback is not relevant
-                         
+
                          ## Examples
-                         
-                         Product description : 
-                         
-                         Logitech MX Master 3 Wireless Mouse. The most advanced Master Series mouse yet – designed for creatives and engineered for 
+
+                         Product description :
+
+                         Logitech MX Master 3 Wireless Mouse. The most advanced Master Series mouse yet – designed for creatives and engineered for
                          coders. If you can think it, you can master it. The great battery life and the ergonomic design make it a perfect choice for
-                         all day use. 
-                         
+                         all day use.
+
                          1. Relevant feedback
-                         
+
                          Customer feedback : battery life ? are you joking ? mine lasts only 2 days. I'm really disappointed with the product.
                          Reasoning : Here customer is talking about battery life of the product which is relevant to the product, result is true
-                         
+
                          2. Non relevant feedback
-                         
+
                          Customer feedback : I like keyboards of this brand. They are really good.
-                         Reasoning : Even though feedback mentions the brand, it's not directly has anything to do with the product. Customer is 
+                         Reasoning : Even though feedback mentions the brand, it's not directly has anything to do with the product. Customer is
                                   talking about the different product of the brand, so result is false
-                         
+
                          3. Advanced case
-                         
-                         Product description : finally a good one
-                         Customer feedback : Customer is talking about the product in a positive way but not mentioning any specific feature of the 
+
+                         Customer feedback : finally a good one
+                         Reasoning : Customer is talking about the product in a positive way but not mentioning any specific feature of the
                          product, result is true
 
                          ## Input
-                         
+
                          Product description - {{$productDescription}}
                          Customer feedback - {{$customerFeedback}}
                          """,
@@ -320,59 +320,59 @@ public static class SeedDataExtensions
                 CategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
                 Prompt = """
                          ## Concepts
-                         
+
                          Product description : A brief description of the product
                          Customer feedback : The customer's feedback comment about the product
                          Relevant content : Only relevant part of the customer's feedback
-                         
+
                          ## Instructions
-                         
+
                          Analyze customer feedback, compare it with product description and extract only parts of the feedback that is relevant to the product or can contribute to the product improvement. Deeply analyze the description to understand the customer's feedback.
-                         
+
                          Requirements :
                          1. if relevant content is in different parts of the feedback, all relevant parts must be extracted and appended
                          2. try to extract as a readable sentence, not just words
                          3. output the result as a string
-                         
+
                          ## Examples
-                         
-                         Product description : 
-                         
-                         Logitech MX Master 3 Wireless Mouse. The most advanced Master Series mouse yet – designed for creatives and engineered for 
+
+                         Product description :
+
+                         Logitech MX Master 3 Wireless Mouse. The most advanced Master Series mouse yet – designed for creatives and engineered for
                          coders. If you can think it, you can master it. The great battery life and the ergonomic design make it a perfect choice for
-                         all day use. 
-                         
+                         all day use.
+
                          1. Relevant content in different parts
-                         
-                         Customer feedback : battery life ? are you joking ? mine lasts only 2 days. I'm really disappointed with the product. last 
-                         year I bought a Rapoo MT550 mouse, and it still has a great battery life. Battery life in Razer mouse just sucks
-                         
-                         Result : battery life ? are you joking ? mine lasts only 2 days. I'm really disappointed with the product. 
-                         Battery life in Razer mouse just sucks
-                         
-                         Reasoning : Feedback has 3 parts - complaint about battery life, mentioning other brand's product and another complaint 
+
+                         Customer feedback : battery life ? are you joking ? mine lasts only 2 days. I'm really disappointed with the product. last
+                         year I bought a Rapoo MT550 mouse, and it still has a great battery life. Battery life in Razer mouses just sucks
+
+                         Result : battery life ? are you joking ? mine lasts only 2 days. I'm really disappointed with the product.
+                         Battery life in Razer mouses just sucks
+
+                         Reasoning : Feedback has 3 parts - complaint about battery life, mentioning other brand's product and another complaint
                          about the product. We extracted only part 1 and part 3, as mentioning other brand's product is not relevant
-                         
+
                          2. Relevant content in a single part
-                         
+
                          Customer feedback : I like keyboards of this brand. They are really good. I hope the mouse is as good as the keyboards
 
                          Result : I hope the mouse is as good as the keyboards
 
-                         Reasoning : Feedback has 3 parts - compliment about keyboards and hoping that mouses are as good as keyboards. We extract 
+                         Reasoning : Feedback has 3 parts - compliment about keyboards and hoping that mouses are as good as keyboards. We extract
                          the part 2, although it skips the initial context, it gives clear view of the customer's expectation
-                         
+
                          3. Advanced case
-                         
-                         Product description : Got one month ago, it feels very big and not comfy, my fist hurts when using it
-                         
+
+                         Customer feedback : Got one month ago, it feels very big and not comfy, my fist hurts when using it
+
                          Result : Got one month ago, it feels very big and not comfy, my fist hurts when using it
-                         
-                         Reasoning : Feedback has 3 parts - customer mentions when he bought the product, how it feels and the problem he is facing. 
+
+                         Reasoning : Feedback has 3 parts - customer mentions when he bought the product, how it feels and the problem he is facing.
                          Whole feedback is relevant
 
                          ## Input
-                         
+
                          Product description - {{$productDescription}}
                          Customer feedback - {{$customerFeedback}}
                          """,
@@ -412,24 +412,54 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("2ba01475-d636-4ac3-a326-a2580112ee0c"),
                 CategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
                 Prompt = """
+                         ## Concepts
+                         
+                         Customer feedback : The customer's feedback comment about the product
+                         Language Recognition : Recognizing which languages are used in the feedback
+                         
                          ## Instructions
-
-                         Recognize languages from the customer feedback
-
+                         
+                         Analyze customer feedback, understand the language used in the feedback and recognize the languages used in the feedback.
+                         
                          Requirements :
-                         1. list language if something readable or like a sentence written in it, not just a word
-                         2. list all languages feedback contains multiple languages
-
-                         ## Data
-
-                         {{$productDescription}}
-
+                         1. recognize all languages used in the feedback
+                         2. output the result as array of strings, don't use fenced code blocks for JSON, just output as JSON as following : 
+                         
+                         [
+                            "English",
+                            "Spanish"
+                         ]
+                         
+                         ## Examples
+                         
+                         1. Single language
+                         
+                         Customer Feedback : I've been using the Logitech MX Master 3 for a couple of months now, and I'm extremely satisfied. The 
+                         ergonomic design has significantly reduced my wrist pain, and the battery life is just incredible. The customizable buttons 
+                         have streamlined my workflow remarkably.
+                         Result : [ "English" ]
+                         Reasoning : Customer feedback contains only content in english language
+                         
+                         2. Multiple languages
+                         
+                         Customer Feedback : I absolutely love my Logitech MX Master 3! The smooth scrolling feature and the precise tracking have 
+                         improved my editing work tremendously. However, tengo un pequeño problema con el software de personalización; a veces no 
+                         guarda mis configuraciones correctamente. But overall, it's a fantastic product. 
+                         Result : [ "English", "Spanish" ]
+                         Reasoning : 1st part of the customer feedback is in english and the second part is in spanish
+                         
+                         3. Advanced case
+                         
+                         Customer Feedback :The Logitech MX Master 3 is a game-changer for me. The comfort and the advanced features are top-notch. 
+                         However, Ich hatte Probleme mit der Verbindung via Bluetooth, which was a bit frustrating. Also, la qualité de construction
+                         est exceptionnelle, making it worth every penny despite the minor issues.
+                         Result : [ "English", "French" ]
+                         Reasoning : Although customer feedback mainly in english language, in the middle of the feedback, there is a sentence in 
+                         franch
+                         
                          ## Input
-
-                         {{$customerFeedback}}
-
-                         ## Result
-
+                         
+                         Customer feedback - {{$customerFeedback}}
                          """,
                 Version = 1,
                 Revision = 0,
@@ -439,39 +469,109 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("551d1c24-24c2-45aa-9eba-383de543b24b"),
                 CategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
                 Prompt = """
+                         ## Concepts
+
+                         Product description : A brief description of the product
+                         Customer feedback : The customer's feedback comment about the product
+                         Positive point : One unit of positive opinion from the customer's feedback
+                         Negative point : One unit of negative opinion point from the customer's feedback
+
                          ## Instructions
 
-                         Extract positive and  negative opinion points from the user feedback.
+                         Analyze customer feedback, compare it with product description and extract positive and negative points from the feedback.
+                         Deeply analyze the description to understand the customer's feedback.
 
                          Requirements :
-                         1. extract positive and negative opinion points from the user feedback.
-                         2. don't include neutral opinion points
-                         3. only extract opinion points that are related to the product
-                         4. only extract the section that contains opinion itself not the whole sentence
-                         5. don't include any points from product description
-                         6. be aware of mixed complex sentences that might contain turning points
-                         7. exclude actionable opinions because we want exact source of positive and negative experience not solutions
-                         8. analyze and exclude sentences with opinions that you are not sure whether it is about this product
-                         9. separate points if there are multiple points in a single sentence or in a conjunction
+                         1. something counts as positive point if it is a compliment about some exact thing in the product, not just customer happiness
+                            expression
+                         2. something counts as negative point if it is a complaint about some exact thing in the product, not just customer disappointment
+                            expression
+                         3. don't include neutral points or something general like "I like the product" or "I hate the product"
+                         4. you can rephrase the points to make them more readable and simpler
+                         5. if a sentence has multiple contains multiple points, extract and separate them all
+                         6. output must be an array of an array, first array contains positive points, second array contains negative points, if any
+                         of points not found for the category just return empty array in JSON format as following, don't use fenced code blocks for
+                         JSON
+
+                         [
+                            [
+                                "I like the side grip of the mouse",
+                                "battery life has improved"
+                            ],
+                            [
+                                "Mouse driver is hard to update",
+                                "When battery is low, mouse starts lagging",
+                            ]
+                         ]
 
                          ## Examples
 
-                         These examples contain turning points
+                         Product description :
 
-                         - Overall I think the Viper is a good mouse, but I can't afford but - positive
-                         - Overall I think the Viper is a good mouse, but not for me - neutral
-                         - Overall Viper is a good mouse, they said, but nope - negative
+                         Logitech MX Master 3 Wireless Mouse. The most advanced Master Series mouse yet – designed for creatives and engineered for
+                         coders. If you can think it, you can master it. The great battery life and the ergonomic design make it a perfect choice for
+                         all day use.
 
-                         ## Product Description:
+                         1. Relevant content in different parts
 
-                         {{$productDescription}}
+                         Customer feedback : battery life ? are you joking ? mine lasts only 2 days. I'm really disappointed with the product. last
+                         year I bought a Rapoo MT550 mouse, and it still has a great battery life. I hate Razer mouses
 
-                         ## Customer feedback :
+                         Result :
 
-                         {{$customerFeedback}}
+                         [
+                            [],
+                            [
+                                "battery doesn't last long enough",
+                            ]
+                         ]
 
-                         ## Result
+                         Reasoning : Customer has exact complaint about the battery and expresses that he hates Razer mouses, here he said that
+                         battery life lasts for only 2 days, which is a negative point, but the last expression doesn't count, as it doesn't have
+                         some exact complaint about the product
 
+                         2. Relevant content in a single part
+
+                         Customer feedback : The DPI in the new mouse just rocks, it's perfect for design work,  but the polling rate isn't grate for
+                         gaming
+
+                         Result :
+
+                         [
+                            [
+                                "improved DPI since last model",
+                            ],
+                            [
+                                "bad polling rate for gaming"
+                            ]
+                         ]
+
+                         Reasoning : Customer has exact compliment about the DPI and exact complaint about the polling rate, so both are extracted
+
+                         3. Advanced case
+
+                         Product description : My friend recommended the mouse as it has a good buttons layout and also mentioned about the scroll
+                         that often breaks. I bought one, so far good, just over time, side buttons started to get stuck and hard to click, charging
+                         in this mouse is pretty quick tho
+
+                         Result :
+
+                         [
+                            [
+                                "quick charging",
+                            ],
+                            [
+                                "side buttons are getting stuck",
+                            ]
+                         ]
+
+                         Reasoning : Although customer has mentioned the experience of hist friend, this doesn't count as direct experience with the
+                         product, so we can only take the last 2 points
+
+                         ## Input
+
+                         Product description - {{$productDescription}}
+                         Customer feedback - {{$customerFeedback}}
                          """,
                 Version = 1,
                 Revision = 0,
@@ -481,68 +581,36 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("d2fe6123-dc50-4b4a-93a0-11f2263aa09c"),
                 CategoryId = Guid.Parse("159d0655-40ae-4ded-8c83-0ffff69a7704"),
                 Prompt = """
-                   ##Entity Identification from User Feedback:
-                   ##Objective: Extract and identify key entities from user feedback, organizing them into key phrases with associated key-value pairs for clearer understanding and action.
-                       
-                   ##Instructions:
-                   ##Extract Key Phrases:
-                        
-                    Identify Entities: Pinpoint significant nouns or phrases from the feedback that represent distinct entities, such as product features, issues, or user emotions.
-                        Key Phrases Extraction: List these as key phrases indicative of the feedback's main topics.
-                    ##Assign Key-Value Pairs:
-                        
-                        For each key phrase, determine and assign a value that best represents the sentiment, frequency, or importance mentioned in the feedback.
-                     ##Organize Information:
-                        
-                        Structure the extracted information into an easy-to-read format, prioritizing by relevance or urgency based on the feedback context.
-                   
-                    ##Product Description:
-                       {{$productDescription}}
-
-                    ##User Feedback:
-                       {{$userFeedback}}
-
-                    ##Expected Output:
-                        A list of key phrases extracted from the user feedback.
-                        Associated key-value pairs for each phrase, providing additional detail or context.
-                   ##Result:
-                     Key Phrases with Key-Value Pairs:
-                      Example:
-                        Phrase: ""Battery Life""; Value: ""Short - Negative""
-                        Phrase: ""Customer Service""; Value: ""Helpful - Positive""
-                """,
-                Version = 1,
-                Revision = 0
-            },
-            new()
-            {
-                Id = Guid.Parse("c95c1641-8f99-40c8-b42d-948d8671fc3c"),
-                CategoryId = Guid.Parse("2ef85588-0b12-4fb8-9027-80d45cc38ec1"),
-                Prompt = """
-                    Actionable Questions Analysis from User Feedback:
-                    Objective: Examine user feedback to identify actionable questions that indicate areas for improvement, clarification, or further inquiry. These questions should be ones that can lead to tangible changes or responses from the product or service team.
-
-                    Instructions:
-                    Identify Actionable Questions:
-                    Review Feedback: Carefully analyze the user feedback provided.
-
-                    Extract Actionable Questions: Identify questions that imply a need for action, such as feature requests, bug reports, or clarifications about product usage.
-
-                    Analyze and Prioritize:
-                    Assess Urgency and Relevance: Evaluate the importance and immediacy of each actionable question based on the product's current objectives and user needs.
-
-                    Categorize by Theme: Organize the questions into thematic categories such as Usability, Functionality, Customer Support, etc., to streamline the response process.
-
-                    Document Recommendations:
-                    Propose specific actions or responses to each identified question, considering the potential impact on the user experience and product development.
-                    Context Provided:
-                    Product Description: {{$productDescription}}
-                    User Feedback: {{$userFeedback}}
-                    Expected Output:
-                    Actionable Questions: A list of identified questions from the user feedback that are directly actionable, accompanied by a brief analysis of their urgency, relevance, and proposed actions.
-                    Result:
-                    [Actionable Questions Analysis]: Present a structured analysis of each actionable question identified in the user feedback. This should include the question itself, its categorized theme, the assessed urgency, and recommended actions or responses.
-                """,
+                            ##Entity Identification from User Feedback:
+                            ##Objective: Extract and identify key entities from user feedback, organizing them into key phrases with associated key-value pairs for clearer understanding and action.
+                                
+                            ##Instructions:
+                            ##Extract Key Phrases:
+                                 
+                             Identify Entities: Pinpoint significant nouns or phrases from the feedback that represent distinct entities, such as product features, issues, or user emotions.
+                                 Key Phrases Extraction: List these as key phrases indicative of the feedback's main topics.
+                             ##Assign Key-Value Pairs:
+                                 
+                                 For each key phrase, determine and assign a value that best represents the sentiment, frequency, or importance mentioned in the feedback.
+                              ##Organize Information:
+                                 
+                                 Structure the extracted information into an easy-to-read format, prioritizing by relevance or urgency based on the feedback context.
+                            
+                             ##Product Description:
+                                {{$productDescription}}
+                         
+                             ##User Feedback:
+                                {{$userFeedback}}
+                         
+                             ##Expected Output:
+                                 A list of key phrases extracted from the user feedback.
+                                 Associated key-value pairs for each phrase, providing additional detail or context.
+                            ##Result:
+                              Key Phrases with Key-Value Pairs:
+                               Example:
+                                 Phrase: ""Battery Life""; Value: ""Short - Negative""
+                                 Phrase: ""Customer Service""; Value: ""Helpful - Positive""
+                         """,
                 Version = 1,
                 Revision = 0
             },
@@ -551,78 +619,35 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("8e1d69ab-c9e1-457f-aa93-f03dbe5f7256"),
                 CategoryId = Guid.Parse("33ccca43-e803-4fa2-afc7-7c202de5ea0c"),
                 Prompt = """
-                    ##Question Points Extraction from User Feedback:
-                    Objective: Identify and compile a list of questions or areas of uncertainty mentioned in user feedback, facilitating targeted inquiry and clarification.
-                     
-                 ##Instructions:
-                    Identify Questions:
-                     
-                    Review Feedback: Thoroughly examine the user feedback.
-                    Extract Questions: Look for interrogative statements or points where the user seems to seek information or clarification.
-                    Compile Questions:
-                     
-                    List out all identified questions, ensuring they retain the context needed to understand what is being asked.
-                    Categorize Questions:
-                     
-                    If applicable, categorize the questions based on common themes, such as product features, usage, support, etc.
-                
-                ##Product Description:
-                     {{$productDescription}}
-                
-                ##User Feedback:
-                     {{$userFeedback}} 
-                
-                ##Expected Output:
-                     A collection of questions extracted from the feedback, presented clearly and concisely.
-                ##Result:
-                  Collection of Questions:
-                    Example:
-                     ""How long does the battery last on a single charge?""
-                     ""Can the software be updated to fix the current lag issues?""
-                """,
-                Version = 1,
-                Revision = 0
-            },
-            new()
-            {
-                Id = Guid.Parse("7ac803e7-8fcc-4e4f-9a5e-c1e79bb32d4f"),
-                CategoryId = Guid.Parse("6f1fde2a-cafc-4c4d-b909-655414c8c76e"),
-                Prompt = """
-                    ##Detailed Feedback Analysis for Actionable Insights:
-                    ##Objective: Analyze user comments to extract and summarize their overall meaning, and categorize the feedback as either generic, specific, and/or actionable.
-                         
-                    ##Instructions:
-                       ##Summarize and Interpret Feedback:
-                         
-                         Review User Comment: Carefully read the feedback provided.
-                         Draft Overall Summary: Write a concise summary that captures the essential message or sentiment from the feedback.
-                       ##Evaluate and Classify Feedback:
-                         
-                         Assess Nature of Feedback: Determine if the feedback is generic (broad concerns or opinions) or specific (concrete, detailed observations).
-                         Determine Actionability: Identify if the feedback contains clear, implementable suggestions or improvements.
-                       ##Document Analysis and Recommendations:
-                         
-                         Based on the nature and content of the feedback, outline any direct actions that can be taken or consider broader implications for systemic improvements.
-                   
-                  ##Product Description:
-                     {{$productDescription}}
-                 
-                 ##User Feedback:
-                     {{$userFeedback}}
-                 
-                  ##Expected Output:
-                       ##Feedback Summary: A concise interpretation capturing the core message of the user's feedback.
-                       ##Classification:
-                         Nature: [Generic/Specific] – Indicate whether the feedback addresses broad concepts or specific details.
-                         Actionability: [Actionable/Non-Actionable] – State whether the feedback presents clear steps for improvement.
-                    ##Result:
-                         In this section, you would present the analysis of the user's comment based on the instructions provided. For example:
-                         
-                       ##Feedback Summary: ""The user appreciates the mouse but suggests improvements to the wheel button for better functionality.""
-                       ##Classification:
-                         Nature: Specific – The feedback points to a particular aspect of the product.
-                         Actionability: Actionable – The feedback includes a specific suggestion for product enhancement.
-                """,
+                             ##Question Points Extraction from User Feedback:
+                             Objective: Identify and compile a list of questions or areas of uncertainty mentioned in user feedback, facilitating targeted inquiry and clarification.
+                              
+                          ##Instructions:
+                             Identify Questions:
+                              
+                             Review Feedback: Thoroughly examine the user feedback.
+                             Extract Questions: Look for interrogative statements or points where the user seems to seek information or clarification.
+                             Compile Questions:
+                              
+                             List out all identified questions, ensuring they retain the context needed to understand what is being asked.
+                             Categorize Questions:
+                              
+                             If applicable, categorize the questions based on common themes, such as product features, usage, support, etc.
+
+                         ##Product Description:
+                              {{$productDescription}}
+
+                         ##User Feedback:
+                              {{$userFeedback}}
+
+                         ##Expected Output:
+                              A collection of questions extracted from the feedback, presented clearly and concisely.
+                         ##Result:
+                           Collection of Questions:
+                             Example:
+                              ""How long does the battery last on a single charge?""
+                              ""Can the software be updated to fix the current lag issues?""
+                         """,
                 Version = 1,
                 Revision = 0
             },
@@ -631,18 +656,76 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("ad52fe38-23f4-4aa2-bf60-c8a610089a89"),
                 CategoryId = Guid.Parse("d187624d-8af7-4495-bf7b-00084a63372e"),
                 Prompt = """
-                    ## Advanced Opinion Mining
-                
-                    Analyze the sentiment of the following user feedback based on the detailed product description provided. Classify the overall sentiment into 'Positive', 'Negative', or 'Neutral'. Consider nuanced language, contextual clues, and specific product attributes mentioned in the feedback.
-                    
-                    Product Description: {{$productDescription}}
-                    
-                    User Feedback: {{$userFeedback}}
-                    
-                    Ensure the response is concise and directly correlates to the sentiments expressed in the feedback.
-                        
-                    Result:
-                """,
+                         ## Concepts
+
+                         Product description : A brief description of the product
+                         Customer feedback : The customer's feedback comment about the product
+                         Opinion mining : Determining sentiment of the customer's feedback
+
+                         ## Instructions
+
+                         Analyze customer feedback, compare it with product description and understand the overall sentiment.
+
+                         Requirements :
+                         1. consider nuanced language, contextual clues, and specific product attributes mentioned in the feedback
+                         2. if customer doesn't have experience with the product ( language - I tried, looked, heard, seems like ), you can count
+                            this as neutral
+                         3. output the result as single string in JSON format as following, don't use fenced code blocks for JSON, just add double quotes to
+                         make it parseable as JSON
+
+                         "Positive" - if overall feedback has positive sentiment
+                         "Negative" - if customer is not satisfied with the product
+                         "Neutral" - if feedback is neither positive nor negative
+
+                         ## Examples
+
+                         Product description :
+
+                         Logitech MX Master 3 Wireless Mouse. The most advanced Master Series mouse yet – designed for creatives and engineered for
+                         coders. If you can think it, you can master it. The great battery life and the ergonomic design make it a perfect choice for
+                         all day use. Battery life is upto 70 days on a full charge
+
+                         1. Negative feedback
+
+                         Customer feedback : I only get to use it 5 days after charging, the best battery life so far ))
+                         Result : Negative
+                         Reasoning : Although from the tone it seems like customer liked the product, they are complaining about the battery life
+                         with a sarcasm
+
+                         2. Positive feedback
+
+                         Customer feedback : First I hated using it, the scroll, the grip ... now loving this badboy
+                         Result : Positive
+                         Reasoning : Customer have been adapted to the product and now loving it
+
+                         3. Advanced case
+
+                         Customer feedback : Tried one in store, seems just like the previous one, just more hype
+                         Result : Neutral
+                         Reasoning : At first it seems like customer is complaining about less than expected changes since the last release, but
+                         at the same time customer admits they don't have direct experience with the product, so it doesn't as negative or positive
+
+                         4. With turning points
+
+                         Customer feedback : Overall I think the MX Master 3 is a good mouse, but I can't afford one
+                         Result : Neutral
+                         Reasoning : We count this as neutral because user doesn't have direct experience with the product
+
+                         Customer feedback : Overall I think the MX Master 3 is a good mouse, but not for me
+                         Result : Neutral
+                         Reasoning : Customer feels this mouse isn't for them, and probably they haven't tried it too, so it counts as neutral
+
+                         Customer feedback : Overall MX Master 3 is a good mouse, they said, but nope
+                         Result : Negative
+                         Reasoning : Customer mentions overall positive feedback about the product, but has some negative experience with it, so it
+                         counts as negative
+
+                         ## Input
+
+                         Product description - {{$productDescription}}
+                         Customer feedback - {{$customerFeedback}}
+
+                         """,
                 Version = 1,
                 Revision = 0
             }
@@ -677,50 +760,50 @@ public static class SeedDataExtensions
             AnalysisPromptCategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
             ChildExecutionOptions =
             [
-                // new WorkflowExecutionOption
-                // {
-                //     AnalysisPromptCategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
-                // },
+                new WorkflowExecutionOption
+                {
+                    AnalysisPromptCategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
+                },
                 new WorkflowExecutionOption
                 {
                     AnalysisPromptCategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
                     ChildExecutionOptions =
                     [
+                        // new WorkflowExecutionOption
+                        // {
+                        //     AnalysisPromptCategoryId = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
+                        //     ChildExecutionOptions =
+                        //     [
                         new WorkflowExecutionOption
                         {
-                            AnalysisPromptCategoryId = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
-                            ChildExecutionOptions =
-                            [
-                                new WorkflowExecutionOption
-                                {
-                                    AnalysisPromptCategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
-                                },
-                                new WorkflowExecutionOption
-                                {
-                                    AnalysisPromptCategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
-                                    ChildExecutionOptions =
-                                    [
-                                        new WorkflowExecutionOption
-                                        {
-                                            AnalysisPromptCategoryId = Guid.Parse("6F1FDE2A-CAFC-4C4D-B909-655414C8C76E"),
-                                        },
-                                    ]
-                                },
-                                new WorkflowExecutionOption
-                                {
-                                    AnalysisPromptCategoryId = Guid.Parse("33CCCA43-E803-4FA2-AFC7-7C202DE5EA0C"),
-                                    ChildExecutionOptions =
-                                    [
-                                        new WorkflowExecutionOption
-                                        {
-                                            AnalysisPromptCategoryId = Guid.Parse("2EF85588-0B12-4FB8-9027-80D45CC38EC1"),
-                                        },
-                                    ]
-                                },
-                            ]
+                            AnalysisPromptCategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
+                        },
+                        new WorkflowExecutionOption
+                        {
+                            AnalysisPromptCategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
+                            // ChildExecutionOptions =
+                            // [
+                            //     new WorkflowExecutionOption
+                            //     {
+                            //         AnalysisPromptCategoryId = Guid.Parse("6F1FDE2A-CAFC-4C4D-B909-655414C8C76E"),
+                            //     },
+                            // ]
+                        },
+                        new WorkflowExecutionOption
+                        {
+                            AnalysisPromptCategoryId = Guid.Parse("33CCCA43-E803-4FA2-AFC7-7C202DE5EA0C"),
+                            // ChildExecutionOptions =
+                            // [
+                            //     new WorkflowExecutionOption
+                            //     {
+                            //         AnalysisPromptCategoryId = Guid.Parse("2EF85588-0B12-4FB8-9027-80D45CC38EC1"),
+                            //     },
+                            // ]
                         },
                     ]
                 },
+                // ]
+                // },
                 // new WorkflowExecutionOption
                 // {
                 //     AnalysisPromptCategoryId = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
@@ -728,39 +811,40 @@ public static class SeedDataExtensions
             ]
         };
 
-        await appDbContext.WorkflowExecutionOptions.AddRangeAsync(executionOptions);
-    }
-    
-    /// <summary>
-    /// Seeds analysis workflows
-    /// </summary>
-    private static async ValueTask SeedAnalysisWorkflowsAsync(AppDbContext appDbContext)
+    await appDbContext.WorkflowExecutionOptions.AddRangeAsync(executionOptions);
+}
+
+/// <summary>
+/// Seeds analysis workflows
+/// </summary>
+private static async ValueTask SeedAnalysisWorkflowsAsync(AppDbContext appDbContext)
+{
+    var templateWorkflow = new AnalysisWorkflow
     {
-        var templateWorkflow = new AnalysisWorkflow
+        Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
+        Name = "TemplateWorkflow",
+        Type = WorkflowType.Template,
+        EntryExecutionOptionId = Guid.Parse("E4B16AEB-41C3-4E50-AB0B-8A883AE397C1"),
+    };
+
+    await appDbContext.AnalysisWorkflows.AddRangeAsync(templateWorkflow);
+}
+
+/// <summary>
+/// Seeds feedback analysis workflows
+/// </summary>
+private static async ValueTask SeedFeedbackAnalysisWorkflowsAsync(AppDbContext appDbContext)
+{
+    var templateFeedbackAnalysisWorkflow = new List<FeedbackAnalysisWorkflow>
+    {
+        new()
         {
             Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
-            Name = "TemplateWorkflow",
-            Type = WorkflowType.Template,
-            EntryExecutionOptionId = Guid.Parse("E4B16AEB-41C3-4E50-AB0B-8A883AE397C1"),
-        };
+            ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b")
+        },
+    };
 
-        await appDbContext.AnalysisWorkflows.AddRangeAsync(templateWorkflow);
-    }
+    await appDbContext.FeedbackAnalysisWorkflows.AddRangeAsync(templateFeedbackAnalysisWorkflow);
+}
 
-    /// <summary>
-    /// Seeds feedback analysis workflows
-    /// </summary>
-    private static async ValueTask SeedFeedbackAnalysisWorkflowsAsync(AppDbContext appDbContext)
-    {
-        var templateFeedbackAnalysisWorkflow = new List<FeedbackAnalysisWorkflow>
-        {
-            new()
-            {
-                Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
-                ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b")
-            },
-        };
-
-        await appDbContext.FeedbackAnalysisWorkflows.AddRangeAsync(templateFeedbackAnalysisWorkflow);
-    }
 }
