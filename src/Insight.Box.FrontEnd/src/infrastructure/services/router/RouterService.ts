@@ -11,7 +11,7 @@ export class RouterService {
     }
 
     private readonly routeChangeSource = new NotificationSource<RouteLocationNormalized>;
-    private router: Router;
+    private router!: Router;
 
     /*
      * Adds route change listener
@@ -44,10 +44,11 @@ export class RouterService {
                 path: '/products',
                 component: () => import('../../../modules/products/components/ProductsTab.vue')
             },
-            // {
-            //     name: 'Prompts',
-            //     path: '/prompts',
-            // },
+             {
+                 name: 'Prompts',
+                 path: '/prompts',
+                 component: () => import('../../../modules/prompts/components/PromptsTab.vue')
+             },
             {
                 name: 'Workflows',
                 path: '/workflows',
