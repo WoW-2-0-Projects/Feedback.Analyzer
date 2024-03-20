@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Feedback.Analyzer.Application.Organizations.Models;
 using Feedback.Analyzer.Application.Organizations.Services;
+using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
@@ -20,7 +21,8 @@ namespace Feedback.Analyzer.Infrastructure.Organizations.Services;
 /// <param name="organizationValidator">The validator for ensuring organization data integrity.</param>
 public class OrganizationService(
     IOrganizationRepository organizationRepository,
-    OrganizationValidator organizationValidator)
+    OrganizationValidator organizationValidator,
+    IRequestContextProvider requestContextProvider)
     : IOrganizationService
 {
     public IQueryable<Organization> Get(
@@ -29,13 +31,16 @@ public class OrganizationService(
 
     public IQueryable<Organization> Get(OrganizationFilter organizationFilter, QueryOptions queryOptions = default)
     {
+        organizationFilter.ClientId = requestContextProvider.GetUserId();
+
         var organizationQuery = organizationRepository.Get().ApplyPagination(organizationFilter);
 
         if (organizationFilter.ClientId.HasValue)
         {
-            organizationQuery = organizationQuery.Where(organization => organization.ClientId == organizationFilter.ClientId);
+            organizationQuery =
+                organizationQuery.Where(organization => organization.ClientId == organizationFilter.ClientId);
         }
-        
+
         return organizationQuery;
     }
 
@@ -43,15 +48,18 @@ public class OrganizationService(
         Guid organizationId,
         QueryOptions queryOptions = default,
         CancellationToken cancellationToken = default
-    ) 
-        => organizationRepository.GetByIdAsync(organizationId, queryOptions, cancellationToken);
-
+    )
+        => ValidateClient(organizationId, requestContextProvider.GetUserId())
+            ? organizationRepository.GetByIdAsync(organizationId, queryOptions, cancellationToken)
+            : ValueTask.FromResult<Organization?>(null);
 
     public ValueTask<Organization> CreateAsync(
         Organization organization,
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default)
     {
+        organization.ClientId = requestContextProvider.GetUserId();
+
         var validationResult = organizationValidator
             .Validate(organization,
                 options =>
@@ -71,6 +79,7 @@ public class OrganizationService(
         var foundOrganization = await GetByIdAsync(organization.Id, cancellationToken: cancellationToken) ??
                                 throw new InvalidOperationException();
 
+        organization.ClientId = requestContextProvider.GetUserId();
         foundOrganization.Name = organization.Name;
         foundOrganization.Description = organization.Description;
 
@@ -87,5 +96,22 @@ public class OrganizationService(
         Guid organizationId,
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default)
-        => organizationRepository.DeleteByIdAsync(organizationId, commandOptions, cancellationToken);
+    {
+        var clientId = requestContextProvider.GetUserId();
+
+        if (!ValidateClient(organizationId, clientId))
+        {
+            return ValueTask.FromResult<Organization?>(null);
+        }
+
+        return organizationRepository.DeleteByIdAsync(organizationId, commandOptions, cancellationToken);
+    }
+
+    private bool ValidateClient(Guid organizationId, Guid clientId)
+    {
+        var isFoundClient = organizationRepository.Get().Where(organization =>
+            organization.ClientId == clientId && organization.Id == organizationId);
+
+        return isFoundClient.Any();
+    }
 }

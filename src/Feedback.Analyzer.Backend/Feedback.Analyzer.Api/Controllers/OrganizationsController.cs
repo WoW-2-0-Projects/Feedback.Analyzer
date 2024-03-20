@@ -1,10 +1,12 @@
 ﻿using Feedback.Analyzer.Application.Organizations.Commands;
 using Feedback.Analyzer.Application.Organizations.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Feedback.Analyzer.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class OrganizationsController(IMediator mediator) : ControllerBase
