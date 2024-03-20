@@ -25,7 +25,7 @@ public class AfterPromptExecutionEventHandler : EventHandlerBase<AfterPromptExec
             context.Status = WorkflowStatus.Failed;
             context.ErrorMessage = $"No history found for the category - {notification.Prompt.Category.Category.GetDisplayName()}";
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
 
         if (lastHistory.Result is null)
@@ -34,7 +34,7 @@ public class AfterPromptExecutionEventHandler : EventHandlerBase<AfterPromptExec
             context.ErrorMessage =
                 $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null";
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
         
         switch (notification.Prompt.Category.Category)
