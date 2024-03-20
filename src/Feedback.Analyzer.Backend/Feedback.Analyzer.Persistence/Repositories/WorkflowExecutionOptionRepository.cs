@@ -52,6 +52,7 @@ public class WorkflowExecutionOptionRepository(AppDbContext dbContext, ICacheBro
             .Include(executionOption => executionOption.AnalysisPromptCategory)
             .ThenInclude(category => category.SelectedPrompt)
             .Include(executionOption => executionOption.ChildExecutionOptions)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken: cancellationToken);
         
         // Load grand children
