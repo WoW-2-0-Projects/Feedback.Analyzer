@@ -137,7 +137,7 @@ public static class SeedDataExtensions
             {
                 Id = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
                 OrganizationId = Guid.Parse("c2fe1019-1180-4f3e-b477-413a9b33bbd1"),
-                Name = "iPhone",
+                Name = "Razer Viper Ultimate",
                 Description = """
                               Razor Viper Ultimate - wireless gaming mouse
 
@@ -262,24 +262,54 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("42204C3B-0E3E-4360-9059-94A011C29608"),
                 CategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                 Prompt = """
+                         ## Concepts
+                         
+                         Product description : A brief description of the product
+                         Customer feedback : The customer's feedback comment about the product
+                         Relevance : measure of how closely the customer's feedback is related to the product description
+                         
                          ## Instructions
-
-                         Analyze user feedback and provide a relevance with the service in true or false format
-
-                         Conditions :
+                         
+                         Analyze customer feedback, compare it with product description and determine whether the customer's feedback is relevant or
+                         not. Deeply analyze the description to understand the customer's feedback.
+                         
+                         Requirements :
                          1. feedback must include at least 1 sentence about the service
-                         2. even feedbacks that have non-related content counts if the rule 1 is satisfied
-
-                         ## Data
-
-                         {{$productDescription}}
+                         2. even feedbacks that have non-related content counts if the rule #1 is satisfied
+                         3. output a single line in the following format
+                         
+                         true - if feedback is relevant
+                         false - if feedback is not relevant
+                         
+                         ## Examples
+                         
+                         Product description : 
+                         
+                         Logitech MX Master 3 Wireless Mouse. The most advanced Master Series mouse yet – designed for creatives and engineered for 
+                         coders. If you can think it, you can master it. The great battery life and the ergonomic design make it a perfect choice for
+                         all day use. 
+                         
+                         1. Relevant feedback
+                         
+                         Customer feedback : battery life ? are you joking ? mine lasts only 2 days. I'm really disappointed with the product.
+                         Reasoning : Here customer is talking about battery life of the product which is relevant to the product, result is true
+                         
+                         2. Non relevant feedback
+                         
+                         Customer feedback : I like keyboards of this brand. They are really good.
+                         Reasoning : Even though feedback mentions the brand, it's not directly has anything to do with the product. Customer is 
+                                  talking about the different product of the brand, so result is false
+                         
+                         3. Advanced case
+                         
+                         Product description : finally a good one
+                         Customer feedback : Customer is talking about the product in a positive way but not mentioning any specific feature of the 
+                         product, result is true
 
                          ## Input
-
-                         {{$customerFeedback}}
-
-                         ## Result
-
+                         
+                         Product description - {{$productDescription}}
+                         Customer feedback - {{$customerFeedback}}
                          """,
                 Version = 1,
                 Revision = 0,
@@ -289,26 +319,64 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("3ca01475-d736-4ac3-a326-a2580110ee0c"),
                 CategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
                 Prompt = """
+                         ## Concepts
+                         
+                         Product description : A brief description of the product
+                         Customer feedback : The customer's feedback comment about the product
+                         Relevant content : Only relevant part of the customer's feedback
+                         
                          ## Instructions
-
-                         Extract only relevant parts of the customer feedback for the product
-
+                         
+                         Analyze customer feedback, compare it with product description and extract only parts of the feedback that is relevant to the product or can contribute to the product improvement. Deeply analyze the description to understand the customer's feedback.
+                         
                          Requirements :
-                         1. if feedback contains relevant content in different parts of the feedback, all relevant parts must be extracted and appended
+                         1. if relevant content is in different parts of the feedback, all relevant parts must be extracted and appended
                          2. try to extract as a readable sentence, not just words
+                         3. output the result as a string
+                         
+                         ## Examples
+                         
+                         Product description : 
+                         
+                         Logitech MX Master 3 Wireless Mouse. The most advanced Master Series mouse yet – designed for creatives and engineered for 
+                         coders. If you can think it, you can master it. The great battery life and the ergonomic design make it a perfect choice for
+                         all day use. 
+                         
+                         1. Relevant content in different parts
+                         
+                         Customer feedback : battery life ? are you joking ? mine lasts only 2 days. I'm really disappointed with the product. last 
+                         year I bought a Rapoo MT550 mouse, and it still has a great battery life. Battery life in Razer mouse just sucks
+                         
+                         Result : battery life ? are you joking ? mine lasts only 2 days. I'm really disappointed with the product. 
+                         Battery life in Razer mouse just sucks
+                         
+                         Reasoning : Feedback has 3 parts - complaint about battery life, mentioning other brand's product and another complaint 
+                         about the product. We extracted only part 1 and part 3, as mentioning other brand's product is not relevant
+                         
+                         2. Relevant content in a single part
+                         
+                         Customer feedback : I like keyboards of this brand. They are really good. I hope the mouse is as good as the keyboards
 
-                         ## Data
+                         Result : I hope the mouse is as good as the keyboards
 
-                         {{$productDescription}}
+                         Reasoning : Feedback has 3 parts - compliment about keyboards and hoping that mouses are as good as keyboards. We extract 
+                         the part 2, although it skips the initial context, it gives clear view of the customer's expectation
+                         
+                         3. Advanced case
+                         
+                         Product description : Got one month ago, it feels very big and not comfy, my fist hurts when using it
+                         
+                         Result : Got one month ago, it feels very big and not comfy, my fist hurts when using it
+                         
+                         Reasoning : Feedback has 3 parts - customer mentions when he bought the product, how it feels and the problem he is facing. 
+                         Whole feedback is relevant
 
                          ## Input
-
-                         {{$customerFeedback}}
-
-                         ## Result
-
+                         
+                         Product description - {{$productDescription}}
+                         Customer feedback - {{$customerFeedback}}
                          """,
-                Version = 2,
+                Version = 1,
                 Revision = 0,
             },
             new()
@@ -336,7 +404,7 @@ public static class SeedDataExtensions
                          ## Result
 
                          """,
-                Version = 3,
+                Version = 1,
                 Revision = 0,
             },
             new()
@@ -363,7 +431,7 @@ public static class SeedDataExtensions
                          ## Result
 
                          """,
-                Version = 4,
+                Version = 1,
                 Revision = 0,
             },
             new()
@@ -405,7 +473,7 @@ public static class SeedDataExtensions
                          ## Result
 
                          """,
-                Version = 5,
+                Version = 1,
                 Revision = 0,
             },
             new()
@@ -609,10 +677,10 @@ public static class SeedDataExtensions
             AnalysisPromptCategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
             ChildExecutionOptions =
             [
-                new WorkflowExecutionOption
-                {
-                    AnalysisPromptCategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
-                },
+                // new WorkflowExecutionOption
+                // {
+                //     AnalysisPromptCategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
+                // },
                 new WorkflowExecutionOption
                 {
                     AnalysisPromptCategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
@@ -653,10 +721,10 @@ public static class SeedDataExtensions
                         },
                     ]
                 },
-                new WorkflowExecutionOption
-                {
-                    AnalysisPromptCategoryId = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
-                },
+                // new WorkflowExecutionOption
+                // {
+                //     AnalysisPromptCategoryId = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
+                // },
             ]
         };
 

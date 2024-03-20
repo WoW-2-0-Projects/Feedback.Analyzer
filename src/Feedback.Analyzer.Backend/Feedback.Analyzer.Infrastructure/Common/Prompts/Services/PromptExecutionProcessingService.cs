@@ -51,7 +51,7 @@ public class PromptExecutionProcessingService(
         );
 
         // Map to history
-        var histories = executionResults.Select(result => MapToHistory(prompt.Id, result.PromptResult, result.ElapsedMilliseconds)).ToImmutableList();
+        var histories = executionResults.Select(result => MapToHistory(prompt, result.PromptResult, result.ElapsedMilliseconds)).ToImmutableList();
 
         var executionHistories = new List<PromptExecutionHistory>();
         
@@ -75,15 +75,16 @@ public class PromptExecutionProcessingService(
     /// <summary>
     /// Maps prompt execution result to execution history
     /// </summary>
-    /// <param name="promptId"></param>
+    /// <param name="prompt"></param>
     /// <param name="result"></param>
     /// <param name="elapsedMilliseconds"></param>
     /// <returns></returns>
-    private PromptExecutionHistory MapToHistory(Guid promptId, FuncResult<string?> result, double elapsedMilliseconds)
+    private PromptExecutionHistory MapToHistory(AnalysisPrompt prompt, FuncResult<string?> result, double elapsedMilliseconds)
     {
         return new PromptExecutionHistory
         {
-            PromptId = promptId,
+            PromptId = prompt.Id,
+            Prompt = prompt,
             Result = result.Data,
             Exception = result.Exception is not null ? JsonConvert.SerializeObject(result.Exception) : null,
             ExecutionTime = DateTime.UtcNow,

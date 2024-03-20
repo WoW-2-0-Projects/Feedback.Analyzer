@@ -17,8 +17,9 @@ public class MassTransitEventBusBroker(IBus bus, IPublisher mediator) : IEventBu
         return new ValueTask(mediator.Publish(@event));
     }
 
-    public async ValueTask PublishAsync<TEvent>(TEvent @event) where TEvent : EventBase
+    public ValueTask PublishAsync<TEvent>(TEvent @event) where TEvent : EventBase
     {
-        await bus.Publish(@event);
+        return new ValueTask(mediator.Publish(@event));
+        // await bus.Publish(@event);
     }
 }

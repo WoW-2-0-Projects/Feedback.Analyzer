@@ -9,7 +9,7 @@ using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 namespace Feedback.Analyzer.Persistence.Repositories;
 
 /// <summary>
-/// Repository for managing prompt execution history records.
+/// Repository for managing history execution history records.
 /// </summary>
 public class PromptExecutionHistoryRepository(AppDbContext dbContext, ICacheBroker cacheBroker) : 
     EntityRepositoryBase<PromptExecutionHistory, AppDbContext>(dbContext, cacheBroker), IPromptExecutionHistoryRepository
@@ -19,8 +19,14 @@ public class PromptExecutionHistoryRepository(AppDbContext dbContext, ICacheBrok
         return base.Get(predicate, queryOptions);
     }
 
-    public new ValueTask<PromptExecutionHistory> CreateAsync(PromptExecutionHistory prompt, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+    public new async ValueTask<PromptExecutionHistory> CreateAsync(PromptExecutionHistory history, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
     {
-        return base.CreateAsync(prompt, commandOptions, cancellationToken);
+        var prompt = history.Prompt;
+
+        history.Prompt = null;
+        var createdEvent = await base.CreateAsync(history, commandOptions, cancellationToken);
+        history.Prompt = prompt;
+        
+        return createdEvent;
     }
 }
