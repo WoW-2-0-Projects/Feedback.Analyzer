@@ -5,6 +5,7 @@ import type {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
  * Represents a category for analysis prompts.
  */
 export class AnalysisPromptCategory {
+
     /*
     * The ID of the category.
     */
@@ -34,9 +35,4 @@ export class AnalysisPromptCategory {
     * The total number of prompts within the category.
     */
     promptsCount!: number;
-
-    /*
-    * An array containing the prompts within the category.
-    */
-    prompts!: Array<AnalysisPrompt>;
 }
