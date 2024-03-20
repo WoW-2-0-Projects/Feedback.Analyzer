@@ -40,6 +40,22 @@ public class AfterPromptExecutionEventHandler : EventHandlerBase<AfterPromptExec
                     throw new InvalidOperationException("Feedback is not relevant");
                 break;
             }
+            case FeedbackAnalysisPromptCategory.LanguageRecognition:
+            {
+                var lastHistory = context.GetLastHistory(notification.Prompt.CategoryId) ?? throw new InvalidOperationException(
+                    $"No history found for the category - {notification.Prompt.Category.Category.GetDisplayName()}"
+                );
+
+                if (lastHistory.Result is null)
+                    throw new InvalidOperationException(
+                        $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null"
+                    );
+
+                context.Result.FeedbackRelevance.RecognizedLanguages = JsonConvert.DeserializeObject<string[]>(lastHistory.Result!)
+                    ?? throw new InvalidOperationException("Failed to deserialize the recognized languages");
+
+                break;
+            }
             case FeedbackAnalysisPromptCategory.RelevantContentExtraction:
             {
                 var lastHistory = context.GetLastHistory(notification.Prompt.CategoryId) ?? throw new InvalidOperationException(

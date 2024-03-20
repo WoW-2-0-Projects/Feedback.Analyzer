@@ -383,27 +383,70 @@ public static class SeedDataExtensions
             {
                 Id = Guid.Parse("4ca01475-d036-4ac3-a326-a2580110ee0c"),
                 CategoryId = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
-                Prompt = """
-                         ## Instructions
+                Prompt = $$$"""
+                            ## Concepts
 
-                         Redact personal information from the customer feedback
+                            Customer feedback : The customer's feedback comment about the product
+                            Personal Inforation Redaction : Identifying and removing personally identifiable information from the feedback
 
-                         Requirements :
-                         1. redact only words that is considered as personal information, not the whole sentence
-                         2. replace the redacted words with asterisks
-                         3. make sure sentences are still readable
+                            ## Instructions
 
-                         ## Data
+                            Analyze customer feedback, understand the language, identify customer personal information and redact it from the feedback.
 
-                         {{$productDescription}}
+                            Requirements :
+                            1. redact the content with asterisk symbol
+                            2. output must be in a single string format
 
-                         ## Input
+                            ## Examples
 
-                         {{$customerFeedback}}
+                            1. Without any personal information:
 
-                         ## Result
+                            Customer Feedback : I recently switched to the Logitech MX Master 3 for my home office, and it has been a fantastic
+                            experience. The ergonomic design fits perfectly in my hand, reducing fatigue during long work sessions. The scroll wheel is
+                            smooth and precise, making document navigation a breeze. I highly recommend this mouse to anyone looking for a high-quality,
+                            comfortable, and reliable option.
 
-                         """,
+                            Result :  I recently switched to the Logitech MX Master 3 for my home office, and it has been a fantastic experience. The
+                            ergonomic design fits perfectly in my hand, reducing fatigue during long work sessions. The scroll wheel is smooth and
+                            precise, making document navigation a breeze. I highly recommend this mouse to anyone looking for a high-quality,
+                            comfortable, and reliable option.
+
+                            Reasoning : This customer feedback doesn't contain any personal information, so no redaction is needed.
+
+                            2. With 2 PII Words:
+
+                            Customer Feedback : I've been using the Logitech MX Master 3 for my graphic design projects and it's a game changer. The
+                            customizable buttons have streamlined my workflow significantly. However, I've had some issues syncing my settings across
+                            devices. Could you update my email address from jane.doe@example.com to my new one? Also, please change the registered phone
+                            number from 555-6789 to my current number.
+
+                            Result : I've been using the Logitech MX Master 3 for my graphic design projects and it's a game changer. The
+                            customizable buttons have streamlined my workflow significantly. However, I've had some issues syncing my settings across
+                            devices. Could you update my email address from ******************** to my new one? Also, please change the registered
+                            phone number from ******** to my current number.
+
+                            Reasoning : Here, we redacted the email address and phone number from the feedback.
+                            
+                            3. With Some Advanced Case:
+
+                            Customer Feedback : I'd like to provide feedback on my Logitech MX Master 3 mouse. It's been an integral tool for my 
+                            video editing tasks. However, I had a challenging time with the Logitech Options software; it wouldn't recognize my 
+                            device initially. For verification, the product was registered under Michael Clark, with the transaction ID 
+                            9876-5432-1001. Additionally, I had filled out the warranty form with my previous address, 7890 Elm Street. I need
+                            assistance in updating this to avoid service delays.
+                            
+                            Result :  I'd like to provide feedback on my Logitech MX Master 3 mouse. It's been an integral tool for my 
+                            video editing tasks. However, I had a challenging time with the Logitech Options software; it wouldn't recognize my 
+                            device initially. For verification, the product was registered under ******* *****, with the transaction ID 
+                            ****-****-****. Additionally, I had filled out the warranty form with my previous address, **** *** Street. I need
+                            assistance in updating this to avoid service delays."
+                            
+                            Reasoning : 
+
+                            ## Input
+
+                            Customer feedback - {{$customerFeedback}}
+                            """,
                 Version = 1,
                 Revision = 0,
             },
