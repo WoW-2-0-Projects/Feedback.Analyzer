@@ -395,7 +395,7 @@ public static class SeedDataExtensions
 
                             Requirements :
                             1. redact the content with asterisk symbol
-                            2. output must be in a single string format
+                            2. output must be in a single string format, without any prefixes or postfixes, just the redacted feedback
 
                             ## Examples
 
@@ -426,22 +426,24 @@ public static class SeedDataExtensions
                             phone number from ******** to my current number.
 
                             Reasoning : Here, we redacted the email address and phone number from the feedback.
-                            
+
                             3. With Some Advanced Case:
 
-                            Customer Feedback : I'd like to provide feedback on my Logitech MX Master 3 mouse. It's been an integral tool for my 
-                            video editing tasks. However, I had a challenging time with the Logitech Options software; it wouldn't recognize my 
-                            device initially. For verification, the product was registered under Michael Clark, with the transaction ID 
+                            Customer Feedback : I'd like to provide feedback on my Logitech MX Master 3 mouse. It's been an integral tool for my
+                            video editing tasks. However, I had a challenging time with the Logitech Options software; it wouldn't recognize my
+                            device initially. For verification, the product was registered under Michael Clark, with the transaction ID
                             9876-5432-1001. Additionally, I had filled out the warranty form with my previous address, 7890 Elm Street. I need
                             assistance in updating this to avoid service delays.
-                            
-                            Result :  I'd like to provide feedback on my Logitech MX Master 3 mouse. It's been an integral tool for my 
-                            video editing tasks. However, I had a challenging time with the Logitech Options software; it wouldn't recognize my 
-                            device initially. For verification, the product was registered under ******* *****, with the transaction ID 
+
+                            Result : I'd like to provide feedback on my Logitech MX Master 3 mouse. It's been an integral tool for my
+                            video editing tasks. However, I had a challenging time with the Logitech Options software; it wouldn't recognize my
+                            device initially. For verification, the product was registered under ******* *****, with the transaction ID
                             ****-****-****. Additionally, I had filled out the warranty form with my previous address, **** *** Street. I need
-                            assistance in updating this to avoid service delays."
+                            assistance in updating this to avoid service delays.
                             
-                            Reasoning : 
+                            Reasoning : Here, we redacted the name, transaction ID, and address from the feedback.
+
+                            Reasoning :
 
                             ## Input
 
@@ -456,52 +458,52 @@ public static class SeedDataExtensions
                 CategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
                 Prompt = """
                          ## Concepts
-                         
+
                          Customer feedback : The customer's feedback comment about the product
                          Language Recognition : Recognizing which languages are used in the feedback
-                         
+
                          ## Instructions
-                         
+
                          Analyze customer feedback, understand the language used in the feedback and recognize the languages used in the feedback.
-                         
+
                          Requirements :
                          1. recognize all languages used in the feedback
-                         2. output the result as array of strings, don't use fenced code blocks for JSON, just output as JSON as following : 
-                         
+                         2. output the result as array of strings, don't use fenced code blocks for JSON, just output as JSON as following :
+
                          [
                             "English",
                             "Spanish"
                          ]
-                         
+
                          ## Examples
-                         
+
                          1. Single language
-                         
-                         Customer Feedback : I've been using the Logitech MX Master 3 for a couple of months now, and I'm extremely satisfied. The 
-                         ergonomic design has significantly reduced my wrist pain, and the battery life is just incredible. The customizable buttons 
+
+                         Customer Feedback : I've been using the Logitech MX Master 3 for a couple of months now, and I'm extremely satisfied. The
+                         ergonomic design has significantly reduced my wrist pain, and the battery life is just incredible. The customizable buttons
                          have streamlined my workflow remarkably.
                          Result : [ "English" ]
                          Reasoning : Customer feedback contains only content in english language
-                         
+
                          2. Multiple languages
-                         
-                         Customer Feedback : I absolutely love my Logitech MX Master 3! The smooth scrolling feature and the precise tracking have 
-                         improved my editing work tremendously. However, tengo un pequeño problema con el software de personalización; a veces no 
-                         guarda mis configuraciones correctamente. But overall, it's a fantastic product. 
+
+                         Customer Feedback : I absolutely love my Logitech MX Master 3! The smooth scrolling feature and the precise tracking have
+                         improved my editing work tremendously. However, tengo un pequeño problema con el software de personalización; a veces no
+                         guarda mis configuraciones correctamente. But overall, it's a fantastic product.
                          Result : [ "English", "Spanish" ]
                          Reasoning : 1st part of the customer feedback is in english and the second part is in spanish
-                         
+
                          3. Advanced case
-                         
-                         Customer Feedback :The Logitech MX Master 3 is a game-changer for me. The comfort and the advanced features are top-notch. 
+
+                         Customer Feedback :The Logitech MX Master 3 is a game-changer for me. The comfort and the advanced features are top-notch.
                          However, Ich hatte Probleme mit der Verbindung via Bluetooth, which was a bit frustrating. Also, la qualité de construction
                          est exceptionnelle, making it worth every penny despite the minor issues.
                          Result : [ "English", "French" ]
-                         Reasoning : Although customer feedback mainly in english language, in the middle of the feedback, there is a sentence in 
+                         Reasoning : Although customer feedback mainly in english language, in the middle of the feedback, there is a sentence in
                          franch
-                         
+
                          ## Input
-                         
+
                          Customer feedback - {{$customerFeedback}}
                          """,
                 Version = 1,
@@ -812,41 +814,41 @@ public static class SeedDataExtensions
                     AnalysisPromptCategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
                     ChildExecutionOptions =
                     [
-                        // new WorkflowExecutionOption
-                        // {
-                        //     AnalysisPromptCategoryId = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
-                        //     ChildExecutionOptions =
-                        //     [
                         new WorkflowExecutionOption
                         {
-                            AnalysisPromptCategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
-                        },
-                        new WorkflowExecutionOption
-                        {
-                            AnalysisPromptCategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
-                            // ChildExecutionOptions =
-                            // [
-                            //     new WorkflowExecutionOption
-                            //     {
-                            //         AnalysisPromptCategoryId = Guid.Parse("6F1FDE2A-CAFC-4C4D-B909-655414C8C76E"),
-                            //     },
-                            // ]
-                        },
-                        new WorkflowExecutionOption
-                        {
-                            AnalysisPromptCategoryId = Guid.Parse("33CCCA43-E803-4FA2-AFC7-7C202DE5EA0C"),
-                            // ChildExecutionOptions =
-                            // [
-                            //     new WorkflowExecutionOption
-                            //     {
-                            //         AnalysisPromptCategoryId = Guid.Parse("2EF85588-0B12-4FB8-9027-80D45CC38EC1"),
-                            //     },
-                            // ]
+                            AnalysisPromptCategoryId = Guid.Parse("FD49A0B2-403F-491F-A4C4-1C489758FB79"),
+                            ChildExecutionOptions =
+                            [
+                                new WorkflowExecutionOption
+                                {
+                                    AnalysisPromptCategoryId = Guid.Parse("D187624D-8AF7-4495-BF7B-00084A63372E"),
+                                },
+                                new WorkflowExecutionOption
+                                {
+                                    AnalysisPromptCategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
+                                    // ChildExecutionOptions =
+                                    // [
+                                    //     new WorkflowExecutionOption
+                                    //     {
+                                    //         AnalysisPromptCategoryId = Guid.Parse("6F1FDE2A-CAFC-4C4D-B909-655414C8C76E"),
+                                    //     },
+                                    // ]
+                                },
+                                new WorkflowExecutionOption
+                                {
+                                    AnalysisPromptCategoryId = Guid.Parse("33CCCA43-E803-4FA2-AFC7-7C202DE5EA0C"),
+                                    // ChildExecutionOptions =
+                                    // [
+                                    //     new WorkflowExecutionOption
+                                    //     {
+                                    //         AnalysisPromptCategoryId = Guid.Parse("2EF85588-0B12-4FB8-9027-80D45CC38EC1"),
+                                    //     },
+                                    // ]
+                                },
+                            ]
                         },
                     ]
                 },
-                // ]
-                // },
                 // new WorkflowExecutionOption
                 // {
                 //     AnalysisPromptCategoryId = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
@@ -854,40 +856,39 @@ public static class SeedDataExtensions
             ]
         };
 
-    await appDbContext.WorkflowExecutionOptions.AddRangeAsync(executionOptions);
-}
+        await appDbContext.WorkflowExecutionOptions.AddRangeAsync(executionOptions);
+    }
 
-/// <summary>
-/// Seeds analysis workflows
-/// </summary>
-private static async ValueTask SeedAnalysisWorkflowsAsync(AppDbContext appDbContext)
-{
-    var templateWorkflow = new AnalysisWorkflow
+    /// <summary>
+    /// Seeds analysis workflows
+    /// </summary>
+    private static async ValueTask SeedAnalysisWorkflowsAsync(AppDbContext appDbContext)
     {
-        Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
-        Name = "TemplateWorkflow",
-        Type = WorkflowType.Template,
-        EntryExecutionOptionId = Guid.Parse("E4B16AEB-41C3-4E50-AB0B-8A883AE397C1"),
-    };
-
-    await appDbContext.AnalysisWorkflows.AddRangeAsync(templateWorkflow);
-}
-
-/// <summary>
-/// Seeds feedback analysis workflows
-/// </summary>
-private static async ValueTask SeedFeedbackAnalysisWorkflowsAsync(AppDbContext appDbContext)
-{
-    var templateFeedbackAnalysisWorkflow = new List<FeedbackAnalysisWorkflow>
-    {
-        new()
+        var templateWorkflow = new AnalysisWorkflow
         {
             Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
-            ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b")
-        },
-    };
+            Name = "TemplateWorkflow",
+            Type = WorkflowType.Template,
+            EntryExecutionOptionId = Guid.Parse("E4B16AEB-41C3-4E50-AB0B-8A883AE397C1"),
+        };
 
-    await appDbContext.FeedbackAnalysisWorkflows.AddRangeAsync(templateFeedbackAnalysisWorkflow);
-}
+        await appDbContext.AnalysisWorkflows.AddRangeAsync(templateWorkflow);
+    }
 
+    /// <summary>
+    /// Seeds feedback analysis workflows
+    /// </summary>
+    private static async ValueTask SeedFeedbackAnalysisWorkflowsAsync(AppDbContext appDbContext)
+    {
+        var templateFeedbackAnalysisWorkflow = new List<FeedbackAnalysisWorkflow>
+        {
+            new()
+            {
+                Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
+                ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b")
+            },
+        };
+
+        await appDbContext.FeedbackAnalysisWorkflows.AddRangeAsync(templateFeedbackAnalysisWorkflow);
+    }
 }

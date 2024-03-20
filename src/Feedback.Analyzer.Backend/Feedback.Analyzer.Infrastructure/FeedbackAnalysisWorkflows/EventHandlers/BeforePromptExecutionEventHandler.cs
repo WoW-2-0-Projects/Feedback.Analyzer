@@ -22,8 +22,13 @@ public class BeforePromptExecutionEventHandler : EventHandlerBase<BeforePromptEx
                 context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.ExtractedRelevantContent; 
                 break;
             case FeedbackAnalysisPromptCategory.OpinionMining:
-                context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.ExtractedRelevantContent; // TODO : Change
-                // context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
+                context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
+                break;
+            case FeedbackAnalysisPromptCategory.OpinionPointsExtraction:
+                context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
+                break;
+            case FeedbackAnalysisPromptCategory.QuestionPointsExtraction:
+                context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
                 break;
         }
 
