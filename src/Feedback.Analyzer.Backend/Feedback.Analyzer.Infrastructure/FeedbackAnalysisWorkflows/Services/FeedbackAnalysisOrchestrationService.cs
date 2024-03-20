@@ -49,6 +49,12 @@ public class FeedbackAnalysisOrchestrationService(
         
         // Execute whole workflow for single feedback
         await ExecuteOptionAsync(context, context.EntryExecutionOption, cancellationToken);
+
+        if (context.Status == WorkflowStatus.Running)
+            context.Status = WorkflowStatus.Completed;
+        
+        context.Result.AnalysisResult.Status = context.Status;
+        context.Result.AnalysisResult.ErrorMessage = context.ErrorMessage;
         
         // Create feedback analysis result
         await feedbackAnalysisResultService.CreateAsync(context.Result, cancellationToken: cancellationToken);
@@ -65,8 +71,7 @@ public class FeedbackAnalysisOrchestrationService(
         if (!promptResult.IsSuccess)
         {
             context.Status = WorkflowStatus.Failed;
-            context.ErrorMessage =
-                $"Failed to execute prompt - {option.AnalysisPromptCategory.Category.GetDisplayName()}, Version - {option.AnalysisPromptCategory.SelectedPrompt!.Version}.{option.AnalysisPromptCategory.SelectedPrompt.Revision}, Reason - {promptResult.Exception!.Message}";
+            context.ErrorMessage = promptResult.Exception!.Message;
         }
         
         // Execute child options

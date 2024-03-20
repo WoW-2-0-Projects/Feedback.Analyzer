@@ -10,7 +10,7 @@ public class AnalysisResult
     /// <summary>
     /// Gets or sets the status of the analysis.
     /// </summary>
-    public WorkflowStatus Status { get; set; }
+    public WorkflowStatus Status { get; set; } = WorkflowStatus.Running;
 
     /// <summary>
     /// Gets or sets the error message associated with the analysis result, if any.
