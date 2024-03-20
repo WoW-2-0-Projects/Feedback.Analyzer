@@ -311,24 +311,24 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("42204C3B-0E3E-4360-9059-94A011C29608"),
                 CategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                 Prompt = """
-                         ## Instructions
-
-                         Analyze user feedback and provide a relevance with the service in true or false format
-
-                         Conditions :
-                         1. feedback must include at least 1 sentence about the service
-                         2. even feedbacks that have non-related content counts if the rule 1 is satisfied
-
-                         ## Data
-
+                         ### Product Description
                          {{$productDescription}}
 
-                         ## Input
-
+                         ### Customer Feedback
                          {{$customerFeedback}}
 
-                         ## Result
+                         ### Instructions
+                         Decide if the given Customer Feedback (delimited by ###) is relevant or irrelevant to the given Product Description (delimited by ###).
+                         Relevant - "true"
+                         irrelevant - "false"
 
+                         Conditions:
+                         1. Even the slightest mention of the product, its features, name or service in the Customer Feedback is counted as relevant.
+                         2. Questions about product, its name and features, or service is also considered as relevant.
+                         3. Any word or expression that is used to imply the product, its name or features, or service is considered as relevant.
+                         4. Any word or expression indicating an issue with the product or service, its functionality.
+
+                         The return format: "true" or "false"
                          """,
                 Version = 1,
                 Revision = 0,
