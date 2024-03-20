@@ -9,7 +9,6 @@ import {ClientsEndpointsClient} from "@/infrastructure/apiClients/insightBoxClie
 import {
     WorkflowsEndpointsClient
 } from "@/infrastructure/apiClients/insightBoxClient/brokers/WorkflowsEndpointsClient";
-import type {PromptExecutionResult} from "@/modules/prompts/models/PromptExecutionResult";
 import  {PromptsEndpointsClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/PromptsEndpointsClient";
 
 /*
