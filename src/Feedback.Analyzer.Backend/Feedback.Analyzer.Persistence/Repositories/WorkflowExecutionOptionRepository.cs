@@ -49,22 +49,19 @@ public class WorkflowExecutionOptionRepository(AppDbContext dbContext, ICacheBro
     {
         // Load children
         var childrenOptions = await Get(executionOption => executionOption.ParentId == parentOptionId, queryOptions)
-                                    .Include(executionOption => executionOption.AnalysisPromptCategory)
-                                    .ThenInclude(category => category.SelectedPrompt)
-                                    .Include(executionOption => executionOption.ChildExecutionOptions)
-                                    .AsSplitQuery()
-                                    .ToListAsync(cancellationToken: cancellationToken);
+            .Include(executionOption => executionOption.AnalysisPromptCategory)
+            .ThenInclude(category => category.SelectedPrompt)
+            .Include(executionOption => executionOption.ChildExecutionOptions)
+            .AsSplitQuery()
+            .ToListAsync(cancellationToken: cancellationToken);
         
         // Load grand children
-        await Task.WhenAll(
-            childrenOptions.Select(
-                async childrenOption =>
-                {
-                    childrenOption.AnalysisPromptCategory.SelectedPrompt!.Category = childrenOption.AnalysisPromptCategory;
-                    childrenOption.ChildExecutionOptions = await LoadAllChildrenAsync(childrenOption.Id, queryOptions, cancellationToken);
-                }
-            )
-        );
+        foreach(var childrenOption in childrenOptions)
+        {
+            childrenOption.AnalysisPromptCategory.SelectedPrompt!.Category = childrenOption.AnalysisPromptCategory;
+            childrenOption.ChildExecutionOptions = await LoadAllChildrenAsync(childrenOption.Id, queryOptions, cancellationToken);
+        }
+        
         return childrenOptions;
     }
 }
