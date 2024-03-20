@@ -109,7 +109,7 @@ public class OrganizationService(
 
     private bool ValidateClient(Guid organizationId, Guid clientId)
     {
-        var isFoundClient = organizationRepository.Get().Where(organization =>
+        var isFoundClient = organizationRepository.Get(organization =>
             organization.ClientId == clientId && organization.Id == organizationId);
 
         return isFoundClient.Any();
