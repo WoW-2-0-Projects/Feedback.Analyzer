@@ -31,7 +31,7 @@ public class ProductValidator : AbstractValidator<Product>
                 RuleFor(product => product.Description)
                     .NotEmpty()
                     .MinimumLength(3)
-                    .MaximumLength(512);
+                    .MaximumLength(2048);
             }
         );
         
@@ -48,7 +48,7 @@ public class ProductValidator : AbstractValidator<Product>
                 RuleFor(product => product.Description)
                     .NotEmpty()
                     .MinimumLength(3)
-                    .MaximumLength(512);
+                    .MaximumLength(2048);
             }
         );
     }

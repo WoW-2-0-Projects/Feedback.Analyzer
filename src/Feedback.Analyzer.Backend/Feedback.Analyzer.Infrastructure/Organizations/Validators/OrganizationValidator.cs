@@ -30,7 +30,7 @@ public class OrganizationValidator : AbstractValidator<Organization>
                 RuleFor(organization => organization.Description)
                     .NotEmpty()
                     .MinimumLength(3)
-                    .MaximumLength(512)
+                    .MaximumLength(2048)
                     .WithMessage("Description is not valid");
             }
         );
@@ -47,7 +47,7 @@ public class OrganizationValidator : AbstractValidator<Organization>
                 RuleFor(organization => organization.Description)
                     .NotEmpty()
                     .MinimumLength(3)
-                    .MaximumLength(512)
+                    .MaximumLength(2048)
                     .WithMessage("Description is not valid");
             }
         );

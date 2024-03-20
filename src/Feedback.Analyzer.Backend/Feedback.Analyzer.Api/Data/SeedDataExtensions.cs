@@ -67,11 +67,11 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("5edbb0fe-7263-4f75-bad8-c9f3d422dd1d"),
-                FirstName = "Bob",
-                LastName = "Richard",
-                EmailAddress = "tastBobRichard@gmail.com",
+                FirstName = "Sarah",
+                LastName = "Funk",
+                EmailAddress = "sarah.funk@gmail.com",
                 PasswordHash = "$2a$12$LxSqe5AE7AtglesHHK5NROFdJQdA1r1XKqhzg4q/tMTZjVEH0PNSK", //asdf1234
-                Role = Role.Admin
+                Role = Role.Client
             }
         };
 
@@ -88,38 +88,42 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("c2fe1019-1180-4f3e-b477-413a9b33bbd1"),
-                Name = "Najot Ta'lim",
-                Description =
-                    "Ushbu tashkilot o'z a'zolariga yangi texnologiyalar va dasturlash tillari bo'yicha sifatli ta'lim beradi. Maqsadimiz har bir o'quvchiga amaliy ko'nikmalar va chuqur bilim berish.",
+                Name = "Razer Inc.",
+                Description = """
+                              What is Razer?
+                              
+                              Razer is a global technology company at the forefront of the gaming industry. It specializes in designing and 
+                              manufacturing cutting-edge hardware, software, and services with a passionate focus on the gaming and esports 
+                              communities. Razer's iconic triple-headed snake logo is widely recognized as a symbol of excellence and innovation in 
+                              the gaming world.
+                              
+                              Little History
+                              
+                              1998: The Razer brand is born in San Diego, California, under a small company named kärna.
+                              2005: Razer Inc. is officially founded by Min-Liang Tan (current CEO) and Robert Krakoff.
+                              Through the years: Razer establishes itself as a powerhouse through strategic product releases and acquisitions.
+                              CEO, Managers, Main Roles
+                              
+                              CEO: Min-Liang Tan (Co-founder)
+                              CFO: Chong Neng Tan
+                              President: Richard Hashim
+                              Key Roles: Hardware engineers, software developers, product designers, marketing specialists, and esports/community 
+                              management. What Products the Company Manufactures
+                              
+                              Gaming Laptops: High-performance gaming laptops under the Razer Blade series, known for slim designs and powerful 
+                              components. Gaming Mice: A wide variety of gaming mice catering to different grip styles, sensor technologies, and 
+                              levels of customization. Gaming Keyboards: Mechanical and membrane keyboards with features like RGB lighting, 
+                              programmable macros, and dedicated media controls. Audio: Gaming headsets, speakers, and microphones optimized for 
+                              immersive sound and clear communication. Accessories: Mousepads, gaming chairs, backpacks, and other peripherals to 
+                              complement the gaming experience. Software & Services: Razer Synapse (device configuration), Razer Chroma RGB 
+                              (lighting ecosystem), Razer Cortex (game optimization), Razer Gold (virtual currency)
+                              """,
                 ClientId = Guid.Parse("54e16318-d140-4453-80c9-1a117dbe75fd"),
             },
-            new()
-            {
-                Id = Guid.Parse("e57f81a1-1aeb-4f1c-aae0-9f0e1dcb92c4"),
-                Name = "TechnoPark",
-                Description =
-                    "TechnoPark yosh innovatorlar va texnologiya ishqibozlari uchun mo'ljallangan markazdir Biz startaplar va texnologik loyihalar uchun qo'llab-quvvatlash va resurslar taqdim etamiz.",
-                ClientId = Guid.Parse("54e16318-d140-4453-80c9-1a117dbe75fd"),
-            },
-            new()
-            {
-                Id = Guid.Parse("9d2aa9e2-362b-47f2-a46a-f328a0712d3d"),
-                Name = "EduCenter",
-                Description =
-                    "EduCenter butun umr davomida ta'lim olishni qo'llab-quvvatlaydi.Biz turli yoshdagi odamlarga ko'nikmalarini oshirish va yangi sohalarni o'rganish imkoniyatini beramiz.",
-                ClientId = Guid.Parse("5edbb0fe-7263-4f75-bad8-c9f3d422dd1d"),
-            },
-            new()
-            {
-                Id = Guid.Parse("60e6a4de-31e5-4f8b-8e6a-0a8f63f41527"),
-                Name = "InnoCity",
-                Description =
-                    "InnoCity innovatsiya va tadbirkorlikni qo'llab-quvvatlaydigan shahar bo'lib, yosh tadbirkorlarga o'sish uchun zarur bo'lgan barcha sharoitlarni yaratadi.Biznes inkubatsiya dasturlari va moliyaviy yordam bizning asosiy xizmatlarimizdan biridir.",
-                ClientId = Guid.Parse("5edbb0fe-7263-4f75-bad8-c9f3d422dd1d"),
-            }
         };
 
         await appDbContext.Organizations.AddRangeAsync(organizations);
+        await appDbContext.SaveChangesAsync();
     }
 
     /// <summary>
@@ -134,14 +138,25 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
                 OrganizationId = Guid.Parse("c2fe1019-1180-4f3e-b477-413a9b33bbd1"),
                 Name = "iPhone",
-                Description = "iPhone is very famous and expensive smart phone in the world. It made by Apple.",
-            },
-            new()
-            {
-                Id = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
-                OrganizationId = Guid.Parse("e57f81a1-1aeb-4f1c-aae0-9f0e1dcb92c4"),
-                Name = "Macbook",
-                Description = "Macbook is suitable for software developers, designer and etc. It is so expensive but people love it.",
+                Description = """
+                              Razor Viper Ultimate - wireless gaming mouse
+
+                              Sensitivity: 20,000DPI
+                              Tracking Speed : 650IPS
+                              Resolution accuracy : 99.6%
+
+                              74G LIGHTWEIGHT DESIGN
+                              Enjoy faster and smoother control with a lightweight wireless mouse designed for esports. Weighing just 74g, it achieves its weight without compromising on the build strength of its ambidextrous form factor.
+
+                              70 HOURS OF BATTERY LIFE
+                              Improved wireless power efficiency keeps it running at peak performance for up to 70 continuous hours—charge it just once a week to power 10 hours of daily gameplay.
+
+                              5 ON-BOARD MEMORY PROFILES
+                              Bring your settings anywhere and be match-ready in no time. Activate up to 5 profile configurations from its onboard memory or custom settings via cloud storage.
+
+                              8 PROGRAMMABLE BUTTONS
+                              Fully configurable via Razer Synapse 3, the 8 programmable buttons let you access macros and secondary functions so you can execute extended moves with ease.
+                              """
             }
         };
 
@@ -158,34 +173,15 @@ public static class SeedDataExtensions
             // Positive feedback
             new()
             {
-                ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
-                Comment = "This product is **amazing**! It's **easy to use** and **exceeded my expectations**.",
-                UserName = "John Doe",
-            },
-
-            // Neutral feedback
-            new()
-            {
                 ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
-                Comment = "The product is **functional**. It **meets my basic needs**.",
-                UserName = "Jane Smith",
+                Comment = """
+                          I laid my hands on the Viper in a local store and on the spot it felt rather flat. I think I prefer something with more 
+                          hump and side area to grip onto. right now I have a basilisk v2 and think it's definetely more comfy, but that grip could 
+                          still be better.\n\nThe Synapse software is extremely greedy though. 300MB HD space and about 200MB RAM is ludicrous for a 
+                          gloryfied mouse driver.",
+                          """,
+                UserName = "Silverspark",
             },
-
-            // Negative feedback
-            new()
-            {
-                ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c"),
-                Comment = "I found the product to be **confusing** and **difficult to navigate**. It also **lacked some features** I was hoping for.",
-                UserName = "Alice Miller",
-            },
-
-            // Anonymous feedback with mixed sentiment
-            new()
-            {
-                ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
-                Comment = "The product has **some great features**, but it also has **some flaws**.",
-                UserName = "Joane Miller",
-            }
         };
 
         await appDbContext.Feedbacks.AddRangeAsync(customersFeedbacks);
@@ -693,7 +689,7 @@ public static class SeedDataExtensions
             new()
             {
                 Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
-                ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c")
+                ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b")
             },
         };
 

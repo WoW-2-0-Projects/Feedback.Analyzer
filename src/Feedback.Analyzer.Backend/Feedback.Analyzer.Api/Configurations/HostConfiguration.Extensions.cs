@@ -247,7 +247,7 @@ public static partial class HostConfiguration
         var kernelBuilder = Kernel.CreateBuilder();
 
         // Add OpenAI connector
-        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-3.5-turbo", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
+        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-4-turbo", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
 
         // Build kernel
         var kernel = kernelBuilder.Build();
