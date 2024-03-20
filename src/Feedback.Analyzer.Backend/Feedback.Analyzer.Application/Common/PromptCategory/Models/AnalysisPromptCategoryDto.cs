@@ -33,9 +33,4 @@ public class AnalysisPromptCategoryDto
     /// Unique identifier of the selected prompt
     /// </summary>
     public Guid? SelectedPromptId { get; set; }
-
-    /// <summary>
-    /// Selected prompt details
-    /// </summary>
-    public AnalysisPromptDto? SelectedPrompt { get; set; }
 }
