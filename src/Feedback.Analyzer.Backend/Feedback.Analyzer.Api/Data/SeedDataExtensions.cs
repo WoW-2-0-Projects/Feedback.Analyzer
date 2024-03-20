@@ -142,6 +142,31 @@ public static class SeedDataExtensions
                 OrganizationId = Guid.Parse("e57f81a1-1aeb-4f1c-aae0-9f0e1dcb92c4"),
                 Name = "Macbook",
                 Description = "Macbook is suitable for software developers, designer and etc. It is so expensive but people love it.",
+            },
+            new()
+            {
+               Id = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
+               OrganizationId = Guid.Parse("c2fe1019-1180-4f3e-b477-413a9b33bbd1"),
+               Name = "Razor Viper Ultimate",
+               Description = """
+                             Razor Viper Ultimate - wireless gaming mouse
+                                     
+                             Sensitivity: 20,000DPI
+                             Tracking Speed : 650IPS
+                             Resolution accuracy : 99.6%
+
+                             74G LIGHTWEIGHT DESIGN
+                             Enjoy faster and smoother control with a lightweight wireless mouse designed for esports. Weighing just 74g, it achieves its weight without compromising on the build strength of its ambidextrous form factor.
+
+                             70 HOURS OF BATTERY LIFE
+                             Improved wireless power efficiency keeps it running at peak performance for up to 70 continuous hours—charge it just once a week to power 10 hours of daily gameplay.
+
+                             5 ON-BOARD MEMORY PROFILES
+                             Bring your settings anywhere and be match-ready in no time. Activate up to 5 profile configurations from its onboard memory or custom settings via cloud storage.
+
+                             8 PROGRAMMABLE BUTTONS
+                             Fully configurable via Razer Synapse 3, the 8 programmable buttons let you access macros and secondary functions so you can execute extended moves with ease.
+                             """
             }
         };
 
@@ -155,6 +180,26 @@ public static class SeedDataExtensions
     {
         var customersFeedbacks = new List<CustomerFeedback>()
         {
+            new()
+            {
+                Id = Guid.Parse("12722129-1d17-4de5-992a-a450247c3211"),
+                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
+                Comment = """
+                          I laid my hands on the Viper in a local store and on the spot it felt rather flat. I think I prefer something with more hump and side area to grip onto. right now I have a basilisk v2 and think it's definetely more comfy, but that grip could still be better.
+
+                          The Synapse software is extremely greedy though. 300MB HD space and about 200MB RAM is ludicrous for a gloryfied mouse driver.
+                          """,
+                UserName = "James Carter"
+            },
+            new()
+            {
+                Id = Guid.Parse("03e3827d-36d2-474f-ab76-7655833b090f"),
+                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
+                Comment = """
+                          The gaming mouse market is flooded with options, each offering unique features and designs. It can be overwhelming to choose the right one, but finding the perfect balance between performance and comfort is key
+                          """,
+                UserName = "Sarah Smith"
+            },
             // Positive feedback
             new()
             {
@@ -266,24 +311,24 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("42204C3B-0E3E-4360-9059-94A011C29608"),
                 CategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                 Prompt = """
-                         ## Instructions
-
-                         Analyze user feedback and provide a relevance with the service in true or false format
-
-                         Conditions :
-                         1. feedback must include at least 1 sentence about the service
-                         2. even feedbacks that have non-related content counts if the rule 1 is satisfied
-
-                         ## Data
-
+                         ### Product Description
                          {{$productDescription}}
 
-                         ## Input
-
+                         ### Customer Feedback
                          {{$customerFeedback}}
 
-                         ## Result
+                         ### Instructions
+                         Decide if the given Customer Feedback (delimited by ###) is relevant or irrelevant to the given Product Description (delimited by ###).
+                         Relevant - "true"
+                         irrelevant - "false"
 
+                         Conditions:
+                         1. Even the slightest mention of the product, its features, name or service in the Customer Feedback is counted as relevant.
+                         2. Questions about product, its name and features, or service is also considered as relevant.
+                         3. Any word or expression that is used to imply the product, its name or features, or service is considered as relevant.
+                         4. Any word or expression indicating an issue with the product or service, its functionality.
+
+                         The return format: "true" or "false"
                          """,
                 Version = 1,
                 Revision = 0,
@@ -672,15 +717,15 @@ public static class SeedDataExtensions
     /// </summary>
     private static async ValueTask SeedAnalysisWorkflowsAsync(AppDbContext appDbContext)
     {
-        var templateWorkflow = new AnalysisWorkflow
+        var razorWorkflow = new AnalysisWorkflow()
         {
-            Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
-            Name = "TemplateWorkflow",
+            Id = Guid.Parse("cc9bbbbf-0a1a-40d9-b163-1e032aa56c7d"),
+            Name = "RazorWorkflow",
             Type = WorkflowType.Template,
-            EntryExecutionOptionId = Guid.Parse("E4B16AEB-41C3-4E50-AB0B-8A883AE397C1"),
+            EntryExecutionOptionId = Guid.Parse("E4B16AEB-41C3-4E50-AB0B-8A883AE397C1")
         };
 
-        await appDbContext.AnalysisWorkflows.AddRangeAsync(templateWorkflow);
+        await appDbContext.AnalysisWorkflows.AddAsync(razorWorkflow);
     }
 
     /// <summary>
@@ -692,9 +737,9 @@ public static class SeedDataExtensions
         {
             new()
             {
-                Id = Guid.Parse("fb5653f6-f8e7-47fa-ab70-5e693de92ea0"),
-                ProductId = Guid.Parse("1ca01475-d036-4ac3-a326-a2580110ee0c")
-            },
+                Id = Guid.Parse("cc9bbbbf-0a1a-40d9-b163-1e032aa56c7d"),
+                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea")
+            }
         };
 
         await appDbContext.FeedbackAnalysisWorkflows.AddRangeAsync(templateFeedbackAnalysisWorkflow);

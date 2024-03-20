@@ -10,7 +10,7 @@ public class FeedbackOpinion
     /// <summary>
     /// Gets or sets the overall opinion type of the feedback.
     /// </summary>
-    public OpinionType OverallOpinion { get; set; }
+    public OpinionType OverallOpinion { get; set; } = OpinionType.Neutral;
 
     /// <summary>
     /// Gets or sets an array of positive points mentioned in the feedback.

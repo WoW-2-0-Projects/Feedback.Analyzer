@@ -48,6 +48,11 @@ public class FeedbackAnalysisResult : AuditableEntity
     /// Gets or sets the metrics analysis result of the feedback.
     /// </summary>
     public FeedbackMetrics FeedbackMetrics { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the analysis result owned type.
+    /// </summary>
+    public AnalysisResult AnalysisResult { get; set; } = new();
 
     /// <summary>
     /// Gets or sets the ID of the customer feedback associated with this analysis result.
