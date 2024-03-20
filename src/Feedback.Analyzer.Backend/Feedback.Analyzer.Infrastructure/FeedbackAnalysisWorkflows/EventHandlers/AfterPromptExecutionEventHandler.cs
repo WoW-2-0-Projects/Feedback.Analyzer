@@ -31,7 +31,7 @@ public class AfterPromptExecutionEventHandler : IEventHandler<AfterPromptExecuti
                         $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null"
                     );
 
-                context.Result.FeedbackRelevance.IsRelevant = JsonConvert.DeserializeObject<bool>(lastHistory.Result!);
+                context.Result.FeedbackRelevance.IsRelevant = JsonConvert.DeserializeObject<bool>(lastHistory.Result!.ToLower());
 
                 if (!context.Result.FeedbackRelevance.IsRelevant)
                     throw new InvalidOperationException("Feedback is not relevant");

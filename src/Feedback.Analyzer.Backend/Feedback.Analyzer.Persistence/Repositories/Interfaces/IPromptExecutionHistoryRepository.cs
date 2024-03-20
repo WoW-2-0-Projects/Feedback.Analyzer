@@ -21,11 +21,11 @@ public interface IPromptExecutionHistoryRepository
     /// <summary>
     /// Creates a new prompt execution history record asynchronously.
     /// </summary>
-    /// <param name="prompt">The prompt execution history record to be created.</param>
+    /// <param name="history">The prompt execution history record to be created.</param>
     /// <param name="commandOptions">Optional command options for the creation operation.</param>
     /// <param name="cancellationToken">Optional cancellation token.</param>
     /// <returns>A task representing the asynchronous operation, containing the created prompt execution history record.</returns>
-    ValueTask<PromptExecutionHistory> CreateAsync(PromptExecutionHistory prompt,
+    ValueTask<PromptExecutionHistory> CreateAsync(PromptExecutionHistory history,
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default);
 }
