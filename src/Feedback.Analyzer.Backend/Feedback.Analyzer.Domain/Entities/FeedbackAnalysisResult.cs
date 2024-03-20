@@ -17,6 +17,7 @@ public class FeedbackAnalysisResult : AuditableEntity
         FeedbackActionablePoints = new FeedbackActionablePoints();
         FeedbackEntities = new FeedbackEntities();
         FeedbackMetrics = new FeedbackMetrics();
+        AnalysisResult = new AnalysisResult();
     }
     
     /// <summary>

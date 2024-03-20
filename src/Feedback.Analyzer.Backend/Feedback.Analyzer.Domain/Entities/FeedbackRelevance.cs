@@ -13,12 +13,12 @@ public class FeedbackRelevance
     /// <summary>
     /// Gets or sets the extracted relevant content from the feedback.
     /// </summary>
-    public string ExtractedRelevantContent { get; set; } = "";
+    public string ExtractedRelevantContent { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the personally identifiable information (PII) redacted content of the feedback.
     /// </summary>
-    public string PiiRedactedContent { get; set; } = "";
+    public string PiiRedactedContent { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets an array of recognized languages in the feedback content.
