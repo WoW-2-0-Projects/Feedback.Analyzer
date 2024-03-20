@@ -1,4 +1,4 @@
-import  {FeedbackAnalysisPromptType} from "@/modules/prompts/models/FeedbackAnalysisPromptType";
+import  {FeedbackAnalysisPromptCategory} from "@/modules/prompts/models/FeedbackAnalysisPromptCategory";
 
 /**
  * Represents an analysis prompt.
@@ -12,7 +12,7 @@ export class AnalysisPrompt {
     /*
     * The type of feedback analysis prompt.
     */
-    type: FeedbackAnalysisPromptType;
+    type: FeedbackAnalysisPromptCategory;
 
     /*
     * The text content of the prompt.
@@ -44,7 +44,7 @@ export class AnalysisPrompt {
     */
     modifiedTime: Date;
 
-    constructor(type: FeedbackAnalysisPromptType, prompt: string) {
+    constructor(type: FeedbackAnalysisPromptCategory, prompt: string) {
         this.type = type;
         this.prompt = prompt ?? '';
         this.version = 0;

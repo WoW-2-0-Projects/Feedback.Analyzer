@@ -1,7 +1,7 @@
 /**
  * Enum representing different types of feedback analysis prompts.
  */
-export enum FeedbackAnalysisPromptType {
+export enum FeedbackAnalysisPromptCategory {
 
     /** Language recognition prompt type. */
     LanguageRecognition,

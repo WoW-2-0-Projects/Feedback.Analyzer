@@ -1,4 +1,4 @@
-import type {FeedbackAnalysisPromptType} from "@/modules/prompts/models/FeedbackAnalysisPromptType";
+import type {FeedbackAnalysisPromptCategory} from "@/modules/prompts/models/FeedbackAnalysisPromptCategory";
 import type {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 
 /**
@@ -13,7 +13,7 @@ export class AnalysisPromptCategory {
     /*
     * The type of feedback analysis prompt associated with the category.
     */
-    type!: FeedbackAnalysisPromptType;
+    type!: FeedbackAnalysisPromptCategory;
 
     /*
     * The display name of the feedback analysis prompt type.
