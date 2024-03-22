@@ -2,8 +2,12 @@ import type {IDropDownValue} from "@/common/components/formDropDown/IDropDownVal
 import {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
 import type {WorkflowType} from "@/modules/workflows/models/WorkflowType";
 
+/**
+ * Represents a feedback analysis workflow.
+ */
 export class FeedbackAnalysisWorkflow implements IDropDownValue<string, FeedbackAnalysisWorkflow> {
-    /*
+
+    /**
     * Entity id
     */
     public id!: string;
@@ -23,6 +27,9 @@ export class FeedbackAnalysisWorkflow implements IDropDownValue<string, Feedback
      */
     public type!: WorkflowType;
 
+    /**
+     * Indicates whether all prompts are set for the workflow.
+     */
     public allPromptsSet!: boolean;
 
     public toDropDownValue(): DropDownValue<string, FeedbackAnalysisWorkflow>{
