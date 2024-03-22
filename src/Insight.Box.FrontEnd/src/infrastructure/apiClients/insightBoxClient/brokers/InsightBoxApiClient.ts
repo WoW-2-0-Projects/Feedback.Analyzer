@@ -55,7 +55,7 @@ export class InsightBoxApiClient {
     public organizations: OrganizationsEndpointsClient;
     public products: ProductsEndpointsClient;
     public workflows: WorkflowsEndpointsClient;
-    public  prompts: PromptsEndpointsClient;
+    public prompts: PromptsEndpointsClient;
     public readonly clients: ClientsEndpointsClient;
     public readonly auth: AuthEndpointsClient;
 }

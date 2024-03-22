@@ -9,6 +9,10 @@ import type {
 import type {
     UpdateFeedbackAnalysisWorkflowCommand
 } from "@/modules/workflows/models/UpdateFeedbackAnalysisWorkflowCommand";
+import type {
+    FeedbackAnalysisWorkflowResultsFilter
+} from "@/modules/workflows/models/FeedbackAnalysisWorkflowResultsFilter";
+import {FeedbackAnalysisWorkflowResult} from "@/modules/workflows/models/FeedbackAnalysisWorkflowResult";
 
 export class WorkflowsEndpointsClient {
     public client: ApiClientBase;
@@ -22,6 +26,11 @@ export class WorkflowsEndpointsClient {
     public async getAsync(query: Query<FeedbackAnalysisWorkflowFilter>) {
         const endpointUrl = this.requestFormatterService.addQueryParams('api/workflows', query);
         return await this.client.getAsync<Array<FeedbackAnalysisWorkflow>>(endpointUrl);
+    }
+
+    public async getResultsAsync(query: Query<FeedbackAnalysisWorkflowResultsFilter>) {
+        const endpointUrl = this.requestFormatterService.addQueryParams('api/workflows/results', query);
+        return await this.client.getAsync<Array<FeedbackAnalysisWorkflowResult>>(endpointUrl);
     }
 
     public async createAsync(command: CreateFeedbackAnalysisWorkflowCommand) {
