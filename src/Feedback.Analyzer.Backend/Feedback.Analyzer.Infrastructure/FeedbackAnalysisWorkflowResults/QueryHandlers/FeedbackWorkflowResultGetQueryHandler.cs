@@ -12,13 +12,13 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflowResults.Query
 /// <summary>
 /// Handles the query to retrieve feedback analysis workflow results by workflow ID.
 /// </summary>
-public class FeedbackWorkflowResultGetByWorkflowIdQueryHandler(
+public class FeedbackWorkflowResultGetQueryHandler(
     IMapper mapper,
     IFeedbackAnalysisWorkflowResultService feedbackAnalysisWorkflowResultService
-) : IQueryHandler<FeedbackWorkflowResultGetByWorkflowIdQuery, ICollection<FeedbackAnalysisWorkflowResultDto>>
+) : IQueryHandler<FeedbackWorkflowResultGetQuery, ICollection<FeedbackAnalysisWorkflowResultDto>>
 {
     public async Task<ICollection<FeedbackAnalysisWorkflowResultDto>> Handle(
-        FeedbackWorkflowResultGetByWorkflowIdQuery request,
+        FeedbackWorkflowResultGetQuery request,
         CancellationToken cancellationToken
     )
     {
@@ -28,8 +28,8 @@ public class FeedbackWorkflowResultGetByWorkflowIdQueryHandler(
         };
 
         var matchedWorkflowResults = await feedbackAnalysisWorkflowResultService
-            .Get(workflowResult => workflowResult.WorkflowId == request.WorkflowId)
-            .Include(workflowResult => workflowResult.FeedbackAnalysisResults)
+            .Get(workflowResult => !request.WorkflowId.HasValue || workflowResult.WorkflowId == request.WorkflowId.Value)
+            // .Include(workflowResult => workflowResult.FeedbackAnalysisResults)
             .ApplyTrackingMode(queryOptions.TrackingMode)
             .ProjectTo<FeedbackAnalysisWorkflowResultDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);

@@ -26,9 +26,4 @@ public record FeedbackAnalysisWorkflowResultDto
     /// Gets or sets the finish time of the feedback analysis workflow.
     /// </summary>
     public DateTimeOffset FinishedTime { get; set; }
-    
-    /// <summary>
-    /// Gets related feedbacks results
-    /// </summary>
-    public ICollection<FeedbackAnalysisResultDto> Results { get; init; } = default!;
 }

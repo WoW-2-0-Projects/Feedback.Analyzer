@@ -1,7 +1,7 @@
 <template>
 
     <div class="flex items-center">
-        <div class="bg-accentSecondaryColor w-[1.5px] h-4/5" :class="componentStyles"/>
+        <div class="bg-accentSecondaryColor w-[1px]" :class="componentStyles"/>
     </div>
 
 </template>
@@ -19,18 +19,18 @@ const props = defineProps({
 });
 
 const componentStyles = computed(() => {
-
-    let initialStyles = "";
+    let styles = "";
 
     switch (props.type) {
         case DividerType.FullLength:
-            initialStyles = "h-full";
+            styles += "h-full";
             break;
         case DividerType.ContentLength:
-            initialStyles = "h-4/5";
+            styles += "h-4/5";
             break;
     }
 
+    return styles;
 });
 
 </script>

@@ -21,21 +21,22 @@ export default {
         secondaryContentColor: '#b5b5b5',
         tertiaryContentColor: '#999fab',
         dangerColor: '#E63946',
-        successColor: '#2A9D8F',
+        successColor: '#73F74B',
+        warningColor: '#F4A261',
       },
       fontFamily: {
         'poppins': ['Poppins', 'sans-serif'],
       },
       keyframes: {
         fadeInExpand: {
-          '0%': { opacity: '0', height: '0' },
-          '50%': { opacity: '1', height: '0' },
-          '100%': { opacity: '1', height: 'var(--expand-height)' },
+          '0%': { opacity: '0', maxHeight: '0' },
+          '50%': { opacity: '1', maxHeight: '0' },
+          '100%': { opacity: '1', maxHeight: 'var(--expand-height)' },
         },
         fadeOutCollapse: {
-          '0%': { opacity: '1', height: 'var(--expand-height)' },
-          '50%': { opacity: '0', height: 'var(--expand-height)' },
-          '100%': { opacity: '0', height: '0' },
+          '0%': { opacity: '1', maxHeight: 'var(--expand-height)' },
+          '50%': { opacity: '0', maxHeight: 'var(--expand-height)' },
+          '100%': { opacity: '0', maxHeight: '0' },
         },
         fadeIn: {
           '0%': { opacity: '0', transform: 'translateY(-20%) translateX(-50%)' },

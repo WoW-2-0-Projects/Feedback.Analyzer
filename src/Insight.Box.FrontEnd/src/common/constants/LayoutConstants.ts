@@ -33,7 +33,10 @@ export class LayoutConstants {
     public static readonly OrganizationDescription = 'Organization description';
     public static readonly EnterOrganizationName = 'Enter organization name';
     public static readonly EnterOrganizationDescription = 'Enter organization description';
+    public static readonly Status  = 'Status';
 
+    /* Feedbacks */
+    public static readonly Feedbacks  = 'Feedbacks';
 
     /* Prompts */
     public static readonly CreatePrompt = 'Create a prompt';
@@ -57,8 +60,8 @@ export class LayoutConstants {
     public static readonly AddWorkflow = 'Add workflow';
     public static readonly Results = 'Results';
     public static readonly Progress = 'Progress';
-    public static readonly StartedTime = 'Started';
-    public static readonly FinishedTime = 'Finished';
+    public static readonly StartedTime = 'Started Time';
+    public static readonly FinishedTime = 'Finished Time';
     public static readonly SearchWorkflows = 'Search workflows ...';
     public static readonly Positive  = 'Positive';
     public static readonly SelectBaseWorkflow  = 'Select base workflow';
