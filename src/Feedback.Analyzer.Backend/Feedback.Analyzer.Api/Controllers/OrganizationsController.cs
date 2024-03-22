@@ -22,7 +22,7 @@ public class OrganizationsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetOrganizationById([FromRoute] Guid organizationId, CancellationToken cancellationToken = default)
     {
         var result = await mediator.Send(new OrganizationGetByIdQuery{OrganizationId = organizationId}, cancellationToken);
-        return result is not null ? Ok(result) : NoContent();
+        return result is not null ? Ok(result) : NotFound();
     }
     
     [HttpPost]
