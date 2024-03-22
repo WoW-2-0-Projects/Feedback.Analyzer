@@ -15,4 +15,10 @@ public interface IRequestContextProvider
     /// Gets current user access token
     /// </summary>
     string? GetAccessToken();
+
+    /// <summary>
+    /// Checks if user is logged in
+    /// </summary>
+    /// <returns>True if user is logged in, otherwise false</returns>
+    bool IsLoggedIn();
 }
