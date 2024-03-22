@@ -45,9 +45,9 @@ public class ProductService
             return productRepository.GetByIdAsync(productId, queryOptions, cancellationToken);
         }
 
-        public ValueTask<Product> CreateAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+        public async ValueTask<Product> CreateAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
-            ValidateClientId(product.Organization.ClientId);
+            ValidateClientId(await GetCurrentClientId(product.OrganizationId));
 
             var validationResult = productValidator.Validate(product,
                     options => options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
@@ -55,12 +55,12 @@ public class ProductService
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors);
 
-            return productRepository.CreateAsync(product, commandOptions, cancellationToken);
+            return await productRepository.CreateAsync(product, commandOptions, cancellationToken);
         }
 
         public async ValueTask<Product> UpdateAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
-            ValidateClientId(product.Organization.ClientId);
+            ValidateClientId(await GetCurrentClientId(product.OrganizationId));
 
             var validationResult = productValidator.Validate(product,
                     options => options.IncludeRuleSets(EntityEvent.OnUpdate.ToString()));
@@ -71,18 +71,18 @@ public class ProductService
             return await productRepository.UpdateAsync(product, commandOptions, cancellationToken);
         }
 
-        public ValueTask<Product?> DeleteAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+        public async ValueTask<Product?> DeleteAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
-            ValidateClientId(product.Organization.ClientId);
+            ValidateClientId(await GetCurrentClientId(product.OrganizationId));
 
-            return productRepository.DeleteAsync(product, commandOptions, cancellationToken);
+            return await productRepository.DeleteAsync(product, commandOptions, cancellationToken);
         }
 
         public async ValueTask<Product?> DeleteByIdAsync(Guid productId, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
             var product = await productRepository.GetByIdAsync(productId, cancellationToken: cancellationToken);
 
-            ValidateClientId(product.Organization.ClientId); ;
+            ValidateClientId(await GetCurrentClientId(product.OrganizationId)); 
 
             return await productRepository.DeleteByIdAsync(productId, commandOptions, cancellationToken);
         }
@@ -92,4 +92,11 @@ public class ProductService
             if (currentProductClientId == Guid.Empty || currentProductClientId != requestContextProvider.GetUserId())
                 throw new UnauthorizedAccessException("Client id must match the current user id");
         }
+
+    private async ValueTask<Guid> GetCurrentClientId(Guid orgnaziationId) 
+    {
+        var product = await productRepository.Get(product => product.OrganizationId == orgnaziationId).Include(product => product.Organization).FirstOrDefaultAsync();
+
+        return product.Organization.ClientId;
+    }
 }
