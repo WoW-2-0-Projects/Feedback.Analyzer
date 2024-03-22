@@ -15,12 +15,14 @@ namespace Feedback.Analyzer.Infrastructure.Organizations.QueryHandlers;
 /// </summary>
 public class OrganizationGetQueryHandler(
     IMapper mapper,
-    IOrganizationService organizationService) : IQueryHandler<OrganizationGetQuery, ICollection<OrganizationDto>>
+    IOrganizationService organizationService,
+    IRequestContextProvider requestContextProvider) : IQueryHandler<OrganizationGetQuery, ICollection<OrganizationDto>>
 {
     public async Task<ICollection<OrganizationDto>> Handle(OrganizationGetQuery organizationGetQuery,
                                                            CancellationToken cancellationToken)
     {
-
+        organizationGetQuery.Filter.ClientId = requestContextProvider.GetUserId();
+        
         var queryOptions = new QueryOptions(QueryTrackingMode.AsNoTracking);
 
         var matchedOrganizations = await organizationService

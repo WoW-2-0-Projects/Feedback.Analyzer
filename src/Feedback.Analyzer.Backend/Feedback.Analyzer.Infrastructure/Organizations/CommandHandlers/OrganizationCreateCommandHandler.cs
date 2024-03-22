@@ -14,10 +14,12 @@ namespace Feedback.Analyzer.Infrastructure.Organizations.CommandHandlers;
 /// </summary>
 public class OrganizationCreateCommandHandler(
     IMapper mapper,
-    IOrganizationService organizationService) : ICommandHandler<OrganizationCreateCommand, OrganizationDto>
+    IOrganizationService organizationService,
+    IRequestContextProvider requestContextProvider) : ICommandHandler<OrganizationCreateCommand, OrganizationDto>
 {
     public async Task<OrganizationDto> Handle(OrganizationCreateCommand request, CancellationToken cancellationToken)
     {
+        request.Organization.ClientId = requestContextProvider.GetUserId();
         // Conversion to domain entity cancellationToken
         var organization = mapper.Map<Organization>(request.Organization);
 
