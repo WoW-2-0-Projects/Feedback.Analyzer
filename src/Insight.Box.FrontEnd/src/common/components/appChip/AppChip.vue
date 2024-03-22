@@ -1,19 +1,23 @@
 <template>
 
-      <span class="px-3 py-1 rounded-full text-xs whitespace-nowrap bg-opacity-20" :class="styles">{{text
-          }}</span>
+    <span class="w-fit px-3 py-1 rounded-full text-xs whitespace-nowrap bg-opacity-20" :class="styles">
+        <i v-if="icon" :class="[icon, icon && text ? 'mr-1' : '']"/>
+        {{ text }}
+    </span>
 
 </template>
 
 <script setup lang="ts">
 
 import {computed, type PropType} from "vue";
-import {ChipType} from "@/common/components/appChip/ChipType";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 const props = defineProps({
     text: {
+        type: String
+    },
+    icon: {
         type: String,
-        required: true
     },
     showBorder: {
         type: Boolean,

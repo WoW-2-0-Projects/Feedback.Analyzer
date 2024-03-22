@@ -3,16 +3,17 @@ import {FilterPagination} from "@/common/FilterPagination";
 /*
  * Represents workflow results filter
  */
-export class FeedbackAnalysisWorkflowResultsFilter extends  FilterPagination {
+export class FeedbackAnalysisWorkflowResultFilter extends  FilterPagination {
 
     /*
      * Workflow id
      */
     public workflowId: string;
 
-    constructor() {
+    constructor(workflowId: string) {
         super();
         this.pageSize = 5;
+        this.workflowId = workflowId;
 
         this.searchKeyword = '';
     }
