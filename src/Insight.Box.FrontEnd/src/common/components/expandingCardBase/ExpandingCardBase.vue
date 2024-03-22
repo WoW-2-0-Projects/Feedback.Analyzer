@@ -9,7 +9,7 @@
         </div>
 
         <!-- Expanding content -->
-        <div class="w-full overflow-y-scroll z-10 no-scrollbar"
+        <div class="w-full overflow-y-scroll z-10"
              :style="`--expand-height: ${props.expandingContentHeight}px`"
              :class="{'animate-fadeInExpand': isExpanded, 'animate-fadeOutCollapse': !isExpanded
                       ,'hidden': !firstExpanded

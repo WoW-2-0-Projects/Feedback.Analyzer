@@ -6,10 +6,10 @@ namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Query;
 /// <summary>
 /// Represents feedback workflow result get by workflow Id query
 /// </summary>
-public class FeedbackWorkflowResultGetByWorkflowIdQuery : IQuery<ICollection<FeedbackAnalysisWorkflowResultDto>>
+public class FeedbackWorkflowResultGetQuery : IQuery<ICollection<FeedbackAnalysisWorkflowResultDto>>
 {
     /// <summary>
     /// Gets or sets workflow Id
     /// </summary>
-    public Guid WorkflowId { get; set; }
+    public Guid? WorkflowId { get; set; }
 }

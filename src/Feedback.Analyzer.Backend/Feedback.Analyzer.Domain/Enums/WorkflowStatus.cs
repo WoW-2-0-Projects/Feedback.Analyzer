@@ -8,20 +8,20 @@ public enum WorkflowStatus
     /// <summary>
     /// Represents that the workflow is queued for execution.
     /// </summary>
-    Queued,
+    Queued = 0,
     
     /// <summary>
     /// Represents that the workflow is currently running.
     /// </summary>
-    Running,
+    Running = 1,
     
     /// <summary>
     /// Represents that the workflow has successfully completed.
     /// </summary>
-    Completed,
+    Completed = 2,
     
     /// <summary>
     /// Represents that the workflow has failed to complete.
     /// </summary>
-    Failed
+    Failed = 3
 }

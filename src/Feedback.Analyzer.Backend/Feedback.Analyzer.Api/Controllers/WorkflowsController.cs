@@ -12,28 +12,36 @@ namespace Feedback.Analyzer.Api.Controllers;
 [Route("api/[controller]")]
 public class WorkflowsController(IMediator mediator) : ControllerBase
 {
+    #region Common
+
     [HttpGet]
     public async ValueTask<IActionResult> Get(
         [FromQuery] FeedbackAnalysisWorkflowGetQuery feedbackAnalysisWorkflowGetQuery,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
         var result = await mediator.Send(feedbackAnalysisWorkflowGetQuery, cancellationToken);
         return result.Any() ? Ok(result) : NoContent();
     }
 
     [HttpGet("{workflowId:guid}")]
-    public async ValueTask<IActionResult> GetFeedbackAnalysisWorkflowById([FromRoute] Guid workflowId,
-        CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> GetFeedbackAnalysisWorkflowById([FromRoute] Guid workflowId, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new FeedbackAnalysisWorkflowGetByIdQuery { Id = workflowId },
-            cancellationToken);
+        var result = await mediator.Send(
+            new FeedbackAnalysisWorkflowGetByIdQuery
+            {
+                Id = workflowId
+            },
+            cancellationToken
+        );
         return result is not null ? Ok(result) : NotFound();
     }
 
     [HttpPost]
     public async ValueTask<IActionResult> CreateFeedbackAnalysisWorkflow(
         [FromBody] FeedbackAnalysisWorkflowCreateCommand feedbackAnalysisWorkflowCreateCommand,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
         var result = await mediator.Send(feedbackAnalysisWorkflowCreateCommand, cancellationToken);
         return Ok(result);
@@ -42,28 +50,32 @@ public class WorkflowsController(IMediator mediator) : ControllerBase
     [HttpPut]
     public async ValueTask<IActionResult> UpdateFeedbackAnalysisWorkflow(
         [FromBody] FeedbackAnalysisWorkflowUpdateCommand feedbackAnalysisWorkflowUpdateCommand,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
         var result = await mediator.Send(feedbackAnalysisWorkflowUpdateCommand, cancellationToken);
         return Ok(result);
     }
 
     [HttpDelete("{workflowId:guid}")]
-    public async ValueTask<IActionResult> DeleteFeedbackAnalysisWorkflowByIdAsync(
-        [FromRoute] Guid workflowId, CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> DeleteFeedbackAnalysisWorkflowByIdAsync([FromRoute] Guid workflowId, CancellationToken cancellationToken)
     {
-        var result =
-            await mediator.Send(new FeedbackAnalysisWorkflowDeleteByIdCommand { Id = workflowId },
-                cancellationToken);
+        var result = await mediator.Send(
+            new FeedbackAnalysisWorkflowDeleteByIdCommand
+            {
+                Id = workflowId
+            },
+            cancellationToken
+        );
         return result ? Ok() : BadRequest();
     }
 
+    #endregion
+
+    #region Execution
+
     [HttpPost("{workflowId:guid}/execute/{promptId:guid}")]
-    public async ValueTask<IActionResult> GetPromptResultById(
-        [FromRoute] Guid workflowId,
-        [FromRoute] Guid promptId,
-        CancellationToken cancellationToken
-    )
+    public async ValueTask<IActionResult> ExecutePrompt([FromRoute] Guid workflowId, [FromRoute] Guid promptId, CancellationToken cancellationToken)
     {
         var executePromptEvent = new ExecuteWorkflowSinglePromptEvent
         {
@@ -75,22 +87,8 @@ public class WorkflowsController(IMediator mediator) : ControllerBase
         return Accepted(executePromptEvent.Id);
     }
 
-    [HttpGet("results/{workflowId:guid}")]
-    public async ValueTask<IActionResult> GetWorkflowResultsById([FromRoute] Guid workflowId, CancellationToken cancellationToken)
-    {
-        var result = await mediator.Send(
-            new FeedbackWorkflowResultGetByWorkflowIdQuery
-            {
-                WorkflowId = workflowId
-            },
-            cancellationToken
-        );
-
-        return result.Any() ? Ok(result) : NotFound();
-    }
-    
     [HttpPost("{workflowId:guid}/execute")]
-    public async ValueTask<IActionResult> ExecuteWorkflowAsync([FromRoute] Guid workflowId, CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> ExecuteWorkflowAsync([FromQuery] Guid workflowId, CancellationToken cancellationToken)
     {
         var executeWorkflowEvent = new AnalyzeWorkflowFeedbacksEvent
         {
@@ -101,4 +99,17 @@ public class WorkflowsController(IMediator mediator) : ControllerBase
 
         return Accepted(executeWorkflowEvent.Id);
     }
+
+    #endregion
+
+    #region Results
+
+    [HttpGet("results")]
+    public async ValueTask<IActionResult> GetWorkflowResultsById([FromQuery] FeedbackWorkflowResultGetQuery query, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(query, cancellationToken);
+        return result.Any() ? Ok(result) : NotFound();
+    }
+
+    #endregion
 }

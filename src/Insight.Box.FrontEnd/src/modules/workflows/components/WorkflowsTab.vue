@@ -162,8 +162,6 @@ const onDeleteWorkflowAsync = async (workflowId: string) => {
     const response = await
         insightBoxApiClient.workflows.deleteByIdAsync(workflowId);
 
-    console.log('test', response.isSuccess);
-
     if (response.isSuccess) {
         const workflowIndex = workflows.value.findIndex(w => w.id === workflowId);
         if (workflowIndex !== -1) {
