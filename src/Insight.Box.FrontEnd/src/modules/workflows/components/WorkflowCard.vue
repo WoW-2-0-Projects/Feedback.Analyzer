@@ -37,21 +37,21 @@
 
                         <div class="flex gap-3">
 
-                            <app-button class="w-fit" :type="ButtonType.Primary" :layout="ButtonLayout.Rectangle"
+                            <app-button class="w-fit" :type="ActionType.Primary" :layout="ButtonLayout.Rectangle"
                                         :size="ActionComponentSize.ExtraSmall" :text="runButtonText" icon="fas fa-play"
                             />
-                            <app-button :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
+                            <app-button :type="ActionType.Secondary" :layout="ButtonLayout.Rectangle"
                                         :size="ActionComponentSize.ExtraSmall" icon="fas fa-eye"
                             />
-                            <app-button class="w-fit" :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
+                            <app-button class="w-fit" :type="ActionType.Secondary" :layout="ButtonLayout.Rectangle"
                                         :size="ActionComponentSize.ExtraSmall" icon="fas fa-edit"
                                         @click="emit('edit', workflow)"
                             />
-                            <app-button class="w-fit" :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
+                            <app-button class="w-fit" :type="ActionType.Secondary" :layout="ButtonLayout.Rectangle"
                                         :size="ActionComponentSize.ExtraSmall" icon="fas fa-clock-rotate-left"
-                                        @click="onToggleResultsList"
+                                        @click="onOpenWorkflowResultsList"
                             />
-                            <app-button class="w-fit" :type="ButtonType.Danger" :layout="ButtonLayout.Rectangle"
+                            <app-button class="w-fit" :type="ActionType.Danger" :layout="ButtonLayout.Rectangle"
                                         :size="ActionComponentSize.ExtraSmall" icon="fas fa-trash"
                                         @click="emit('delete', workflow.id)"
                             />
@@ -129,7 +129,6 @@
 <script setup lang="ts">
 
 import {defineEmits, type PropType, ref} from "vue";
-import {ButtonType} from "@/common/components/appButton/ButtonType";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import VerticalDivider from "@/common/components/dividers/VerticalDivider.vue";
@@ -143,6 +142,7 @@ import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/
 import {Query} from "@/infrastructure/models/query/Query";
 import {FeedbackAnalysisWorkflowResultsFilter} from "@/modules/workflows/models/FeedbackAnalysisWorkflowResultsFilter";
 import WorkflowResultCard from "@/modules/workflows/components/WorkflowResultCard.vue";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 const runButtonText = "Run";
 const isResultsListOpen = ref<boolean>(false);

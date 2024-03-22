@@ -13,11 +13,11 @@
 
         <div :class="isHover ? '' : 'hidden'" class="absolute top-4 right-4 flex flex-col gap-2">
 
-            <app-button :type="ButtonType.Danger" :layout="ButtonLayout.Rectangle"
+            <app-button :type="ActionType.Danger" :layout="ButtonLayout.Rectangle"
                         icon="fas fa-minus" :size="ActionComponentSize.ExtraSmall"
                         @click="emit('delete', organization.id)"/>
 
-            <app-button :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
+            <app-button :type="ActionType.Secondary" :layout="ButtonLayout.Rectangle"
                         icon="fas fa-edit" :size="ActionComponentSize.ExtraSmall"
                         @click="emit('edit', organization)"/>
 
@@ -30,11 +30,11 @@
 <script setup lang="ts">
 import {Organization} from '../models/Organization';
 import AppButton from "@/common/components/appButton/AppButton.vue";
-import {ButtonType} from "@/common/components/appButton/ButtonType";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import {ref} from "vue";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 const isHover = ref<boolean>(false);
 

@@ -19,22 +19,27 @@ const props = defineProps({
         type: Boolean,
     },
     type: {
-        type: Number as PropType<ChipType>,
-        default: ChipType.Info
+        type: Number as PropType<ActionType>,
+        default: ActionType.Secondary
     }
 });
 
 const styles = computed(() => {
     let styles = '';
 
-    switch(props.type) {
-        case ChipType.Success: styles += ' bg-successColor text-successColor border-successColor'; break;
-        case ChipType.Error: styles += ' bg-dangerColor text-dangerColor'; break;
-        case ChipType.Info: styles += ' bg-accentTertiaryColor text-accentTertiaryColor'; break;
-        case ChipType.Warning: styles += ' bg-warningColor text-warningColor'; break;
+    switch (props.type) {
+        case ActionType.Success:
+            styles += ' bg-successColor text-successColor border-successColor';
+            break;
+        case ActionType.Danger:
+            styles += ' bg-dangerColor text-dangerColor';
+            break;
+        case ActionType.Secondary:
+            styles += ' bg-tertiaryContentColor text-tertiaryContentColor';
+            break;
     }
 
-    if(props.showBorder) {
+    if (props.showBorder) {
         styles += ' border';
     }
 

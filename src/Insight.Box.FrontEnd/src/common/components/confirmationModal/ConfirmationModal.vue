@@ -10,9 +10,9 @@
             <div class="min-w-[700px] modal-content-padding modal-content-layout">
                 <!-- Modal actions -->
                 <div class="flex gap-10">
-                    <app-button :type="ButtonType.Secondary" class="w-full" :text="LayoutConstants.Cancel"
+                    <app-button :type="ActionType.Secondary" class="w-full" :text="LayoutConstants.Cancel"
                                 @click="modalOptions.confirm(false)"/>
-                    <app-button :type="ButtonType.Primary" class="w-full" :text="LayoutConstants.Submit"
+                    <app-button :type="ActionType.Primary" class="w-full" :text="LayoutConstants.Submit"
                                 :role="ButtonRole.Submit" @click="modalOptions.confirm(true)"/>
                 </div>
             </div>
@@ -28,9 +28,9 @@ import {type UseConfirmDialogReturn} from '@vueuse/core'
 import ModalBase from "@/common/components/modalBase/ModalBase.vue";
 import {type PropType, watch} from "vue";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
-import {ButtonType} from "@/common/components/appButton/ButtonType";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 import AppButton from "@/common/components/appButton/AppButton.vue";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 const props = defineProps({
     text: {

@@ -10,13 +10,14 @@
 
                 <!-- Workflow result actions -->
                 <div class="flex items-center gap-3">
-                    <app-button :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
+                    <app-button :type="ActionType.Secondary" :layout="ButtonLayout.Rectangle"
                                 :size="ActionComponentSize.ExtraSmall" icon="fas fa-eye"
                     />
-                    <app-button :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
+                    <app-button :type="ActionType.Secondary" :layout="ButtonLayout.Rectangle"
                                 :size="ActionComponentSize.ExtraSmall" icon="fas fa-clock-rotate-left"
+                                @click="onOpenFeedbackAnalysisResults"
                     />
-                    <app-button class="w-fit" :type="ButtonType.Danger" :layout="ButtonLayout.Rectangle"
+                    <app-button class="w-fit" :type="ActionType.Danger" :layout="ButtonLayout.Rectangle"
                                 :size="ActionComponentSize.ExtraSmall" icon="fas fa-trash"
                                 @click="emit('delete', workflow.id)"
                     />
@@ -44,7 +45,7 @@
 
                     <div class="h-full flex flex-col items-start justify-between text-tertiaryContentColor">
                         <h5 class="text-xs">{{ LayoutConstants.Status }}</h5>
-                        <app-chip text="Completed" :type="ChipType.Success"/>
+                        <app-chip text="Completed" :type="ActionType.Success"/>
                         <div/>
                     </div>
 
@@ -92,13 +93,13 @@ import type {FeedbackAnalysisWorkflowResult} from "@/modules/workflows/models/Fe
 import DoughnutChart from "@/common/components/doughnutChart/DoughnutChart.vue";
 import {DateTimeFormatterService} from "@/infrastructure/services/dateTime/DateTimeFormatterService";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
-import {ButtonType} from "@/common/components/appButton/ButtonType";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import AppChip from "@/common/components/appChip/AppChip.vue";
 import {ChipType} from "@/common/components/appChip/ChipType";
 import {Position} from "@/common/components/chartLabel/Position";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 const timeFormatterService = new DateTimeFormatterService();
 
