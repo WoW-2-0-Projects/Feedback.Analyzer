@@ -94,7 +94,6 @@
 
                     <h5 class="text-center">Key points</h5>
 
-
                     <div class="mt-5 flex gap-2 flex-wrap">
                         <span class="bg-accentTertiaryColor px-3 py-1 rounded-full text-sm whitespace-nowrap">mouse
                             flat</span>
@@ -117,7 +116,10 @@
 
             <!-- Workflow results history -->
             <div class="flex flex-col w-full gap-5 p-5">
-                <workflow-result-card v-for="(result, index) in workflowResults" :workflowResult="result" :key="index"/>
+                <workflow-result-card v-for="(result, index) in workflowResults" :workflowResult="result" :key="index"
+                                      :closeSource="closeSource" @closeOthers="resultId =>
+                                      closeSource.updateListeners(resultId)"
+                />
             </div>
 
         </template>
@@ -140,19 +142,15 @@ import type {FeedbackAnalysisWorkflow} from "@/modules/workflows/models/Feedback
 import DoughnutChart from "@/common/components/doughnutChart/DoughnutChart.vue";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import {Query} from "@/infrastructure/models/query/Query";
-import {FeedbackAnalysisWorkflowResultsFilter} from "@/modules/workflows/models/FeedbackAnalysisWorkflowResultsFilter";
+import {FeedbackAnalysisWorkflowResultFilter} from "@/modules/workflows/models/FeedbackAnalysisWorkflowResultFilter";
 import WorkflowResultCard from "@/modules/workflows/components/WorkflowResultCard.vue";
 import {ActionType} from "@/common/components/actions/ActionType";
+import {NotificationSource} from "@/infrastructure/models/notifications/Action";
 
 const runButtonText = "Run";
 const isResultsListOpen = ref<boolean>(false);
 
 const insightBoxClient = new InsightBoxApiClient();
-
-
-// Workflow results states
-const workflowResultsQuery = ref<Query>(new Query(new FeedbackAnalysisWorkflowResultsFilter()));
-const workflowResults = ref<FeedbackAnalysisWorkflow[]>([]);
 
 const props = defineProps({
     workflow: {
@@ -161,12 +159,17 @@ const props = defineProps({
     }
 });
 
+// Workflow results states
+const workflowResultsQuery = ref<Query>(new Query(new FeedbackAnalysisWorkflowResultFilter(props.workflow?.id)));
+const workflowResults = ref<FeedbackAnalysisWorkflow[]>([]);
+const closeSource = ref<NotificationSource<string>>(new NotificationSource<string>());
+
 const emit = defineEmits<{
     (e: 'update', workflow: FeedbackAnalysisWorkflow): void,
     (e: 'delete', workflowId: string): void,
 }>();
 
-const onToggleResultsList = async () => {
+const onOpenWorkflowResultsList = async () => {
     if (workflowResults.value.length == 0) {
         const response = await insightBoxClient.workflows.getResultsAsync(workflowResultsQuery.value);
         if (response.response)

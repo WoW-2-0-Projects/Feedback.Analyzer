@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 
-import {computed, defineEmits, type PropType, ref, watch} from 'vue';
+import {computed, defineEmits, type PropType, ref} from 'vue';
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import FormInput from "@/common/components/formInput/FormInput.vue";

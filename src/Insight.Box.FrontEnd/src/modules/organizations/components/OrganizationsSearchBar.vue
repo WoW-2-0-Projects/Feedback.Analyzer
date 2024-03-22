@@ -17,6 +17,7 @@
   </div>
 
 </template>
+
 <script setup lang="ts">
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import SearchBarInput from "@/common/components/formSearchBar/FormSearchBar.vue";
@@ -28,12 +29,9 @@ import {ActionType} from "@/common/components/actions/ActionType";
 
 const organizationFilter = ref<OrganizationFilter>(new OrganizationFilter());
 
-
-
 const emit = defineEmits<{
     (e : 'addOrganization'): void
 }>();
-
 
 const selectedFilter = ref<DropDownValue | null>(null);
 const filterDropDownValues = ref<Array<DropDownValue>>([
