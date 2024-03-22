@@ -26,10 +26,21 @@ public class OrganizationService(
 {
     public IQueryable<Organization> Get(
         Expression<Func<Organization, bool>>? predicate, QueryOptions queryOptions = default)
-        => organizationRepository.Get(predicate, queryOptions);
+    {
+        if (requestContextProvider.GetUserId() == Guid.Empty)
+        {
+            throw new UnauthorizedAccessException();
+        }
+
+        return organizationRepository.Get(predicate, queryOptions);
+    }
 
     public IQueryable<Organization> Get(OrganizationFilter organizationFilter, QueryOptions queryOptions = default)
     {
+        if (organizationFilter.ClientId == Guid.Empty)
+        {
+            throw new UnauthorizedAccessException();
+        }
 
         var organizationQuery = organizationRepository.Get().ApplyPagination(organizationFilter);
 
@@ -42,18 +53,31 @@ public class OrganizationService(
         return organizationQuery;
     }
 
-    public ValueTask<Organization?> GetByIdAsync(
+    public async ValueTask<Organization?> GetByIdAsync(
         Guid organizationId,
         QueryOptions queryOptions = default,
         CancellationToken cancellationToken = default
     )
-        => organizationRepository.GetByIdAsync(organizationId, queryOptions, cancellationToken);
-    
-public ValueTask<Organization> CreateAsync(
+    {
+        var foundOrganization =
+            await organizationRepository.GetByIdAsync(organizationId, queryOptions, cancellationToken);
+
+        if (foundOrganization!.ClientId != requestContextProvider.GetUserId())
+            throw new UnauthorizedAccessException();
+
+        return foundOrganization;
+    }
+
+    public ValueTask<Organization> CreateAsync(
         Organization organization,
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default)
     {
+        if (organization.ClientId == Guid.Empty)
+        {
+            throw new UnauthorizedAccessException();
+        }
+
         var validationResult = organizationValidator
             .Validate(organization,
                 options =>
@@ -70,13 +94,10 @@ public ValueTask<Organization> CreateAsync(
         CancellationToken cancellationToken = default
     )
     {
-        
-        var foundOrganization = await organizationRepository.GetByIdAsync(organization.Id, cancellationToken: cancellationToken);  
+        var foundOrganization =
+            await GetByIdAsync(organization.Id, cancellationToken: cancellationToken);
 
-        if (foundOrganization!.ClientId != organization.ClientId)
-            throw new UnauthorizedAccessException();
-
-        foundOrganization.Name = organization.Name;
+        foundOrganization!.Name = organization.Name;
         foundOrganization.Description = organization.Description;
 
         return await organizationRepository.UpdateAsync(foundOrganization, commandOptions, cancellationToken);
@@ -93,11 +114,9 @@ public ValueTask<Organization> CreateAsync(
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default)
     {
-        var foundOrganization = await organizationRepository.GetByIdAsync(organizationId, cancellationToken: cancellationToken);  
+        var foundOrganization =
+            await GetByIdAsync(organizationId, cancellationToken: cancellationToken);
 
-        if (foundOrganization!.ClientId != requestContextProvider.GetUserId())
-            throw new UnauthorizedAccessException();
-        
-        return await organizationRepository.DeleteByIdAsync(foundOrganization.Id, commandOptions, cancellationToken);
+        return await organizationRepository.DeleteByIdAsync(foundOrganization!.Id, commandOptions, cancellationToken);
     }
 }
