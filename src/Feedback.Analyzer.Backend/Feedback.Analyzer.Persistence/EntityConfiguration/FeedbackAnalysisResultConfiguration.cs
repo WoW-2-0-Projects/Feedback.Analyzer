@@ -13,6 +13,10 @@ public class FeedbackAnalysisResultConfiguration : IEntityTypeConfiguration<Feed
         builder.OwnsOne<FeedbackActionablePoints>(feedback => feedback.FeedbackActionablePoints);
         builder.OwnsOne<FeedbackEntities>(feedback => feedback.FeedbackEntities);
         builder.OwnsOne<FeedbackMetrics>(feedback => feedback.FeedbackMetrics);
+        builder.OwnsOne<AnalysisResult>(feedback => feedback.AnalysisResult)
+            .HasOne<PromptExecutionHistory>(result => result.History)
+            .WithOne()
+            .HasForeignKey<AnalysisResult>(result => result.HistoryId);
 
         builder
             .HasOne<CustomerFeedback>(result => result.CustomerFeedback)
