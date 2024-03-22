@@ -9,15 +9,14 @@
             <div class="flex p-2 shadow-xl card-round">
 
                 <!-- Prompt category details -->
-                <div class="w-1/4 flex items-center py-10">
+                <div class="w-1/4 flex items-center py-5">
 
                     <div class="flex flex-col flex-grow items-center justify-between h-full">
                         <h5 class="text-2xl text-center">{{ workflow.name }}</h5>
                         <h5 class="text-base text-center text-tertiaryContentColor">{{ LayoutConstants.Product }} :
                             {{ workflow.productName }}</h5>
 
-                        <div class="flex gap-5 items-center justify-center text-tertiaryContentColor cursor-cell"
-                        >
+                        <div class="flex gap-5 items-center justify-center text-tertiaryContentColor cursor-cell">
 
                             <div class="flex flex-col justify-center items-center">
                                 <h5 class="text-2xl font-bold">10</h5>
@@ -38,16 +37,23 @@
 
                         <div class="flex gap-3">
 
-
-                            <i class="fa-solid"></i>
-
                             <app-button class="w-fit" :type="ButtonType.Primary" :layout="ButtonLayout.Rectangle"
                                         :size="ActionComponentSize.ExtraSmall" :text="runButtonText" icon="fas fa-play"
                             />
-
+                            <app-button :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
+                                        :size="ActionComponentSize.ExtraSmall" icon="fas fa-eye"
+                            />
+                            <app-button class="w-fit" :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
+                                        :size="ActionComponentSize.ExtraSmall" icon="fas fa-edit"
+                                        @click="emit('edit', workflow)"
+                            />
                             <app-button class="w-fit" :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
                                         :size="ActionComponentSize.ExtraSmall" icon="fas fa-clock-rotate-left"
                                         @click="onToggleResultsList"
+                            />
+                            <app-button class="w-fit" :type="ButtonType.Danger" :layout="ButtonLayout.Rectangle"
+                                        :size="ActionComponentSize.ExtraSmall" icon="fas fa-trash"
+                                        @click="emit('delete', workflow.id)"
                             />
 
                         </div>
@@ -109,52 +115,9 @@
 
         <template v-slot:expandingContent>
 
-            <div class="flex flex-col w-full">
-
-                <!-- Workflow details and last run history information -->
-                <div class="flex w-full justify-between">
-
-                    <!-- Workflow details -->
-                    <div>
-                        <h5>Created : </h5>
-                        <h5>Last modified : </h5>
-                        <h5>Last executed : </h5>
-                    </div>
-
-                    <!-- Workflow actions -->
-                    <div class="flex gap-3">
-
-                        <app-button class="w-fit" :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
-                                    :size="ActionComponentSize.ExtraSmall" icon="fas fa-edit"
-                                    @click="emit('edit', workflow)"
-                        />
-
-                        <app-button class="w-fit" :type="ButtonType.Danger" :layout="ButtonLayout.Rectangle"
-                                    :size="ActionComponentSize.ExtraSmall" icon="fas fa-trash"
-                                    @click="emit('delete', workflow.id)"
-                        />
-
-                    </div>
-
-                    <vertical-divider :type="DividerType.ContentLength"/>
-
-                    <!-- Workflow execution results -->
-                    <h5>Modified : </h5>
-                    <h5>Key points</h5>
-
-                    <vertical-divider :type="DividerType.ContentLength"/>
-
-                    <h5>Key points</h5>
-                    <h5>Key points</h5>
-                    <h5>Key points</h5>
-
-                </div>
-
-                <!-- Workflow results history -->
-                <div>
-
-                </div>
-
+            <!-- Workflow results history -->
+            <div class="flex flex-col w-full gap-5 p-5">
+                <workflow-result-card v-for="(result, index) in workflowResults" :workflowResult="result" :key="index"/>
             </div>
 
         </template>
@@ -176,10 +139,20 @@ import ExpandingCardBase from "@/common/components/expandingCardBase/ExpandingCa
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import type {FeedbackAnalysisWorkflow} from "@/modules/workflows/models/FeedbackAnalysisWorkflow";
 import DoughnutChart from "@/common/components/doughnutChart/DoughnutChart.vue";
-
+import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
+import {Query} from "@/infrastructure/models/query/Query";
+import {FeedbackAnalysisWorkflowResultsFilter} from "@/modules/workflows/models/FeedbackAnalysisWorkflowResultsFilter";
+import WorkflowResultCard from "@/modules/workflows/components/WorkflowResultCard.vue";
 
 const runButtonText = "Run";
 const isResultsListOpen = ref<boolean>(false);
+
+const insightBoxClient = new InsightBoxApiClient();
+
+
+// Workflow results states
+const workflowResultsQuery = ref<Query>(new Query(new FeedbackAnalysisWorkflowResultsFilter()));
+const workflowResults = ref<FeedbackAnalysisWorkflow[]>([]);
 
 const props = defineProps({
     workflow: {
@@ -193,11 +166,13 @@ const emit = defineEmits<{
     (e: 'delete', workflowId: string): void,
 }>();
 
-// Action button messages
-const hideResultsButtonText = ref<boolean>(false);
-const workflowResultProgress = ref<number>(0);
-
 const onToggleResultsList = async () => {
+    if (workflowResults.value.length == 0) {
+        const response = await insightBoxClient.workflows.getResultsAsync(workflowResultsQuery.value);
+        if (response.response)
+            workflowResults.value = response.response;
+    }
+
     isResultsListOpen.value = !isResultsListOpen.value;
 }
 
