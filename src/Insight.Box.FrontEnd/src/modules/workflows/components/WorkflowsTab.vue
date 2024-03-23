@@ -8,11 +8,6 @@
         <!-- Workflows search bar -->
         <workflows-search-bar :workflowsQuery="workflowsQuery" @addWorkflow="openWorkflowModal"/>
 
-        <!-- Workflow modal -->
-        <workflow-modal :isActive="isWorkflowModalActive" :isCreate="isWorkflowCreate"
-                        :workflow="workflow" :workflows="workflows" :products="products"
-                        @closeModal="isWorkflowModalActive = false" @submit="onWorkflowModalSubmit"/>
-
         <!-- Workflows gallery -->
         <infinite-scroll @onScroll="onScroll"
                          :contentChangeSource="workflowsChangeSource"
@@ -20,13 +15,19 @@
 
             <workflow-card v-for="workflow in actualWorkflows" :workflow="workflow" :key="workflow.id"
                            @edit="openWorkflowModal" @delete="onDeleteWorkflowAsync"
-
+                           @openFeedbackResult="openFeedbackResultModal"
             />
 
         </infinite-scroll>
 
-        <div class="mt-20 flex flex-wrap justify-center gap-5">
-        </div>
+        <!-- Workflow modal -->
+        <workflow-modal :isActive="isWorkflowModalActive" :isCreate="isWorkflowCreate"
+                        :workflow="workflow" :workflows="workflows" :products="products"
+                        @closeModal="isWorkflowModalActive = false" @submit="onWorkflowModalSubmit"/>
+
+        <!-- Feedback analysis result modal -->
+        <feedback-analysis-result-modal result="result" :isActive="isFeedbackResultModalActive"
+                                        @closeModal="isFeedbackResultModalActive = false"/>
 
     </div>
 
@@ -51,6 +52,9 @@ import WorkflowCard from "@/modules/workflows/components/WorkflowCard.vue";
 import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
 import {NotificationSource} from "@/infrastructure/models/notifications/Action";
 import {WorkflowType} from "@/modules/workflows/models/WorkflowType";
+import WorkflowResultCard from "@/modules/workflows/components/WorkflowResultCard.vue";
+import FeedbackAnalysisResultModal from "@/modules/feedbackAnalysisResults/components/FeedbackAnalysisResultModal.vue";
+import type {FeedbackAnalysisResult} from "@/modules/feedbackAnalysisResults/models/FeedbackAnalysisResult";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 const documentService = new DocumentService();
@@ -70,6 +74,10 @@ const actualWorkflows = computed(() => workflows.value.filter(workflow => workfl
 const isWorkflowModalActive = ref<boolean>(false);
 const isWorkflowCreate = ref<boolean>(true);
 const workflow = ref<FeedbackAnalysisWorkflow>(new FeedbackAnalysisWorkflow());
+
+// Feedback analysis result modal states
+const isFeedbackResultModalActive = ref<boolean>(false);
+const openedFeedbackAnalysisResult = ref<FeedbackAnalysisResult | null>(null);
 
 onBeforeMount(async () => {
     // Set page title
@@ -184,5 +192,12 @@ watch(() => [isWorkflowsLoading.value, loadNextWorkflows.value], async () => {
     }
 });
 
+const openFeedbackResultModal = (feedbackResultId: string) => {
+    const response = insightBoxApiClient.results.getByIdAsync(feedbackResultId);
+    if (response.response) {
+        openedFeedbackAnalysisResult.value = response.response;
+        isFeedbackResultModalActive.value = true;
+    }
+}
 
 </script>

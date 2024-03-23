@@ -81,7 +81,9 @@
 
         <template v-slot:expandingContent>
 
-            <feedback-analysis-result-table :results="feedbackAnalysisResults" class="w-full h-fit"/>
+            <feedback-analysis-result-table :results="feedbackAnalysisResults" class="w-full h-fit"
+                @openFeedbackResult="feedbackResultId => emit('openFeedbackResult', feedbackResultId)"
+            />
 
         </template>
 
@@ -144,6 +146,7 @@ onBeforeMount(() => {
 const emit = defineEmits<
     {
         (e: 'closeOthers', resultId: string): void
+        (e: 'openFeedbackResult', feedbackResultId: string): void
     }>();
 
 const onOpenFeedbackAnalysisResults = async () => {

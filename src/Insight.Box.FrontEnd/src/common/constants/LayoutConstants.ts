@@ -37,6 +37,7 @@ export class LayoutConstants {
 
     /* Feedbacks */
     public static readonly Processed  = 'Processed';
+    public static readonly FeedbackAnalysisResult  = 'Feedback Analysis Result';
     public static readonly Failed  = 'Failed';
     public static readonly Relevant  = 'Relevant';
     public static readonly NonRelevant  = 'Non-Relevant';

@@ -11,6 +11,7 @@
             <td class="table-data-cell">
                 <app-button :type="ActionType.Secondary" :layout="ButtonLayout.Rectangle"
                             :size="ActionComponentSize.ExtraSmall" icon="fas fa-eye"
+                            @click="emit('openFeedbackResult', result.id)"
                 />
             </td>
             <td class="table-data-cell">{{ result.customerFeedback.userName }}</td>
@@ -60,6 +61,12 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits<
+    {
+        (e: 'closeOthers', resultId: string): void
+        (e: 'openFeedbackResult', feedbackResultId: string): void
+    }>();
 
 const headers = ['Actions', 'Username', 'Status', 'Relevance', 'Opinion', 'Impact Score', 'Languages'];
 
