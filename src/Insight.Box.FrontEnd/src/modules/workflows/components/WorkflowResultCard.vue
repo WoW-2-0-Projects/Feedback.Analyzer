@@ -108,7 +108,7 @@ import {Position} from "@/common/components/chartLabel/Position";
 import {FeedbackAnalysisResult} from "@/modules/feedbackAnalysisResults/models/FeedbackAnalysisResult";
 import {Query} from "@/infrastructure/models/query/Query";
 import {FeedbackAnalysisResultFilter} from
-        "@/infrastructure/apiClients/insightBoxClient/brokers/FeedbackAnalysisResultFilter";
+        "@/modules/feedbackAnalysisResults/models/FeedbackAnalysisResultFilter";
 import FeedbackAnalysisResultTable from "@/modules/feedbackAnalysisResults/components/FeedbackAnalysisResultTable.vue";
 import {ActionType} from "@/common/components/actions/ActionType";
 import {Organization} from "@/modules/organizations/models/Organization";
@@ -130,10 +130,7 @@ const props = defineProps({
 // Feedback analysis results table states
 const isResultsListOpen = ref<boolean>(false);
 const feedbackAnalysisResults = ref<Array<FeedbackAnalysisResult>>([]);
-const feedbackAnalysisResultsQuery = ref<Query>(new Query(new FeedbackAnalysisResultFilter(
-    props.workflowResult?.workflowId,
-    props.workflowResult?.id
-)));
+const feedbackAnalysisResultsQuery = ref<Query>(new Query(new FeedbackAnalysisResultFilter(props.workflowResult?.id)));
 
 onBeforeMount(() => {
     props.closeSource?.addListener((resultId: string) => {
@@ -151,7 +148,7 @@ const emit = defineEmits<
 
 const onOpenFeedbackAnalysisResults = async () => {
     if (feedbackAnalysisResults.value.length == 0) {
-        const response = await insightBoxClient.workflows.getFeedbackResultsAsync(feedbackAnalysisResultsQuery.value);
+        const response = await insightBoxClient.results.getAsync(feedbackAnalysisResultsQuery.value);
         if (response.response)
             feedbackAnalysisResults.value = response.response;
     }

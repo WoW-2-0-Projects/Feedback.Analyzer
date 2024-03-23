@@ -82,7 +82,7 @@ onBeforeMount(async () => {
 
 const loadWorkflowsAsync = async () => {
     const response = await insightBoxApiClient.workflows.getAsync(workflowsQuery.value);
-    if(response.response) {
+    if (response.response) {
         workflows.value = response.response;
         workflowsChangeSource.value.updateListeners();
     }
@@ -90,14 +90,14 @@ const loadWorkflowsAsync = async () => {
 
 const loadProductsAsync = async () => {
     const response = await insightBoxApiClient.products.getAsync(productsQuery.value);
-    if(response.isSuccess) {
+    if (response.isSuccess) {
         products.value = response.response;
     }
 };
 
 const openWorkflowModal = (workflowToEdit: FeedbackAnalysisWorkflow | null) => {
-    if(workflowToEdit) {
-        workflow.value =  JSON.parse(JSON.stringify(workflowToEdit));
+    if (workflowToEdit) {
+        workflow.value = JSON.parse(JSON.stringify(workflowToEdit));
         isWorkflowCreate.value = false;
         isWorkflowModalActive.value = true;
     } else {
