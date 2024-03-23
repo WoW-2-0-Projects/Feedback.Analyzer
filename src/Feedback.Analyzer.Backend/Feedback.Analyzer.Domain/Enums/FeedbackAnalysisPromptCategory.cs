@@ -8,11 +8,6 @@ namespace Feedback.Analyzer.Domain.Enums;
 public enum FeedbackAnalysisPromptCategory
 {
     /// <summary>
-    /// Refers to the content safety analysis
-    /// </summary>
-    [Description("Content Safety Analysis")] ContentSafetyAnalysis,
-
-    /// <summary>
     /// Refers to the language recognition
     /// </summary>
     [Description("Language Recognition")] LanguageRecognition,

@@ -1087,33 +1087,33 @@ public static class SeedDataExtensions
                                 new WorkflowExecutionOption
                                 {
                                     AnalysisPromptCategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
-                                    ChildExecutionOptions =
-                                    [
-                                        new WorkflowExecutionOption
-                                        {
-                                            AnalysisPromptCategoryId = Guid.Parse("6F1FDE2A-CAFC-4C4D-B909-655414C8C76E"),
-                                        },
-                                    ]
+                                    // ChildExecutionOptions =
+                                    // [
+                                    //     new WorkflowExecutionOption
+                                    //     {
+                                    //         AnalysisPromptCategoryId = Guid.Parse("6F1FDE2A-CAFC-4C4D-B909-655414C8C76E"),
+                                    //     },
+                                    // ]
                                 },
                                 new WorkflowExecutionOption
                                 {
                                     AnalysisPromptCategoryId = Guid.Parse("33CCCA43-E803-4FA2-AFC7-7C202DE5EA0C"),
-                                    ChildExecutionOptions =
-                                    [
-                                        new WorkflowExecutionOption
-                                        {
-                                            AnalysisPromptCategoryId = Guid.Parse("2EF85588-0B12-4FB8-9027-80D45CC38EC1"),
-                                        },
-                                    ]
+                                    // ChildExecutionOptions =
+                                    // [
+                                    //     new WorkflowExecutionOption
+                                    //     {
+                                    //         AnalysisPromptCategoryId = Guid.Parse("2EF85588-0B12-4FB8-9027-80D45CC38EC1"),
+                                    //     },
+                                    // ]
                                 },
                             ]
                         },
                     ]
                 },
-                new WorkflowExecutionOption
-                {
-                    AnalysisPromptCategoryId = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
-                },
+                // new WorkflowExecutionOption
+                // {
+                //     AnalysisPromptCategoryId = Guid.Parse("159D0655-40AE-4DED-8C83-0FFFF69A7704"),
+                // },
             ]
         };
 
