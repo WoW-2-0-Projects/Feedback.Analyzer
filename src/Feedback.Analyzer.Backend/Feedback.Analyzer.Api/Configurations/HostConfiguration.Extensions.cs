@@ -12,6 +12,7 @@ using Feedback.Analyzer.Application.Common.Prompts.Brokers;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.PromptsHistory.Services;
 using Feedback.Analyzer.Application.Common.Serializers;
+using Feedback.Analyzer.Application.Common.Serializers.Brokers;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Common.WorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
@@ -54,6 +55,9 @@ using Microsoft.SemanticKernel;
 using MassTransit;
 using Feedback.Analyzer.Infrastructure.Common.Workflows.EventHandlers;
 using Feedback.Analyzer.Infrastructure.Common.Identity.EventHandlers;
+using Feedback.Analyzer.Infrastructure.Common.Serializers.Brokers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
@@ -136,6 +140,9 @@ public static partial class HostConfiguration
            .Services
            .AddMassTransit(configuration =>
            {
+               var serviceProvider = configuration.BuildServiceProvider();
+               var jsonSerializerSettingsProvider = serviceProvider.GetRequiredService<IJsonSerializationSettingsProvider>();
+               
                configuration
                .AddConsumersFromNamespaceContaining<ExecuteWorkflowSinglePromptEventHandler>();
 
@@ -145,10 +152,19 @@ public static partial class HostConfiguration
                configuration.UsingInMemory((context, cfg) =>
                {
                    cfg.ConfigureEndpoints(context);
+                   
+                   // Change default serializer to NewtonsoftJson
+                   cfg.UseNewtonsoftJsonSerializer();
+                   cfg.UseNewtonsoftJsonDeserializer();
+
+                   // Change default serializer settings
+                   cfg.ConfigureNewtonsoftJsonSerializer(settings => jsonSerializerSettingsProvider.ConfigureForEventBus(settings));
+                   cfg.ConfigureNewtonsoftJsonDeserializer(settings => jsonSerializerSettingsProvider.ConfigureForEventBus(settings));
                });
            });
 
         builder.Services.AddSingleton<IEventBusBroker, MassTransitEventBusBroker>();
+        // builder.Services.AddSingleton<IEventBusBroker, RabbitMqEventBusBroker>();
 
         return builder;
     }
