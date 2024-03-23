@@ -10,6 +10,7 @@ using Feedback.Analyzer.Infrastructure.Organizations.Validators;
 using Feedback.Analyzer.Persistence.Extensions;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.Organizations.Services;
 
@@ -37,18 +38,13 @@ public class OrganizationService(
 
     public IQueryable<Organization> Get(OrganizationFilter organizationFilter, QueryOptions queryOptions = default)
     {
-        if (organizationFilter.ClientId == Guid.Empty)
-        {
-            throw new UnauthorizedAccessException();
-        }
-
-        var organizationQuery = organizationRepository.Get().ApplyPagination(organizationFilter);
+        var organizationQuery = organizationRepository
+            .Get()
+            .ApplyPagination(organizationFilter);
 
         if (organizationFilter.ClientId.HasValue)
-        {
-            organizationQuery =
-                organizationQuery.Where(organization => organization.ClientId == organizationFilter.ClientId);
-        }
+            organizationQuery = organizationQuery
+                .Where(organization => organization.ClientId == organizationFilter.ClientId);
 
         return organizationQuery;
     }
@@ -59,13 +55,13 @@ public class OrganizationService(
         CancellationToken cancellationToken = default
     )
     {
-        var foundOrganization =
-            await organizationRepository.GetByIdAsync(organizationId, queryOptions, cancellationToken);
+        var organizationQuery = organizationRepository.Get(organization => organization.Id == organizationId, queryOptions);
+        
+        if (requestContextProvider.IsLoggedIn()) 
+            organizationQuery = organizationQuery
+                .Where(organization => organization.ClientId == requestContextProvider.GetUserId());
 
-        if (foundOrganization!.ClientId != requestContextProvider.GetUserId())
-            throw new UnauthorizedAccessException();
-
-        return foundOrganization;
+        return await organizationQuery.FirstOrDefaultAsync(cancellationToken);
     }
 
     public ValueTask<Organization> CreateAsync(
@@ -73,18 +69,12 @@ public class OrganizationService(
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default)
     {
-        if (organization.ClientId == Guid.Empty)
-        {
-            throw new UnauthorizedAccessException();
-        }
-
-        var validationResult = organizationValidator
-            .Validate(organization,
-                options =>
-                    options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
+        var validationResult = organizationValidator.Validate(organization, options =>
+            options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
+        
         return organizationRepository.CreateAsync(organization, commandOptions, cancellationToken);
     }
 
@@ -94,9 +84,18 @@ public class OrganizationService(
         CancellationToken cancellationToken = default
     )
     {
-        var foundOrganization =
-            await GetByIdAsync(organization.Id, cancellationToken: cancellationToken);
+        var validationResult = organizationValidator.Validate(organization, options =>
+            options.IncludeRuleSets(EntityEvent.OnUpdate.ToString()));
+        
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+        
+        var foundOrganization = await GetByIdAsync(organization.Id, cancellationToken: cancellationToken)
+            ?? throw new InvalidOperationException("Organization not found.");
 
+        if (foundOrganization.ClientId != organization.ClientId)
+            throw new InvalidOperationException("Can't change organization owner");
+        
         foundOrganization!.Name = organization.Name;
         foundOrganization.Description = organization.Description;
 
@@ -114,8 +113,8 @@ public class OrganizationService(
         CommandOptions commandOptions = default,
         CancellationToken cancellationToken = default)
     {
-        var foundOrganization =
-            await GetByIdAsync(organizationId, cancellationToken: cancellationToken);
+        var foundOrganization = await GetByIdAsync(organizationId, cancellationToken: cancellationToken)
+            ?? throw new InvalidOperationException("Organization not found.");
 
         return await organizationRepository.DeleteByIdAsync(foundOrganization!.Id, commandOptions, cancellationToken);
     }
