@@ -962,18 +962,76 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("ad52fe38-23f4-4aa2-bf60-c8a610089a89"),
                 CategoryId = Guid.Parse("d187624d-8af7-4495-bf7b-00084a63372e"),
                 Prompt = """
-                    ## Advanced Opinion Mining
-                
-                    Analyze the sentiment of the following user feedback based on the detailed product description provided. Classify the overall sentiment into 'Positive', 'Negative', or 'Neutral'. Consider nuanced language, contextual clues, and specific product attributes mentioned in the feedback.
-                    
-                    Product Description: {{$productDescription}}
-                    
-                    User Feedback: {{$userFeedback}}
-                    
-                    Ensure the response is concise and directly correlates to the sentiments expressed in the feedback.
-                        
-                    Result:
-                """,
+                         ## Concepts
+
+                         Product description : A brief description of the product
+                         Customer feedback : The customer's feedback comment about the product
+                         Opinion mining : Determining sentiment of the customer's feedback
+
+                         ## Instructions
+
+                         Analyze customer feedback, compare it with product description and understand the overall sentiment.
+
+                         Requirements :
+                         1. consider nuanced language, contextual clues, and specific product attributes mentioned in the feedback
+                         2. if customer doesn't have experience with the product ( language - I tried, looked, heard, seems like ), you can count
+                            this as neutral
+                         3. output the result as single string in JSON format as following, don't use fenced code blocks for JSON, just add double quotes to
+                         make it parseable as JSON
+
+                         "Positive" - if overall feedback has positive sentiment
+                         "Negative" - if customer is not satisfied with the product
+                         "Neutral" - if feedback is neither positive nor negative
+
+                         ## Examples
+
+                         Product description :
+
+                         Logitech MX Master 3 Wireless Mouse. The most advanced Master Series mouse yet – designed for creatives and engineered for
+                         coders. If you can think it, you can master it. The great battery life and the ergonomic design make it a perfect choice for
+                         all day use. Battery life is upto 70 days on a full charge
+
+                         1. Negative feedback
+
+                         Customer feedback : I only get to use it 5 days after charging, the best battery life so far ))
+                         Result : Negative
+                         Reasoning : Although from the tone it seems like customer liked the product, they are complaining about the battery life
+                         with a sarcasm
+
+                         2. Positive feedback
+
+                         Customer feedback : First I hated using it, the scroll, the grip ... now loving this badboy
+                         Result : Positive
+                         Reasoning : Customer have been adapted to the product and now loving it
+
+                         3. Advanced case
+
+                         Customer feedback : Tried one in store, seems just like the previous one, just more hype
+                         Result : Neutral
+                         Reasoning : At first it seems like customer is complaining about less than expected changes since the last release, but
+                         at the same time customer admits they don't have direct experience with the product, so it doesn't as negative or positive
+
+                         4. With turning points
+
+                         Customer feedback : Overall I think the MX Master 3 is a good mouse, but I can't afford one
+                         Result : Neutral
+                         Reasoning : We count this as neutral because user doesn't have direct experience with the product
+
+                         Customer feedback : Overall I think the MX Master 3 is a good mouse, but not for me
+                         Result : Neutral
+                         Reasoning : Customer feels this mouse isn't for them, and probably they haven't tried it too, so it counts as neutral
+
+                         Customer feedback : Overall MX Master 3 is a good mouse, they said, but nope
+                         Result : Negative
+                         Reasoning : Customer mentions overall positive feedback about the product, but has some negative experience with it, so it
+                         counts as negative
+
+                         ## Input
+
+                         Product description - {{$productDescription}}
+                         Customer feedback - {{$customerFeedback}}
+
+                         """,
                 Version = 1,
                 Revision = 0
             }
