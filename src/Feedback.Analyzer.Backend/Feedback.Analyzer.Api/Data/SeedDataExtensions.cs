@@ -443,7 +443,7 @@ public static class SeedDataExtensions
     {
         var analysisPrompts = new List<AnalysisPrompt>()
         {
-             new()
+            new() 
             {
                 Id = Guid.Parse("42204C3B-0E3E-4360-9059-94A011C29608"),
                 CategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
@@ -505,26 +505,64 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("3ca01475-d736-4ac3-a326-a2580110ee0c"),
                 CategoryId = Guid.Parse("787BB696-5057-4840-9161-770AD88FFA9B"),
                 Prompt = """
+                         ## Concepts
+
+                         Product description : A brief description of the product
+                         Customer feedback : The customer's feedback comment about the product
+                         Relevant content : Only relevant part of the customer's feedback
+
                          ## Instructions
 
-                         Extract only relevant parts of the customer feedback for the product
+                         Analyze customer feedback, compare it with product description and extract only parts of the feedback that is relevant to the product or can contribute to the product improvement. Deeply analyze the description to understand the customer's feedback.
 
                          Requirements :
-                         1. if feedback contains relevant content in different parts of the feedback, all relevant parts must be extracted and appended
+                         1. if relevant content is in different parts of the feedback, all relevant parts must be extracted and appended
                          2. try to extract as a readable sentence, not just words
+                         3. output the result as a string
 
-                         ## Data
+                         ## Examples
 
-                         {{$productDescription}}
+                         Product description :
+
+                         Logitech MX Master 3 Wireless Mouse. The most advanced Master Series mouse yet – designed for creatives and engineered for
+                         coders. If you can think it, you can master it. The great battery life and the ergonomic design make it a perfect choice for
+                         all day use.
+
+                         1. Relevant content in different parts
+
+                         Customer feedback : battery life ? are you joking ? mine lasts only 2 days. I'm really disappointed with the product. last
+                         year I bought a Rapoo MT550 mouse, and it still has a great battery life. Battery life in Razer mouses just sucks
+
+                         Result : battery life ? are you joking ? mine lasts only 2 days. I'm really disappointed with the product.
+                         Battery life in Razer mouses just sucks
+
+                         Reasoning : Feedback has 3 parts - complaint about battery life, mentioning other brand's product and another complaint
+                         about the product. We extracted only part 1 and part 3, as mentioning other brand's product is not relevant
+
+                         2. Relevant content in a single part
+
+                         Customer feedback : I like keyboards of this brand. They are really good. I hope the mouse is as good as the keyboards
+
+                         Result : I hope the mouse is as good as the keyboards
+
+                         Reasoning : Feedback has 3 parts - compliment about keyboards and hoping that mouses are as good as keyboards. We extract
+                         the part 2, although it skips the initial context, it gives clear view of the customer's expectation
+
+                         3. Advanced case
+
+                         Customer feedback : Got one month ago, it feels very big and not comfy, my fist hurts when using it
+
+                         Result : Got one month ago, it feels very big and not comfy, my fist hurts when using it
+
+                         Reasoning : Feedback has 3 parts - customer mentions when he bought the product, how it feels and the problem he is facing.
+                         Whole feedback is relevant
 
                          ## Input
 
-                         {{$customerFeedback}}
-
-                         ## Result
-
+                         Product description - {{$productDescription}}
+                         Customer feedback - {{$customerFeedback}}
                          """,
-                Version = 2,
+                Version = 1,
                 Revision = 0,
             },
             new()
