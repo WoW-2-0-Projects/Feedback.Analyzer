@@ -6,6 +6,10 @@
   @apply rounded-xl;
 }
 
+.card-top-round {
+  @apply rounded-t-xl;
+}
+
 .card-bg {
   @apply bg-secondaryColor border-[0.5px] border-accentSecondaryColor;
 }

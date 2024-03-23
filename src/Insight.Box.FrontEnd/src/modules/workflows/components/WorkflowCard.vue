@@ -6,7 +6,7 @@
     >
         <template v-slot:mainContent>
 
-            <div class="flex p-2 shadow-xl card-round">
+            <div class="flex p-2 shadow-xl" :class="isResultsListOpen ? 'card-top-round' : 'card-round'">
 
                 <!-- Prompt category details -->
                 <div class="w-1/4 flex items-center py-5">
@@ -116,8 +116,13 @@
         <template v-slot:expandingContent>
 
             <!-- Workflow results history -->
-            <div class="flex flex-col w-full gap-5 p-5">
+            <div v-if="workflowResults.length > 0" class="flex flex-col w-full gap-5 p-5">
                 <workflow-result-card v-for="(result, index) in workflowResults" :workflowResult="result" :key="index"/>
+            </div>
+            <div v-else class="h-full w-full flex justify-center">
+                <img src="@/assets/images/nothing-to-see.png" alt="Nothing to see illustration"
+                     class="h-full w-auto object-contain"
+                >
             </div>
 
         </template>
