@@ -695,46 +695,116 @@ public static class SeedDataExtensions
                 Version = 1,
                 Revision = 0,
             },
-            new()
+           new()
             {
                 Id = Guid.Parse("551d1c24-24c2-45aa-9eba-383de543b24b"),
                 CategoryId = Guid.Parse("B12F3C18-2706-42BB-BF1A-B2AC3CB0BF3F"),
                 Prompt = """
+                         ## Concepts
+
+                         Product description : A brief description of the product
+                         Customer feedback : The customer's feedback comment about the product
+                         Positive point : One unit of positive opinion from the customer's feedback
+                         Negative point : One unit of negative opinion point from the customer's feedback
+
                          ## Instructions
 
-                         Extract positive and  negative opinion points from the user feedback.
+                         Analyze customer feedback, compare it with product description and extract positive and negative points from the feedback.
+                         Deeply analyze the description to understand the customer's feedback.
 
                          Requirements :
-                         1. extract positive and negative opinion points from the user feedback.
-                         2. don't include neutral opinion points
-                         3. only extract opinion points that are related to the product
-                         4. only extract the section that contains opinion itself not the whole sentence
-                         5. don't include any points from product description
-                         6. be aware of mixed complex sentences that might contain turning points
-                         7. exclude actionable opinions because we want exact source of positive and negative experience not solutions
-                         8. analyze and exclude sentences with opinions that you are not sure whether it is about this product
-                         9. separate points if there are multiple points in a single sentence or in a conjunction
+                         1. something counts as positive point if it is a compliment about some exact thing in the product, not just customer happiness
+                            expression
+                         2. something counts as negative point if it is a complaint about some exact thing in the product, not just customer disappointment
+                            expression
+                         3. don't include neutral points or something general like "I like the product" or "I hate the product"
+                         4. you can rephrase the points to make them more readable and simpler
+                         5. if a sentence has multiple contains multiple points, extract and separate them all
+                         6. output must be an array of an array, first array contains positive points, second array contains negative points, if any
+                         of points not found for the category just return empty array in JSON format as following, don't use fenced code blocks for
+                         JSON
+
+                         [
+                            [
+                                "I like the side grip of the mouse",
+                                "battery life has improved"
+                            ],
+                            [
+                                "Mouse driver is hard to update",
+                                "When battery is low, mouse starts lagging",
+                            ]
+                         ]
 
                          ## Examples
 
-                         These examples contain turning points
+                         Product description :
 
-                         - Overall I think the Viper is a good mouse, but I can't afford but - positive
-                         - Overall I think the Viper is a good mouse, but not for me - neutral
-                         - Overall Viper is a good mouse, they said, but nope - negative
+                         Logitech MX Master 3 Wireless Mouse. The most advanced Master Series mouse yet – designed for creatives and engineered for
+                         coders. If you can think it, you can master it. The great battery life and the ergonomic design make it a perfect choice for
+                         all day use.
 
-                         ## Product Description:
+                         1. Relevant content in different parts
 
-                         {{$productDescription}}
+                         Customer feedback : battery life ? are you joking ? mine lasts only 2 days. I'm really disappointed with the product. last
+                         year I bought a Rapoo MT550 mouse, and it still has a great battery life. I hate Razer mouses
 
-                         ## Customer feedback :
+                         Result :
 
-                         {{$customerFeedback}}
+                         [
+                            [],
+                            [
+                                "battery doesn't last long enough",
+                            ]
+                         ]
 
-                         ## Result
+                         Reasoning : Customer has exact complaint about the battery and expresses that he hates Razer mouses, here he said that
+                         battery life lasts for only 2 days, which is a negative point, but the last expression doesn't count, as it doesn't have
+                         some exact complaint about the product
 
+                         2. Relevant content in a single part
+
+                         Customer feedback : The DPI in the new mouse just rocks, it's perfect for design work,  but the polling rate isn't grate for
+                         gaming
+
+                         Result :
+
+                         [
+                            [
+                                "improved DPI since last model",
+                            ],
+                            [
+                                "bad polling rate for gaming"
+                            ]
+                         ]
+
+                         Reasoning : Customer has exact compliment about the DPI and exact complaint about the polling rate, so both are extracted
+
+                         3. Advanced case
+
+                         Product description : My friend recommended the mouse as it has a good buttons layout and also mentioned about the scroll
+                         that often breaks. I bought one, so far good, just over time, side buttons started to get stuck and hard to click, charging
+                         in this mouse is pretty quick tho
+
+                         Result :
+
+                         [
+                            [
+                                "quick charging",
+                            ],
+                            [
+                                "side buttons are getting stuck",
+                            ]
+                         ]
+
+                         Reasoning : Although customer has mentioned the experience of hist friend, this doesn't count as direct experience with the
+                         product, so we can only take the last 2 points
+
+                         ## Input
+
+                         Product description - {{$productDescription}}
+                         Customer feedback - {{$customerFeedback}}
                          """,
-                Version = 5,
+                Version = 1,
                 Revision = 0,
             },
             new()
