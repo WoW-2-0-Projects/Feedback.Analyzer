@@ -443,29 +443,59 @@ public static class SeedDataExtensions
     {
         var analysisPrompts = new List<AnalysisPrompt>()
         {
-            new()
+             new()
             {
                 Id = Guid.Parse("42204C3B-0E3E-4360-9059-94A011C29608"),
                 CategoryId = Guid.Parse("7397EB27-EEAF-4898-9B0C-D78613817C30"),
                 Prompt = """
-                         ### Product Description
-                         {{$productDescription}}
+                         ## Concepts
 
-                         ### Customer Feedback
-                         {{$customerFeedback}}
+                         Product description : A brief description of the product
+                         Customer feedback : The customer's feedback comment about the product
+                         Relevance : measure of how closely the customer's feedback is related to the product description
 
-                         ### Instructions
-                         Decide if the given Customer Feedback (delimited by ###) is relevant or irrelevant to the given Product Description (delimited by ###).
-                         Relevant - "true"
-                         irrelevant - "false"
+                         ## Instructions
 
-                         Conditions:
-                         1. Even the slightest mention of the product, its features, name or service in the Customer Feedback is counted as relevant.
-                         2. Questions about product, its name and features, or service is also considered as relevant.
-                         3. Any word or expression that is used to imply the product, its name or features, or service is considered as relevant.
-                         4. Any word or expression indicating an issue with the product or service, its functionality.
+                         Analyze customer feedback, compare it with product description and determine whether the customer's feedback is relevant or
+                         not. Deeply analyze the description to understand the customer's feedback.
 
-                         The return format: "true" or "false"
+                         Requirements :
+                         1. feedback must include at least 1 sentence about the service
+                         2. even feedbacks that have non-related content counts if the rule #1 is satisfied
+                         3. output a single line in the following format
+
+                         true - if feedback is relevant
+                         false - if feedback is not relevant
+
+                         ## Examples
+
+                         Product description :
+
+                         Logitech MX Master 3 Wireless Mouse. The most advanced Master Series mouse yet – designed for creatives and engineered for
+                         coders. If you can think it, you can master it. The great battery life and the ergonomic design make it a perfect choice for
+                         all day use.
+
+                         1. Relevant feedback
+
+                         Customer feedback : battery life ? are you joking ? mine lasts only 2 days. I'm really disappointed with the product.
+                         Reasoning : Here customer is talking about battery life of the product which is relevant to the product, result is true
+
+                         2. Non relevant feedback
+
+                         Customer feedback : I like keyboards of this brand. They are really good.
+                         Reasoning : Even though feedback mentions the brand, it's not directly has anything to do with the product. Customer is
+                                  talking about the different product of the brand, so result is false
+
+                         3. Advanced case
+
+                         Customer feedback : finally a good one
+                         Reasoning : Customer is talking about the product in a positive way but not mentioning any specific feature of the
+                         product, result is true
+
+                         ## Input
+
+                         Product description - {{$productDescription}}
+                         Customer feedback - {{$customerFeedback}}
                          """,
                 Version = 1,
                 Revision = 0,
