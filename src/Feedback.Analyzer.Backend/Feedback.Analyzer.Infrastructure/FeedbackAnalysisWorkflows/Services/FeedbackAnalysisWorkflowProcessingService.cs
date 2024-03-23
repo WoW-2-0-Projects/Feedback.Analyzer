@@ -1,4 +1,5 @@
 ﻿using Feedback.Analyzer.Application.Common.AnalysisWorkflows.Services;
+using Feedback.Analyzer.Application.Common.WorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Application.Products.Services;
 using Feedback.Analyzer.Domain.Brokers;
@@ -14,6 +15,7 @@ public class FeedbackAnalysisWorkflowProcessingService(
     IFeedbackAnalysisWorkflowService feedbackAnalysisWorkflowService,
     IAnalysisWorkflowService analysisWorkflowService,
     IRequestContextProvider requestContextProvider,
+    IWorkflowExecutionOptionsService executionOptionsService,
     IProductService productService
 ) : IFeedbackAnalysisWorkflowProcessingService
 {
@@ -39,10 +41,12 @@ public class FeedbackAnalysisWorkflowProcessingService(
         var baseWorkflow = await feedbackAnalysisWorkflowService
             .Get(workflow => workflow.Id == baseWorkflowId)
             .Include(workflow => workflow.AnalysisWorkflow)
-            .ThenInclude(workflow => workflow.EntryExecutionOption)
             .FirstOrDefaultAsync(cancellationToken) ?? throw new InvalidOperationException($"Base workflow with id {baseWorkflowId} not found");
 
         // Clone execution options from base workflow
+        baseWorkflow.AnalysisWorkflow.EntryExecutionOption = await executionOptionsService
+            .GetByIdForCloningAsync(baseWorkflow.AnalysisWorkflow.EntryExecutionOptionId, cancellationToken: cancellationToken);
+        
         var clonedEntryExecutionOption = baseWorkflow.AnalysisWorkflow.EntryExecutionOption.Clone();
 
         // Create new analysis workflow

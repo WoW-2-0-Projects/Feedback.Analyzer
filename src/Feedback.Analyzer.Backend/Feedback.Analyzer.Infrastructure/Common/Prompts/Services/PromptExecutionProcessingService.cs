@@ -15,16 +15,13 @@ namespace Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 /// <summary>
 /// Service for executing prompts asynchronously and handling their history.
 /// </summary>
-/// <param name="promptService">The prompt service.</param>
 /// <param name="promptExecutionBroker">The prompt execution broker.</param>
 /// <param name="promptsExecutionHistoryService">The prompt execution history service.</param>
 public class PromptExecutionProcessingService(
-    IPromptService promptService,
     IPromptExecutionBroker promptExecutionBroker,
     IPromptExecutionHistoryService promptsExecutionHistoryService
 ) : IPromptExecutionProcessingService
 {
-    
     public async ValueTask<IImmutableList<PromptExecutionHistory>> ExecuteAsync(
         AnalysisPrompt prompt,
         Dictionary<string,string> arguments,
@@ -40,7 +37,7 @@ public class PromptExecutionProcessingService(
             cancellationToken,
             async (_, _) =>
             {
-                var stopWatch = new Stopwatch();
+                var stopWatch = Stopwatch.StartNew();
                 var promptResult = await promptExecutionBroker.ExecutePromptAsync(prompt.Prompt, arguments, cancellationToken);
                 stopWatch.Stop();
                 var elapsedMilliseconds = stopWatch.Elapsed.TotalMilliseconds;
@@ -84,7 +81,7 @@ public class PromptExecutionProcessingService(
         return new PromptExecutionHistory
         {
             PromptId = prompt.Id,
-            Prompt = prompt,
+            PromptCategoryId = prompt.CategoryId,
             Result = result.Data,
             Exception = result.Exception is not null ? JsonConvert.SerializeObject(result.Exception) : null,
             ExecutionTime = DateTime.UtcNow,

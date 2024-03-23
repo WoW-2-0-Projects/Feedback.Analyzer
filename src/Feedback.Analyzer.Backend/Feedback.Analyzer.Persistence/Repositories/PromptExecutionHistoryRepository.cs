@@ -15,20 +15,9 @@ namespace Feedback.Analyzer.Persistence.Repositories;
 public class PromptExecutionHistoryRepository(AppDbContext dbContext, ICacheBroker cacheBroker) : 
     EntityRepositoryBase<PromptExecutionHistory, AppDbContext>(dbContext, cacheBroker), IPromptExecutionHistoryRepository
 {
-    public new IQueryable<PromptExecutionHistory> Get(Expression<Func<PromptExecutionHistory, bool>>? predicate = default, QueryOptions queryOptions = default)
-    {
-        return base.Get(predicate, queryOptions);
-    }
+    public new IQueryable<PromptExecutionHistory> Get(Expression<Func<PromptExecutionHistory, bool>>? predicate = default, QueryOptions queryOptions = default) 
+        => base.Get(predicate, queryOptions);
 
-    public new async ValueTask<PromptExecutionHistory> CreateAsync(PromptExecutionHistory history, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
-    {
-        var prompt = history.Prompt;
-        history.Prompt = null!;
-        
-        var createdHistory = await base.CreateAsync(history, commandOptions, cancellationToken);
-
-        createdHistory.Prompt = prompt;
-
-        return createdHistory;
-    }
+    public new ValueTask<PromptExecutionHistory> CreateAsync(PromptExecutionHistory history, CommandOptions commandOptions = default, CancellationToken cancellationToken = default) 
+        => base.CreateAsync(history, commandOptions, cancellationToken);
 }

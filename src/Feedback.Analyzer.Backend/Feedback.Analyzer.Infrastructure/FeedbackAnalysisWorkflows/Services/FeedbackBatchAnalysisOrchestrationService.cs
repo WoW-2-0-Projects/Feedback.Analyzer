@@ -1,3 +1,4 @@
+using System.Text;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Feedback.Analyzer.Application.Common.AnalysisWorkflows.Services;
@@ -33,8 +34,6 @@ public class FeedbackBatchAnalysisOrchestrationService(
             TrackingMode = QueryTrackingMode.AsNoTrackingWithIdentityResolution
         };
 
-        // TODO : load customer Ids first, then load customer feedbacks in each workflow execution
-
         // Load analysis workflow
         var workflowContext = await feedbackAnalysisWorkflowService
                                   .Get(workflow => workflow.Id == workflowId, queryOptions)
@@ -43,7 +42,6 @@ public class FeedbackBatchAnalysisOrchestrationService(
                                   .Include(workflow => workflow.Product.Organization)
                                   .Include(workflow => workflow.Product.CustomerFeedbacks)
                                   .AsSplitQuery()
-                                  .AsNoTrackingWithIdentityResolution()
                                   .ProjectTo<FeedbackAnalysisWorkflowContext>(mapper.ConfigurationProvider)
                                   .FirstOrDefaultAsync(cancellationToken) ??
                               throw new InvalidOperationException($"Could not execute prompt, workflow with id {workflowId} not found.");
@@ -88,14 +86,7 @@ public class FeedbackBatchAnalysisOrchestrationService(
                     return singleFeedbackAnalysisWorkflowContext;
                 }
             )
-            .Select(
-                feedbackAnalysisContext => eventBusBroker.PublishAsync(
-                    new AnalyzeFeedbackEvent
-                    {
-                        Context = feedbackAnalysisContext
-                    }
-                ).AsTask()
-            );
+            .Select(feedbackAnalysisContext => eventBusBroker.PublishAsync(new AnalyzeFeedbackEvent(feedbackAnalysisContext)).AsTask());
 
         await Task.WhenAll(analyzeFeedbackEventPublishTasks);
     }

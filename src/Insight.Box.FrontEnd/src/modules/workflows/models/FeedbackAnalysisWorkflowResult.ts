@@ -20,5 +20,5 @@ export class FeedbackAnalysisWorkflowResult {
     /**
      * The finish time of the feedback analysis workflow.
      */
-    public finishedTime: Date;
+    public finishedTime?: Date;
 }

@@ -1,4 +1,5 @@
-﻿using Feedback.Analyzer.Domain.Common.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Feedback.Analyzer.Domain.Common.Entities;
 
 namespace Feedback.Analyzer.Domain.Entities;
 
@@ -36,4 +37,10 @@ public class PromptExecutionHistory : Entity
     /// Gets or sets the AnalysisPrompt object used for prompting analysis.
     /// </summary>
     public AnalysisPrompt Prompt { get; set; } = default!;
+
+    /// <summary>
+    /// Gets or sets prompt category Id
+    /// </summary>
+    [NotMapped]
+    public Guid PromptCategoryId { get; set; }
 }

@@ -12,19 +12,24 @@ using Feedback.Analyzer.Application.Common.Prompts.Brokers;
 using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Application.Common.PromptsHistory.Services;
 using Feedback.Analyzer.Application.Common.Serializers;
+using Feedback.Analyzer.Application.Common.Serializers.Brokers;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Application.Common.WorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Services;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
+using Feedback.Analyzer.Domain.Common.Events;
 using Feedback.Analyzer.Domain.Constants;
+using Feedback.Analyzer.Domain.Extensions;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
+using Feedback.Analyzer.Infrastructure.Common.EventBus.Extensions;
 using Feedback.Analyzer.Infrastructure.Common.Identity.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
@@ -54,6 +59,10 @@ using Microsoft.SemanticKernel;
 using MassTransit;
 using Feedback.Analyzer.Infrastructure.Common.Workflows.EventHandlers;
 using Feedback.Analyzer.Infrastructure.Common.Identity.EventHandlers;
+using Feedback.Analyzer.Infrastructure.Common.Serializers.Brokers;
+using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandlers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Feedback.Analyzer.Api.Configurations;
 
@@ -115,14 +124,7 @@ public static partial class HostConfiguration
         // Configure CacheSettings from the app settings.
         builder.Services.Configure<CacheSettings>(builder.Configuration.GetSection(nameof(CacheSettings)));
 
-        // Configure Redis caching with options from the app settings.
-        // builder.Services.AddStackExchangeRedisCache(
-        //     options =>
-        //     {
-        //         options.Configuration = builder.Configuration.GetConnectionString("RedisConnectionString");
-        //         options.InstanceName = "AirBnb.CacheMemory";
-        //     });
-
+        // Register the Memory Cache service.
         builder.Services.AddMemoryCache();
         
         // Register the Memory Cache as a singleton.
@@ -133,7 +135,7 @@ public static partial class HostConfiguration
 
         return builder;
     }
-
+    
     /// <summary>
     /// Extension method for adding event bus services to the application.
     /// </summary>
@@ -143,15 +145,21 @@ public static partial class HostConfiguration
            .Services
            .AddMassTransit(configuration =>
            {
-               configuration
-               .AddConsumersFromNamespaceContaining<ExecuteWorkflowSinglePromptEventHandler>();
+               var serviceProvider = configuration.BuildServiceProvider();
+               var jsonSerializerSettingsProvider = serviceProvider.GetRequiredService<IJsonSerializationSettingsProvider>();
 
-               configuration
-               .AddConsumersFromNamespaceContaining<UserCreatedEventHandler>();
-
+               configuration.RegisterAllConsumers(Assemblies);
                configuration.UsingInMemory((context, cfg) =>
                {
                    cfg.ConfigureEndpoints(context);
+                   
+                   // Change default serializer to NewtonsoftJson
+                   cfg.UseNewtonsoftJsonSerializer();
+                   cfg.UseNewtonsoftJsonDeserializer();
+
+                   // Change default serializer settings
+                   cfg.ConfigureNewtonsoftJsonSerializer(settings => jsonSerializerSettingsProvider.ConfigureForEventBus(settings));
+                   cfg.ConfigureNewtonsoftJsonDeserializer(settings => jsonSerializerSettingsProvider.ConfigureForEventBus(settings));
                });
            });
 
@@ -247,7 +255,7 @@ public static partial class HostConfiguration
         var kernelBuilder = Kernel.CreateBuilder();
 
         // Add OpenAI connector
-        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-3.5-turbo", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
+        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-4-0125-preview", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
 
         // Build kernel
         var kernel = kernelBuilder.Build();
