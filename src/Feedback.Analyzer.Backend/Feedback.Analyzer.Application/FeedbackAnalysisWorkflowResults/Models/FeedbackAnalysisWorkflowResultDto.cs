@@ -23,7 +23,7 @@ public record FeedbackAnalysisWorkflowResultDto
     /// <summary>
     /// Gets or sets the finish time of the feedback analysis workflow.
     /// </summary>
-    public DateTimeOffset FinishedTime { get; set; }
+    public DateTimeOffset? FinishedTime { get; set; }
     
     /// <summary>
     /// Gets or sets the total count of successfully analyzed feedbacks

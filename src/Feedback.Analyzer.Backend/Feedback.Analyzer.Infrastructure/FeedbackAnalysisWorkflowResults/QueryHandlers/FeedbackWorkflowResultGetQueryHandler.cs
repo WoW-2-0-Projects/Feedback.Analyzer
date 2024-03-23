@@ -28,8 +28,7 @@ public class FeedbackWorkflowResultGetQueryHandler(
         };
 
         var matchedWorkflowResults = await feedbackAnalysisWorkflowResultService
-            .Get(workflowResult => !request.Filter.WorkflowId.HasValue || workflowResult.WorkflowId == request.Filter.WorkflowId.Value)
-            .ApplyTrackingMode(queryOptions.TrackingMode)
+            .Get(workflowResult => !request.Filter.WorkflowId.HasValue || workflowResult.WorkflowId == request.Filter.WorkflowId.Value, queryOptions)
             .ProjectTo<FeedbackAnalysisWorkflowResultDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
         

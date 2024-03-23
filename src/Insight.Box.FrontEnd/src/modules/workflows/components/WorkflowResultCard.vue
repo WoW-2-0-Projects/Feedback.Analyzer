@@ -39,8 +39,9 @@
 
                     <div class="h-full flex flex-col items-start justify-between text-tertiaryContentColor">
                         <h5 class="text-xs">{{ LayoutConstants.FinishedTime }}</h5>
-                        <h5 class="text-base font-bold whitespace-nowrap">
+                        <h5 v-if="workflowResult.finishedTime" class="text-base font-bold whitespace-nowrap">
                             {{ timeFormatterService.formatHumanize(workflowResult.finishedTime) }}</h5>
+                        <i v-else class="fas fa-infinity"></i>
                         <div></div>
                     </div>
 

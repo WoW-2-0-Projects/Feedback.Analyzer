@@ -37,7 +37,7 @@ public class PromptExecutionProcessingService(
             cancellationToken,
             async (_, _) =>
             {
-                var stopWatch = new Stopwatch();
+                var stopWatch = Stopwatch.StartNew();
                 var promptResult = await promptExecutionBroker.ExecutePromptAsync(prompt.Prompt, arguments, cancellationToken);
                 stopWatch.Stop();
                 var elapsedMilliseconds = stopWatch.Elapsed.TotalMilliseconds;
