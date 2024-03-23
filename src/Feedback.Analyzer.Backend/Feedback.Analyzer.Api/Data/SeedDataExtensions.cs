@@ -643,26 +643,56 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("2ba01475-d636-4ac3-a326-a2580112ee0c"),
                 CategoryId = Guid.Parse("28C2137D-E6F7-440D-9513-1EE2E0B36530"),
                 Prompt = """
+                         ## Concepts
+
+                         Customer feedback : The customer's feedback comment about the product
+                         Language Recognition : Recognizing which languages are used in the feedback
+
                          ## Instructions
 
-                         Recognize languages from the customer feedback
+                         Analyze customer feedback, understand the language used in the feedback and recognize the languages used in the feedback.
 
                          Requirements :
-                         1. list language if something readable or like a sentence written in it, not just a word
-                         2. list all languages feedback contains multiple languages
+                         1. recognize all languages used in the feedback
+                         2. output the result as array of strings, don't use fenced code blocks for JSON, just output as JSON as following :
 
-                         ## Data
+                         [
+                            "English",
+                            "Spanish"
+                         ]
 
-                         {{$productDescription}}
+                         ## Examples
+
+                         1. Single language
+
+                         Customer Feedback : I've been using the Logitech MX Master 3 for a couple of months now, and I'm extremely satisfied. The
+                         ergonomic design has significantly reduced my wrist pain, and the battery life is just incredible. The customizable buttons
+                         have streamlined my workflow remarkably.
+                         Result : [ "English" ]
+                         Reasoning : Customer feedback contains only content in english language
+
+                         2. Multiple languages
+
+                         Customer Feedback : I absolutely love my Logitech MX Master 3! The smooth scrolling feature and the precise tracking have
+                         improved my editing work tremendously. However, tengo un pequeño problema con el software de personalización; a veces no
+                         guarda mis configuraciones correctamente. But overall, it's a fantastic product.
+                         Result : [ "English", "Spanish" ]
+                         Reasoning : 1st part of the customer feedback is in english and the second part is in spanish
+
+                         3. Advanced case
+
+                         Customer Feedback :The Logitech MX Master 3 is a game-changer for me. The comfort and the advanced features are top-notch.
+                         However, Ich hatte Probleme mit der Verbindung via Bluetooth, which was a bit frustrating. Also, la qualité de construction
+                         est exceptionnelle, making it worth every penny despite the minor issues.
+                         Result : [ "English", "French" ]
+                         Reasoning : Although customer feedback mainly in english language, in the middle of the feedback, there is a sentence in
+                         franch
 
                          ## Input
 
-                         {{$customerFeedback}}
-
-                         ## Result
-
+                         Customer feedback - {{$customerFeedback}}
                          """,
-                Version = 4,
+                Version = 1,
                 Revision = 0,
             },
             new()
