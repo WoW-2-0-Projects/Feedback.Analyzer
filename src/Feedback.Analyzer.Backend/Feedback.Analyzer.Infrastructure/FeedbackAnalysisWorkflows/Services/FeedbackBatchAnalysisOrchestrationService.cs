@@ -1,3 +1,4 @@
+using System.Text;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Feedback.Analyzer.Application.Common.AnalysisWorkflows.Services;
@@ -85,14 +86,7 @@ public class FeedbackBatchAnalysisOrchestrationService(
                     return singleFeedbackAnalysisWorkflowContext;
                 }
             )
-            .Select(
-                feedbackAnalysisContext => eventBusBroker.PublishAsync(
-                    new AnalyzeFeedbackEvent
-                    {
-                        Context = feedbackAnalysisContext
-                    }
-                ).AsTask()
-            );
+            .Select(feedbackAnalysisContext => eventBusBroker.PublishAsync(new AnalyzeFeedbackEvent(feedbackAnalysisContext)).AsTask());
 
         await Task.WhenAll(analyzeFeedbackEventPublishTasks);
     }

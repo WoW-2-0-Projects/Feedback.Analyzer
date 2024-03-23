@@ -15,16 +15,13 @@ namespace Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 /// <summary>
 /// Service for executing prompts asynchronously and handling their history.
 /// </summary>
-/// <param name="promptService">The prompt service.</param>
 /// <param name="promptExecutionBroker">The prompt execution broker.</param>
 /// <param name="promptsExecutionHistoryService">The prompt execution history service.</param>
 public class PromptExecutionProcessingService(
-    IPromptService promptService,
     IPromptExecutionBroker promptExecutionBroker,
     IPromptExecutionHistoryService promptsExecutionHistoryService
 ) : IPromptExecutionProcessingService
 {
-    
     public async ValueTask<IImmutableList<PromptExecutionHistory>> ExecuteAsync(
         AnalysisPrompt prompt,
         Dictionary<string,string> arguments,

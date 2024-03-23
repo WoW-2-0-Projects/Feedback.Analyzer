@@ -6,10 +6,5 @@ namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 /// <summary>
 /// Represents feedback analysis event
 /// </summary>
-public record AnalyzeFeedbackEvent : EventBase
-{
-    /// <summary>
-    /// Gets feedback analysis workflow context
-    /// </summary>
-    public SingleFeedbackAnalysisWorkflowContext Context { get; init; } = default!;
-}
+/// <param name="Context">Feedback analysis context</param>
+public record AnalyzeFeedbackEvent(SingleFeedbackAnalysisWorkflowContext Context) : EventBase;

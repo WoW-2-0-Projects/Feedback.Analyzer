@@ -18,14 +18,18 @@ using Feedback.Analyzer.Application.Common.WorkflowExecutionOptions.Services;
 using Feedback.Analyzer.Application.CustomerFeedbacks.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisResults.Services;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Services;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
 using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Application.Organizations.Services;
 using Feedback.Analyzer.Application.Products.Services;
+using Feedback.Analyzer.Domain.Common.Events;
 using Feedback.Analyzer.Domain.Constants;
+using Feedback.Analyzer.Domain.Extensions;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.AnalysisWorkflows.Services;
 using Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
+using Feedback.Analyzer.Infrastructure.Common.EventBus.Extensions;
 using Feedback.Analyzer.Infrastructure.Common.Identity.Services;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
@@ -56,6 +60,7 @@ using MassTransit;
 using Feedback.Analyzer.Infrastructure.Common.Workflows.EventHandlers;
 using Feedback.Analyzer.Infrastructure.Common.Identity.EventHandlers;
 using Feedback.Analyzer.Infrastructure.Common.Serializers.Brokers;
+using Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandlers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -130,7 +135,7 @@ public static partial class HostConfiguration
 
         return builder;
     }
-
+    
     /// <summary>
     /// Extension method for adding event bus services to the application.
     /// </summary>
@@ -142,13 +147,8 @@ public static partial class HostConfiguration
            {
                var serviceProvider = configuration.BuildServiceProvider();
                var jsonSerializerSettingsProvider = serviceProvider.GetRequiredService<IJsonSerializationSettingsProvider>();
-               
-               configuration
-               .AddConsumersFromNamespaceContaining<ExecuteWorkflowSinglePromptEventHandler>();
 
-               configuration
-               .AddConsumersFromNamespaceContaining<UserCreatedEventHandler>();
-
+               configuration.RegisterAllConsumers(Assemblies);
                configuration.UsingInMemory((context, cfg) =>
                {
                    cfg.ConfigureEndpoints(context);
@@ -164,7 +164,6 @@ public static partial class HostConfiguration
            });
 
         builder.Services.AddSingleton<IEventBusBroker, MassTransitEventBusBroker>();
-        // builder.Services.AddSingleton<IEventBusBroker, RabbitMqEventBusBroker>();
 
         return builder;
     }
@@ -256,7 +255,7 @@ public static partial class HostConfiguration
         var kernelBuilder = Kernel.CreateBuilder();
 
         // Add OpenAI connector
-        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-3.5-turbo", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
+        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-4-0125-preview", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
 
         // Build kernel
         var kernel = kernelBuilder.Build();
