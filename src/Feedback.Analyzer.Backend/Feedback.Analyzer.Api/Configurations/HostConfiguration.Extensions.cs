@@ -115,14 +115,7 @@ public static partial class HostConfiguration
         // Configure CacheSettings from the app settings.
         builder.Services.Configure<CacheSettings>(builder.Configuration.GetSection(nameof(CacheSettings)));
 
-        // Configure Redis caching with options from the app settings.
-        // builder.Services.AddStackExchangeRedisCache(
-        //     options =>
-        //     {
-        //         options.Configuration = builder.Configuration.GetConnectionString("RedisConnectionString");
-        //         options.InstanceName = "AirBnb.CacheMemory";
-        //     });
-
+        // Register the Memory Cache service.
         builder.Services.AddMemoryCache();
         
         // Register the Memory Cache as a singleton.

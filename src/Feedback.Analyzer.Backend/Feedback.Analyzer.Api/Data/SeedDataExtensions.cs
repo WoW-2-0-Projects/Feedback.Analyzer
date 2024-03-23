@@ -32,15 +32,15 @@ public static class SeedDataExtensions
         if (!await appDbContext.PromptCategories.AnyAsync())
         {
             await SeedPromptCategoriesAsync(appDbContext);
-            await SeedAnalysisPromptAsync(appDbContext);   
+            await SeedAnalysisPromptAsync(appDbContext);
         }
 
         if (!await appDbContext.WorkflowExecutionOptions.AnyAsync())
             await SeedAnalysisExecutionOptions(appDbContext);
-        
+
         if (!await appDbContext.AnalysisWorkflows.AnyAsync())
             await SeedAnalysisWorkflowsAsync(appDbContext);
-        
+
         if (!await appDbContext.FeedbackAnalysisWorkflows.AnyAsync())
             await SeedFeedbackAnalysisWorkflowsAsync(appDbContext);
 
@@ -72,6 +72,15 @@ public static class SeedDataExtensions
                 EmailAddress = "tastBobRichard@gmail.com",
                 PasswordHash = "$2a$12$LxSqe5AE7AtglesHHK5NROFdJQdA1r1XKqhzg4q/tMTZjVEH0PNSK", //asdf1234
                 Role = Role.Admin
+            },
+            new()
+            {
+                Id = Guid.Parse("6357D344-CB69-4FAA-81C5-AC0FC59AE0F9"),
+                FirstName = "Sarah",
+                LastName = "Funk",
+                EmailAddress = "sarah.funk@gmail.com",
+                PasswordHash = "$2a$12$LxSqe5AE7AtglesHHK5NROFdJQdA1r1XKqhzg4q/tMTZjVEH0PNSK", //asdf1234
+                Role = Role.Client
             }
         };
 
@@ -116,7 +125,42 @@ public static class SeedDataExtensions
                 Description =
                     "InnoCity innovatsiya va tadbirkorlikni qo'llab-quvvatlaydigan shahar bo'lib, yosh tadbirkorlarga o'sish uchun zarur bo'lgan barcha sharoitlarni yaratadi.Biznes inkubatsiya dasturlari va moliyaviy yordam bizning asosiy xizmatlarimizdan biridir.",
                 ClientId = Guid.Parse("5edbb0fe-7263-4f75-bad8-c9f3d422dd1d"),
-            }
+            },
+            new()
+            {
+                Id = Guid.Parse("C97801A8-2CBA-4BD8-958D-8B5F014B74DE"),
+                Name = "Razer Inc.",
+                Description = """
+                              What is Razer?
+
+                              Razer is a global technology company at the forefront of the gaming industry. It specializes in designing and
+                              manufacturing cutting-edge hardware, software, and services with a passionate focus on the gaming and esports
+                              communities. Razer's iconic triple-headed snake logo is widely recognized as a symbol of excellence and innovation in
+                              the gaming world.
+
+                              Little History
+
+                              1998: The Razer brand is born in San Diego, California, under a small company named kärna.
+                              2005: Razer Inc. is officially founded by Min-Liang Tan (current CEO) and Robert Krakoff.
+                              Through the years: Razer establishes itself as a powerhouse through strategic product releases and acquisitions.
+                              CEO, Managers, Main Roles
+
+                              CEO: Min-Liang Tan (Co-founder)
+                              CFO: Chong Neng Tan
+                              President: Richard Hashim
+                              Key Roles: Hardware engineers, software developers, product designers, marketing specialists, and esports/community
+                              management. What Products the Company Manufactures
+
+                              Gaming Laptops: High-performance gaming laptops under the Razer Blade series, known for slim designs and powerful
+                              components. Gaming Mice: A wide variety of gaming mice catering to different grip styles, sensor technologies, and
+                              levels of customization. Gaming Keyboards: Mechanical and membrane keyboards with features like RGB lighting,
+                              programmable macros, and dedicated media controls. Audio: Gaming headsets, speakers, and microphones optimized for
+                              immersive sound and clear communication. Accessories: Mousepads, gaming chairs, backpacks, and other peripherals to
+                              complement the gaming experience. Software & Services: Razer Synapse (device configuration), Razer Chroma RGB
+                              (lighting ecosystem), Razer Cortex (game optimization), Razer Gold (virtual currency)
+                              """,
+                ClientId = Guid.Parse("6357D344-CB69-4FAA-81C5-AC0FC59AE0F9"),
+            },
         };
 
         await appDbContext.Organizations.AddRangeAsync(organizations);
@@ -146,7 +190,7 @@ public static class SeedDataExtensions
             new()
             {
                Id = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
-               OrganizationId = Guid.Parse("c2fe1019-1180-4f3e-b477-413a9b33bbd1"),
+               OrganizationId = Guid.Parse("C97801A8-2CBA-4BD8-958D-8B5F014B74DE"),
                Name = "Razor Viper Ultimate",
                Description = """
                              Razor Viper Ultimate - wireless gaming mouse
@@ -180,26 +224,6 @@ public static class SeedDataExtensions
     {
         var customersFeedbacks = new List<CustomerFeedback>()
         {
-            new()
-            {
-                Id = Guid.Parse("12722129-1d17-4de5-992a-a450247c3211"),
-                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
-                Comment = """
-                          I laid my hands on the Viper in a local store and on the spot it felt rather flat. I think I prefer something with more hump and side area to grip onto. right now I have a basilisk v2 and think it's definetely more comfy, but that grip could still be better.
-
-                          The Synapse software is extremely greedy though. 300MB HD space and about 200MB RAM is ludicrous for a gloryfied mouse driver.
-                          """,
-                UserName = "James Carter"
-            },
-            new()
-            {
-                Id = Guid.Parse("03e3827d-36d2-474f-ab76-7655833b090f"),
-                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
-                Comment = """
-                          The gaming mouse market is flooded with options, each offering unique features and designs. It can be overwhelming to choose the right one, but finding the perfect balance between performance and comfort is key
-                          """,
-                UserName = "Sarah Smith"
-            },
             // Positive feedback
             new()
             {
@@ -230,6 +254,119 @@ public static class SeedDataExtensions
                 ProductId = Guid.Parse("751d1c24-24c2-45aa-9eba-383de543b34b"),
                 Comment = "The product has **some great features**, but it also has **some flaws**.",
                 UserName = "Joane Miller",
+            },
+            
+            // Real customer feedbacks
+            new()
+            {
+                Id = Guid.Parse("12722129-1d17-4de5-992a-a450247c3211"),
+                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
+                Comment = """
+                          I laid my hands on the Viper in a local store and on the spot it felt rather flat. I think I prefer something with more hump and side area to grip onto. right now I have a basilisk v2 and think it's definetely more comfy, but that grip could still be better.
+                          
+                          The Synapse software is extremely greedy though. 300MB HD space and about 200MB RAM is ludicrous for a gloryfied mouse driver.
+                          """,
+                UserName = "Silverspark"
+            },
+            new()
+            {
+                Id = Guid.Parse("03e3827d-36d2-474f-ab76-7655833b090f"),
+                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
+                Comment = """
+                          Yup pretty flat, very fk1 like at the hump. Some people prefer the extra freedom and it was definitely interesting to try out.
+                          
+                          I already had the software installed for the mini so yeah pretty heavy but seeing how sophisticated it is and common to all razer peripherals it's acceptable i think.
+                          """,
+                UserName = "azami88n"
+            },
+            new()
+            {
+                Id = Guid.Parse("E7F7AFE2-7172-430C-A503-D55D84C11131"),
+                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
+                Comment = """
+                          Battery life is great? Are you sure? Been using one here for two weeks and well..after a day or two of only using it a few hours, it loses quite abit.
+                          
+                          I'm down to 55% after using the mouse for only a few hours. I have RGB disabled and Low Power Mode set to 100.
+                          
+                          This isn't my first either, I got another one and it's similar.
+                          
+                          The mouse does go to sleep, as it's wakeup is very noticble.
+                          
+                          I kinda think it's a sub optimal shape, but I'm getting used to it as well..and not impressed.
+                          
+                          my G Pro could go an entire month with medium gaming and only be at around 15-20% by then.
+                          
+                          My Razer, which I charge frequently due to the dock, is just...pathetic.
+                          """,
+                UserName = "Mkilbride"
+            },         
+            new()
+            {
+                Id = Guid.Parse("88DE3171-AB8A-49E7-A854-A5A77A4D94F7"),
+                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
+                Comment = """
+                          The quality of the Viper Ultimate is noticeably higher than the wired version for anyone who loves the shape and not the price. It may have just been my copy but the wired Viper wasn't balanced and had a slight wobble when flat on the desk. My wired Viper also would randomly cut out for a split second three or four times a week with only a few months of use.
+                          
+                          The Viper Ultimate is the best wireless mouse I've tested though, feels great, looks great, performs as expected.
+                          """,
+                UserName = "No_Specific2566"
+            },
+            new()
+            {
+                Id = Guid.Parse("33950F44-8439-456A-ABCE-40D4C10A24CD"),
+                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
+                Comment = """
+                          Huge thanks to Razer and to u/Razer-Right for providing me this sample free of charge. This review will be my own toughts. This mouse has received plenty of full reviews so i'll keep it brief and focus on a few things that didn't get much attention.
+                          
+                          Background for reference: hand size: 20x10cm, preferred grip style: relaxed claw. Main mice: gpw, zowie s2 and ec2. Game genre: FPS (CSGO, black squad, valorant). Tried or designed over 60 mice shapes in search of an ideal one.
+                          
+                          === Shape:
+                          
+                          ++ The side slant (about 7 degrees at the grip) feels quite more natural than the gpw's slightly negative slant of 1-2degrees (inverted slant).
+                          
+                          +The hump is a lot flatter feeling (fk1 style) than the hump on logitech GPW, so the palm "rests" on that hump rather than grips it. As a result, it might appeal more to a fingertip-claw grip style especially with the slanted sides While gpw tends to favor relaxed claw and palm grip.
+                          
+                          +Button groves are good, though they might be better slightly less off-centered
+                          
+                          -- The side curvature is hourglass shaped. It felt a bit odd for my grip style (i rest my ring and pinky on the middle- front section) in my experience, fully flush, straight, and slightly slanted sides like on the steelseries aerox/rival 110 provide the best comfort-control ratio. Agressive claw/fingertip is fine while resting the pinky finger on the back of the sides, without using the flaring front. (Don't get me wrong: it feels okay to use in relaxed claw and i did perform very well with it, it just feels like a sub optimal shape choice that needs getting used to.) Maybe they made this trade to accomodate more hand sizes but that also means it would not feel perfect for most.
+                          
+                          === Build quality:
+                          
+                          ++ Overall build quality is solid. No creaking, no plastic squeak when pressing main buttons like it was sometimes the case with the viper mini.
+                          
+                          ++ Optical switches feel slightly different but they're fine. I don't think it's so bad as to keep someone from liking this mouse.
+                          
+                          ++ Weight is just right for a wireless mouse this size
+                          
+                          ++ Coating is a bit rough textured, but most of the grip happens on the rubber sides anyway.
+                          
+                          ++ Sensor is flawless.
+                          
+                          ++ Scroll wheel is perfect.
+                          
+                          ++ Feet are great.
+                          
+                          +Side buttons are recessed and hard to hit by accident. But also harder to reach on the go as with something like zowie s2's huge side buttons. I personally never use them so it's a welcome change.
+                          
+                          +Rubber sides do feel different but they didnt make much of a difference in use. It reliefs some pressure on the fingers and will prevent plastic hurting over long use sessions. I have concerns about how well it will hold with time (some rubbers fall apart with time, let alone mechanical stress, i'll just believe razer used a high quality rubber there)
+                          
+                          -- The rubber is slightly raised, there is a slight gap between the mousepad and the rubber that can be gripped and it can be noticeable if you grip the mouse low with your thumb. (Its the same problem with g403 but much less noticeable).
+                          
+                          -- Rubber prevents side grips from sticking unless using rubber specific adhesives
+                          
+                          -- The squared ptfe foot around the sensor has slightly sticky edges that attracts dust hair and it eventually gets inside the sensor hole. (It only happend two to three times over a month use period; maybe because the stickers are new?)
+                          
+                          === Battery/charging:
+                          
+                          ++ Battery life is great. It holds for two weeks under moderate to heavy use. Edit: since this surprised some people, i used rgb off but also turned off the mouse instezd of letting it idle, this can save 100 hours of idle power use weekly (if you count 10hours daily use). But further battery cycles might be necessary to objectively have a saying on this matter)
+                          
+                          ++ The charging dock's implementation is flawless. It's very practical and looks sleek.
+                          
+                          -- The charging port on the front of the mouse can't accomodate a magnetic usb charging cable as it is positioned low and deep.
+                          
+                          -- Power on switch is awkwardly positioned and sized. I'm used to gpw and the switch is large, and switching direction is natural so powering on and off quickly with one hand is possible. Viper powering on/off needs two hands.
+                          """,
+                UserName = "azami88m"
             }
         };
 
