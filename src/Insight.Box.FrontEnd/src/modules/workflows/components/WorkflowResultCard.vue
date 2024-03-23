@@ -6,7 +6,8 @@
     >
         <template v-slot:mainContent>
 
-            <div class="flex shadow-xl card-round items-center justify-start px-5 h-[70px] gap-5">
+            <div class="flex shadow-xl items-center justify-start px-5 h-[70px] gap-5"
+                 :class="isResultsListOpen ? 'card-top-round' : 'card-round'">
 
                 <!-- Workflow result actions -->
                 <div class="flex items-center gap-3">

@@ -1128,7 +1128,7 @@ public static class SeedDataExtensions
         var razorWorkflow = new AnalysisWorkflow()
         {
             Id = Guid.Parse("cc9bbbbf-0a1a-40d9-b163-1e032aa56c7d"),
-            Name = "RazorWorkflow",
+            Name = "Base Workflow",
             Type = WorkflowType.Template,
             EntryExecutionOptionId = Guid.Parse("E4B16AEB-41C3-4E50-AB0B-8A883AE397C1")
         };

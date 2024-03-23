@@ -39,6 +39,7 @@
 
                             <app-button class="w-fit" :type="ButtonType.Primary" :layout="ButtonLayout.Rectangle"
                                         :size="ActionComponentSize.ExtraSmall" :text="runButtonText" icon="fas fa-play"
+                                        @click="onTriggerWorkflow"
                             />
                             <app-button :type="ButtonType.Secondary" :layout="ButtonLayout.Rectangle"
                                         :size="ActionComponentSize.ExtraSmall" icon="fas fa-eye"
@@ -170,6 +171,10 @@ const emit = defineEmits<{
     (e: 'update', workflow: FeedbackAnalysisWorkflow): void,
     (e: 'delete', workflowId: string): void,
 }>();
+
+const onTriggerWorkflow = async () => {
+    const response = await insightBoxClient.workflows.executeWorkflowAsync(props.workflow.id);
+}
 
 const onToggleResultsList = async () => {
     if (workflowResults.value.length == 0) {

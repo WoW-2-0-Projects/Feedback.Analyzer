@@ -88,7 +88,7 @@ public class WorkflowsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("{workflowId:guid}/execute")]
-    public async ValueTask<IActionResult> ExecuteWorkflowAsync([FromQuery] Guid workflowId, CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> ExecuteWorkflowAsync([FromRoute] Guid workflowId, CancellationToken cancellationToken)
     {
         var executeWorkflowEvent = new AnalyzeWorkflowFeedbacksEvent
         {
