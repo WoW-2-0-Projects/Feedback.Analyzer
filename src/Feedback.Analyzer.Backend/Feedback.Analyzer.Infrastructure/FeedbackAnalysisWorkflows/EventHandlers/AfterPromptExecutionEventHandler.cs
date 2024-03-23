@@ -50,9 +50,21 @@ public class AfterPromptExecutionEventHandler : EventHandlerBase<AfterPromptExec
                 }
                 break;
             }
+            case FeedbackAnalysisPromptCategory.LanguageRecognition:
+            {
+                context.Result.FeedbackRelevance.RecognizedLanguages = JsonConvert
+                    .DeserializeObject<string[]>(lastHistory.Result!) 
+                    ?? throw new InvalidOperationException("Failed to deserialize the recognized languages");
+
+                break;
+            }
             case FeedbackAnalysisPromptCategory.RelevantContentExtraction:
             {
                 context.Result.FeedbackRelevance.ExtractedRelevantContent = lastHistory.Result;
+                break;
+            }
+            case FeedbackAnalysisPromptCategory.EntityIdentification:
+            {
                 break;
             }
             case FeedbackAnalysisPromptCategory.PersonalInformationRedaction:
@@ -61,8 +73,19 @@ public class AfterPromptExecutionEventHandler : EventHandlerBase<AfterPromptExec
                 break;
             }
             case FeedbackAnalysisPromptCategory.OpinionMining:
-                context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
+            {
+                context.Result.FeedbackOpinion.OverallOpinion = JsonConvert.DeserializeObject<OpinionType>(lastHistory.Result);
                 break;
+            }
+            case FeedbackAnalysisPromptCategory.OpinionPointsExtraction:
+            {
+                var points = JsonConvert.DeserializeObject<string[][]>(lastHistory.Result) ??
+                             throw new InvalidOperationException("Failed to deserialize the opinion points");
+
+                context.Result.FeedbackOpinion.PositiveOpinionPoints = points[0];
+                context.Result.FeedbackOpinion.NegativeOpinionPoints = points[1];
+                break;
+            }
         }
 
         return ValueTask.CompletedTask;
