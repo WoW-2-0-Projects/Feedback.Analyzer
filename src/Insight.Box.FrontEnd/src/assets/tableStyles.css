@@ -3,7 +3,7 @@
 }
 
 .table-bg {
-  @apply bg-secondaryContentColor bg-opacity-5;
+  @apply bg-primaryColor bg-opacity-0;
 }
 
 .table-row-text {
@@ -11,9 +11,13 @@
 }
 
 .table-header-cell {
-  @apply sticky top-0 z-10 px-6 py-2 text-left rtl:text-right bg-accentTertiaryColor;
+  @apply sticky top-0 z-10 px-6 py-2 text-left rtl:text-right font-medium;
+}
+
+.table-data-row {
+  @apply bg-primaryColor odd:bg-opacity-20 even:bg-opacity-10;
 }
 
 .table-data-cell {
-  @apply py-1.5 px-6 text-left rtl:text-right;
+  @apply py-3 px-6 text-left rtl:text-right ;
 }

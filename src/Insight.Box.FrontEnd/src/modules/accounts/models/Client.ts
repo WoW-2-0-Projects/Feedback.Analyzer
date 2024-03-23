@@ -1,3 +1,5 @@
+import {Expose} from "class-transformer";
+
 /**
  * Represents a client entity with basic information.
  */

@@ -27,9 +27,9 @@
 
                     <!-- Modal actions -->
                     <div class="flex gap-10">
-                        <app-button :type="ButtonType.Secondary" class="w-full" :text="LayoutConstants.Cancel"
+                        <app-button :type="ActionType.Secondary" class="w-full" :text="LayoutConstants.Cancel"
                                     @click="emit('closeModal')"/>
-                        <app-button :type="ButtonType.Primary" class="w-full" :text="LayoutConstants.Submit"
+                        <app-button :type="ActionType.Primary" class="w-full" :text="LayoutConstants.Submit"
                                     :role="ButtonRole.Submit" @click="onSubmit"/>
                     </div>
 
@@ -47,11 +47,11 @@
 import {defineEmits, type PropType} from 'vue';
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import AppButton from "@/common/components/appButton/AppButton.vue";
-import {ButtonType} from "@/common/components/appButton/ButtonType";
 import FormInput from "@/common/components/formInput/FormInput.vue";
 import ModalBase from "@/common/components/modalBase/ModalBase.vue";
 import {Product} from "@/modules/products/models/Product";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 const props = defineProps({
     product: {

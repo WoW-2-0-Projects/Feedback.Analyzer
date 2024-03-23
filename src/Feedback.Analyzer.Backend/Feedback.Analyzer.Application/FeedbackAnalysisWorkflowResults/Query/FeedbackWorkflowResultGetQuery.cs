@@ -1,4 +1,4 @@
-using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Modal;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Models;
 using Feedback.Analyzer.Domain.Common.Queries;
 
 namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Query;
@@ -9,7 +9,7 @@ namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Query;
 public class FeedbackWorkflowResultGetQuery : IQuery<ICollection<FeedbackAnalysisWorkflowResultDto>>
 {
     /// <summary>
-    /// Gets or sets workflow Id
+    /// Gets or sets workflow results filter
     /// </summary>
-    public Guid? WorkflowId { get; set; }
+    public FeedbackAnalysisWorkflowResultFilter Filter { get; set; }
 }

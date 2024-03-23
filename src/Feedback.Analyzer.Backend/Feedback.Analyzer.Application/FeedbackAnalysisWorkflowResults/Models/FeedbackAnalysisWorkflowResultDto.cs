@@ -1,6 +1,4 @@
-using Feedback.Analyzer.Application.FeedbackAnalysisResults.Models;
-
-namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Modal;
+namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Models;
 
 /// <summary>
 /// Represents data transfer object for feedback analysis workflow result

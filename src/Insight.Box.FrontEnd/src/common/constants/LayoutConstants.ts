@@ -36,7 +36,10 @@ export class LayoutConstants {
     public static readonly Status  = 'Status';
 
     /* Feedbacks */
-    public static readonly Feedbacks  = 'Feedbacks';
+    public static readonly Processed  = 'Processed';
+    public static readonly Failed  = 'Failed';
+    public static readonly Relevant  = 'Relevant';
+    public static readonly NonRelevant  = 'Non-Relevant';
 
     /* Prompts */
     public static readonly CreatePrompt = 'Create a prompt';
