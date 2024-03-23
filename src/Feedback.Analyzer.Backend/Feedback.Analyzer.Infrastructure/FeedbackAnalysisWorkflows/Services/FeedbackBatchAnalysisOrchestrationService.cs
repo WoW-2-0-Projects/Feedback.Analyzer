@@ -33,8 +33,6 @@ public class FeedbackBatchAnalysisOrchestrationService(
             TrackingMode = QueryTrackingMode.AsNoTrackingWithIdentityResolution
         };
 
-        // TODO : load customer Ids first, then load customer feedbacks in each workflow execution
-
         // Load analysis workflow
         var workflowContext = await feedbackAnalysisWorkflowService
                                   .Get(workflow => workflow.Id == workflowId, queryOptions)
@@ -43,7 +41,6 @@ public class FeedbackBatchAnalysisOrchestrationService(
                                   .Include(workflow => workflow.Product.Organization)
                                   .Include(workflow => workflow.Product.CustomerFeedbacks)
                                   .AsSplitQuery()
-                                  .AsNoTrackingWithIdentityResolution()
                                   .ProjectTo<FeedbackAnalysisWorkflowContext>(mapper.ConfigurationProvider)
                                   .FirstOrDefaultAsync(cancellationToken) ??
                               throw new InvalidOperationException($"Could not execute prompt, workflow with id {workflowId} not found.");

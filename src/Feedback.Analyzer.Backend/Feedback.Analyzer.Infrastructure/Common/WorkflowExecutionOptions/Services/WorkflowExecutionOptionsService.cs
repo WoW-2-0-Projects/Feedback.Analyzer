@@ -8,13 +8,18 @@ namespace Feedback.Analyzer.Infrastructure.Common.WorkflowExecutionOptions.Servi
 /// <summary>
 /// Defines workflow execution options service.
 /// </summary>
-public class WorkflowExecutionOptionsService(IWorkflowExecutionOptionRepository workflowExecutionOptionRepository)
-    : IWorkflowExecutionOptionsService
+public class WorkflowExecutionOptionsService(IWorkflowExecutionOptionRepository workflowExecutionOptionRepository) : IWorkflowExecutionOptionsService
 {
     public ValueTask<WorkflowExecutionOption?> GetByIdForExecutionAsync(
         Guid executionOptionsId,
         QueryOptions queryOptions = default,
         CancellationToken cancellationToken = default
-    )
-        => workflowExecutionOptionRepository.GetByIdAndIncludeAllGrandChildrenAsync(executionOptionsId, queryOptions, cancellationToken);
+    ) =>
+        workflowExecutionOptionRepository.GetByIdAndIncludeChildrenAndPromptAsync(executionOptionsId, queryOptions, cancellationToken);
+
+    public ValueTask<WorkflowExecutionOption> GetByIdForCloningAsync(
+        Guid executionOptionsId,
+        QueryOptions queryOptions = default,
+        CancellationToken cancellationToken = default
+    ) =>  workflowExecutionOptionRepository.GetByIdAndIncludeChildren(executionOptionsId, queryOptions, cancellationToken);
 }
