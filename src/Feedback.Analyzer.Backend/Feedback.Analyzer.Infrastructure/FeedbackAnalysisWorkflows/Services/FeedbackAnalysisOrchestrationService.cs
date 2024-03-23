@@ -65,6 +65,9 @@ public class FeedbackAnalysisOrchestrationService(
         if (context.Status != WorkflowStatus.Running)
             return;
         
+        // Fix selected prompt category reference
+        option.AnalysisPromptCategory.SelectedPrompt!.Category = option.AnalysisPromptCategory;
+
         // Execute option
         var executePromptAction = () => ExecutePromptAsync(context, option.AnalysisPromptCategory.SelectedPrompt!, cancellationToken);
         var promptResult = await executePromptAction.GetValueAsync();
@@ -94,7 +97,7 @@ public class FeedbackAnalysisOrchestrationService(
         
         // Execute prompt and add histories to context
         var histories = await promptExecutionProcessingService.ExecuteAsync(prompt, context.Arguments, 1, cancellationToken);
-        foreach (var groupedHistory in histories.GroupBy(history => history.Prompt.CategoryId))
+        foreach (var groupedHistory in histories.GroupBy(history => history.PromptCategoryId))
             context.Histories.Add(groupedHistory);
         
         // Publish after prompt execution event

@@ -32,10 +32,7 @@ public class WorkflowExecutionOptionRepository(AppDbContext dbContext, ICacheBro
                 .ToListAsync(localCancellationToken);
         
             foreach(var childOption in childOptions)
-            {
-                childOption.AnalysisPromptCategory.SelectedPrompt!.Category = childOption.AnalysisPromptCategory;
                 childOption.ChildExecutionOptions = await LoadAllChildrenAsync(childOption.Id, localQueryOptions, localCancellationToken);
-            }
 
             return childOptions;
         }

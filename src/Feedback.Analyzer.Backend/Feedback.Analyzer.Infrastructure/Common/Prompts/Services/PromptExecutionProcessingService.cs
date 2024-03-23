@@ -81,7 +81,7 @@ public class PromptExecutionProcessingService(
         return new PromptExecutionHistory
         {
             PromptId = prompt.Id,
-            Prompt = prompt,
+            PromptCategoryId = prompt.CategoryId,
             Result = result.Data,
             Exception = result.Exception is not null ? JsonConvert.SerializeObject(result.Exception) : null,
             ExecutionTime = DateTime.UtcNow,
