@@ -8,6 +8,11 @@ namespace Feedback.Analyzer.Application.CustomerFeedbacks.Models;
 public class CustomerFeedbackDto
 {
     /// <summary>
+    /// Gets or sets feedback Id
+    /// </summary>
+    public Guid Id { get; set; }
+    
+    /// <summary>
     /// Gets or sets the unique identifier of the product.
     /// </summary>
     public Guid ProductId { get; set; }

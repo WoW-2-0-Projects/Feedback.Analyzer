@@ -3,7 +3,7 @@
     <form class="w-full flex gap-10">
 
         <!-- Add workflow button -->
-        <app-button :type="ButtonType.Primary" :text="LayoutConstants.AddWorkflow" icon="fas fa-plus"
+        <app-button :type="ActionType.Primary" :text="LayoutConstants.AddWorkflow" icon="fas fa-plus"
                     @click="emit('addWorkflow')"/>
 
         <!-- Search workflows input -->
@@ -22,8 +22,8 @@ import FormSearchBar from "@/common/components/formSearchBar/FormSearchBar.vue";
 import type {Query} from "@/infrastructure/models/query/Query";
 import type {FeedbackAnalysisWorkflowFilter} from "@/modules/workflows/models/FeedbackAnalysisWorkflowFilter";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
-import {ButtonType} from "@/common/components/appButton/ButtonType";
 import AppButton from "@/common/components/appButton/AppButton.vue";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 const props = defineProps({
     workflowsQuery: {

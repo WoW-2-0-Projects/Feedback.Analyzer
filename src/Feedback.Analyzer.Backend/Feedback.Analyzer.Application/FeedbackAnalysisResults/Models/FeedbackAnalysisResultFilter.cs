@@ -8,6 +8,11 @@ namespace Feedback.Analyzer.Application.FeedbackAnalysisResults.Models;
 public class FeedbackAnalysisResultFilter : FilterPagination
 {
     /// <summary>
+    /// Gets or sets workflow result Id
+    /// </summary>
+    public Guid? ResultId { get; set; }
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="FeedbackAnalysisResultFilter"/> class.
     /// </summary>
     public FeedbackAnalysisResultFilter()

@@ -1,5 +1,5 @@
 .card {
-
+  @apply border-[0.5px] border-accentSecondaryColor;
 }
 
 .card-round {
@@ -11,7 +11,7 @@
 }
 
 .card-bg {
-  @apply bg-secondaryColor border-[0.5px] border-accentSecondaryColor;
+  @apply bg-secondaryColor;
 }
 
 .card-shadow {
