@@ -54,7 +54,7 @@ import {ActionComponentSize} from "@/common/components/formInput/ActionComponent
 import {FormInputType} from "@/common/components/formInput/FormInputType";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import {TextContentSnapshotQueue} from "@/infrastructure/models/textContent/TextContentSnapshotQueue";
-import type {Action} from "@/infrastructure/models/delegates/Action";
+import type {Action} from "@/infrastructure/models/notifications/Action";
 
 const textSnapshotService = ref<TextContentSnapshotQueue>(new TextContentSnapshotQueue());
 

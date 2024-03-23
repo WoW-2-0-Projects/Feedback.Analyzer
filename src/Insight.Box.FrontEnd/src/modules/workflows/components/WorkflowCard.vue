@@ -116,13 +116,11 @@
         <template v-slot:expandingContent>
 
             <!-- Workflow results history -->
-            <div class="flex flex-col w-full gap-5 p-5">
+            <div v-if="workflowResults.length > 0" class="flex flex-col w-full gap-5 p-5">
                 <workflow-result-card v-for="(result, index) in workflowResults" :workflowResult="result" :key="index"
                                       :closeSource="closeSource" @closeOthers="resultId =>
                                       closeSource.updateListeners(resultId)"
                 />
-            <div v-if="workflowResults.length > 0" class="flex flex-col w-full gap-5 p-5">
-                <workflow-result-card v-for="(result, index) in workflowResults" :workflowResult="result" :key="index"/>
             </div>
             <div v-else class="h-full w-full flex justify-center">
                 <img src="@/assets/images/nothing-to-see.png" alt="Nothing to see illustration"
@@ -181,7 +179,7 @@ const onTriggerWorkflow = async () => {
     const response = await insightBoxClient.workflows.executeWorkflowAsync(props.workflow.id);
 }
 
-const onToggleResultsList = async () => {
+const onOpenWorkflowResultsList = async () => {
     if (workflowResults.value.length == 0) {
         const response = await insightBoxClient.workflows.getResultsAsync(workflowResultsQuery.value);
         if (response.response)
