@@ -14,18 +14,15 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisResults.QueryHandlers
 public class FeedbackAnalysisResultGetByIdQueryHandler(IMapper mapper, IFeedbackAnalysisResultService feedbackAnalysisResultService)
     : IQueryHandler<FeedbackAnalysisResultGetByIdQuery, FeedbackAnalysisResultDto?>
 {
-    public async Task<FeedbackAnalysisResultDto> Handle(FeedbackAnalysisResultGetByIdQuery request, CancellationToken cancellationToken)
+    public async Task<FeedbackAnalysisResultDto?> Handle(FeedbackAnalysisResultGetByIdQuery request, CancellationToken cancellationToken)
     {
         var foundResult = await feedbackAnalysisResultService.Get(
                 result => result.Id == request.ResultId,
-                new QueryOptions
-                {
-                    TrackingMode = QueryTrackingMode.AsNoTracking
-                }
+                new QueryOptions(QueryTrackingMode.AsNoTracking)
             )
-            .ProjectTo<FeedbackAnalysisResultDto>(mapper.ConfigurationProvider)
+            .Include(result => result.CustomerFeedback)
             .FirstOrDefaultAsync(cancellationToken);
 
-        return foundResult;
+        return mapper.Map<FeedbackAnalysisResultDto>(foundResult);
     }
 }
