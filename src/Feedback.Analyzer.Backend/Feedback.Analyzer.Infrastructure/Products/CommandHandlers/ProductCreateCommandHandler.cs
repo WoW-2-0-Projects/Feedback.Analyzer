@@ -12,10 +12,14 @@ namespace Feedback.Analyzer.Infrastructure.Products.CommandHandlers;
 /// </summary>
 /// <param name="productService"></param>
 /// <param name="mapper"></param>
-public class ProductCreateCommandHandler(IProductService productService, IMapper mapper) : ICommandHandler<ProductCreateCommand, ProductDto>
+public class ProductCreateCommandHandler(
+    IProductService productService, 
+    IMapper mapper) : 
+    ICommandHandler<ProductCreateCommand, ProductDto>
 {
     public async Task<ProductDto> Handle(ProductCreateCommand request, CancellationToken cancellationToken)
-    {
+    { 
+
         var product = mapper.Map<Product>(request.Product);
 
         var createdProduct = await productService.CreateAsync(product, cancellationToken: cancellationToken);

@@ -32,6 +32,8 @@ public class ProductValidator : AbstractValidator<Product>
                     .NotEmpty()
                     .MinimumLength(3)
                     .MaximumLength(512);
+                RuleFor(product => product.OrganizationId)
+                .NotEqual(Guid.Empty);
             }
         );
         
@@ -42,13 +44,14 @@ public class ProductValidator : AbstractValidator<Product>
                 RuleFor(product => product.Name)
                     .NotEmpty()
                     .MinimumLength(3)
-                    .MaximumLength(128)
-                    .Matches(validationSettingsValue.NameRegexPattern);
+                    .MaximumLength(128);
                 
                 RuleFor(product => product.Description)
                     .NotEmpty()
                     .MinimumLength(3)
                     .MaximumLength(512);
+                RuleFor(product => product.OrganizationId)
+                .NotEqual(Guid.Empty);
             }
         );
     }
