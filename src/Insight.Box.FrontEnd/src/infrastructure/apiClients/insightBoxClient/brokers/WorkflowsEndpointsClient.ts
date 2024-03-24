@@ -15,7 +15,7 @@ import type {
 import {FeedbackAnalysisWorkflowResult} from "@/modules/workflows/models/FeedbackAnalysisWorkflowResult";
 import {
     FeedbackAnalysisResultFilter
-} from "@/infrastructure/apiClients/insightBoxClient/brokers/FeedbackAnalysisResultFilter";
+} from "@/modules/feedbackAnalysisResults/models/FeedbackAnalysisResultFilter";
 import type {AxiosRequestConfig} from "axios";
 import {Client} from "@/modules/accounts/models/Client";
 import {plainToClass} from "class-transformer";
@@ -38,14 +38,6 @@ export class WorkflowsEndpointsClient {
     public async getResultsAsync(query: Query<FeedbackAnalysisWorkflowResultFilter>) {
         const endpointUrl = this.requestFormatterService.addQueryParams(`api/workflows/${query.filter.workflowId}/results`, query);
         return await this.client.getAsync<Array<FeedbackAnalysisWorkflowResult>>(endpointUrl);
-    }
-
-    public async getFeedbackResultsAsync(query: Query<FeedbackAnalysisResultFilter>) {
-        const config: AxiosRequestConfig = {mapper: (r: FeedbackAnalysisResult) =>
-              plainToClass(FeedbackAnalysisResult, r)}
-        const endpointUrl = this.requestFormatterService
-          .addQueryParams(`api/workflows/${query.filter.workflowId}/results/${query.filter.resultId}/results`, query);
-        return await this.client.getAsync<Array<FeedbackAnalysisResult>>(endpointUrl, config);
     }
 
     public async createAsync(command: CreateFeedbackAnalysisWorkflowCommand) {

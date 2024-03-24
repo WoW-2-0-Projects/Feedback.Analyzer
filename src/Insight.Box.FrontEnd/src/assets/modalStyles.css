@@ -23,7 +23,7 @@
 }
 
 .modal-content-padding {
-  @apply py-10 px-10;
+  @apply p-10;
 }
 
 .modal-content-layout {

@@ -19,6 +19,22 @@ public class FeedbackAnalysisResultConfiguration : IEntityTypeConfiguration<Feed
             .HasForeignKey<AnalysisResult>(result => result.HistoryId);
 
         builder
+            .OwnsOne<AnalysisResult>(feedback => feedback.AnalysisResult)
+            .Property(result => result.ModelExecutionDuration)
+            .HasConversion(
+                duration => duration.TotalMilliseconds,
+                milliseconds => TimeSpan.FromMilliseconds(milliseconds))
+            .HasColumnType("integer");
+        
+        builder
+            .OwnsOne<AnalysisResult>(feedback => feedback.AnalysisResult)
+            .Property(result => result.AnalysisDuration)
+            .HasConversion(
+                duration => duration.TotalMilliseconds,
+                milliseconds => TimeSpan.FromMilliseconds(milliseconds))
+            .HasColumnType("integer");
+
+        builder
             .HasOne<CustomerFeedback>(result => result.CustomerFeedback)
             .WithMany(feedback => feedback.FeedbackAnalysisResults)
             .HasForeignKey(result => result.CustomerFeedbackId);

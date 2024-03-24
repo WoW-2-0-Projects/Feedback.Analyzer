@@ -116,16 +116,5 @@ public class WorkflowsController(IMediator mediator) : ControllerBase
         return result.Any() ? Ok(result) : NoContent();
     }
     
-    [HttpGet("{workflowId:guid}/results/{resultId:guid}/results")]
-    public async ValueTask<IActionResult> Get(
-        [FromRoute] Guid resultId,
-        [FromQuery] FeedbackAnalysisResultGetQuery query, 
-        CancellationToken cancellationToken)
-    {
-        query.Filter.ResultId = resultId;
-        var result = await mediator.Send(query ,cancellationToken);
-        return result.Any() ? Ok(result) : NoContent();
-    }
-
     #endregion
 }

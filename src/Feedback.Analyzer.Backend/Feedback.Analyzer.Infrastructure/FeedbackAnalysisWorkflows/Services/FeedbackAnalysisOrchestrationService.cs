@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Feedback.Analyzer.Application.Common.EventBus.Brokers;
 using Feedback.Analyzer.Application.Common.Prompts.Events;
 using Feedback.Analyzer.Application.Common.Prompts.Models;
@@ -20,10 +21,6 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.Services;
 /// execute the analysis workflow. The workflow involves executing prompts associated with the feedback and generating analysis results.
 /// It supports the execution of a single feedback analysis workflow.
 /// </summary>
-/// <param name="eventBusBroker"></param>
-/// <param name="customerFeedbackService"></param>
-/// <param name="feedbackAnalysisResultService"></param>
-/// <param name="promptExecutionProcessingService"></param>
 public class FeedbackAnalysisOrchestrationService(
     IEventBusBroker eventBusBroker,
     ICustomerFeedbackService customerFeedbackService,
@@ -48,13 +45,19 @@ public class FeedbackAnalysisOrchestrationService(
         context.Arguments[PromptConstants.CustomerFeedback] = feedback.Comment;
         
         // Execute whole workflow for single feedback
+        var stopwatch = Stopwatch.StartNew();
         await ExecuteOptionAsync(context, context.EntryExecutionOption, cancellationToken);
-
+        stopwatch.Stop();
+        
         if (context.Status == WorkflowStatus.Running)
             context.Status = WorkflowStatus.Completed;
-        
+
+        context.Result.AnalysisResult.AnalysisDuration = stopwatch.Elapsed;
         context.Result.AnalysisResult.Status = context.Status;
         context.Result.AnalysisResult.ErrorMessage = context.ErrorMessage;
+        context.Result.AnalysisResult.ModelExecutionDuration = TimeSpan.FromMilliseconds(context.Histories
+            .Sum(groupedHistory => groupedHistory
+                .Sum(history => history.ExecutionDuration.TotalMilliseconds)));
         
         // Create feedback analysis result
         await feedbackAnalysisResultService.CreateAsync(context.Result, cancellationToken: cancellationToken);
@@ -69,7 +72,8 @@ public class FeedbackAnalysisOrchestrationService(
         option.AnalysisPromptCategory.SelectedPrompt!.Category = option.AnalysisPromptCategory;
 
         // Execute option
-        var executePromptAction = () => ExecutePromptAsync(context, option.AnalysisPromptCategory.SelectedPrompt!, cancellationToken);
+        var executePromptAction = () => ExecutePromptAsync(context, option.AnalysisPromptCategory.SelectedPrompt!, 
+            new CancellationTokenSource(TimeSpan.FromSeconds(30)).Token);
         var promptResult = await executePromptAction.GetValueAsync();
         if (!promptResult.IsSuccess)
         {
@@ -87,6 +91,9 @@ public class FeedbackAnalysisOrchestrationService(
     private async ValueTask ExecutePromptAsync(WorkflowContext context, AnalysisPrompt prompt,
         CancellationToken cancellationToken = default)
     {
+        if (cancellationToken.IsCancellationRequested)
+            return;
+        
         // Publish before prompt execution event
         await eventBusBroker.PublishLocalAsync(
             new BeforePromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>

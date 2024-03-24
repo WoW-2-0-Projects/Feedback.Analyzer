@@ -23,6 +23,7 @@ export default {
         dangerColor: '#E63946',
         successColor: '#73F74B',
         warningColor: '#F1C40F',
+        processingColor: '#3498DB',
       },
       fontFamily: {
         'poppins': ['Poppins', 'sans-serif'],
