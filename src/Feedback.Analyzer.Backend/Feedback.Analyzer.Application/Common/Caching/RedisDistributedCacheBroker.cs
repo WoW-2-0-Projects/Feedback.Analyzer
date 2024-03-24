@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Feedback.Analyzer.Application.Common.Serializers;
+using Feedback.Analyzer.Application.Common.Serializers.Brokers;
 using Feedback.Analyzer.Application.Common.Settings;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.Caching.Models;

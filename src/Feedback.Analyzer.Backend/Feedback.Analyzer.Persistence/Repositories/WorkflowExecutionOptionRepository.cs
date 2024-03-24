@@ -2,7 +2,6 @@
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.DataContexts;
-using Feedback.Analyzer.Persistence.Extensions;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,53 +14,70 @@ public class WorkflowExecutionOptionRepository(AppDbContext dbContext, ICacheBro
     : EntityRepositoryBase<WorkflowExecutionOption, AppDbContext>(dbContext, cacheBroker),
       IWorkflowExecutionOptionRepository
 {
-    public async ValueTask<WorkflowExecutionOption?> GetByIdAndIncludeAllGrandChildrenAsync(
+    public async ValueTask<WorkflowExecutionOption> GetByIdAndIncludeChildrenAndPromptAsync(
         Guid optionId, QueryOptions queryOptions = default,
         CancellationToken cancellationToken = default)
     {
-        var executionOption = await Get(executionOption => executionOption.Id == optionId, queryOptions)
-                                    .Include(executionOption => executionOption.AnalysisPromptCategory)
-                                    .ThenInclude(category => category.SelectedPrompt)
-                                    .Include(executionOption => executionOption.ChildExecutionOptions)
-                                    .AsSplitQuery()
-                                    .ApplyTrackingMode(queryOptions.TrackingMode)
-                                    .FirstOrDefaultAsync(cancellationToken);
-
-        if (executionOption is not null)
+        // Includes all children and prompts
+        async ValueTask<IReadOnlyList<WorkflowExecutionOption>> LoadAllChildrenAsync(
+            Guid parentId,
+            QueryOptions localQueryOptions,
+            CancellationToken localCancellationToken)
         {
-            executionOption.AnalysisPromptCategory.SelectedPrompt!.Category = executionOption.AnalysisPromptCategory;
-            executionOption.ChildExecutionOptions = await LoadAllChildrenAsync(executionOption.Id, queryOptions, cancellationToken);
-        }
+            var childOptions = await Get(executionOption => executionOption.ParentId == parentId, localQueryOptions)
+                .Include(executionOption => executionOption.AnalysisPromptCategory)
+                .ThenInclude(category => category.SelectedPrompt)
+                .Include(executionOption => executionOption.ChildExecutionOptions)
+                .AsSplitQuery()
+                .ToListAsync(localCancellationToken);
         
-        return executionOption;
-    }
-    /// <summary>
-    /// Loads all children of the given execution option
-    /// </summary>
-    /// <param name="parentOptionId"></param>
-    /// <param name="queryOptions"></param>
-    /// <param name="cancellationToken">Cancellation token</param>
-    private async ValueTask<IReadOnlyList<WorkflowExecutionOption>> LoadAllChildrenAsync(
-        Guid parentOptionId,
-        QueryOptions queryOptions,
-        CancellationToken cancellationToken = default
-    )
-    {
-        // Load children
-        var childrenOptions = await Get(executionOption => executionOption.ParentId == parentOptionId, queryOptions)
+            foreach(var childOption in childOptions)
+                childOption.ChildExecutionOptions = await LoadAllChildrenAsync(childOption.Id, localQueryOptions, localCancellationToken);
+
+            return childOptions;
+        }
+
+        // Main method logic
+        var executionOption = await Get(executionOption => executionOption.Id == optionId, queryOptions)
             .Include(executionOption => executionOption.AnalysisPromptCategory)
             .ThenInclude(category => category.SelectedPrompt)
             .Include(executionOption => executionOption.ChildExecutionOptions)
             .AsSplitQuery()
-            .ToListAsync(cancellationToken: cancellationToken);
-        
-        // Load grand children
-        foreach(var childrenOption in childrenOptions)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (executionOption is not null)
+            executionOption.ChildExecutionOptions = await LoadAllChildrenAsync(executionOption.Id, queryOptions, cancellationToken);
+    
+        return executionOption;
+    }
+
+    public async ValueTask<WorkflowExecutionOption> GetByIdAndIncludeChildren(
+        Guid optionId, 
+        QueryOptions queryOptions = default, 
+        CancellationToken cancellationToken = default)
+    {
+        // Includes all children and prompts
+        async ValueTask<IReadOnlyList<WorkflowExecutionOption>> LoadAllChildrenAsync(
+            Guid parentId,
+            QueryOptions localQueryOptions,
+            CancellationToken localCancellationToken)
         {
-            childrenOption.AnalysisPromptCategory.SelectedPrompt!.Category = childrenOption.AnalysisPromptCategory;
-            childrenOption.ChildExecutionOptions = await LoadAllChildrenAsync(childrenOption.Id, queryOptions, cancellationToken);
+            var childOptions = await Get(executionOption => executionOption.ParentId == parentId, localQueryOptions)
+                .Include(executionOption => executionOption.ChildExecutionOptions)
+                .ToListAsync(localCancellationToken);
+        
+            foreach(var childOption in childOptions)
+                childOption.ChildExecutionOptions = await LoadAllChildrenAsync(childOption.Id, localQueryOptions, localCancellationToken);
+
+            return childOptions;
         }
         
-        return childrenOptions;
+        var executionOption = await Get(executionOption => executionOption.Id == optionId, queryOptions)
+            .Include(executionOption => executionOption.ChildExecutionOptions)
+            .FirstOrDefaultAsync(cancellationToken);
+        
+        executionOption.ChildExecutionOptions = await LoadAllChildrenAsync(executionOption.Id, queryOptions, cancellationToken);
+        
+        return executionOption;
     }
 }

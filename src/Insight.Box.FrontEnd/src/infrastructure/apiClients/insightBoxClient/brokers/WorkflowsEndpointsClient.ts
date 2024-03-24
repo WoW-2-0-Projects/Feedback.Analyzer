@@ -67,4 +67,9 @@ export class WorkflowsEndpointsClient {
         const endpointUrl = `api/workflows/${workflowId}/execute/${promptId}`;
         return await this.client.postAsync(endpointUrl);
     }
+
+    public async executeWorkflowAsync(workflowId: string) {
+        const endpointUrl = `api/workflows/${workflowId}/execute`;
+        return await this.client.postAsync(endpointUrl);
+    }
 }

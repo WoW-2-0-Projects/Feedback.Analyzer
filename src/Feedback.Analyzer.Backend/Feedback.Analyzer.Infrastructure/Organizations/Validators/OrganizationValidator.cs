@@ -32,6 +32,9 @@ public class OrganizationValidator : AbstractValidator<Organization>
                     .MinimumLength(3)
                     .MaximumLength(512)
                     .WithMessage("Description is not valid");
+                
+                RuleFor(organization => organization.ClientId)
+                    .NotEqual(Guid.Empty);
             }
         );
         

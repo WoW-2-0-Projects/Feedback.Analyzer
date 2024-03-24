@@ -97,7 +97,7 @@ const loadProductsAsync = async () => {
 
 const openWorkflowModal = (workflowToEdit: FeedbackAnalysisWorkflow | null) => {
     if(workflowToEdit) {
-        workflow.value = workflowToEdit;
+        workflow.value =  JSON.parse(JSON.stringify(workflowToEdit));
         isWorkflowCreate.value = false;
         isWorkflowModalActive.value = true;
     } else {

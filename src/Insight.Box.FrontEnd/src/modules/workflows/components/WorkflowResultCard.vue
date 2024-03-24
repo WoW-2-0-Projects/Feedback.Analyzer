@@ -6,7 +6,8 @@
     >
         <template v-slot:mainContent>
 
-            <div class="flex shadow-xl card-round items-center justify-start px-5 h-[70px] gap-5">
+            <div class="flex shadow-xl items-center justify-start px-5 h-[70px] gap-5"
+                 :class="isResultsListOpen ? 'card-top-round' : 'card-round'">
 
                 <!-- Workflow result actions -->
                 <div class="flex items-center gap-3">
@@ -38,8 +39,9 @@
 
                     <div class="h-full flex flex-col items-start justify-between text-tertiaryContentColor">
                         <h5 class="text-xs">{{ LayoutConstants.FinishedTime }}</h5>
-                        <h5 class="text-base font-bold whitespace-nowrap">
+                        <h5 v-if="workflowResult.finishedTime" class="text-base font-bold whitespace-nowrap">
                             {{ timeFormatterService.formatHumanize(workflowResult.finishedTime) }}</h5>
+                        <i v-else class="fas fa-infinity"></i>
                         <div></div>
                     </div>
 

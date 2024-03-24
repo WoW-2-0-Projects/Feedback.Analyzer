@@ -24,12 +24,8 @@ public class FeedbackAnalysisWorkflowGetQueryHandler(
         request.Filter.ClientId = requestContextProvider.GetUserId();
         var queryOptions = new QueryOptions(QueryTrackingMode.AsNoTracking);
 
-        var matchedFeedbackAnalysisWorkflows = await (await feedbackAnalysisWorkflowService
-                .Get(request.Filter, queryOptions)
-                .GetFilteredEntitiesQuery(feedbackAnalysisWorkflowService.Get(), cancellationToken: cancellationToken))
-            .Include(workflow => workflow.AnalysisWorkflow)
-            .Include(workflow => workflow.Product)
-            .ApplyTrackingMode(queryOptions.TrackingMode)
+        var matchedFeedbackAnalysisWorkflows = await feedbackAnalysisWorkflowService
+            .Get(request.Filter, queryOptions)
             .ProjectTo<FeedbackAnalysisWorkflowDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken: cancellationToken);
 
