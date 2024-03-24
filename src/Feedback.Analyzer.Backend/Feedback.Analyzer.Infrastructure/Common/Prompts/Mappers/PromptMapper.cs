@@ -11,6 +11,17 @@ public class PromptMapper : Profile
         CreateMap<AnalysisPrompt, AnalysisPromptDto>().ReverseMap();
         
         CreateMap<AnalysisPrompt, PromptResultDto>()
-            .ForMember(dest => dest.PromptId, opt => opt.MapFrom(src => src.Id));
+            .ForMember(dest => dest.PromptId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.ExecutionsCount, opt => opt.MapFrom(src => src.ExecutionHistories.Count()))
+            .ForMember(
+                dest => dest.AverageExecutionTimeInMilliSeconds,
+                opt =>
+                {
+                    opt.PreCondition(src => src.ExecutionHistories.Any());
+                    opt.MapFrom(
+                        src => src.ExecutionHistories.Select(history => history.ExecutionDuration).Average(timeSpan => timeSpan.TotalMilliseconds)
+                    );
+                }
+            );
     }
 }
