@@ -13,11 +13,6 @@ public class AnalysisPromptDto
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Gets or sets the category.
-    /// </summary>
-    public FeedbackAnalysisPromptCategory Category { get; set; }
-
-    /// <summary>
     /// Gets or sets the prompt.
     /// </summary>
     public string Prompt { get; set; } = default!;
