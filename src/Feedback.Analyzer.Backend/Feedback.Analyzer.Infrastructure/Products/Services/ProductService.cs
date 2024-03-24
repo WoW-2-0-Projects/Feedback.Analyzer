@@ -19,8 +19,7 @@ namespace Feedback.Analyzer.Infrastructure.Products.Services;
 /// </summary>
 public class ProductService
     (IProductRepository productRepository,
-        ProductValidator productValidator,
-        IRequestContextProvider requestContextProvider)
+        ProductValidator productValidator)
     : IProductService
 {
         public IQueryable<Product> Get(Expression<Func<Product, bool>>? predicate, QueryOptions queryOptions = default)
@@ -47,8 +46,6 @@ public class ProductService
 
         public async ValueTask<Product> CreateAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
-            ValidateClientId(await GetCurrentClientId(product.OrganizationId));
-
             var validationResult = productValidator.Validate(product,
                     options => options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
 
@@ -60,38 +57,38 @@ public class ProductService
 
         public async ValueTask<Product> UpdateAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
-            ValidateClientId(await GetCurrentClientId(product.OrganizationId));
+        var validationResult = productValidator.Validate(product,
+                options => options.IncludeRuleSets(EntityEvent.OnUpdate.ToString()));
 
-            var validationResult = productValidator.Validate(product,
-                    options => options.IncludeRuleSets(EntityEvent.OnUpdate.ToString()));
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
 
-            if (!validationResult.IsValid)
-                throw new ValidationException(validationResult.Errors);
+        var fountProduct = await GetByIdAsync(product.Id, cancellationToken: cancellationToken)
+            ?? throw new InvalidOperationException("Product not fount");
 
-            return await productRepository.UpdateAsync(product, commandOptions, cancellationToken);
-        }
+        if (await GetCurrentClientId(fountProduct.OrganizationId) == await GetCurrentClientId(product.OrganizationId))
+            throw new UnauthorizedAccessException("Client id must match the current user id");
+
+        return await productRepository.UpdateAsync(product, commandOptions, cancellationToken);
+    }
 
         public async ValueTask<Product?> DeleteAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
-            ValidateClientId(await GetCurrentClientId(product.OrganizationId));
+        var fountProduct = await GetByIdAsync(product.Id, cancellationToken: cancellationToken)
+            ?? throw new InvalidOperationException("Product not fount");
 
-            return await productRepository.DeleteAsync(product, commandOptions, cancellationToken);
+        if (await GetCurrentClientId(fountProduct.OrganizationId) == await GetCurrentClientId(product.OrganizationId))
+            throw new UnauthorizedAccessException("Client id must match the current user id");
+
+        return await productRepository.DeleteAsync(product, commandOptions, cancellationToken);
         }
 
         public async ValueTask<Product?> DeleteByIdAsync(Guid productId, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
-            var product = await productRepository.GetByIdAsync(productId, cancellationToken: cancellationToken);
-
-            ValidateClientId(await GetCurrentClientId(product.OrganizationId)); 
-
-            return await productRepository.DeleteByIdAsync(productId, commandOptions, cancellationToken);
-        }
-
-        private void ValidateClientId(Guid currentProductClientId)
-        {
-            if (currentProductClientId == Guid.Empty || currentProductClientId != requestContextProvider.GetUserId())
-                throw new UnauthorizedAccessException("Client id must match the current user id");
-        }
+        var fountProduct = await GetByIdAsync(productId, cancellationToken: cancellationToken)
+                ?? throw new InvalidOperationException("Product not fount");
+        return await productRepository.DeleteByIdAsync(productId, commandOptions, cancellationToken);
+    }
 
     private async ValueTask<Guid> GetCurrentClientId(Guid orgnaziationId) 
     {

@@ -32,6 +32,8 @@ public class ProductValidator : AbstractValidator<Product>
                     .NotEmpty()
                     .MinimumLength(3)
                     .MaximumLength(512);
+                RuleFor(product => product.OrganizationId)
+                .NotEqual(Guid.Empty);
             }
         );
         
@@ -48,6 +50,8 @@ public class ProductValidator : AbstractValidator<Product>
                     .NotEmpty()
                     .MinimumLength(3)
                     .MaximumLength(512);
+                RuleFor(product => product.OrganizationId)
+                .NotEqual(Guid.Empty);
             }
         );
     }
