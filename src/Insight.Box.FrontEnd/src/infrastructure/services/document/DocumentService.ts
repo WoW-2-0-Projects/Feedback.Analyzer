@@ -108,6 +108,10 @@ export class DocumentService {
         return element.offsetHeight;
     }
 
+    public getWidth(element: HTMLElement): number {
+        return element.offsetWidth;
+    }
+
     public isDocumentScrolledToBottom(minimumSpace: number = 0) {
         const scrollPosition = window.innerHeight + window.scrollY;
         const threshold = document.body.scrollHeight - (minimumSpace || 0);

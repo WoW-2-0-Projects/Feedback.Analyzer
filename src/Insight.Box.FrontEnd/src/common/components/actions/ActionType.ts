@@ -20,5 +20,10 @@ export enum ActionType {
     /*
      * Refers to the success action
      */
-    Success
+    Success,
+
+    /*
+        * Refers to the processing action
+     */
+    Processing
 }
