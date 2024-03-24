@@ -42,6 +42,6 @@ export class FeedbackAnalysisResultsEndpointsClient {
         const config: AxiosRequestConfig = {mapper: (r: FeedbackAnalysisResult) =>
               plainToClass(FeedbackAnalysisResult, r)}
         const endpointUrl = `api/results/${resultId}`;
-        return await this.client.getAsync<Array<FeedbackAnalysisResult>>(endpointUrl, config);
+        return await this.client.getAsync<FeedbackAnalysisResult>(endpointUrl, config);
     }
 }

@@ -136,8 +136,6 @@ const feedbackAnalysisResultsQuery = ref<Query>(new Query(new FeedbackAnalysisRe
 
 onBeforeMount(() => {
     props.closeSource?.addListener((resultId: string) => {
-        console.log('closing', resultId);
-
         if(resultId != props.workflowResult.id)
             isResultsListOpen.value = false;
     });

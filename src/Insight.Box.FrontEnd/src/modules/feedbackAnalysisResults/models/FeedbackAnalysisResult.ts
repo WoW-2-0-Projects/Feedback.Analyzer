@@ -1,10 +1,8 @@
-import {FeedbackRelevance} from "@/modules/feedbackAnalysisResults/models/FeedbackRelevance";
-import {FeedbackOpinion} from "@/modules/feedbackAnalysisResults/models/FeedbackOpinion";
-import {FeedbackActionablePoints} from "@/modules/feedbackAnalysisResults/models/FeedbackActionablePoints";
-import {FeedbackEntities} from "@/modules/feedbackAnalysisResults/models/FeedbackEntities";
-import {FeedbackMetrics} from "@/modules/feedbackAnalysisResults/models/FeedbackMetrics";
 import {CustomerFeedback} from "@/modules/feedbackAnalysisResults/models/CustomerFeedback";
 import {plainToClass} from "class-transformer";
+import {WorkflowStatus} from "@/modules/workflows/models/WorkflowStatus";
+import {OpinionType} from "@/modules/feedbackAnalysisResults/models/OpinionType";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 /**
  * Represents the DTO (Data Transfer Object) for feedback analysis results.
@@ -13,32 +11,57 @@ export class FeedbackAnalysisResult {
     /**
      * The unique identifier for the feedback analysis result.
      */
-    id: string;
+    public id: string;
 
     /**
-     * The relevance of the feedback.
+     * A value indicating whether the feedback is relevant.
      */
-    public feedbackRelevance: FeedbackRelevance;
+    public isRelevant: boolean;
 
     /**
-     * The opinion conveyed by the feedback.
+     * The overall opinion type of the feedback.
      */
-    public feedbackOpinion: FeedbackOpinion;
+    public opinion: OpinionType;
 
     /**
-     * The actionable points extracted from the feedback.
+     * An array of recognized languages in the feedback content.
      */
-    public feedbackActionablePoints: FeedbackActionablePoints;
+    public languages: string[];
 
     /**
-     * The entities mentioned in the feedback.
+     * The status of the analysis.
      */
-    public feedbackEntities: FeedbackEntities;
+    public status: WorkflowStatus;
 
     /**
-     * The metrics associated with the feedback.
+     * An array of positive points mentioned in the feedback.
      */
-    public feedbackMetrics: FeedbackMetrics;
+    public positiveOpinionPoints: string[];
+
+    /**
+     * An array of negative points mentioned in the feedback.
+     */
+    public negativeOpinionPoints: string[];
+
+    /*
+     * Customer ideas about the product.
+     */
+    public ideas: string[];
+
+    /*
+     * Customer questions about the product.
+     */
+    public questions: string[];
+
+    /*
+     * The time spend to execute the semantic analysis model
+     */
+    public modelExecutionDurationInMilliseconds: number;
+
+    /**
+     * The time taken to analyze the feedback in milliseconds.
+     */
+    public analysisDurationInMilliseconds: number;
 
     /**
      * The customer feedback associated with this analysis result.
@@ -46,12 +69,28 @@ export class FeedbackAnalysisResult {
     public customerFeedback: CustomerFeedback;
 
     public map() {
-        this.feedbackRelevance = plainToClass(FeedbackRelevance, this.feedbackRelevance);
-        this.feedbackOpinion = plainToClass(FeedbackOpinion, this.feedbackOpinion);
-        this.feedbackActionablePoints = plainToClass(FeedbackActionablePoints, this.feedbackActionablePoints);
-        this.feedbackEntities = plainToClass(FeedbackEntities, this.feedbackEntities);
-        this.feedbackMetrics = plainToClass(FeedbackMetrics, this.feedbackMetrics);
         this.customerFeedback = plainToClass(CustomerFeedback, this.customerFeedback);
+    }
+
+    public mapOpinionToActionType(): ActionType {
+        switch (this.overallOpinion) {
+            case OpinionType.Positive:
+                return ActionType.Success;
+            case OpinionType.Negative:
+                return ActionType.Danger
+            case OpinionType.Neutral:
+                return ActionType.Secondary;
+        }
+    }
+
+    public mapStatusToActionType() {
+        switch(this.status)
+        {
+            case WorkflowStatus.Queued : return ActionType.Secondary;
+            case WorkflowStatus.Failed : return ActionType.Danger;
+            case WorkflowStatus.Running : return ActionType.Secondary;
+            case WorkflowStatus.Completed : return ActionType.Success;
+        }
     }
 }
 

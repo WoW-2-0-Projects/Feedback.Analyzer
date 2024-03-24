@@ -26,11 +26,11 @@ public class FeedbackAnalysisResultMapper : Profile
             )
             .ForMember(
                 dest => dest.ModelExecutionDurationInMilliseconds,
-                opt => opt.MapFrom(src => src.AnalysisResult.ModelExecutionDuration.TotalMilliseconds)
+                opt => opt.MapFrom(src => (ulong)src.AnalysisResult.ModelExecutionDuration.TotalMilliseconds)
             )
             .ForMember(
                 dest => dest.AnalysisDurationInMilliseconds,
-                opt => opt.MapFrom(src => src.AnalysisResult.AnalysisDuration.TotalMilliseconds)
+                opt => opt.MapFrom(src => (ulong)src.AnalysisResult.AnalysisDuration.TotalMilliseconds)
             );
     }
 }

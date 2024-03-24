@@ -26,7 +26,8 @@
                         @closeModal="isWorkflowModalActive = false" @submit="onWorkflowModalSubmit"/>
 
         <!-- Feedback analysis result modal -->
-        <feedback-analysis-result-modal result="result" :isActive="isFeedbackResultModalActive"
+        <feedback-analysis-result-modal v-if="openedFeedbackAnalysisResult" :result="openedFeedbackAnalysisResult"
+                                        :isActive="isFeedbackResultModalActive"
                                         @closeModal="isFeedbackResultModalActive = false"/>
 
     </div>
@@ -55,6 +56,7 @@ import {WorkflowType} from "@/modules/workflows/models/WorkflowType";
 import WorkflowResultCard from "@/modules/workflows/components/WorkflowResultCard.vue";
 import FeedbackAnalysisResultModal from "@/modules/feedbackAnalysisResults/components/FeedbackAnalysisResultModal.vue";
 import type {FeedbackAnalysisResult} from "@/modules/feedbackAnalysisResults/models/FeedbackAnalysisResult";
+import {WorkflowStatus} from "@/modules/workflows/models/WorkflowStatus";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 const documentService = new DocumentService();
@@ -86,6 +88,7 @@ onBeforeMount(async () => {
     // Load workflows
     await loadWorkflowsAsync();
     await loadProductsAsync();
+    await openFeedbackResultModal('c4a22b3a-e22f-4fa8-ad39-4eb3d6bedfcc');
 });
 
 const loadWorkflowsAsync = async () => {
@@ -192,10 +195,11 @@ watch(() => [isWorkflowsLoading.value, loadNextWorkflows.value], async () => {
     }
 });
 
-const openFeedbackResultModal = (feedbackResultId: string) => {
-    const response = insightBoxApiClient.results.getByIdAsync(feedbackResultId);
+const openFeedbackResultModal = async (feedbackResultId: string) => {
+    const response = await insightBoxApiClient.results.getByIdAsync(feedbackResultId);
     if (response.response) {
         openedFeedbackAnalysisResult.value = response.response;
+        openedFeedbackAnalysisResult.value!.map();
         isFeedbackResultModalActive.value = true;
     }
 }

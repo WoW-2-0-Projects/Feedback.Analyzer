@@ -19,20 +19,20 @@
                 <app-chip icon="fas fa-check" :type="ActionType.Success"/>
             </td>
             <td class="table-data-cell">
-                <app-chip :text="result.feedbackRelevance.isRelevant
+                <app-chip :text="result.isRelevant
                             ? LayoutConstants.Relevant
                             : LayoutConstants.NonRelevant"
-                          :type="result.feedbackRelevance.isRelevant ? ActionType.Success : ActionType.Danger"/>
+                          :type="result.isRelevant ? ActionType.Success : ActionType.Danger"/>
             </td>
             <td class="table-data-cell">
-                <app-chip :text="OpinionType[result.feedbackOpinion.overallOpinion]"
-                          :type="result.feedbackOpinion.mapOpinionToActionType()"/>
+                <app-chip :text="OpinionType[result.opinion]"
+                          :type="result.mapOpinionToActionType()"/>
             </td>
             <td class="table-data-cell">
                 3
             </td>
             <td class="table-data-cell">
-                <multi-chip :chips="result.feedbackRelevance.recognizedLanguages.map(language => new
+                <multi-chip :chips="result.languages.map(language => new
                     ChipData(language, ActionType.Secondary))" :displayLimit="2"/>
             </td>
         </tr>
