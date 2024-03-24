@@ -30,11 +30,11 @@
                                     :size="ActionComponentSize.ExtraSmall"/>
                     <div class="flex gap-4">
 
-                        <app-button :type="ButtonType.Secondary" :layout="ButtonLayout.Square" icon="fas fa-plus"
+                        <app-button :type="ActionType.Secondary" :layout="ButtonLayout.Square" icon="fas fa-plus"
                                     :size="ActionComponentSize.ExtraSmall"
                                     @click="emit('addPrompt', promptCategory.id, promptResultLoadFunction)"/>
 
-                        <app-button  :type="ButtonType.Primary" :layout="ButtonLayout.Rectangle" icon="fas fa-play"
+                        <app-button  :type="ActionType.Primary" :layout="ButtonLayout.Rectangle" icon="fas fa-play"
                                      text="Run"
                                      :disabled="selectedTrainingWorkflow === null || promptCategory.selectedPromptId === null"
                                      :size="ActionComponentSize.ExtraSmall" @click="onTriggerWorkflow"/>
@@ -75,7 +75,6 @@ import {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisPromptCat
 import {FeedbackAnalysisWorkflow} from "@/modules/workflows/models/FeedbackAnalysisWorkflow";
 import {LayoutConstants} from "../../../common/constants/LayoutConstants";
 import AppButton from "@/common/components/appButton/AppButton.vue";
-import {ButtonType} from "@/common/components/appButton/ButtonType";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 import {AsyncFunction} from "@/infrastructure/models/notifications/Function";
@@ -83,6 +82,8 @@ import {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import FormDropDown from "@/common/components/formDropDown/FormDropDown.vue";
 import {TableData} from "@/common/components/appTable/TableData";
+import AppTable from "@/common/components/appTable/AppTable.vue";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 
@@ -130,6 +131,7 @@ const promptHistoriesTableData = ref<TableData>(new TableData([
 onBeforeMount(async () =>  {
     loadWorkflowOptions();
 });
+
 const  onTriggerWorkflow = async () => {
     if (!selectedTrainingWorkflow.value?.value?.id || !props.promptCategory?.selectedPromptId)
         return;
