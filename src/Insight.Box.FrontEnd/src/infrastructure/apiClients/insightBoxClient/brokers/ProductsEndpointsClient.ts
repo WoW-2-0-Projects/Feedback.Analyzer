@@ -4,6 +4,7 @@ import type {ProductFilter} from "@/modules/products/models/ProductFilter";
 import type {Product} from "@/modules/products/models/Product";
 import type {RequestFormatterService} from "@/infrastructure/apiClients/formatters/RequestFormatterService";
 import {CreateProductCommand} from "@/modules/products/models/CreateProductCommand";
+import type {UpdateProductCommand} from "@/modules/products/models/UdateProductCommand";
 
 /*
  * Provides products endpoints client functionality
@@ -39,4 +40,25 @@ export class ProductsEndpointsClient {
         const endpointUrl = 'api/products';
         return await this.client.postAsync<Product>(endpointUrl, command);
     }
+
+    /*
+     * Update an product
+     */
+    public async updateAsync(command: UpdateProductCommand) {
+        const endpointUrl = `api/products`;
+
+        return await this.client.putAsync<Product>(endpointUrl, command);
+
+    }
+
+    /*
+     * Delete an product
+     */
+    public async deleteAsync(productId:string) {
+
+        const endpointUrl = `api/products/${productId}`;
+
+        return await this.client.deleteAsync(endpointUrl);
+    }
+
 }

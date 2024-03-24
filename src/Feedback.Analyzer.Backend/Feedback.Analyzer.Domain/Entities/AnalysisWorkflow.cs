@@ -24,6 +24,11 @@ public class AnalysisWorkflow : AuditableEntity
     public Guid EntryExecutionOptionId { get; set; }
     
     /// <summary>
+    /// Gets or sets the running status of the analysis workflow
+    /// </summary>
+    public WorkflowStatus Status { get; set; }
+    
+    /// <summary>
     /// Gets or sets entry execution options
     /// </summary>
     public WorkflowExecutionOption EntryExecutionOption { get; set; } = default!;

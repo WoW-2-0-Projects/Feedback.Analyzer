@@ -15,16 +15,16 @@
 
 <script setup lang="ts">
 
-import {ButtonType} from "@/common/components/appButton/ButtonType";
 import {computed, type PropType, ref} from "vue";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 const props = defineProps({
     type: {
-        type: Number as PropType<ButtonType>,
-        default: ButtonType.Primary
+        type: Number as PropType<ActionType>,
+        default: ActionType.Primary
     },
     role: {
         type: Number as PropType<ButtonRole>,
@@ -67,16 +67,16 @@ const componentStyles = computed(() => {
         styles += ' theme-action-disabled cursor-not-allowed';
     } else
         switch (props.type) {
-            case ButtonType.Primary:
+            case ActionType.Primary:
                 styles += ' theme-action-primary';
                 break;
-            case ButtonType.Secondary:
-                styles += ' theme-action-secondary';
+            case ActionType.Secondary:
+                styles += ' bg-accentTertiaryColor';
                 break;
-            case ButtonType.Danger :
+            case ActionType.Danger :
                 styles += ' theme-action-danger';
                 break;
-            case ButtonType.Success :
+            case ActionType.Success :
                 styles += ' theme-action-success';
                 break;
         }

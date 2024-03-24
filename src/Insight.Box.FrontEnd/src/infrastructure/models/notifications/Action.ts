@@ -17,7 +17,7 @@ export class Action<TArgs> {
      * Sets callback
     */
     public setCallback(callback: (args: TArgs) => void) {
-        this.callback = callback;
+        this.callBack = callback;
     }
 }
 

@@ -1,4 +1,5 @@
-import type { ProblemDetails } from "@/infrastructure/apiClients/apiClientBase/ProblemDetails";
+import { ProblemDetails } from "@/infrastructure/apiClients/apiClientBase/ProblemDetails";
+import {plainToClass} from "class-transformer";
 
 /*
  * Represents API response
@@ -18,8 +19,10 @@ export class ApiResponse<T> {
 
     constructor(response: T | null, error: ProblemDetails | null, status: number) {
         this.response = response;
-        this.error = error;
         this.status = status;
+
+        if(error != null)
+            this.error = plainToClass(ProblemDetails, error);
     }
 
     /*

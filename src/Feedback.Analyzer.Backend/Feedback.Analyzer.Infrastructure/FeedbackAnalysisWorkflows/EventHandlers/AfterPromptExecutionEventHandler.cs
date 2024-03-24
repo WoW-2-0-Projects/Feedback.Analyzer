@@ -11,65 +11,83 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandle
 /// <summary>
 /// Represents event handler for before prompt execution hook event
 /// </summary>
-public class AfterPromptExecutionEventHandler : IEventHandler<AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>>
+public class AfterPromptExecutionEventHandler : EventHandlerBase<AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>>
 {
-    public Task Handle(AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext> notification, CancellationToken cancellationToken)
+    protected override ValueTask HandleAsync(AfterPromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext> notification, CancellationToken cancellationToken)
     {
         if (notification.Context is not SingleFeedbackAnalysisWorkflowContext context)
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
+        
+        var lastHistory = context.GetLastHistory(notification.Prompt.CategoryId);
+
+        if (lastHistory is null)
+        {
+            context.Status = WorkflowStatus.Failed;
+            context.ErrorMessage = $"No history found for the category - {notification.Prompt.Category.Category.GetDisplayName()}";
+
+            return ValueTask.CompletedTask;
+        }
+
+        if (lastHistory.Result is null)
+        {
+            context.Status = WorkflowStatus.Failed;
+            context.ErrorMessage =
+                $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null";
+
+            return ValueTask.CompletedTask;
+        }
         
         switch (notification.Prompt.Category.Category)
         {
             case FeedbackAnalysisPromptCategory.RelevanceAnalysis:
             {
-                var lastHistory = context.GetLastHistory(notification.Prompt.CategoryId) ?? throw new InvalidOperationException(
-                    $"No history found for the category - {notification.Prompt.Category.Category.GetDisplayName()}"
-                );
-
-                if (lastHistory.Result is null)
-                    throw new InvalidOperationException(
-                        $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null"
-                    );
-
-                context.Result.FeedbackRelevance.IsRelevant = JsonConvert.DeserializeObject<bool>(lastHistory.Result!);
+                context.Result.FeedbackRelevance.IsRelevant = JsonConvert.DeserializeObject<bool>(lastHistory.Result!.ToLower());
 
                 if (!context.Result.FeedbackRelevance.IsRelevant)
-                    throw new InvalidOperationException("Feedback is not relevant");
+                {
+                    context.Status = WorkflowStatus.Completed;
+                    context.ErrorMessage = "Feedback is not relevant";
+                }
+                break;
+            }
+            case FeedbackAnalysisPromptCategory.LanguageRecognition:
+            {
+                context.Result.FeedbackRelevance.RecognizedLanguages = JsonConvert
+                    .DeserializeObject<string[]>(lastHistory.Result!) 
+                    ?? throw new InvalidOperationException("Failed to deserialize the recognized languages");
+
                 break;
             }
             case FeedbackAnalysisPromptCategory.RelevantContentExtraction:
             {
-                var lastHistory = context.GetLastHistory(notification.Prompt.CategoryId) ?? throw new InvalidOperationException(
-                    $"No history found for the category - {notification.Prompt.Category.Category.GetDisplayName()}"
-                );
-
-                if (lastHistory.Result is null)
-                    throw new InvalidOperationException(
-                        $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null"
-                    );
-
                 context.Result.FeedbackRelevance.ExtractedRelevantContent = lastHistory.Result;
+                break;
+            }
+            case FeedbackAnalysisPromptCategory.EntityIdentification:
+            {
                 break;
             }
             case FeedbackAnalysisPromptCategory.PersonalInformationRedaction:
             {
-                var lastHistory = context.GetLastHistory(notification.Prompt.CategoryId) ?? throw new InvalidOperationException(
-                    $"No history found for the category - {notification.Prompt.Category.Category.GetDisplayName()}"
-                );
-
-                if (lastHistory.Result is null)
-                    throw new InvalidOperationException(
-                        $"Result of the last history is null for the category - {notification.Prompt.Category.Category.GetDisplayName()} is null"
-                    );
-
                 context.Result.FeedbackRelevance.PiiRedactedContent = lastHistory.Result;
                 break;
             }
             case FeedbackAnalysisPromptCategory.OpinionMining:
-                context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
+            {
+                context.Result.FeedbackOpinion.OverallOpinion = JsonConvert.DeserializeObject<OpinionType>(lastHistory.Result);
                 break;
+            }
+            case FeedbackAnalysisPromptCategory.OpinionPointsExtraction:
+            {
+                var points = JsonConvert.DeserializeObject<string[][]>(lastHistory.Result) ??
+                             throw new InvalidOperationException("Failed to deserialize the opinion points");
+
+                context.Result.FeedbackOpinion.PositiveOpinionPoints = points[0];
+                context.Result.FeedbackOpinion.NegativeOpinionPoints = points[1];
+                break;
+            }
         }
 
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 }

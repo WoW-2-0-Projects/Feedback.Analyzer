@@ -8,7 +8,7 @@ namespace Feedback.Analyzer.Application.Common.Prompts.Events;
 /// Represents the prompt execution hook event that is triggered after the prompt execution.
 /// </summary>
 /// <typeparam name="TWorkflow"></typeparam>
-public class AfterPromptExecutionEvent<TWorkflow> : Event where TWorkflow : WorkflowContext
+public record AfterPromptExecutionEvent<TWorkflow> : EventBase where TWorkflow : WorkflowContext
 {
     /// <summary>
     /// Gets execution context

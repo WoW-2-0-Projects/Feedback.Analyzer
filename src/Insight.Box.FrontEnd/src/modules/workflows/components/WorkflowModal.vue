@@ -15,15 +15,16 @@
 
                 <form class="flex flex-col gap-10" @submit.prevent="onSubmit">
 
-                    <!-- Filter organization drop down -->
+                    <!-- Base workflow drop down -->
                     <form-drop-down v-if="isCreate" :label="LayoutConstants.BaseWorkflow" v-model="baseWorkflow"
-                                    :values="baseWorkflowOptions"
+                                    :values="baseWorkflowOptions" :placeholder="LayoutConstants.SelectBaseWorkflow"
                                     class="w-full"/>
 
-                    <!-- Filter organization drop down -->
-                    <form-drop-down v-if="isCreate" :label="LayoutConstants.ProductToAnalyze" v-model="product"
-                                    class="w-full"
-                                    :values="productOptions"/>
+                    <!-- Product drop down -->
+                    <form-drop-down v-if="isCreate" class="w-full" :values="productOptions"
+                                    :label="LayoutConstants.ProductToAnalyze" v-model="product"
+                                    :placeholder="LayoutConstants.SelectBaseWorkflow"
+                                    />
 
                     <!-- Modal inputs -->
                     <form-input v-model="workflow.name" :label="LayoutConstants.WorkflowName"
@@ -32,9 +33,9 @@
 
                     <!-- Modal actions -->
                     <div class="flex gap-10">
-                        <app-button :type="ButtonType.Secondary" class="w-full" :text="LayoutConstants.Cancel"
+                        <app-button :type="ActionType.Secondary" class="w-full" :text="LayoutConstants.Cancel"
                                     @click="onClose"/>
-                        <app-button :type="ButtonType.Primary" class="w-full" :text="LayoutConstants.Submit"
+                        <app-button :type="ActionType.Primary" class="w-full" :text="LayoutConstants.Submit"
                                     :role="ButtonRole.Submit" @click="onSubmit"/>
                     </div>
 
@@ -49,10 +50,9 @@
 
 <script setup lang="ts">
 
-import {computed, defineEmits, type PropType, ref, watch} from 'vue';
+import {computed, defineEmits, type PropType, ref} from 'vue';
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import AppButton from "@/common/components/appButton/AppButton.vue";
-import {ButtonType} from "@/common/components/appButton/ButtonType";
 import FormInput from "@/common/components/formInput/FormInput.vue";
 import ModalBase from "@/common/components/modalBase/ModalBase.vue";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
@@ -60,6 +60,7 @@ import type {FeedbackAnalysisWorkflow} from "@/modules/workflows/models/Feedback
 import FormDropDown from "@/common/components/formDropDown/FormDropDown.vue";
 import {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
 import type {Product} from "@/modules/products/models/Product";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 const props = defineProps({
     workflow: {

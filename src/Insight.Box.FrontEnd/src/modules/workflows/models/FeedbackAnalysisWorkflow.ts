@@ -1,5 +1,5 @@
 import type {IDropDownValue} from "@/common/components/formDropDown/IDropDownValue";
-import type {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
+import  {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
 import {WorkflowType} from "@/modules/workflows/models/WorkflowType";
 
 /**
@@ -7,9 +7,9 @@ import {WorkflowType} from "@/modules/workflows/models/WorkflowType";
  */
 export class FeedbackAnalysisWorkflow implements IDropDownValue<string, FeedbackAnalysisWorkflow> {
     /*
-     * Entity Id
+     * Entity id
      */
-    public id: string;
+    public id!: string;
 
     /**
      * The name of the feedback execution workflow.
@@ -19,7 +19,12 @@ export class FeedbackAnalysisWorkflow implements IDropDownValue<string, Feedback
     /**
      * The unique identifier of the product associated with the workflow.
      */
-    public productId: string; // Use 'string' for GUIDs in TypeScript
+    public productId!: string; // Use 'string' for GUIDs in TypeScript
+
+    /*
+     * Product name
+     */
+    public productName!: string; // Use 'string' for GUIDs in TypeScript
 
     /**
      * The type of the feedback execution workflow.

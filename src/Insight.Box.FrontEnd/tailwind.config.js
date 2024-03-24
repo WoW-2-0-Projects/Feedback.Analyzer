@@ -11,30 +11,32 @@ export default {
     },
     extend: {
       colors: {
-        primaryColor: '#454861',
-        secondaryColor: '#555979',
-        tertiaryColor: '#9A9CAB',
-        accentPrimaryColor: '#A07C7F',
+        primaryColor: '#232429',
+        secondaryColor: '#333740',
+        tertiaryColor: '#40434D',
+        accentPrimaryColor: '#7E7CF7',
         accentSecondaryColor: '#656a80',
         accentTertiaryColor: '#4B4D63',
         primaryContentColor: '#f5f5f5',
         secondaryContentColor: '#b5b5b5',
+        tertiaryContentColor: '#999fab',
         dangerColor: '#E63946',
-        successColor: '#2A9D8F',
+        successColor: '#73F74B',
+        warningColor: '#F1C40F',
       },
       fontFamily: {
         'poppins': ['Poppins', 'sans-serif'],
       },
       keyframes: {
         fadeInExpand: {
-          '0%': { opacity: '0', height: '0' },
-          '50%': { opacity: '1', height: '0' },
-          '100%': { opacity: '1', height: 'var(--expand-height)' },
+          '0%': { opacity: '0', maxHeight: '0' },
+          '50%': { opacity: '1', maxHeight: '0' },
+          '100%': { opacity: '1', maxHeight: 'var(--expand-height)' },
         },
         fadeOutCollapse: {
-          '0%': { opacity: '1', height: 'var(--expand-height)' },
-          '50%': { opacity: '0', height: 'var(--expand-height)' },
-          '100%': { opacity: '0', height: '0' },
+          '0%': { opacity: '1', maxHeight: 'var(--expand-height)' },
+          '50%': { opacity: '0', maxHeight: 'var(--expand-height)' },
+          '100%': { opacity: '0', maxHeight: '0' },
         },
         fadeIn: {
           '0%': { opacity: '0', transform: 'translateY(-20%) translateX(-50%)' },
@@ -61,6 +63,9 @@ export default {
         backgroundFadeIn: 'backgroundFadeIn 0.3s ease-out forwards',
         backgroundFadeOut: 'backgroundFadeOut 0.3s ease-out forwards',
       },
+      boxShadow: {
+        custom: '0px 10px 30px rgba(0, 0, 0, 0.03)',
+      }
     },
   },
   plugins: [],

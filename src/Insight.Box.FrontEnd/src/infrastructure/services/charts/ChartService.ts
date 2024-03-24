@@ -15,4 +15,11 @@ export class ChartService {
             await chart.render();
         }
     }
+
+    public async remove(chartContainer: HTMLDivElement, options: any): Promise {
+        if (chartContainer && typeof ApexCharts !== 'undefined') {
+            const chart = new ApexCharts(chartContainer, options);
+            await chart.destroy();
+        }
+    }
 }

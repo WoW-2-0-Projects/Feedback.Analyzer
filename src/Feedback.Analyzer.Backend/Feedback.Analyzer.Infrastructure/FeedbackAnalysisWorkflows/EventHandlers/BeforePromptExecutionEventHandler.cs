@@ -9,12 +9,12 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisWorkflows.EventHandle
 /// <summary>
 /// Represents event handler for before prompt execution hook event
 /// </summary>
-public class BeforePromptExecutionEventHandler : IEventHandler<BeforePromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>>
+public class BeforePromptExecutionEventHandler : EventHandlerBase<BeforePromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext>>
 {
-    public Task Handle(BeforePromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext> notification, CancellationToken cancellationToken)
+    protected override ValueTask HandleAsync(BeforePromptExecutionEvent<SingleFeedbackAnalysisWorkflowContext> notification, CancellationToken cancellationToken)
     {
         if (notification.Context is not SingleFeedbackAnalysisWorkflowContext context)
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
 
         switch (notification.Prompt.Category.Category)
         {
@@ -24,8 +24,14 @@ public class BeforePromptExecutionEventHandler : IEventHandler<BeforePromptExecu
             case FeedbackAnalysisPromptCategory.OpinionMining:
                 context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
                 break;
+            case FeedbackAnalysisPromptCategory.OpinionPointsExtraction:
+                context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
+                break;
+            case FeedbackAnalysisPromptCategory.QuestionPointsExtraction:
+                context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
+                break;
         }
 
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 }

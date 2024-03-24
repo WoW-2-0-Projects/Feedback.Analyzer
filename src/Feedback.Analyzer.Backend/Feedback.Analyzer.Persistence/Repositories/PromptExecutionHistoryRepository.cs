@@ -5,6 +5,7 @@ using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
@@ -14,13 +15,9 @@ namespace Feedback.Analyzer.Persistence.Repositories;
 public class PromptExecutionHistoryRepository(AppDbContext dbContext, ICacheBroker cacheBroker) : 
     EntityRepositoryBase<PromptExecutionHistory, AppDbContext>(dbContext, cacheBroker), IPromptExecutionHistoryRepository
 {
-    public new IQueryable<PromptExecutionHistory> Get(Expression<Func<PromptExecutionHistory, bool>>? predicate = default, QueryOptions queryOptions = default)
-    {
-        return base.Get(predicate, queryOptions);
-    }
+    public new IQueryable<PromptExecutionHistory> Get(Expression<Func<PromptExecutionHistory, bool>>? predicate = default, QueryOptions queryOptions = default) 
+        => base.Get(predicate, queryOptions);
 
-    public new ValueTask<PromptExecutionHistory> CreateAsync(PromptExecutionHistory prompt, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
-    {
-        return base.CreateAsync(prompt, commandOptions, cancellationToken);
-    }
+    public new ValueTask<PromptExecutionHistory> CreateAsync(PromptExecutionHistory history, CommandOptions commandOptions = default, CancellationToken cancellationToken = default) 
+        => base.CreateAsync(history, commandOptions, cancellationToken);
 }

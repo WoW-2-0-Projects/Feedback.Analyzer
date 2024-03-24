@@ -9,7 +9,7 @@ public class FeedbackConfiguration : IEntityTypeConfiguration<CustomerFeedback>
     public void Configure(EntityTypeBuilder<CustomerFeedback> builder)
     {
         builder.Property(feedback => feedback.UserName).IsRequired().HasMaxLength(64);
-        builder.Property(feedback => feedback.Comment).IsRequired().HasMaxLength(2048);
+        builder.Property(feedback => feedback.Comment).IsRequired().HasMaxLength(8192);
 
         builder
             .HasOne(feedback => feedback.Product)

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Models;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Queries;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Services;
@@ -23,13 +24,11 @@ public class FeedbackAnalysisWorkflowGetQueryHandler(
         request.Filter.ClientId = requestContextProvider.GetUserId();
         var queryOptions = new QueryOptions(QueryTrackingMode.AsNoTracking);
 
-        var matchedFeedbackAnalysisWorkflows = await (await feedbackAnalysisWorkflowService
-                .Get(request.Filter, queryOptions)
-                .GetFilteredEntitiesQuery(feedbackAnalysisWorkflowService.Get(), cancellationToken: cancellationToken))
-            .Include(workflow => workflow.AnalysisWorkflow)
-            .ApplyTrackingMode(queryOptions.TrackingMode)
+        var matchedFeedbackAnalysisWorkflows = await feedbackAnalysisWorkflowService
+            .Get(request.Filter, queryOptions)
+            .ProjectTo<FeedbackAnalysisWorkflowDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken: cancellationToken);
 
-        return mapper.Map<ICollection<FeedbackAnalysisWorkflowDto>>(matchedFeedbackAnalysisWorkflows);
+        return matchedFeedbackAnalysisWorkflows;
     }
 }

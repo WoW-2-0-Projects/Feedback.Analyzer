@@ -118,6 +118,9 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(128)
@@ -169,6 +172,13 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasDefaultValue("Client");
+
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
@@ -182,8 +192,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("character varying(2048)");
+                        .HasMaxLength(8192)
+                        .HasColumnType("character varying(8192)");
 
                     b.Property<DateTimeOffset>("CreatedTime")
                         .HasColumnType("timestamp with time zone");
@@ -269,7 +279,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<decimal>("FeedbacksCount")
                         .HasColumnType("numeric(20,0)");
 
-                    b.Property<DateTimeOffset>("FinishedTime")
+                    b.Property<DateTimeOffset?>("FinishedTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTimeOffset>("StartedTime")
@@ -299,8 +309,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -331,8 +341,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -465,6 +475,37 @@ namespace Feedback.Analyzer.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("Feedback.Analyzer.Domain.Entities.AnalysisResult", "AnalysisResult", b1 =>
+                        {
+                            b1.Property<Guid>("FeedbackAnalysisResultId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("ErrorMessage")
+                                .HasColumnType("text");
+
+                            b1.Property<Guid?>("HistoryId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("Status")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("FeedbackAnalysisResultId");
+
+                            b1.HasIndex("HistoryId")
+                                .IsUnique();
+
+                            b1.ToTable("FeedbackAnalysisResults");
+
+                            b1.WithOwner()
+                                .HasForeignKey("FeedbackAnalysisResultId");
+
+                            b1.HasOne("Feedback.Analyzer.Domain.Entities.PromptExecutionHistory", "History")
+                                .WithOne()
+                                .HasForeignKey("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult.AnalysisResult#Feedback.Analyzer.Domain.Entities.AnalysisResult", "HistoryId");
+
+                            b1.Navigation("History");
+                        });
+
                     b.OwnsOne("Feedback.Analyzer.Domain.Entities.FeedbackActionablePoints", "FeedbackActionablePoints", b1 =>
                         {
                             b1.Property<Guid>("FeedbackAnalysisResultId")
@@ -588,6 +629,9 @@ namespace Feedback.Analyzer.Persistence.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("FeedbackAnalysisResultId");
                         });
+
+                    b.Navigation("AnalysisResult")
+                        .IsRequired();
 
                     b.Navigation("CustomerFeedback");
 

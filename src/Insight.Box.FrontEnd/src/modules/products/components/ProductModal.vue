@@ -1,13 +1,12 @@
 <template>
 
-    <ModalBase :isActive="props.isActive" @closeModal="onCloseModal">
+    <ModalBase :isActive="props.isActive" @closeModal="emit('closeModal')">
 
         <template v-slot:header>
             <h1 class="text-primaryContentColor text-xl">
                 {{
-                    isCreate
-                        ? LayoutConstants.CreateProduct :
-                        LayoutConstants.EditProduct
+                    isCreate ? LayoutConstants.CreateProduct :
+                        LayoutConstants.EditProduct + ' ' + product.name
                 }}
             </h1>
         </template>
@@ -20,17 +19,17 @@
                 <form class="flex flex-col gap-10" @submit.prevent="onSubmit">
 
                     <!-- Modal inputs -->
-                    <form-input v-model="currentValue.name" :label="LayoutConstants.ProductName"
+                    <form-input v-model="product.name" :label="LayoutConstants.ProductName"
                                 :placeholder="LayoutConstants.EnterProductName"/>
 
-                    <form-input v-model="currentValue.description" :label="LayoutConstants.ProductDescription"
+                    <form-input v-model="product.description" :label="LayoutConstants.ProductDescription"
                                 :placeholder="LayoutConstants.EnterProductDescription"/>
 
                     <!-- Modal actions -->
                     <div class="flex gap-10">
-                        <app-button :type="ButtonType.Secondary" class="w-full" :text="LayoutConstants.Cancel"
-                                    @click="onCloseModal"/>
-                        <app-button :type="ButtonType.Primary" class="w-full" :text="LayoutConstants.Submit"
+                        <app-button :type="ActionType.Secondary" class="w-full" :text="LayoutConstants.Cancel"
+                                    @click="emit('closeModal')"/>
+                        <app-button :type="ActionType.Primary" class="w-full" :text="LayoutConstants.Submit"
                                     :role="ButtonRole.Submit" @click="onSubmit"/>
                     </div>
 
@@ -45,14 +44,14 @@
 
 <script setup lang="ts">
 
-import {defineEmits, type PropType, ref, watch} from 'vue';
+import {defineEmits, type PropType} from 'vue';
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import AppButton from "@/common/components/appButton/AppButton.vue";
-import {ButtonType} from "@/common/components/appButton/ButtonType";
 import FormInput from "@/common/components/formInput/FormInput.vue";
 import ModalBase from "@/common/components/modalBase/ModalBase.vue";
 import {Product} from "@/modules/products/models/Product";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 const props = defineProps({
     product: {
@@ -74,23 +73,9 @@ const emit = defineEmits<{
     (e: 'submit', product: Product): void
 }>();
 
-const currentValue = ref<Product>(props.product);
-
-const onCloseModal = () => {
-    // Reset values
-    if(props.isCreate)
-        currentValue.value = new Product();
-
-    emit('closeModal');
-}
-
 const onSubmit = async () => {
     emit('submit', props.product);
     emit('closeModal');
 }
-
-watch(() => props.product, (newValue) => {
-    currentValue.value = newValue;
-});
 
 </script>

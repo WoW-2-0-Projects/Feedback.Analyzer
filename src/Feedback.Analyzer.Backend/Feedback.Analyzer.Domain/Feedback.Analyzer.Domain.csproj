@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="MassTransit" Version="8.2.0-develop.1700" />
       <PackageReference Include="MediatR" Version="12.2.0" />
     </ItemGroup>
 

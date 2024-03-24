@@ -3,6 +3,8 @@
     <!-- Workflows tab content -->
     <div class="tab pt-10">
 
+        <input class="theme-input-bg"/>
+
         <!-- Workflows search bar -->
         <workflows-search-bar :workflowsQuery="workflowsQuery" @addWorkflow="openWorkflowModal"/>
 
@@ -11,13 +13,28 @@
                         :workflow="workflow" :workflows="workflows" :products="products"
                         @closeModal="isWorkflowModalActive = false" @submit="onWorkflowModalSubmit"/>
 
+        <!-- Workflows gallery -->
+        <infinite-scroll @onScroll="onScroll"
+                         :contentChangeSource="workflowsChangeSource"
+                         class="mt-20 flex flex-wrap justify-center gap-5">
+
+            <workflow-card v-for="workflow in actualWorkflows" :workflow="workflow" :key="workflow.id"
+                           @edit="openWorkflowModal" @delete="onDeleteWorkflowAsync"
+
+            />
+
+        </infinite-scroll>
+
+        <div class="mt-20 flex flex-wrap justify-center gap-5">
+        </div>
+
     </div>
 
 </template>
 
 <script setup lang="ts">
 
-import {onBeforeMount, ref} from "vue";
+import {computed, onBeforeMount, ref, watch} from "vue";
 import WorkflowsSearchBar from "@/modules/workflows/components/WorkflowsSearchBar.vue";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import {FeedbackAnalysisWorkflowFilter} from "@/modules/workflows/models/FeedbackAnalysisWorkflowFilter";
@@ -30,17 +47,24 @@ import {CreateFeedbackAnalysisWorkflowCommand} from "@/modules/workflows/models/
 import type {Product} from "@/modules/products/models/Product";
 import {ProductFilter} from "@/modules/products/models/ProductFilter";
 import {UpdateFeedbackAnalysisWorkflowCommand} from "@/modules/workflows/models/UpdateFeedbackAnalysisWorkflowCommand";
+import WorkflowCard from "@/modules/workflows/components/WorkflowCard.vue";
+import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
+import {NotificationSource} from "@/infrastructure/models/notifications/Action";
+import {WorkflowType} from "@/modules/workflows/models/WorkflowType";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 const documentService = new DocumentService();
-const workflowsQuery = ref<Query<FeedbackAnalysisWorkflowFilter>>(new Query<FeedbackAnalysisWorkflowFilter>(new FeedbackAnalysisWorkflowFilter()));
-const workflows = ref<Array<FeedbackAnalysisWorkflow>>([]);
-const productsQuery = ref<Query<Product>>(new Query<ProductFilter>(new ProductFilter()));
 
+const productsQuery = ref<Query<Product>>(new Query<ProductFilter>(new ProductFilter()));
 const products = ref<Array<Product>>([]);
 
-// Searchbar states
-const isSearchBarLoading = ref<boolean>(false);
+// Workflow card states
+const workflowsChangeSource = ref<NotificationSource>(new NotificationSource());
+const workflowsQuery = ref<Query<FeedbackAnalysisWorkflowFilter>>(new Query<FeedbackAnalysisWorkflowFilter>(new FeedbackAnalysisWorkflowFilter()));
+const workflows = ref<Array<FeedbackAnalysisWorkflow>>([]);
+const isWorkflowsLoading = ref<boolean>(false);
+const loadNextWorkflows = ref<boolean>(false);
+const actualWorkflows = computed(() => workflows.value.filter(workflow => workflow.type != WorkflowType.Template));
 
 // Workflow modal states
 const isWorkflowModalActive = ref<boolean>(false);
@@ -58,8 +82,9 @@ onBeforeMount(async () => {
 
 const loadWorkflowsAsync = async () => {
     const response = await insightBoxApiClient.workflows.getAsync(workflowsQuery.value);
-    if(response.isSuccess) {
+    if(response.response) {
         workflows.value = response.response;
+        workflowsChangeSource.value.updateListeners();
     }
 };
 
@@ -72,7 +97,7 @@ const loadProductsAsync = async () => {
 
 const openWorkflowModal = (workflowToEdit: FeedbackAnalysisWorkflow | null) => {
     if(workflowToEdit) {
-        workflow.value = workflowToEdit;
+        workflow.value =  JSON.parse(JSON.stringify(workflowToEdit));
         isWorkflowCreate.value = false;
         isWorkflowModalActive.value = true;
     } else {
@@ -94,7 +119,7 @@ const onWorkflowModalSubmit = async (workflow: FeedbackAnalysisWorkflow, baseWor
  * Creates a prompt
  */
 const createWorkflowAsync = async (workflow: FeedbackAnalysisWorkflow, baseWorkflow: FeedbackAnalysisWorkflow) => {
-    isSearchBarLoading.value = true;
+    isWorkflowsLoading.value = true;
 
     const createWorkflowCommand = new CreateFeedbackAnalysisWorkflowCommand(workflow, baseWorkflow.id);
     const response = await
@@ -104,14 +129,14 @@ const createWorkflowAsync = async (workflow: FeedbackAnalysisWorkflow, baseWorkf
         workflows.value.push(response.response);
     }
 
-    isSearchBarLoading.value = false;
+    isWorkflowsLoading.value = false;
 };
 
 /*
  * Updates prompt
  */
 const updateWorkflowAsync = async (workflow: FeedbackAnalysisWorkflow) => {
-    isSearchBarLoading.value = true;
+    isWorkflowsLoading.value = true;
 
     // prompt.organizationId = '60e6a4de-31e5-4f8b-8e6a-0a8f63f41527';
     const updateWorkflowCommand = new UpdateFeedbackAnalysisWorkflowCommand(workflow);
@@ -127,8 +152,37 @@ const updateWorkflowAsync = async (workflow: FeedbackAnalysisWorkflow) => {
             workflows.value.push(response.response);
     }
 
-    isSearchBarLoading.value = false;
+    isWorkflowsLoading.value = false;
 };
+
+const onDeleteWorkflowAsync = async (workflowId: string) => {
+    isWorkflowsLoading.value = true;
+
+    // prompt.organizationId = '60e6a4de-31e5-4f8b-8e6a-0a8f63f41527';
+    const response = await
+        insightBoxApiClient.workflows.deleteByIdAsync(workflowId);
+
+    if (response.isSuccess) {
+        const workflowIndex = workflows.value.findIndex(w => w.id === workflowId);
+        if (workflowIndex !== -1) {
+            workflows.value.splice(workflowIndex, 1);
+        }
+    }
+
+    isWorkflowsLoading.value = false;
+}
+
+const onScroll = async () => loadNextWorkflows.value = true;
+
+watch(() => [isWorkflowsLoading.value, loadNextWorkflows.value], async () => {
+    if (isWorkflowsLoading.value) return;
+
+    if (!isWorkflowsLoading.value && loadNextWorkflows.value) {
+        workflowsQuery.value.filter.pageToken++;
+        await loadWorkflowsAsync();
+        loadNextWorkflows.value = false;
+    }
+});
 
 
 </script>

@@ -1,24 +1,16 @@
-import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import axios from "axios";
-import type { ProblemDetails } from "@/infrastructure/apiClients/apiClientBase/ProblemDetails";
-import { ApiResponse } from "@/infrastructure/apiClients/apiClientBase/ApiResponse";
-import  {localStorageService} from "@/infrastructure/services/storage/LocalStorageService";
+import type {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
+import axios, {HttpStatusCode} from "axios";
+import type {ProblemDetails} from "@/infrastructure/apiClients/apiClientBase/ProblemDetails";
+import {ApiResponse} from "@/infrastructure/apiClients/apiClientBase/ApiResponse";
+import {localStorageService} from "@/infrastructure/services/storage/LocalStorageService";
+import {plainToClass} from "class-transformer";
 
 /*
  * Base class for API clients
  */
 export default class ApiClientBase {
-    /*
-     * Axios client instance
-     */
     public readonly client: AxiosInstance;
-
     private readonly localStorageService: localStorageService;
-
-    /*
-     * Map response delegate
-     */
-    public mapResponse!: <T>(response: ApiResponse<T>) => ApiResponse<T>
 
     constructor(config: AxiosRequestConfig) {
         this.client = axios.create(config);
@@ -52,7 +44,7 @@ export default class ApiClientBase {
                         const newAccessToken = response.data.accessToken;
 
                         // Store the new access token in local storage
-                        this.localStorageService.set("accessToken", newAccessToken);
+                        this.localStorageService.Set("accessToken", newAccessToken);
 
                         // Update the Authorization header
                         error.config.headers['Authorization'] = `Bearer ${newAccessToken}`;
@@ -72,14 +64,13 @@ export default class ApiClientBase {
         this.client.interceptors.response.use(<TResponse>(response: AxiosResponse<TResponse>) => {
                 let data = new ApiResponse(response.data as TResponse, null, response.status);
 
-                if (this.mapResponse != null)
-                    data = this.mapResponse(data);
+                if(response.config.mapper != null && response.data != null)
+                    data.response = response.config.mapper(response.data);
 
                 return {
                     ...response,
                     data: data
                 }
-
             },
             (error: AxiosError) => {
                 return {
@@ -100,7 +91,7 @@ export default class ApiClientBase {
      *                       ApiResponse<T> object.
      */
     public async getAsync<T>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-        return (await this.client.get<ApiResponse<T>>(url, config)).data;
+        return (await this.client.get<ApiResponse<T>>(url, config)).data as ApiResponse<T>;
     }
 
     /**

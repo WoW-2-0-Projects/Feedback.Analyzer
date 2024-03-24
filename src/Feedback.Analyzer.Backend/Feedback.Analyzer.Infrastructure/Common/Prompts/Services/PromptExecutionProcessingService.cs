@@ -15,16 +15,13 @@ namespace Feedback.Analyzer.Infrastructure.Common.Prompts.Services;
 /// <summary>
 /// Service for executing prompts asynchronously and handling their history.
 /// </summary>
-/// <param name="promptService">The prompt service.</param>
 /// <param name="promptExecutionBroker">The prompt execution broker.</param>
 /// <param name="promptsExecutionHistoryService">The prompt execution history service.</param>
 public class PromptExecutionProcessingService(
-    IPromptService promptService,
     IPromptExecutionBroker promptExecutionBroker,
     IPromptExecutionHistoryService promptsExecutionHistoryService
 ) : IPromptExecutionProcessingService
 {
-    
     public async ValueTask<IImmutableList<PromptExecutionHistory>> ExecuteAsync(
         AnalysisPrompt prompt,
         Dictionary<string,string> arguments,
@@ -40,7 +37,7 @@ public class PromptExecutionProcessingService(
             cancellationToken,
             async (_, _) =>
             {
-                var stopWatch = new Stopwatch();
+                var stopWatch = Stopwatch.StartNew();
                 var promptResult = await promptExecutionBroker.ExecutePromptAsync(prompt.Prompt, arguments, cancellationToken);
                 stopWatch.Stop();
                 var elapsedMilliseconds = stopWatch.Elapsed.TotalMilliseconds;
@@ -51,7 +48,7 @@ public class PromptExecutionProcessingService(
         );
 
         // Map to history
-        var histories = executionResults.Select(result => MapToHistory(prompt.Id, result.PromptResult, result.ElapsedMilliseconds)).ToImmutableList();
+        var histories = executionResults.Select(result => MapToHistory(prompt, result.PromptResult, result.ElapsedMilliseconds)).ToImmutableList();
 
         var executionHistories = new List<PromptExecutionHistory>();
         
@@ -75,15 +72,16 @@ public class PromptExecutionProcessingService(
     /// <summary>
     /// Maps prompt execution result to execution history
     /// </summary>
-    /// <param name="promptId"></param>
+    /// <param name="prompt"></param>
     /// <param name="result"></param>
     /// <param name="elapsedMilliseconds"></param>
     /// <returns></returns>
-    private PromptExecutionHistory MapToHistory(Guid promptId, FuncResult<string?> result, double elapsedMilliseconds)
+    private PromptExecutionHistory MapToHistory(AnalysisPrompt prompt, FuncResult<string?> result, double elapsedMilliseconds)
     {
         return new PromptExecutionHistory
         {
-            PromptId = promptId,
+            PromptId = prompt.Id,
+            PromptCategoryId = prompt.CategoryId,
             Result = result.Data,
             Exception = result.Exception is not null ? JsonConvert.SerializeObject(result.Exception) : null,
             ExecutionTime = DateTime.UtcNow,

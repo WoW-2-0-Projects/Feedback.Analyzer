@@ -5,6 +5,11 @@ namespace Feedback.Analyzer.Application.Organizations.Models;
 public class OrganizationFilter : FilterPagination
 {
     /// <summary>
+    /// Gets or sets organization owner client id.
+    /// </summary>
+    public Guid? ClientId { get; set; }
+    
+    /// <summary>
     /// Overrides base GetHashCode method
     /// </summary>
     /// <returns></returns>

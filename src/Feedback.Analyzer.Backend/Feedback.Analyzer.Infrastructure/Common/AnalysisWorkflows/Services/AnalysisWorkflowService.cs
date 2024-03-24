@@ -66,6 +66,17 @@ public class AnalysisWorkflowService(
         return await analysisWorkflowRepository.UpdateAsync(foundAnalysisWorkflow, commandOptions, cancellationToken);
     }
 
+    public async ValueTask<bool> UpdateStatus(Guid workflowId, WorkflowStatus status, CancellationToken cancellationToken = default)
+    {
+        var updatedWorkflowsCount =  await analysisWorkflowRepository.UpdateBatchAsync(
+            setPropertyCalls => setPropertyCalls.SetProperty(workflow => workflow.Status, status),
+            workflow => workflow.Id == workflowId,
+            cancellationToken
+        );
+
+        return updatedWorkflowsCount == 1;
+    }
+
     public ValueTask<AnalysisWorkflow?> DeleteAsync(
         AnalysisWorkflow analysisWorkflow,
         CommandOptions commandOptions = default,

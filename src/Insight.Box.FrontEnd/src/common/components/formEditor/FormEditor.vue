@@ -12,20 +12,20 @@
                         @update:modelValue="() => $emit('update:modelValue', $event)"
                         :label="LayoutConstants.Search" :placeholder="LayoutConstants.SearchHere"/>
 
-            <app-button class="w-fit" :type="isEditingDisabled ? ButtonType.Secondary : ButtonType.Danger"
+            <app-button class="w-fit" :type="isEditingDisabled ? ActionType.Secondary : ActionType.Danger"
                         :layout="ButtonLayout.Square" :icon="isEditingDisabled ? 'fas fa-lock' : 'fas fa-lock-open'"
                         @click="isEditingDisabled = !isEditingDisabled"
                         :size="ActionComponentSize.ExtraSmall"/>
 
-            <app-button class="w-fit" :type="ButtonType.Secondary"
+            <app-button class="w-fit" :type="ActionType.Secondary"
                         :layout="ButtonLayout.Square" icon="fas fa-broom"
                         :size="ActionComponentSize.ExtraSmall" @click="onClear"/>
 
-            <app-button class="w-fit" :type="ButtonType.Secondary"
+            <app-button class="w-fit" :type="ActionType.Secondary"
                         :layout="ButtonLayout.Square" icon="fas fa-rotate-left"
                         :size="ActionComponentSize.ExtraSmall" @click="onUndo"/>
 
-            <app-button class="w-fit" :type="ButtonType.Secondary"
+            <app-button class="w-fit" :type="ActionType.Secondary"
                         :layout="ButtonLayout.Square" icon="fas fa-rotate-right"
                         :size="ActionComponentSize.ExtraSmall" @click="onRedo"/>
 
@@ -49,13 +49,13 @@ import {defineEmits, defineProps, type PropType, ref, watch} from "vue";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import FormInput from "@/common/components/formInput/FormInput.vue";
 import FormTextArea from "@/common/components/formTextArea/FormTextArea.vue";
-import {ButtonType} from "@/common/components/appButton/ButtonType";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 import {FormInputType} from "@/common/components/formInput/FormInputType";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import {TextContentSnapshotQueue} from "@/infrastructure/models/textContent/TextContentSnapshotQueue";
-import type {Action} from "@/infrastructure/models/delegates/Action";
+import  {Action} from "@/infrastructure/models/notifications/Action";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 const textSnapshotService = ref<TextContentSnapshotQueue>(new TextContentSnapshotQueue());
 

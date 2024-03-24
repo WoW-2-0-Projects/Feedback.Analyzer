@@ -6,6 +6,7 @@ using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.Extensions;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisResults.Services;
 
@@ -21,8 +22,15 @@ public class FeedbackAnalysisResultService(IFeedbackAnalysisResultRepository fee
 
     public IQueryable<FeedbackAnalysisResult> Get(FeedbackAnalysisResultFilter feedbackAnalysisResultFilter, QueryOptions queryOptions = default)
     {
-        return feedbackAnalysisResultRepository.Get(queryOptions: queryOptions)
-            .ApplyPagination(feedbackAnalysisResultFilter);
+        var resultsQuery = feedbackAnalysisResultRepository
+            .Get(queryOptions: queryOptions)
+            .Include(result => result.CustomerFeedback)
+            .AsQueryable();
+        
+        if(feedbackAnalysisResultFilter.ResultId.HasValue)
+            resultsQuery = resultsQuery.Where(result => result.FeedbackAnalysisWorkflowResultId == feedbackAnalysisResultFilter.ResultId.Value);
+        
+        return resultsQuery.ApplyPagination(feedbackAnalysisResultFilter);
     }
 
     public ValueTask<FeedbackAnalysisResult?> GetByIdAsync(Guid feedbackId, QueryOptions queryOptions = default,

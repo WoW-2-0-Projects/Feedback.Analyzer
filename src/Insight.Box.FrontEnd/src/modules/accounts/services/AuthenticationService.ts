@@ -3,6 +3,7 @@ import {localStorageService} from "@/infrastructure/services/storage/LocalStorag
 import {useAccountStore} from "@/infrastructure/stores/AccountStore";
 import {Account} from "@/modules/accounts/models/Account";
 import type {SignInDetails} from "@/modules/accounts/models/SignInDetails";
+import type {SignUpDetails} from "@/modules/accounts/models/SignUpDetails";
 
 /**
  * AuthenticationService class handles authentication-related functionalities such as checking access token,
@@ -56,6 +57,16 @@ export class AuthenticationService {
         await this.setCurrentUser();
 
         return true;
+    }
+
+    /**
+     * Asynchronously signs up a new user with the provided sign-up details.
+     */
+    public async signUpAsync(signUpDetails: SignUpDetails) {
+        const  signUpResponse = await this.insightBoxApiClient.auth.signUpAsync(signUpDetails)
+
+        if(!signUpResponse.isSuccess)
+            return false;
     }
 
     /**

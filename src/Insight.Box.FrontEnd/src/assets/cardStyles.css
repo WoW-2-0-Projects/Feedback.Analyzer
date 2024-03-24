@@ -1,14 +1,19 @@
 .card {
+  @apply border-[0.5px] border-accentSecondaryColor;
 }
 
 .card-round {
   @apply rounded-xl;
 }
 
+.card-top-round {
+  @apply rounded-t-xl;
+}
+
 .card-bg {
-  @apply bg-primaryColor;
+  @apply bg-secondaryColor;
 }
 
 .card-shadow {
-  @apply shadow-lg;
+  @apply shadow-custom;
 }

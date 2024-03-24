@@ -28,8 +28,4 @@ public class OrganizationDto
     /// </summary>
     public string Description { get; set; } = default!;
 
-    /// <summary>
-    /// Gets or sets a collection of Clients.
-    /// </summary>
-    public Client ClientDto { get; set; } = default!;
 }

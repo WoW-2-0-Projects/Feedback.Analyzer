@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Feedback.Analyzer.Persistence.Repositories.Interfaces;
 
@@ -54,6 +55,18 @@ public interface IAnalysisWorkflowRepository
     /// <returns>A task representing the asynchronous operation, returning the updated AnalysisWorkflow.</returns>
     ValueTask<AnalysisWorkflow> UpdateAsync(AnalysisWorkflow analysisWorkflow, CommandOptions commandOptions = default, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Updates workflows in batch
+    /// </summary>
+    /// <param name="setPropertyCalls">Delegates to set updating property and value for it</param>
+    /// <param name="batchUpdatePredicate">Filter to apply for batch update</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Number of updated rows</returns>
+    ValueTask<int> UpdateBatchAsync(
+        Expression<Func<SetPropertyCalls<AnalysisWorkflow>, SetPropertyCalls<AnalysisWorkflow>>> setPropertyCalls,
+        Expression<Func<AnalysisWorkflow, bool>>? batchUpdatePredicate = default,
+        CancellationToken cancellationToken = default
+    );
     
     /// <summary>
     /// Deletes an analysis workflow asynchronously.

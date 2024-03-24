@@ -25,7 +25,7 @@ public class FeedbackAnalysisWorkflowResult : Entity
     /// <summary>
     /// Gets or sets the finish time of the workflow.
     /// </summary>
-    public DateTimeOffset FinishedTime { get; set; }
+    public DateTimeOffset? FinishedTime { get; set; }
     
     /// <summary>
     /// Gets or sets the associated feedback analysis workflow.

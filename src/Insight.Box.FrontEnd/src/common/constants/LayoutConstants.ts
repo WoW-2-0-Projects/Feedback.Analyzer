@@ -12,15 +12,34 @@ export class LayoutConstants {
     public static readonly Prompts = 'Prompts';
     public static readonly Workflows = 'Workflows';
     public static readonly Summarize = 'Summarize the user input ...';
+    public static readonly Started  = 'Started';
+    public static readonly Completed  = 'Completed';
 
     /* Products */
 
+    public static readonly Product = 'Product';
     public static readonly CreateProduct = 'Create a product';
     public static readonly EditProduct = 'Edit product ';
     public static readonly ProductName = 'Product name';
     public static readonly ProductDescription = 'Product description';
     public static readonly EnterProductName = 'Enter product name';
     public static readonly EnterProductDescription = 'Enter product description';
+
+    /* Organization */
+
+    public static readonly CreateOrganization = 'Create an Organization';
+    public static readonly EditOrganization = 'Edit organization ';
+    public static readonly OrganizationName = 'Organization name';
+    public static readonly OrganizationDescription = 'Organization description';
+    public static readonly EnterOrganizationName = 'Enter organization name';
+    public static readonly EnterOrganizationDescription = 'Enter organization description';
+    public static readonly Status  = 'Status';
+
+    /* Feedbacks */
+    public static readonly Processed  = 'Processed';
+    public static readonly Failed  = 'Failed';
+    public static readonly Relevant  = 'Relevant';
+    public static readonly NonRelevant  = 'Non-Relevant';
 
     /* Prompts */
     public static readonly CreatePrompt = 'Create a prompt';
@@ -44,9 +63,12 @@ export class LayoutConstants {
     public static readonly AddWorkflow = 'Add workflow';
     public static readonly Results = 'Results';
     public static readonly Progress = 'Progress';
-    public static readonly StartedTime = 'Started';
-    public static readonly FinishedTime = 'Finished';
+    public static readonly StartedTime = 'Started Time';
+    public static readonly FinishedTime = 'Finished Time';
     public static readonly SearchWorkflows = 'Search workflows ...';
+    public static readonly Positive  = 'Positive';
+    public static readonly SelectBaseWorkflow  = 'Select base workflow';
+    public static readonly SelectProduct  = 'Select a product to analyze';
 
     /* Forms */
     public static readonly Submit = 'Submit';

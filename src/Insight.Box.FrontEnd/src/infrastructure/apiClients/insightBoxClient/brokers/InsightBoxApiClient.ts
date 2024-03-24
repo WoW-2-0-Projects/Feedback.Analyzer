@@ -9,6 +9,7 @@ import {ClientsEndpointsClient} from "@/infrastructure/apiClients/insightBoxClie
 import {
     WorkflowsEndpointsClient
 } from "@/infrastructure/apiClients/insightBoxClient/brokers/WorkflowsEndpointsClient";
+import  {PromptsEndpointsClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/PromptsEndpointsClient";
 
 /*
  * Provides Insight Box API client functionality
@@ -47,12 +48,14 @@ export class InsightBoxApiClient {
         this.products = new ProductsEndpointsClient(this.client, this.requestFormatterService);
         this.workflows = new WorkflowsEndpointsClient(this.client, this.requestFormatterService);
         this.auth = new AuthEndpointsClient(this.client);
+        this.prompts = new PromptsEndpointsClient(this.client, this.requestFormatterService)
         this.clients = new ClientsEndpointsClient(this.client);
     }
 
     public organizations: OrganizationsEndpointsClient;
     public products: ProductsEndpointsClient;
     public workflows: WorkflowsEndpointsClient;
+    public prompts: PromptsEndpointsClient;
     public readonly clients: ClientsEndpointsClient;
     public readonly auth: AuthEndpointsClient;
 }

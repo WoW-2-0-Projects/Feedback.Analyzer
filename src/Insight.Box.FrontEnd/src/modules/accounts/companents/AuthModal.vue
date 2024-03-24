@@ -33,9 +33,9 @@
 
                     <!-- Modal actions -->
                     <div class="flex gap-10">
-                        <app-button :type="ButtonType.Secondary" class="w-full" :text="LayoutConstants.Cancel"
+                        <app-button :type="ActionType.Secondary" class="w-full" :text="LayoutConstants.Cancel"
                                     @click="closeModal"/>
-                        <app-button :type="ButtonType.Primary" class="w-full" :text="LayoutConstants.Submit"
+                        <app-button :type="ActionType.Primary" class="w-full" :text="LayoutConstants.Submit"
                                     :role="ButtonRole.Submit" @click="onSubmit"/>
                     </div>
 
@@ -59,9 +59,9 @@ import {SignInDetails} from "@/modules/accounts/models/SignInDetails";
 import {FormInputType} from "@/common/components/formInput/FormInputType";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import {AuthenticationService} from "@/modules/accounts/services/AuthenticationService";
-import {ButtonType} from "@/common/components/appButton/ButtonType";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 import AppButton from "@/common/components/appButton/AppButton.vue";
+import {ActionType} from "@/common/components/actions/ActionType";
 
 const authService = new AuthenticationService();
 const insightBoxApiClient = new InsightBoxApiClient();
@@ -110,7 +110,7 @@ const onSubmit = async () => {
     if(isSignIn.value)
        await signIn()
     else
-       signUp();
+      await signUp();
 }
 
 const checkAuthMode = async () => {
@@ -142,8 +142,10 @@ const signIn = async () => {
         closeModal()
     }
 }
-const signUp = () => {
-
+const signUp = async () => {
+    const response = await authService.signUpAsync(signUpDetails.value)
+    if(response)
+        closeModal()
 }
 
 </script>
