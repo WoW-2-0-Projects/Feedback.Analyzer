@@ -1,6 +1,6 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Modal;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Models;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Query;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Services;
 using Feedback.Analyzer.Domain.Common.Queries;
@@ -28,9 +28,7 @@ public class FeedbackWorkflowResultGetQueryHandler(
         };
 
         var matchedWorkflowResults = await feedbackAnalysisWorkflowResultService
-            .Get(workflowResult => !request.WorkflowId.HasValue || workflowResult.WorkflowId == request.WorkflowId.Value)
-            // .Include(workflowResult => workflowResult.FeedbackAnalysisResults)
-            .ApplyTrackingMode(queryOptions.TrackingMode)
+            .Get(workflowResult => !request.Filter.WorkflowId.HasValue || workflowResult.WorkflowId == request.Filter.WorkflowId.Value, queryOptions)
             .ProjectTo<FeedbackAnalysisWorkflowResultDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
         

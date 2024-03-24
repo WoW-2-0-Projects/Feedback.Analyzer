@@ -24,6 +24,12 @@ public class BeforePromptExecutionEventHandler : EventHandlerBase<BeforePromptEx
             case FeedbackAnalysisPromptCategory.OpinionMining:
                 context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
                 break;
+            case FeedbackAnalysisPromptCategory.OpinionPointsExtraction:
+                context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
+                break;
+            case FeedbackAnalysisPromptCategory.QuestionPointsExtraction:
+                context.Arguments[PromptConstants.CustomerFeedback] = context.Result.FeedbackRelevance.PiiRedactedContent;
+                break;
         }
 
         return ValueTask.CompletedTask;

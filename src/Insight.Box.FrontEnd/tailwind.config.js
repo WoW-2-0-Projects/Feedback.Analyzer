@@ -22,7 +22,7 @@ export default {
         tertiaryContentColor: '#999fab',
         dangerColor: '#E63946',
         successColor: '#73F74B',
-        warningColor: '#F4A261',
+        warningColor: '#F1C40F',
       },
       fontFamily: {
         'poppins': ['Poppins', 'sans-serif'],

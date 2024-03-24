@@ -1,6 +1,4 @@
-using Feedback.Analyzer.Application.FeedbackAnalysisResults.Models;
-
-namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Modal;
+namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Models;
 
 /// <summary>
 /// Represents data transfer object for feedback analysis workflow result
@@ -25,5 +23,15 @@ public record FeedbackAnalysisWorkflowResultDto
     /// <summary>
     /// Gets or sets the finish time of the feedback analysis workflow.
     /// </summary>
-    public DateTimeOffset FinishedTime { get; set; }
+    public DateTimeOffset? FinishedTime { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the total count of successfully analyzed feedbacks
+    /// </summary>
+    public ulong ProcessedAnalysisCount { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the total count of feedbacks that are failed to analyze
+    /// </summary>
+    public ulong FailedAnalysisCount { get; set; }
 }

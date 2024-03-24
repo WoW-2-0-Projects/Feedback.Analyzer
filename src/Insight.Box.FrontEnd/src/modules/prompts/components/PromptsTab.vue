@@ -12,9 +12,16 @@
             <!--Prompts card-->
             <prompt-category-card v-for="promptCategory in promptCategories" :key="promptCategory.id"
                                   :promptCategory="promptCategory" :workflows="trainingWorkflows"
+                                  @addPrompt="(categoryId, loadFunc) => openPromptModal(null, categoryId, loadFunc)"
+                                  @editPrompt="(promptId, loadFunc) => openPromptModal(promptId,null, loadFunc)"
             />
 
         </infinite-scroll>
+
+        <!-- Prompts create / edit modal -->
+        <prompt-modal :isActive="promptModalActive" @closeModal="closePromptModal"
+                      @submit="onPromptModalSubmit($event)" :isCreate="isCreate" :prompt="editingPrompt"
+        />
 
     </div>
 
@@ -37,6 +44,10 @@ import PromptCategoryCard from "@/modules/prompts/components/PromptCategoryCard.
 import {FeedbackAnalysisWorkflow} from "@/modules/prompts/models/FeedbackAnalysisWorkflow";
 import {AnalysisWorkflowFilter} from "@/modules/prompts/models/AnalysisWorkflowFilter";
 import {WorkflowType} from "@/modules/prompts/models/WorkflowType";
+import  {AsyncFunction} from "@/infrastructure/models/notifications/Function";
+import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
+import {CreatePromptCommand} from "@/modules/prompts/models/CreatePromptCommand";
+import PromptModal from "@/modules/prompts/components/PromptModal.vue";
 
 //Services
 const insightBoxApiClient = new InsightBoxApiClient();
@@ -54,10 +65,20 @@ const noPromptCategoriesFound = ref<boolean>(false);
 //Infinite scroll states
 const  promptChangeSource = ref<NotificationSource<boolean>>(new NotificationSource<boolean>());
 
+// Prompt modal states
+const promptModalActive = ref<boolean>(false);
+
+const isCreate = ref<boolean>(true);
+const editingPrompt = ref<AnalysisPrompt>(new AnalysisPrompt());
+const editingPromptLoadResultFunction = ref<AsyncFunction<string>>();
+
 // Workflow states
 const workflowQuery = ref<Query<AnalysisWorkflowFilter>>(new Query<AnalysisWorkflowFilter>(new
 AnalysisWorkflowFilter(WorkflowType.Training)));
 const  trainingWorkflows = ref<Array<FeedbackAnalysisWorkflow>>([])
+
+// Search bar states
+const isSearchBarLoading = ref<boolean>(false);
 
 onBeforeMount( async () => {
     // Set page title
@@ -92,6 +113,94 @@ const loadWorkflowsAsync = async () => {
         trainingWorkflows.value.push(...response.response)
 
     isLoading.value = false;
+}
+
+/*
+ * Handles prompt modal submit
+ */
+const onPromptModalSubmit = async (prompt: AnalysisPrompt) => {
+    if (isCreate.value) {
+        await createPromptAsync(prompt);
+    } else {
+        await updatePromptAsync(prompt);
+    }
+}
+
+/*
+ * Creates a prompt
+ */
+const createPromptAsync = async (prompt: AnalysisPrompt) => {
+    isSearchBarLoading.value = true;
+
+    const createPromptCommand = new CreatePromptCommand(prompt);
+
+    const response = await
+        insightBoxApiClient.prompts.createAsync(createPromptCommand);
+
+    if (response.response) {
+        if (editingPromptLoadResultFunction?.value && editingPromptLoadResultFunction?.value?.callBack)
+            editingPromptLoadResultFunction.value?.callBack(response.response.id);
+    }
+
+    isSearchBarLoading.value = false;
+};
+
+/*
+ * Updates prompt
+ */
+const updatePromptAsync = async (prompt: AnalysisPrompt) => {
+    isSearchBarLoading.value = true;
+
+    // prompt.organizationId = '60e6a4de-31e5-4f8b-8e6a-0a8f63f41527';
+    const createPromptCommand = new CreatePromptCommand(prompt);
+
+    const response = await
+        insightBoxApiClient.prompts.updateAsync(createPromptCommand);
+
+    if (response.response) {
+        if (editingPromptLoadResultFunction?.value && editingPromptLoadResultFunction?.value?.callBack) {
+            editingPromptLoadResultFunction.value?.callBack(response.response.id);
+        }
+    }
+
+    isSearchBarLoading.value = false;
+};
+
+/**
+ * open the modal
+ * @param promptId
+ * @param promptCategoryId
+ * @param loadPromptResultCallback
+ */
+const openPromptModal = async (
+    promptId: string | null,
+    promptCategoryId: string | null,
+    loadPromptResultCallback: AsyncFunction<string>
+) => {
+    if(promptId){
+        editingPromptLoadResultFunction.value = loadPromptResultCallback;
+        const response = await insightBoxApiClient.prompts.getByIdAsync(promptId);
+
+        if(response.isSuccess) {
+            editingPrompt.value = response.response!;
+            isCreate.value = false;
+            promptModalActive.value = true;
+        }
+    } else {
+        editingPromptLoadResultFunction.value = loadPromptResultCallback;
+        editingPrompt.value = new AnalysisPrompt();
+        editingPrompt.value.categoryId = promptCategoryId!;
+        isCreate.value = true;
+        promptModalActive.value = true;
+
+    }
+}
+
+/**
+ * close the modal
+ */
+const closePromptModal = () => {
+    promptModalActive.value = false;
 }
 
 const onScroll = async () => {

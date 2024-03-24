@@ -7,5 +7,11 @@
     {
       "path": "./tsconfig.app.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "target": "ESNext", // or a specific ECMAScript version supporting decorators like "ES5", "ES6", "ES2015", "ES2016", etc.
+    "module": "CommonJS", // or another module system you are using
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  }
 }

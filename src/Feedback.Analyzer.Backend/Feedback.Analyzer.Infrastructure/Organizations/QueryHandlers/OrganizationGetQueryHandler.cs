@@ -22,7 +22,7 @@ public class OrganizationGetQueryHandler(
                                                            CancellationToken cancellationToken)
     {
         organizationGetQuery.Filter.ClientId = requestContextProvider.GetUserId();
-
+        
         var queryOptions = new QueryOptions(QueryTrackingMode.AsNoTracking);
 
         var matchedOrganizations = await organizationService

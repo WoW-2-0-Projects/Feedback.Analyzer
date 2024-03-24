@@ -192,8 +192,8 @@ namespace Feedback.Analyzer.Persistence.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("character varying(2048)");
+                        .HasMaxLength(8192)
+                        .HasColumnType("character varying(8192)");
 
                     b.Property<DateTimeOffset>("CreatedTime")
                         .HasColumnType("timestamp with time zone");
@@ -279,7 +279,7 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Property<decimal>("FeedbacksCount")
                         .HasColumnType("numeric(20,0)");
 
-                    b.Property<DateTimeOffset>("FinishedTime")
+                    b.Property<DateTimeOffset?>("FinishedTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTimeOffset>("StartedTime")

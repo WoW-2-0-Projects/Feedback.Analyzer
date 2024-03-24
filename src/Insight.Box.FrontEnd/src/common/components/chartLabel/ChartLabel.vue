@@ -30,8 +30,6 @@ const props = defineProps({
 const textStyles = computed(() => {
     let styles = '';
 
-    console.log('test', props.size);
-
     switch (props.size) {
         case ActionComponentSize.ExtraSmall:
             styles = ' text-xs';

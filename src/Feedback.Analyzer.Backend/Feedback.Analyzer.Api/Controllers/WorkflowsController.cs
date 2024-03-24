@@ -1,4 +1,5 @@
 using Feedback.Analyzer.Application.Common.Workflows.Events;
+using Feedback.Analyzer.Application.FeedbackAnalysisResults.Queries;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Query;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Commands;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflows.Events;
@@ -88,7 +89,7 @@ public class WorkflowsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("{workflowId:guid}/execute")]
-    public async ValueTask<IActionResult> ExecuteWorkflowAsync([FromQuery] Guid workflowId, CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> ExecuteWorkflowAsync([FromRoute] Guid workflowId, CancellationToken cancellationToken)
     {
         var executeWorkflowEvent = new AnalyzeWorkflowFeedbacksEvent
         {
@@ -104,11 +105,26 @@ public class WorkflowsController(IMediator mediator) : ControllerBase
 
     #region Results
 
-    [HttpGet("results")]
-    public async ValueTask<IActionResult> GetWorkflowResultsById([FromQuery] FeedbackWorkflowResultGetQuery query, CancellationToken cancellationToken)
+    [HttpGet("{workflowId:guid}/results")]
+    public async ValueTask<IActionResult> GetWorkflowResultsById(
+        [FromRoute] Guid workflowId,
+        [FromQuery] FeedbackWorkflowResultGetQuery query, 
+        CancellationToken cancellationToken)
     {
+        query.Filter.WorkflowId = workflowId;
         var result = await mediator.Send(query, cancellationToken);
-        return result.Any() ? Ok(result) : NotFound();
+        return result.Any() ? Ok(result) : NoContent();
+    }
+    
+    [HttpGet("{workflowId:guid}/results/{resultId:guid}/results")]
+    public async ValueTask<IActionResult> Get(
+        [FromRoute] Guid resultId,
+        [FromQuery] FeedbackAnalysisResultGetQuery query, 
+        CancellationToken cancellationToken)
+    {
+        query.Filter.ResultId = resultId;
+        var result = await mediator.Send(query ,cancellationToken);
+        return result.Any() ? Ok(result) : NoContent();
     }
 
     #endregion

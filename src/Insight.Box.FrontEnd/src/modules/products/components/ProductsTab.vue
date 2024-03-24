@@ -90,7 +90,8 @@ const openProductModal = async (product: Product | null) => {
         modalProduct.value = new Product();
         isCreate.value = true;
     }else{
-        modalProduct.value = product;
+
+        modalProduct.value =  JSON.parse(JSON.stringify(product));
         isCreate.value = false;
     }
 

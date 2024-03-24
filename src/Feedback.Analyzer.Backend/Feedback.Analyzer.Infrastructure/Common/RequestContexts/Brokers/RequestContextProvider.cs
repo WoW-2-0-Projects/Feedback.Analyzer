@@ -11,14 +11,22 @@ public class RequestContextProvider(IHttpContextAccessor httpContextAccessor) : 
 {
     public Guid GetUserId()
     {
+        if(!IsLoggedIn())
+            throw new InvalidOperationException("User is not logged in");
+        
         var httpContext = httpContextAccessor.HttpContext;
-        var userIdClaim = httpContext!.User.Claims.FirstOrDefault(claim => claim.Type == ClaimConstants.ClientId)?.Value;
+        var userIdClaim = httpContext!.User.Claims.First(claim => claim.Type == ClaimConstants.ClientId).Value;
 
-        return userIdClaim is not null ? Guid.Parse(userIdClaim) : throw new ArgumentNullException();
+        return Guid.Parse(userIdClaim);
     }
 
     public string? GetAccessToken()
     {
         return httpContextAccessor.HttpContext?.Request.Headers.Authorization;
+    }
+
+    public bool IsLoggedIn()
+    {
+        return httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
     }
 }
