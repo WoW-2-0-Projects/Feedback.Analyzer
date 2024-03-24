@@ -39,6 +39,7 @@ export class LayoutConstants {
     public static readonly Comment  = 'Comment';
     public static readonly Processed  = 'Processed';
     public static readonly AnalysisTime  = 'Analysis Time';
+    public static readonly ModelExecutionTime  = 'Model Execution Time';
     public static readonly FeedbackAnalysisResult  = 'Feedback Analysis Result';
 
     /* Feedback Analysis */

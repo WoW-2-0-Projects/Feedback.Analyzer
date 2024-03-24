@@ -73,7 +73,7 @@ export class FeedbackAnalysisResult {
     }
 
     public mapOpinionToActionType(): ActionType {
-        switch (this.overallOpinion) {
+        switch (this.opinion) {
             case OpinionType.Positive:
                 return ActionType.Success;
             case OpinionType.Negative:

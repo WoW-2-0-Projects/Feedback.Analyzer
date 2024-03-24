@@ -14,7 +14,7 @@
             <div class="modal-content-padding modal-content-layout">
 
                 <!-- Overview -->
-                <div class="flex items-start justify-between text-secondaryContentColor">
+                <div class="flex items-start justify-around text-secondaryContentColor">
 
                     <div class="flex flex-col gap-3 justify-center items-center">
                         <h5 class="text-sm"> {{ LayoutConstants.Relevance }}</h5>
@@ -38,31 +38,47 @@
                                   :type="result.mapOpinionToActionType()"/>
                     </div>
 
-                    <div class="flex flex-col gap-2 justify-center items-center text-tertiaryContentColor">
-                        <h5 class="text-sm"> {{ LayoutConstants.AnalysisTime }}</h5>
-                        <h5 class="text-2xl">
-                            {{
-                                result.modelExecutionDurationInMilliseconds < 10000 ?
-                                    result.modelExecutionDurationInMilliseconds + 'ms' :
-                                    (result.modelExecutionDurationInMilliseconds / 1000).toFixed(1) + 's'
-                            }}
-                        </h5>
-                    </div>
-
                 </div>
 
-                <div class="mt-5 h-full flex flex-col">
+                <div class="mt-10 h-full flex flex-col text-secondaryContentColor">
 
                     <div class="flex items-center justify-start gap-2">
                         <avatar-circle :fullName="result.customerFeedback.userName"/>
-                        <h5 class="text-base text-secondaryContentColor">{{result.customerFeedback.userName}}</h5>
+                        <h5 class="text-base">{{ result.customerFeedback.userName }}</h5>
                     </div>
 
                     <div class="bg-black bg-opacity-15 p-4 ml-10 rounded-tr-xl rounded-bl-xl rounded-br-xl">
-                        <h5 class="text-sm text-primaryContentColor line-clamp-6 text-justify">
-                            {{result.customerFeedback.comment}}
+                        <h5 class="text-sm line-clamp-6 text-justify">
+                            {{ result.customerFeedback.comment }}
                         </h5>
                     </div>
+
+                    <div class="mt-3 ml-12 flex flex-col w-full items-start justify-start">
+
+                        <div class="flex gap-2 justify-center items-center text-tertiaryContentColor">
+                            <h5 class="text-xs"> {{ LayoutConstants.ModelExecutionTime }}</h5>
+                            <h5 class="text-xs font-bold">
+                                {{
+                                    result.modelExecutionDurationInMilliseconds < 10000 ?
+                                        result.modelExecutionDurationInMilliseconds + 'ms' :
+                                        (result.modelExecutionDurationInMilliseconds / 1000).toFixed(1) + 's'
+                                }}
+                            </h5>
+                        </div>
+
+                        <div class="flex gap-2 justify-center items-center text-tertiaryContentColor">
+                            <h5 class="text-xs"> {{ LayoutConstants.AnalysisTime }}</h5>
+                            <h5 class="text-xs font-bold">
+                                {{
+                                    result.analysisDurationInMilliseconds < 10000 ?
+                                        result.analysisDurationInMilliseconds + 'ms' :
+                                        (result.analysisDurationInMilliseconds / 1000).toFixed(1) + 's'
+                                }}
+                            </h5>
+                        </div>
+
+                    </div>
+
                 </div>
 
                 <horizontal-divider class="my-5"/>
@@ -73,7 +89,7 @@
                     <!-- Questions -->
                     <div v-if="result.questions?.length > 0"
                          class="flex flex-col items-center justify-center gap-2">
-                        <h5 class="text-sm text-secondaryContentColor text-center">{{LayoutConstants.Questions}}</h5>
+                        <h5 class="text-sm text-secondaryContentColor text-center">{{ LayoutConstants.Questions }}</h5>
                         <div class="flex gap-2 justify-center flex-wrap lowercase">
                             <multi-chip :chips="result.questions.map(question =>
                                 new ChipData(question, ActionType.Secondary))" :displayRowLimit="3"/>
@@ -83,7 +99,7 @@
                     <!-- Negative Opinions -->
                     <div v-if="result.negativeOpinionPoints?.length > 0"
                          class="flex flex-col items-center justify-center gap-2">
-                        <h5 class="text-sm text-secondaryContentColor text-center">{{LayoutConstants.Complaints}}</h5>
+                        <h5 class="text-sm text-secondaryContentColor text-center">{{ LayoutConstants.Complaints }}</h5>
                         <div class="flex gap-2 justify-center flex-wrap lowercase">
                             <multi-chip :chips="result.negativeOpinionPoints.map(opinion =>
                                 new ChipData(opinion, ActionType.Danger))" :displayRowLimit="3"/>
@@ -93,7 +109,7 @@
                     <!-- Ideas -->
                     <div v-if="result.ideas?.length > 0"
                          class="flex flex-col items-center justify-center gap-2">
-                        <h5 class="text-sm text-secondaryContentColor text-center">{{LayoutConstants.Ideas}}</h5>
+                        <h5 class="text-sm text-secondaryContentColor text-center">{{ LayoutConstants.Ideas }}</h5>
                         <div class="flex gap-2 justify-center flex-wrap lowercase">
                             <multi-chip :chips="result.ideas.map(idea =>
                                 new ChipData(idea, ActionType.Processing))" :displayRowLimit="3"/>
@@ -103,7 +119,8 @@
                     <!-- Positive Opinions -->
                     <div v-if="result.positiveOpinionPoints?.length > 0"
                          class="flex flex-col items-center justify-center gap-2">
-                        <h5 class="text-sm text-secondaryContentColor text-center">{{LayoutConstants.Compliments}}</h5>
+                        <h5 class="text-sm text-secondaryContentColor text-center">
+                            {{ LayoutConstants.Compliments }}</h5>
                         <div class="flex gap-2 justify-center flex-wrap lowercase">
                             <multi-chip :chips="result.positiveOpinionPoints.map(opinion =>
                                 new ChipData(opinion, ActionType.Success))" :displayRowLimit="3"/>

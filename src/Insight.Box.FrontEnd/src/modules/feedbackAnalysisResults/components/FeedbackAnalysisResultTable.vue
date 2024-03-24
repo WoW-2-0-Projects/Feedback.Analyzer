@@ -16,7 +16,9 @@
             </td>
             <td class="table-data-cell">{{ result.customerFeedback.userName }}</td>
             <td class="table-data-cell">
-                <app-chip icon="fas fa-check" :type="ActionType.Success"/>
+                <app-chip v-if="result.status == WorkflowStatus.Completed" icon="fas fa-check" :type="ActionType.Success"/>
+                <app-chip v-if="result.status == WorkflowStatus.Failed" icon="fas fa-triangle-exclamation"
+                          :type="ActionType.Danger"/>
             </td>
             <td class="table-data-cell">
                 <app-chip :text="result.isRelevant
@@ -54,6 +56,7 @@ import {OpinionType} from "@/modules/feedbackAnalysisResults/models/OpinionType"
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 import AppButton from "@/common/components/appButton/AppButton.vue";
+import {WorkflowStatus} from "@/modules/workflows/models/WorkflowStatus";
 
 const props = defineProps({
     results: {

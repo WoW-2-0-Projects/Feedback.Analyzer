@@ -88,7 +88,6 @@ onBeforeMount(async () => {
     // Load workflows
     await loadWorkflowsAsync();
     await loadProductsAsync();
-    await openFeedbackResultModal('c4a22b3a-e22f-4fa8-ad39-4eb3d6bedfcc');
 });
 
 const loadWorkflowsAsync = async () => {
