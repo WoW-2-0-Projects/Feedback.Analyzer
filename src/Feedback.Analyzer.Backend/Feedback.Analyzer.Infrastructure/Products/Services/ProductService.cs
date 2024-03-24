@@ -67,7 +67,7 @@ public class ProductService
             ?? throw new InvalidOperationException("Product not fount");
 
         if (await GetCurrentClientId(fountProduct.OrganizationId) == await GetCurrentClientId(product.OrganizationId))
-            throw new UnauthorizedAccessException("Client id must match the current user id");
+            throw new InvalidOperationException("Can't change product's owner");
 
         return await productRepository.UpdateAsync(product, commandOptions, cancellationToken);
     }
@@ -78,7 +78,7 @@ public class ProductService
             ?? throw new InvalidOperationException("Product not fount");
 
         if (await GetCurrentClientId(fountProduct.OrganizationId) == await GetCurrentClientId(product.OrganizationId))
-            throw new UnauthorizedAccessException("Client id must match the current user id");
+            throw new InvalidOperationException("Can't change product's owner");
 
         return await productRepository.DeleteAsync(product, commandOptions, cancellationToken);
         }
