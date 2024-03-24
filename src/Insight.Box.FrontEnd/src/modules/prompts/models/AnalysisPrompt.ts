@@ -37,19 +37,17 @@ export class AnalysisPrompt {
     /*
     * The date and time when the prompt was created.
     */
-    createdTime: Date;
+    createdTime!: Date;
 
     /*
     * The date and time when the prompt was last modified.
     */
-    modifiedTime: Date;
+    modifiedTime!: Date;
 
     constructor(type: FeedbackAnalysisPromptCategory, prompt: string) {
         this.type = type;
         this.prompt = prompt ?? '';
         this.version = 0;
         this.revision = 0;
-        this.createdTime = new Date();
-        this.modifiedTime = new Date();
     }
 }
