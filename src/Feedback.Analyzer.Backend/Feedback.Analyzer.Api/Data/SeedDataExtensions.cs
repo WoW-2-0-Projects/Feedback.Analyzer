@@ -882,34 +882,45 @@ public static class SeedDataExtensions
                 Id = Guid.Parse("8e1d69ab-c9e1-457f-aa93-f03dbe5f7256"),
                 CategoryId = Guid.Parse("33ccca43-e803-4fa2-afc7-7c202de5ea0c"),
                 Prompt = """
-                    ##Question Points Extraction from User Feedback:
-                    Objective: Identify and compile a list of questions or areas of uncertainty mentioned in user feedback, facilitating targeted inquiry and clarification.
-                     
-                 ##Instructions:
-                    Identify Questions:
-                     
-                    Review Feedback: Thoroughly examine the user feedback.
-                    Extract Questions: Look for interrogative statements or points where the user seems to seek information or clarification.
-                    Compile Questions:
-                     
-                    List out all identified questions, ensuring they retain the context needed to understand what is being asked.
-                    Categorize Questions:
-                     
-                    If applicable, categorize the questions based on common themes, such as product features, usage, support, etc.
+                    ## Concepts
                 
-                ##Product Description:
-                     {{$productDescription}}
+                    Customer feedback: Comments provided by customers regarding the product.
+                    Product description: A concise overview describing the product.
+                    Question points: Specific inquiries, doubts, or areas of uncertainty highlighted within the customer feedback.
+                    
+                    ## Instructions
+                    
+                    The task is to identify and compile a list of questions, doubts, or points of ambiguity mentioned in customer feedback to facilitate targeted inquiry and clarification.
+                    
+                    Requirements:
+                    1. Review Feedback: Thoroughly analyze the provided customer feedback.
+                    2. Extract Questions: Identify interrogative statements or instances where customers seek information, express doubts, or highlight uncertainties.
+                    3. Compile Questions: List all identified questions, doubts, or uncertainties while preserving the necessary context to understand the inquiries.
+                    
+                    ## Examples
+                    
+                    1. Feedback without Question Points:
+                    
+                    Customer feedback: The quality of the Viper Ultimate is noticeably higher than the wired version for anyone who loves the shape and not the price. It may have just been my copy, but the wired Viper wasn't balanced and had a slight wobble when flat on the desk. My wired Viper also would randomly cut out for a split second three or four times a week with only a few months of use. The Viper Ultimate is the best wireless mouse I've tested though, feels great, looks great, performs as expected.
+                    
+                    Result: The quality of the Viper Ultimate is noticeably higher than the wired version for anyone who loves the shape and not the price. It may have just been my copy, but the wired Viper wasn't balanced and had a slight wobble when flat on the desk. My wired Viper also would randomly cut out for a split second three or four times a week with only a few months of use. The Viper Ultimate is the best wireless mouse I've tested though, feels great, looks great, performs as expected.
+                    
+                    Reasoning: This customer feedback does not contain any question points.
+                    
+                    2. Feedback with Question Points:
+                    
+                    Customer feedback: Battery life is great? Are you sure? Been using one here for two weeks and well... after a day or two of only using it a few hours, it loses quite a bit. I'm down to 55% after using the mouse for only a few hours. I have RGB disabled and Low Power Mode set to 100. This isn't my first either, I got another one and it's similar. The mouse does go to sleep, as its wakeup is very noticeable. I kinda think it's a suboptimal shape, but I'm getting used to it as well... and not impressed. My G Pro could go an entire month with medium gaming and only be at around 15-20% by then. My Razer, which I charge frequently due to the dock, is just... pathetic.
+                    
+                    Result: Battery life is great? Are you sure?
+                    
+                    Reasoning: This statement raises doubt about the accuracy of the claim regarding the battery life of the product.
+                    
+                    ## Input
+                    
+                    Product Description: {{$productDescription}}
+                    
+                    User Feedback: {{$userFeedback}}
                 
-                ##User Feedback:
-                     {{$userFeedback}} 
-                
-                ##Expected Output:
-                     A collection of questions extracted from the feedback, presented clearly and concisely.
-                ##Result:
-                  Collection of Questions:
-                    Example:
-                     ""How long does the battery last on a single charge?""
-                     ""Can the software be updated to fix the current lag issues?""
                 """,
                 Version = 1,
                 Revision = 0
