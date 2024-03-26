@@ -10,7 +10,6 @@ public class FeedbackAnalysisResultConfiguration : IEntityTypeConfiguration<Feed
     {
         builder.OwnsOne<FeedbackRelevance>(feedback => feedback.FeedbackRelevance);
         builder.OwnsOne<FeedbackOpinion>(feedback => feedback.FeedbackOpinion);
-        builder.OwnsOne<FeedbackActionablePoints>(feedback => feedback.FeedbackActionablePoints);
         builder.OwnsOne<FeedbackEntities>(feedback => feedback.FeedbackEntities);
         builder.OwnsOne<FeedbackMetrics>(feedback => feedback.FeedbackMetrics);
         builder.OwnsOne<AnalysisResult>(feedback => feedback.AnalysisResult)
