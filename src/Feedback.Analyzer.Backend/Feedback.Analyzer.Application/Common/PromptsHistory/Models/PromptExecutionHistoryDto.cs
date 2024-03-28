@@ -28,7 +28,7 @@ public class PromptExecutionHistoryDto
     /// <summary>
     /// Gets or sets the date and time when the prompt was executed.
     /// </summary>
-    public DateTime ExecutionTime { get; set; } 
+    public DateTimeOffset ExecutionTime { get; set; } 
     
     /// <summary>
     /// Gets or sets the duration of the prompt execution in seconds.

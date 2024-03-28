@@ -1,7 +1,7 @@
 /*
  * Represents the result of executing a prompt.
  */
-export class PromptExecutionResultDto {
+export class PromptExecutionResult {
     /*
      * The ID of the prompt.
      */

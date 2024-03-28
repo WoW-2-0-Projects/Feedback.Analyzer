@@ -65,9 +65,9 @@ export class DateTimeFormatterService {
         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
         let formattedDate = '';
-        if (isThisWeek) {
-            formattedDate += dayNames[dayOfWeek] + ', ';
-        }
+        // if (isThisWeek) {
+        //     formattedDate += dayNames[dayOfWeek] + ', ';
+        // }
 
         formattedDate += monthNames[date.getMonth()] + ' ' + date.getDate();
 

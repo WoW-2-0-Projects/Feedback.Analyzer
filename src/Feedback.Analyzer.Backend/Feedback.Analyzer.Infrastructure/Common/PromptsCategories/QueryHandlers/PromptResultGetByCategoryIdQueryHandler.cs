@@ -5,7 +5,7 @@ using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Microsoft.EntityFrameworkCore;
 
-namespace Feedback.Analyzer.Infrastructure.Common.Prompts.QueryHandlers;
+namespace Feedback.Analyzer.Infrastructure.Common.PromptsCategories.QueryHandlers;
 
 /// <summary>
 /// Query handler for getting a collection of <see cref="PromptResultDto"/> by <see cref="Prompt.CategoryId"/>
@@ -22,7 +22,11 @@ public class PromptResultGetByCategoryIdQueryHandler(IMapper mapper, IPromptServ
                 {
                     TrackingMode = QueryTrackingMode.AsNoTracking
                 }
-                ).ToListAsync(cancellationToken: cancellationToken);
+                )
+            .OrderByDescending(prompt => prompt.Version)
+            .ThenByDescending(prompt => prompt.Revision)
+            .Include(prompt => prompt.ExecutionHistories)
+            .ToListAsync(cancellationToken: cancellationToken);
         
         return mapper.Map<ICollection<PromptResultDto>>(matchedPrompts);
     }

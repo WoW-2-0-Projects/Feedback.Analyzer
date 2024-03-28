@@ -31,4 +31,18 @@ public interface IPromptCategoryService
         PromptCategoryFilter promptCategoryFilter, 
         QueryOptions queryOptions = default
     );
+    
+    /// <summary>
+    /// Asynchronously updates the selected prompt ID for a specified prompt category.
+    /// </summary>
+    /// <param name="promptCategoryId">The ID of the prompt category for which the selected prompt ID will be updated.</param>
+    /// <param name="promptId">The ID of the prompt to set as the selected prompt within the specified category.</param>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+    /// <returns>A <see cref="ValueTask{TResult}"/> representing the asynchronous operation. The result indicates whether the update operation was successful (true) or not (false).</returns>
+
+    ValueTask<bool> UpdateSelectedPromptIdAsync(
+        Guid promptCategoryId,
+        Guid promptId,
+        CancellationToken cancellationToken = default
+    );
 }

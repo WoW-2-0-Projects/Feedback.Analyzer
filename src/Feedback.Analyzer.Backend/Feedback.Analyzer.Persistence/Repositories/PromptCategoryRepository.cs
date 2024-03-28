@@ -4,6 +4,7 @@ using Feedback.Analyzer.Domain.Entities;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 using Feedback.Analyzer.Persistence.DataContexts;
 using Feedback.Analyzer.Persistence.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Feedback.Analyzer.Persistence.Repositories;
 
@@ -18,4 +19,11 @@ public class PromptCategoryRepository(AppDbContext dbContext, ICacheBroker cache
         QueryOptions queryOptions = default
     ) =>
         base.Get(predicate, queryOptions);
+
+    public new ValueTask<int> UpdateBatchAsync(
+        Expression<Func<SetPropertyCalls<AnalysisPromptCategory>, SetPropertyCalls<AnalysisPromptCategory>>> setPropertyCalls,
+        Expression<Func<AnalysisPromptCategory, bool>>? batchUpdatePredicate = default,
+        CancellationToken cancellationToken = default
+    ) =>
+        base.UpdateBatchAsync(setPropertyCalls, batchUpdatePredicate, cancellationToken);
 }
