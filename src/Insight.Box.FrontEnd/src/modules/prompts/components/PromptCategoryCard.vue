@@ -4,7 +4,7 @@
 
         <!-- Prompt category details -->
         <div class=" flex flex-col items-center justify-center w-full">
-            <h5 class="text-xl">{{promptCategory.typeDisplayName}}</h5>
+            <h5 class="text-xl">{{ promptCategory.typeDisplayName }}</h5>
 
             <!-- Add prompt button -->
             <div class="mt-5 flex justify-center gap-5 w-full">
@@ -16,7 +16,7 @@
 
                 <div class="flex flex-col h-fit items-center w-1/4 text-center">
                     <h5 class="text-3xl font-bold">{{ promptCategory.selectedPromptVersion }}</h5>
-                    <h5 class="text-sm whitespace-pre-wrap text-wrap"> {{LayoutConstants.SelectedVersion}}</h5>
+                    <h5 class="text-sm whitespace-pre-wrap text-wrap"> {{ LayoutConstants.SelectedVersion }}</h5>
                 </div>
 
             </div>
@@ -34,10 +34,10 @@
                                     :size="ActionComponentSize.ExtraSmall"
                                     @click="emit('addPrompt', promptCategory.id, promptResultLoadFunction)"/>
 
-                        <app-button  :type="ActionType.Primary" :layout="ButtonLayout.Rectangle" icon="fas fa-play"
-                                     text="Run"
-                                     :disabled="selectedTrainingWorkflow === null || promptCategory.selectedPromptId === null"
-                                     :size="ActionComponentSize.ExtraSmall" @click="onTriggerWorkflow"/>
+                        <app-button :type="ActionType.Primary" :layout="ButtonLayout.Rectangle" icon="fas fa-play"
+                                    text="Run"
+                                    :disabled="selectedTrainingWorkflow === null || promptCategory.selectedPromptId === null"
+                                    :size="ActionComponentSize.ExtraSmall" @click="onTriggerWorkflow"/>
 
                     </div>
                 </div>
@@ -49,15 +49,15 @@
         <!-- Prompt Section -->
         <div class="w-full p-5 pt-3 pr-2.5 flex flex-col item-center">
             <h5 class="text-center">Prompts</h5>
-            <div class="mt-3 rounded-lg overflow-y-scroll no-scrollbar">
-                <app-table class="w-full" :data="promptResultsTableData"/>
+            <div class="mt-3  rounded-lg overflow-y-scroll no-scrollbar">
+                <app-table class="w-full " :data="promptResultsTableData"/>
             </div>
         </div>
 
         <!-- Prompt execution result -->
         <div class="w-full p-5 pt-3 pl-2.5 flex flex-col">
             <h5 class="text-center">Execution histories</h5>
-            <div class="mt-3 rounded-lg overflow-y-scroll no-scrollbar">
+            <div class="mt-3  rounded-lg overflow-y-scroll no-scrollbar">
                 <app-table class="w-full" :data="promptHistoriesTableData"/>
             </div>
         </div>
@@ -103,7 +103,7 @@ const props = defineProps({
         required: true
     },
     workflows: {
-        type: Array as  PropType<Array<FeedbackAnalysisWorkflow>>,
+        type: Array as PropType<Array<FeedbackAnalysisWorkflow>>,
         required: true
     }
 })
@@ -116,7 +116,7 @@ watch(() => props.workflows, async () => {
     loadWorkflowOptions();
 }, {deep: true});
 
-const  emit = defineEmits<{
+const emit = defineEmits<{
     (e: 'addPrompt', promptCategoryId: string, loadPromptResultCallback: (promptId: string) => Promise): void
     (e: 'editPrompt', promptId: string, loadPromptResultCallback: AsyncFunction<string>),
     (e: 'openHistory', history: PromptsExecutionHistory): void,
@@ -140,7 +140,7 @@ const promptHistoriesTableData = ref<TableData>(new TableData([
     ], []
 ));
 
-onBeforeMount(async () =>  {
+onBeforeMount(async () => {
     promptResultLoadFunction.value = new AsyncFunction<string>(loadPromptResultAsync);
     loadWorkflowOptions();
     await loadAllPromptResultsAsync();
@@ -206,12 +206,15 @@ const mapHistoryToTableRowData = (history: PromptsExecutionHistory) => {
         ],
 
         [
-            new TableAction(() => emit('openHistory', history), ActionType.Secondary, 'fas fa-circle-info')
+            new TableAction(() => {
+                    emit('openHistory', history)
+                }
+                , ActionType.Secondary, 'fas fa-circle-info')
         ]
     );
 };
 
-const  onTriggerWorkflow = async () => {
+const onTriggerWorkflow = async () => {
     if (!selectedTrainingWorkflow.value?.value?.id || !props.promptCategory?.selectedPromptId)
         return;
 

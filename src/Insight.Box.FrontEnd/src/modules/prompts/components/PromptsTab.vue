@@ -27,7 +27,7 @@
 
         <!-- Prompt execution history modal -->
         <prompt-execution-history-modal :history="openedHistory"
-                                        :isActice="historyModalActive"
+                                        :isActive="historyModalActive"
                                         @closeModal="historyModalActive = false"
         />
 
