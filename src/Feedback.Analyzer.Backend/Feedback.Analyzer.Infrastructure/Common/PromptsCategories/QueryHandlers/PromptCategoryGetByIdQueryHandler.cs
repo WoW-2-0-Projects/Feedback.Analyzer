@@ -19,6 +19,7 @@ public class PromptCategoryGetByIdQueryHandler(IMapper mapper, IPromptCategorySe
                     TrackingMode = QueryTrackingMode.AsNoTracking
                 }
             )
+            .Include(category => category.Prompts)
             .Include(category => category.SelectedPrompt)
             .FirstOrDefaultAsync(cancellationToken);
 

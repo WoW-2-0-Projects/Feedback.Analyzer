@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Feedback.Analyzer.Application.Common.PromptCategory.Models;
 using Feedback.Analyzer.Application.Common.PromptCategory.Queries;
 using Feedback.Analyzer.Application.Common.PromptCategory.Services;
@@ -23,6 +22,7 @@ public class PromptCategoryGetQueryHandler(IMapper mapper, IPromptCategoryServic
                 TrackingMode = QueryTrackingMode.AsNoTracking
             }
         )
+        .Include(promptCategory => promptCategory.SelectedPrompt)
         .Include(promptCategory => promptCategory.Prompts)
         .ToListAsync(cancellationToken);
         
