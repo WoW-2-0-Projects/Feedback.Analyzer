@@ -1,8 +1,7 @@
 ﻿using Feedback.Analyzer.Application.Common.PromptCategory.Models;
-using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 
-namespace Feedback.Analyzer.Application.Common.PromptCategory.Quearies;
+namespace Feedback.Analyzer.Application.Common.PromptCategory.Queries;
 
 /// <summary>
 ///  Represents a query to retrieve a collection of organizations.
