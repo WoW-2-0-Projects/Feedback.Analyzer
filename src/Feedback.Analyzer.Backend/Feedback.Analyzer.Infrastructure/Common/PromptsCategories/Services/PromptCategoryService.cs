@@ -23,5 +23,14 @@ public class PromptCategoryService(IPromptCategoryRepository promptCategoryRepos
     public IQueryable<AnalysisPromptCategory> Get(PromptCategoryFilter promptCategoryFilter, QueryOptions queryOptions = default)
     
         => promptCategoryRepository.Get(queryOptions: queryOptions).ApplyPagination(promptCategoryFilter);
-    
+
+    public async ValueTask<bool> UpdateSelectedPromptIdAsync(Guid promptCategoryId, Guid promptId,
+        CancellationToken cancellationToken = default)
+    {
+        return await promptCategoryRepository.UpdateBatchAsync(
+            categorySetCall => categorySetCall.SetProperty(category => category.SelectedPromptId, promptId),
+            category => category.Id == promptCategoryId,
+            cancellationToken
+        ) == 1;
+    }
 }

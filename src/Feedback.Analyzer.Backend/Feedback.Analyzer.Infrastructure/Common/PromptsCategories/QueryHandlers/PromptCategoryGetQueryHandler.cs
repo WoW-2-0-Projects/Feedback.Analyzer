@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Feedback.Analyzer.Application.Common.PromptCategory.Models;
-using Feedback.Analyzer.Application.Common.PromptCategory.Quearies;
+using Feedback.Analyzer.Application.Common.PromptCategory.Queries;
 using Feedback.Analyzer.Application.Common.PromptCategory.Services;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Microsoft.EntityFrameworkCore;
