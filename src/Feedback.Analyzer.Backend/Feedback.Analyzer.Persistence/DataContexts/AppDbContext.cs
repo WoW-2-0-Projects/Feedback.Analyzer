@@ -40,6 +40,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     public DbSet<FeedbackAnalysisWorkflow> FeedbackAnalysisWorkflows => Set<FeedbackAnalysisWorkflow>();
     
     public DbSet<FeedbackAnalysisWorkflowResultStats> FeedbackAnalysisWorkflowResultStats => Set<FeedbackAnalysisWorkflowResultStats>();
+    
+    public DbSet<FeedbackAnalysisWorkflowResultPoint> FeedbackAnalysisWorkflowResultPoints => Set<FeedbackAnalysisWorkflowResultPoint>();
 
     #endregion
 
