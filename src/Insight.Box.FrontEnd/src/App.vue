@@ -14,5 +14,7 @@ import {AuthenticationService} from "@/modules/accounts/services/AuthenticationS
 import HomeView from "@/common/views/HomeView.vue";
 
 const authService = new AuthenticationService();
+
+
 const isAuthModalActive = ref<boolean>(!authService.isLoggedIn());
 </script>
