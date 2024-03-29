@@ -1,6 +1,6 @@
 ﻿using Feedback.Analyzer.Domain.Common.Events;
 
-namespace Feedback.Analyzer.Application.FeedbackAnalysisResults.Event;
+namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Events;
 
 /// <summary>
 /// Represents feedback analysis workflow result update event

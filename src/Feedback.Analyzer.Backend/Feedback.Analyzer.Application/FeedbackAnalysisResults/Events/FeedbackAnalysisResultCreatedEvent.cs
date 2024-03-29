@@ -1,7 +1,7 @@
 ﻿using Feedback.Analyzer.Domain.Common.Events;
 using Feedback.Analyzer.Domain.Entities;
 
-namespace Feedback.Analyzer.Application.FeedbackAnalysisResults.Event;
+namespace Feedback.Analyzer.Application.FeedbackAnalysisResults.Events;
 
 /// <summary>
 /// Represents feedback analysis result creation event

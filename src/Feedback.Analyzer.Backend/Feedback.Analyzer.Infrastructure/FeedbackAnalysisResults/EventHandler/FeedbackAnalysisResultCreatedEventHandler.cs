@@ -1,5 +1,6 @@
 ﻿using Feedback.Analyzer.Application.Common.EventBus.Brokers;
-using Feedback.Analyzer.Application.FeedbackAnalysisResults.Event;
+using Feedback.Analyzer.Application.FeedbackAnalysisResults.Events;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Events;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Models;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Services;
 using Feedback.Analyzer.Domain.Common.Events;
