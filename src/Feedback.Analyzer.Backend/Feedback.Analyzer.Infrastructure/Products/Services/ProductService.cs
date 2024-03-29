@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Feedback.Analyzer.Application.Products.Models;
 using Feedback.Analyzer.Application.Products.Services;
+using Feedback.Analyzer.Domain.Brokers;
 using Feedback.Analyzer.Domain.Common.Commands;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Feedback.Analyzer.Domain.Entities;
@@ -43,34 +44,56 @@ public class ProductService
             return productRepository.GetByIdAsync(productId, queryOptions, cancellationToken);
         }
 
-        public ValueTask<Product> CreateAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+        public async ValueTask<Product> CreateAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
             var validationResult = productValidator.Validate(product,
-                options => options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
+                    options => options.IncludeRuleSets(EntityEvent.OnCreate.ToString()));
 
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors);
 
-            return productRepository.CreateAsync(product, commandOptions, cancellationToken);
+            return await productRepository.CreateAsync(product, commandOptions, cancellationToken);
         }
 
         public async ValueTask<Product> UpdateAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
-            var foundProduct = await GetByIdAsync(product.Id, cancellationToken: cancellationToken) ?? throw new InvalidOperationException();
+        var validationResult = productValidator.Validate(product,
+                options => options.IncludeRuleSets(EntityEvent.OnUpdate.ToString()));
 
-            foundProduct.Name = product.Name;
-            foundProduct.Description = product.Description;
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
 
-            return await productRepository.UpdateAsync(foundProduct, commandOptions, cancellationToken);
-        }
+        var fountProduct = await GetByIdAsync(product.Id, cancellationToken: cancellationToken)
+            ?? throw new InvalidOperationException("Product not fount");
 
-        public ValueTask<Product?> DeleteAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+        if (await GetCurrentClientId(fountProduct.OrganizationId) == await GetCurrentClientId(product.OrganizationId))
+            throw new InvalidOperationException("Can't change product's owner");
+
+        return await productRepository.UpdateAsync(product, commandOptions, cancellationToken);
+    }
+
+        public async ValueTask<Product?> DeleteAsync(Product product, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
-            return productRepository.DeleteAsync(product, commandOptions, cancellationToken);
+        var fountProduct = await GetByIdAsync(product.Id, cancellationToken: cancellationToken)
+            ?? throw new InvalidOperationException("Product not fount");
+
+        if (await GetCurrentClientId(fountProduct.OrganizationId) == await GetCurrentClientId(product.OrganizationId))
+            throw new InvalidOperationException("Can't change product's owner");
+
+        return await productRepository.DeleteAsync(product, commandOptions, cancellationToken);
         }
 
-        public ValueTask<Product?> DeleteByIdAsync(Guid productId, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
+        public async ValueTask<Product?> DeleteByIdAsync(Guid productId, CommandOptions commandOptions = default, CancellationToken cancellationToken = default)
         {
-            return productRepository.DeleteByIdAsync(productId, commandOptions, cancellationToken);
-        }
+        var fountProduct = await GetByIdAsync(productId, cancellationToken: cancellationToken)
+                ?? throw new InvalidOperationException("Product not fount");
+        return await productRepository.DeleteByIdAsync(productId, commandOptions, cancellationToken);
+    }
+
+    private async ValueTask<Guid> GetCurrentClientId(Guid orgnaziationId) 
+    {
+        var product = await productRepository.Get(product => product.OrganizationId == orgnaziationId).Include(product => product.Organization).FirstOrDefaultAsync();
+
+        return product.Organization.ClientId;
+    }
 }

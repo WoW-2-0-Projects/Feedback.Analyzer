@@ -102,6 +102,10 @@
   @apply bg-successColor;
 }
 
+.theme-action-processing {
+  @apply bg-processingColor;
+}
+
 .theme-action-disabled {
   @apply bg-accentSecondaryColor;
 }

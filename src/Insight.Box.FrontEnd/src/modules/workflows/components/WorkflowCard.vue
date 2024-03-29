@@ -120,6 +120,7 @@
                 <workflow-result-card v-for="(result, index) in workflowResults" :workflowResult="result" :key="index"
                                       :closeSource="closeSource" @closeOthers="resultId =>
                                       closeSource.updateListeners(resultId)"
+                                      @openFeedbackResult="feedbackResultId => emit('openFeedbackResult', feedbackResultId)"
                 />
             </div>
             <div v-else class="h-full w-full flex justify-center">
@@ -173,6 +174,7 @@ const closeSource = ref<NotificationSource<string>>(new NotificationSource<strin
 const emit = defineEmits<{
     (e: 'update', workflow: FeedbackAnalysisWorkflow): void,
     (e: 'delete', workflowId: string): void,
+    (e: 'openFeedbackResult', feedbackResultId: string): void
 }>();
 
 const onTriggerWorkflow = async () => {

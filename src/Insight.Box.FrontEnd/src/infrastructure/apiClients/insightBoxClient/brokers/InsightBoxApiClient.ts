@@ -13,6 +13,9 @@ import  {PromptsEndpointsClient} from "@/infrastructure/apiClients/insightBoxCli
 import {
     PromptExecutionHistoriesEndpointsClient
 } from "@/infrastructure/apiClients/insightBoxClient/brokers/PromptExecutionHistoriesEndpointsClient";
+import {
+    FeedbackAnalysisResultsEndpointsClient
+} from "@/infrastructure/apiClients/insightBoxClient/brokers/FeedbackAnalysisResultsEndpointsClient";
 
 /*
  * Provides Insight Box API client functionality
@@ -47,20 +50,22 @@ export class InsightBoxApiClient {
         this.requestFormatterService = new RequestFormatterService();
 
         // Initialize endpoint clients
+        this.auth = new AuthEndpointsClient(this.client);
+        this.clients = new ClientsEndpointsClient(this.client);
         this.organizations = new OrganizationsEndpointsClient(this.client, this.requestFormatterService);
         this.products = new ProductsEndpointsClient(this.client, this.requestFormatterService);
-        this.workflows = new WorkflowsEndpointsClient(this.client, this.requestFormatterService);
-        this.auth = new AuthEndpointsClient(this.client);
         this.prompts = new PromptsEndpointsClient(this.client, this.requestFormatterService)
-        this.clients = new ClientsEndpointsClient(this.client);
+        this.workflows = new WorkflowsEndpointsClient(this.client, this.requestFormatterService);
+        this.results = new FeedbackAnalysisResultsEndpointsClient(this.client, this.requestFormatterService);
         this.executionHistories = new PromptExecutionHistoriesEndpointsClient(this.client, this.requestFormatterService);
     }
 
-    public organizations: OrganizationsEndpointsClient;
-    public products: ProductsEndpointsClient;
-    public workflows: WorkflowsEndpointsClient;
-    public prompts: PromptsEndpointsClient;
-    public readonly clients: ClientsEndpointsClient;
     public readonly auth: AuthEndpointsClient;
+    public readonly clients: ClientsEndpointsClient;
     public executionHistories: PromptExecutionHistoriesEndpointsClient;
+    public readonly organizations: OrganizationsEndpointsClient;
+    public readonly products: ProductsEndpointsClient;
+    public readonly prompts: PromptsEndpointsClient;
+    public readonly workflows: WorkflowsEndpointsClient;
+    public readonly results: FeedbackAnalysisResultsEndpointsClient;
 }

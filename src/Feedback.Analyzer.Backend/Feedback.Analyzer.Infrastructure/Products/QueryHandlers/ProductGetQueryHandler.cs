@@ -24,6 +24,7 @@ public class ProductGetQueryHandler(IMapper mapper, IProductService productServi
         var matchedProducts = await (await productService
             .Get(request.Filter, queryOptions)
             .GetFilteredEntitiesQuery(productService.Get(), cancellationToken: cancellationToken))
+            .Include(product => product.Organization)
             .ApplyTrackingMode(queryOptions.TrackingMode)
             .ToListAsync(cancellationToken: cancellationToken);
 
