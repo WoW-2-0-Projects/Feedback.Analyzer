@@ -13,7 +13,7 @@ public sealed class FeedbackAnalysisWorkflowResultStats : ChartDiscreteData, IEn
     /// <summary>
     /// Gets type of the statistics
     /// </summary>
-    public ChartDataTypeColor Type { get; init; }
+    public AnalysisResultType Type { get; init; }
 
     /// <summary>
     /// Gets or sets related workflow result id
