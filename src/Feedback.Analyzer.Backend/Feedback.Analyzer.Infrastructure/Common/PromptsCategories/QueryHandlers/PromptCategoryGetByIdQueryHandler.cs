@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Feedback.Analyzer.Infrastructure.Common.PromptsCategories.QueryHandlers;
 
+/// <summary>
+/// Handles the retrieval of an analysis prompt category by its unique identifier.
+/// </summary>
 public class PromptCategoryGetByIdQueryHandler(IMapper mapper, IPromptCategoryService promptCategoryService)
     : IQueryHandler<PromptCategoryGetByIdQuery, AnalysisPromptCategoryDto?>
 {

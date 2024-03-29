@@ -47,7 +47,7 @@
         </div>
 
         <!-- Prompt Section -->
-        <div class="w-full p-5 pt-3 pr-2.5 flex flex-col item-center">
+        <div class="w-full p-5 pt-3 pr-2.5 flex flex-col items-center">
             <h5 class="text-center">Prompts</h5>
             <div class="mt-3  rounded-lg overflow-y-scroll no-scrollbar">
                 <app-table class="w-full " :data="promptResultsTableData"/>

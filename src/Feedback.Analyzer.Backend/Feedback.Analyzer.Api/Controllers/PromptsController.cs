@@ -79,7 +79,7 @@ public class PromptsController(IMediator mediator) : ControllerBase
     #region Prompt Results
 
     [HttpGet("categories/{categoryId:guid}/results")]
-    public async ValueTask<IActionResult> GetPromptResultById([FromRoute] Guid categoryId,
+    public async ValueTask<IActionResult> GetPromptResultByCategoryId([FromRoute] Guid categoryId,
                                                               CancellationToken cancellationToken = default)
     {
         var result = await mediator.Send(
@@ -95,7 +95,7 @@ public class PromptsController(IMediator mediator) : ControllerBase
     [HttpPut("categories/{categoryId:guid}/selected/{promptId:guid}")]
     public async ValueTask<IActionResult> UpdateSelectedPrompt(
         [FromRoute] Guid categoryId,
-        Guid promptId,
+        [FromRoute] Guid promptId,
         CancellationToken cancellationToken = default
     )
     {
@@ -115,7 +115,7 @@ public class PromptsController(IMediator mediator) : ControllerBase
     
     
     [HttpGet("categories/{categoryId:guid}")]
-    public async ValueTask<IActionResult> GetPromptCategories([FromRoute] Guid categoryId, CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> GetCategoryById([FromRoute] Guid categoryId, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new PromptCategoryGetByIdQuery
@@ -127,7 +127,7 @@ public class PromptsController(IMediator mediator) : ControllerBase
         return result is not null ? Ok(result) : NotFound();
     }
     [HttpGet("{promptId:guid}/histories")]
-    public async ValueTask<IActionResult> GetPromptExecutionHistory([FromRoute] Guid promptId, CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> GetHistoryByPromptId([FromRoute] Guid promptId, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new PromptExecutionHistoryGetByPromptIdQuery

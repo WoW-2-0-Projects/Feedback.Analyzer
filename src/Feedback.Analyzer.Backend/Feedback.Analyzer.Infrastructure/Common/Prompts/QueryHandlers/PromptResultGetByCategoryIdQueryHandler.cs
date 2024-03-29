@@ -5,7 +5,7 @@ using Feedback.Analyzer.Application.Common.Prompts.Services;
 using Feedback.Analyzer.Domain.Common.Queries;
 using Microsoft.EntityFrameworkCore;
 
-namespace Feedback.Analyzer.Infrastructure.Common.PromptsCategories.QueryHandlers;
+namespace Feedback.Analyzer.Infrastructure.Common.Prompts.QueryHandlers;
 
 /// <summary>
 /// Query handler for getting a collection of <see cref="PromptResultDto"/> by <see cref="Prompt.CategoryId"/>
