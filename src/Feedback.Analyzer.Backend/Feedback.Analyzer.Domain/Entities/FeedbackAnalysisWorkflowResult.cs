@@ -42,11 +42,11 @@ public class FeedbackAnalysisWorkflowResult : Entity
     /// </summary>
     public uint FailedFeedbacksCount { get; set; }
 
-    /// <summary>
-    /// Gets or sets the collection of key points extracted from the feedback analysis results.
-    /// </summary>
-    public ICollection<FeedbackAnalysisWorkflowResultPoint> KeyPoints { get; set; } = default!;
-
+    // /// <summary>
+    // /// Gets or sets the collection of key points extracted from the feedback analysis results.
+    // /// </summary>
+    // public ICollection<FeedbackAnalysisWorkflowResultPoint> KeyPoints { get; set; } = default!;
+    //
     /// <summary>
     /// Gets or sets the collection of feedback analysis workflow result statistics.
     /// </summary>

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240329071713_Add_FeedbackAnalysisWorkflowResultPoint_And_FeedbackAnalysisWorkflowResult")]
-    partial class Add_FeedbackAnalysisWorkflowResultPoint_And_FeedbackAnalysisWorkflowResult
+    [Migration("20240329073611_Add_Processed_And_Failed_Feedbacks_Count_To_FeedbackAnalysisWorkflowResult")]
+    partial class Add_Processed_And_Failed_Feedbacks_Count_To_FeedbackAnalysisWorkflowResult
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -304,59 +304,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.ToTable("FeedbackAnalysisWorkflowResults");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResultPoint", b =>
-                {
-                    b.Property<Guid>("WorkflowResultId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("FeedbackResultId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Point")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
-
-                    b.Property<byte>("Type")
-                        .HasColumnType("smallint");
-
-                    b.HasKey("WorkflowResultId", "FeedbackResultId");
-
-                    b.HasIndex("FeedbackResultId");
-
-                    b.ToTable("FeedbackAnalysisWorkflowResultPoint");
-                });
-
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResultStats", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Label")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<short>("Percentage")
-                        .HasColumnType("smallint");
-
-                    b.Property<byte>("Type")
-                        .HasColumnType("smallint");
-
-                    b.Property<Guid>("WorkflowResultId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WorkflowResultId");
-
-                    b.ToTable("FeedbackAnalysisWorkflowResultStats");
-                });
-
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>
                 {
                     b.Property<Guid>("Id")
@@ -542,11 +489,17 @@ namespace Feedback.Analyzer.Persistence.Migrations
                             b1.Property<Guid>("FeedbackAnalysisResultId")
                                 .HasColumnType("uuid");
 
+                            b1.Property<double>("AnalysisDuration")
+                                .HasColumnType("integer");
+
                             b1.Property<string>("ErrorMessage")
                                 .HasColumnType("text");
 
                             b1.Property<Guid?>("HistoryId")
                                 .HasColumnType("uuid");
+
+                            b1.Property<double>("ModelExecutionDuration")
+                                .HasColumnType("integer");
 
                             b1.Property<int>("Status")
                                 .HasColumnType("integer");
@@ -743,30 +696,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
                     b.Navigation("Workflow");
                 });
 
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResultPoint", b =>
-                {
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisResult", null)
-                        .WithMany()
-                        .HasForeignKey("FeedbackResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", null)
-                        .WithMany("KeyPoints")
-                        .HasForeignKey("WorkflowResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResultStats", b =>
-                {
-                    b.HasOne("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", null)
-                        .WithMany("Statistics")
-                        .HasForeignKey("WorkflowResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>
                 {
                     b.HasOne("Feedback.Analyzer.Domain.Entities.Client", "Client")
@@ -845,10 +774,6 @@ namespace Feedback.Analyzer.Persistence.Migrations
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.FeedbackAnalysisWorkflowResult", b =>
                 {
                     b.Navigation("FeedbackAnalysisResults");
-
-                    b.Navigation("KeyPoints");
-
-                    b.Navigation("Statistics");
                 });
 
             modelBuilder.Entity("Feedback.Analyzer.Domain.Entities.Organization", b =>
