@@ -1,10 +1,12 @@
 using Feedback.Analyzer.Application.Products.Commands;
 using Feedback.Analyzer.Application.Products.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Feedback.Analyzer.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class ProductsController(IMediator mediator) : ControllerBase
@@ -30,7 +32,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var result = await mediator.Send(productCreateCommand, cancellationToken);
-        return Ok(result);
+        return result is not null ? Ok(result) : BadRequest();
     }
 
     [HttpPut]

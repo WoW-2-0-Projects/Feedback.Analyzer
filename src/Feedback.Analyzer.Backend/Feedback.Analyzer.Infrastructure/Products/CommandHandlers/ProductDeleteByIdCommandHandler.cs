@@ -14,8 +14,8 @@ public class ProductDeleteByIdCommandHandler(IProductService productService, IMa
 {
     public async Task<bool> Handle(ProductDeleteByIdCommand request, CancellationToken cancellationToken)
     {
-        await productService.DeleteByIdAsync(request.ProductId, cancellationToken: cancellationToken);
+        var result = await productService.DeleteByIdAsync(request.ProductId, cancellationToken: cancellationToken);
 
-        return true;
+        return result is not null;
     }
 }

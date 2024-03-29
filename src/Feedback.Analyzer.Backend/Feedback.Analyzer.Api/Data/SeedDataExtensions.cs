@@ -268,106 +268,106 @@ public static class SeedDataExtensions
                           """,
                 UserName = "Silverspark"
             },
-            new()
-            {
-                Id = Guid.Parse("03e3827d-36d2-474f-ab76-7655833b090f"),
-                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
-                Comment = """
-                          Yup pretty flat, very fk1 like at the hump. Some people prefer the extra freedom and it was definitely interesting to try out.
-                          
-                          I already had the software installed for the mini so yeah pretty heavy but seeing how sophisticated it is and common to all razer peripherals it's acceptable i think.
-                          """,
-                UserName = "azami88n"
-            },
-            new()
-            {
-                Id = Guid.Parse("E7F7AFE2-7172-430C-A503-D55D84C11131"),
-                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
-                Comment = """
-                          Battery life is great? Are you sure? Been using one here for two weeks and well..after a day or two of only using it a few hours, it loses quite abit.
-                          
-                          I'm down to 55% after using the mouse for only a few hours. I have RGB disabled and Low Power Mode set to 100.
-                          
-                          This isn't my first either, I got another one and it's similar.
-                          
-                          The mouse does go to sleep, as it's wakeup is very noticble.
-                          
-                          I kinda think it's a sub optimal shape, but I'm getting used to it as well..and not impressed.
-                          
-                          my G Pro could go an entire month with medium gaming and only be at around 15-20% by then.
-                          
-                          My Razer, which I charge frequently due to the dock, is just...pathetic.
-                          """,
-                UserName = "Mkilbride"
-            },         
-            new()
-            {
-                Id = Guid.Parse("88DE3171-AB8A-49E7-A854-A5A77A4D94F7"),
-                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
-                Comment = """
-                          The quality of the Viper Ultimate is noticeably higher than the wired version for anyone who loves the shape and not the price. It may have just been my copy but the wired Viper wasn't balanced and had a slight wobble when flat on the desk. My wired Viper also would randomly cut out for a split second three or four times a week with only a few months of use.
-                          
-                          The Viper Ultimate is the best wireless mouse I've tested though, feels great, looks great, performs as expected.
-                          """,
-                UserName = "No_Specific2566"
-            },
-            new()
-            {
-                Id = Guid.Parse("33950F44-8439-456A-ABCE-40D4C10A24CD"),
-                ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
-                Comment = """
-                          Huge thanks to Razer and to u/Razer-Right for providing me this sample free of charge. This review will be my own toughts. This mouse has received plenty of full reviews so i'll keep it brief and focus on a few things that didn't get much attention.
-                          
-                          Background for reference: hand size: 20x10cm, preferred grip style: relaxed claw. Main mice: gpw, zowie s2 and ec2. Game genre: FPS (CSGO, black squad, valorant). Tried or designed over 60 mice shapes in search of an ideal one.
-                          
-                          === Shape:
-                          
-                          ++ The side slant (about 7 degrees at the grip) feels quite more natural than the gpw's slightly negative slant of 1-2degrees (inverted slant).
-                          
-                          +The hump is a lot flatter feeling (fk1 style) than the hump on logitech GPW, so the palm "rests" on that hump rather than grips it. As a result, it might appeal more to a fingertip-claw grip style especially with the slanted sides While gpw tends to favor relaxed claw and palm grip.
-                          
-                          +Button groves are good, though they might be better slightly less off-centered
-                          
-                          -- The side curvature is hourglass shaped. It felt a bit odd for my grip style (i rest my ring and pinky on the middle- front section) in my experience, fully flush, straight, and slightly slanted sides like on the steelseries aerox/rival 110 provide the best comfort-control ratio. Agressive claw/fingertip is fine while resting the pinky finger on the back of the sides, without using the flaring front. (Don't get me wrong: it feels okay to use in relaxed claw and i did perform very well with it, it just feels like a sub optimal shape choice that needs getting used to.) Maybe they made this trade to accomodate more hand sizes but that also means it would not feel perfect for most.
-                          
-                          === Build quality:
-                          
-                          ++ Overall build quality is solid. No creaking, no plastic squeak when pressing main buttons like it was sometimes the case with the viper mini.
-                          
-                          ++ Optical switches feel slightly different but they're fine. I don't think it's so bad as to keep someone from liking this mouse.
-                          
-                          ++ Weight is just right for a wireless mouse this size
-                          
-                          ++ Coating is a bit rough textured, but most of the grip happens on the rubber sides anyway.
-                          
-                          ++ Sensor is flawless.
-                          
-                          ++ Scroll wheel is perfect.
-                          
-                          ++ Feet are great.
-                          
-                          +Side buttons are recessed and hard to hit by accident. But also harder to reach on the go as with something like zowie s2's huge side buttons. I personally never use them so it's a welcome change.
-                          
-                          +Rubber sides do feel different but they didnt make much of a difference in use. It reliefs some pressure on the fingers and will prevent plastic hurting over long use sessions. I have concerns about how well it will hold with time (some rubbers fall apart with time, let alone mechanical stress, i'll just believe razer used a high quality rubber there)
-                          
-                          -- The rubber is slightly raised, there is a slight gap between the mousepad and the rubber that can be gripped and it can be noticeable if you grip the mouse low with your thumb. (Its the same problem with g403 but much less noticeable).
-                          
-                          -- Rubber prevents side grips from sticking unless using rubber specific adhesives
-                          
-                          -- The squared ptfe foot around the sensor has slightly sticky edges that attracts dust hair and it eventually gets inside the sensor hole. (It only happend two to three times over a month use period; maybe because the stickers are new?)
-                          
-                          === Battery/charging:
-                          
-                          ++ Battery life is great. It holds for two weeks under moderate to heavy use. Edit: since this surprised some people, i used rgb off but also turned off the mouse instezd of letting it idle, this can save 100 hours of idle power use weekly (if you count 10hours daily use). But further battery cycles might be necessary to objectively have a saying on this matter)
-                          
-                          ++ The charging dock's implementation is flawless. It's very practical and looks sleek.
-                          
-                          -- The charging port on the front of the mouse can't accomodate a magnetic usb charging cable as it is positioned low and deep.
-                          
-                          -- Power on switch is awkwardly positioned and sized. I'm used to gpw and the switch is large, and switching direction is natural so powering on and off quickly with one hand is possible. Viper powering on/off needs two hands.
-                          """,
-                UserName = "azami88m"
-            }
+            // new()
+            // {
+            //     Id = Guid.Parse("03e3827d-36d2-474f-ab76-7655833b090f"),
+            //     ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
+            //     Comment = """
+            //               Yup pretty flat, very fk1 like at the hump. Some people prefer the extra freedom and it was definitely interesting to try out.
+            //               
+            //               I already had the software installed for the mini so yeah pretty heavy but seeing how sophisticated it is and common to all razer peripherals it's acceptable i think.
+            //               """,
+            //     UserName = "azami88n"
+            // },
+            // new()
+            // {
+            //     Id = Guid.Parse("E7F7AFE2-7172-430C-A503-D55D84C11131"),
+            //     ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
+            //     Comment = """
+            //               Battery life is great? Are you sure? Been using one here for two weeks and well..after a day or two of only using it a few hours, it loses quite abit.
+            //               
+            //               I'm down to 55% after using the mouse for only a few hours. I have RGB disabled and Low Power Mode set to 100.
+            //               
+            //               This isn't my first either, I got another one and it's similar.
+            //               
+            //               The mouse does go to sleep, as it's wakeup is very noticble.
+            //               
+            //               I kinda think it's a sub optimal shape, but I'm getting used to it as well..and not impressed.
+            //               
+            //               my G Pro could go an entire month with medium gaming and only be at around 15-20% by then.
+            //               
+            //               My Razer, which I charge frequently due to the dock, is just...pathetic.
+            //               """,
+            //     UserName = "Mkilbride"
+            // },         
+            // new()
+            // {
+            //     Id = Guid.Parse("88DE3171-AB8A-49E7-A854-A5A77A4D94F7"),
+            //     ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
+            //     Comment = """
+            //               The quality of the Viper Ultimate is noticeably higher than the wired version for anyone who loves the shape and not the price. It may have just been my copy but the wired Viper wasn't balanced and had a slight wobble when flat on the desk. My wired Viper also would randomly cut out for a split second three or four times a week with only a few months of use.
+            //               
+            //               The Viper Ultimate is the best wireless mouse I've tested though, feels great, looks great, performs as expected.
+            //               """,
+            //     UserName = "No_Specific2566"
+            // },
+            // new()
+            // {
+            //     Id = Guid.Parse("33950F44-8439-456A-ABCE-40D4C10A24CD"),
+            //     ProductId = Guid.Parse("438e4b3c-c641-4a03-ae6b-5091b1b436ea"),
+            //     Comment = """
+            //               Huge thanks to Razer and to u/Razer-Right for providing me this sample free of charge. This review will be my own toughts. This mouse has received plenty of full reviews so i'll keep it brief and focus on a few things that didn't get much attention.
+            //               
+            //               Background for reference: hand size: 20x10cm, preferred grip style: relaxed claw. Main mice: gpw, zowie s2 and ec2. Game genre: FPS (CSGO, black squad, valorant). Tried or designed over 60 mice shapes in search of an ideal one.
+            //               
+            //               === Shape:
+            //               
+            //               ++ The side slant (about 7 degrees at the grip) feels quite more natural than the gpw's slightly negative slant of 1-2degrees (inverted slant).
+            //               
+            //               +The hump is a lot flatter feeling (fk1 style) than the hump on logitech GPW, so the palm "rests" on that hump rather than grips it. As a result, it might appeal more to a fingertip-claw grip style especially with the slanted sides While gpw tends to favor relaxed claw and palm grip.
+            //               
+            //               +Button groves are good, though they might be better slightly less off-centered
+            //               
+            //               -- The side curvature is hourglass shaped. It felt a bit odd for my grip style (i rest my ring and pinky on the middle- front section) in my experience, fully flush, straight, and slightly slanted sides like on the steelseries aerox/rival 110 provide the best comfort-control ratio. Agressive claw/fingertip is fine while resting the pinky finger on the back of the sides, without using the flaring front. (Don't get me wrong: it feels okay to use in relaxed claw and i did perform very well with it, it just feels like a sub optimal shape choice that needs getting used to.) Maybe they made this trade to accomodate more hand sizes but that also means it would not feel perfect for most.
+            //               
+            //               === Build quality:
+            //               
+            //               ++ Overall build quality is solid. No creaking, no plastic squeak when pressing main buttons like it was sometimes the case with the viper mini.
+            //               
+            //               ++ Optical switches feel slightly different but they're fine. I don't think it's so bad as to keep someone from liking this mouse.
+            //               
+            //               ++ Weight is just right for a wireless mouse this size
+            //               
+            //               ++ Coating is a bit rough textured, but most of the grip happens on the rubber sides anyway.
+            //               
+            //               ++ Sensor is flawless.
+            //               
+            //               ++ Scroll wheel is perfect.
+            //               
+            //               ++ Feet are great.
+            //               
+            //               +Side buttons are recessed and hard to hit by accident. But also harder to reach on the go as with something like zowie s2's huge side buttons. I personally never use them so it's a welcome change.
+            //               
+            //               +Rubber sides do feel different but they didnt make much of a difference in use. It reliefs some pressure on the fingers and will prevent plastic hurting over long use sessions. I have concerns about how well it will hold with time (some rubbers fall apart with time, let alone mechanical stress, i'll just believe razer used a high quality rubber there)
+            //               
+            //               -- The rubber is slightly raised, there is a slight gap between the mousepad and the rubber that can be gripped and it can be noticeable if you grip the mouse low with your thumb. (Its the same problem with g403 but much less noticeable).
+            //               
+            //               -- Rubber prevents side grips from sticking unless using rubber specific adhesives
+            //               
+            //               -- The squared ptfe foot around the sensor has slightly sticky edges that attracts dust hair and it eventually gets inside the sensor hole. (It only happend two to three times over a month use period; maybe because the stickers are new?)
+            //               
+            //               === Battery/charging:
+            //               
+            //               ++ Battery life is great. It holds for two weeks under moderate to heavy use. Edit: since this surprised some people, i used rgb off but also turned off the mouse instezd of letting it idle, this can save 100 hours of idle power use weekly (if you count 10hours daily use). But further battery cycles might be necessary to objectively have a saying on this matter)
+            //               
+            //               ++ The charging dock's implementation is flawless. It's very practical and looks sleek.
+            //               
+            //               -- The charging port on the front of the mouse can't accomodate a magnetic usb charging cable as it is positioned low and deep.
+            //               
+            //               -- Power on switch is awkwardly positioned and sized. I'm used to gpw and the switch is large, and switching direction is natural so powering on and off quickly with one hand is possible. Viper powering on/off needs two hands.
+            //               """,
+            //     UserName = "azami88m"
+            // }
         };
 
         await appDbContext.Feedbacks.AddRangeAsync(customersFeedbacks);
