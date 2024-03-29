@@ -11,6 +11,5 @@ public record FeedbackAnalysisResultCreatedEvent : EventBase
     /// <summary>
     /// Created feedback analysis result
     /// </summary>
-    public FeedbackAnalysisResult FeedbackAnalysisResults { get; set; }
-
+    public FeedbackAnalysisResult FeedbackAnalysisResult { get; init; } = default!;
 }

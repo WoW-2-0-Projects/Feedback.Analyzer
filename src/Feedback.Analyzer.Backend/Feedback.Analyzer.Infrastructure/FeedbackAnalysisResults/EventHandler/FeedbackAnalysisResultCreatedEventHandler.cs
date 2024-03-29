@@ -1,8 +1,10 @@
-﻿using Feedback.Analyzer.Application.FeedbackAnalysisResults.Event;
+﻿using Feedback.Analyzer.Application.Common.EventBus.Brokers;
+using Feedback.Analyzer.Application.FeedbackAnalysisResults.Event;
+using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Models;
 using Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Services;
 using Feedback.Analyzer.Domain.Common.Events;
+using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Entities;
-using Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
 using Feedback.Analyzer.Persistence.Caching.Brokers;
 
 namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisResults.EventHandler;
@@ -12,22 +14,52 @@ namespace Feedback.Analyzer.Infrastructure.FeedbackAnalysisResults.EventHandler;
 /// </summary>
 public class FeedbackAnalysisResultCreatedEventHandler(
     ICacheBroker cacheBroker,
-    MassTransitEventBusBroker massTransitEventBusBroker,
-    IFeedbackAnalysisWorkflowResultService feedbackAnalysisWorkflowResultService) :
-    EventHandlerBase<FeedbackAnalysisResultCreatedEvent>
+    IEventBusBroker eventBusBroker,
+    IFeedbackAnalysisWorkflowResultService feedbackAnalysisWorkflowResultService
+) : EventHandlerBase<FeedbackAnalysisResultCreatedEvent>
 {
     protected override async ValueTask HandleAsync(FeedbackAnalysisResultCreatedEvent @event, CancellationToken cancellationToken)
     {
-        cacheBroker.SetAsync(@event.FeedbackAnalysisResults.Id.ToString(), @event.FeedbackAnalysisResults);
+        // Get feedback analysis workflow result progress from cache
+        var workflowResultProgress = await cacheBroker.GetOrSetAsync(
+            $"{@event.FeedbackAnalysisResult.FeedbackAnalysisWorkflowResultId}-{CacheConstants.WorkflowResultCacheKey}",
+            async () =>
+            {
+                if (!await cacheBroker.TryGetAsync(
+                        @event.FeedbackAnalysisResult.FeedbackAnalysisWorkflowResultId.ToString(),
+                        out FeedbackAnalysisWorkflowResult? workflowResult,
+                        cancellationToken
+                    ) || workflowResult is null)
+                    throw new InvalidOperationException("Failed to update analyzed feedbacks count, workflow result isn't set in cache");
 
-        var workflowResult =await cacheBroker.GetAsync<FeedbackAnalysisWorkflowResult
-            >(@event.Id.ToString(), cancellationToken);
+                return new FeedbackAnalysisWorkflowResultProgress(workflowResult);
+            },
+            cancellationToken: cancellationToken
+        );
 
-        var countOfAnalysedFeedbacks = workflowResult.FeedbackAnalysisResults.Count();
-        
-        if (Convert.ToUInt32(countOfAnalysedFeedbacks) == workflowResult.FeedbacksCount)
+        // Increment count of analysed feedbacks
+        workflowResultProgress.AnalyzedFeedbacksCount++;
+
+        // Check if all feedbacks have been analysed
+        if (workflowResultProgress.FeedbacksCount == workflowResultProgress.AnalyzedFeedbacksCount)
         {
-            await massTransitEventBusBroker.PublishLocalAsync(new FeedbackAnalysisResultUpdateEvent { WorkflowResult = workflowResult });
+            // Remove workflow result progress from cache
+            await cacheBroker.DeleteAsync(
+                $"{@event.FeedbackAnalysisResult.FeedbackAnalysisWorkflowResultId}-{CacheConstants.WorkflowResultCacheKey}",
+                cancellationToken: cancellationToken
+            );
+
+            // Publish feedback analysis workflow result update event
+            await eventBusBroker.PublishAsync(
+                new FeedbackAnalysisWorkflowResultUpdateEvent(workflowResultProgress.WorkflowResultId),
+                cancellationToken
+            );
         }
+        else
+            await cacheBroker.SetAsync(
+                $"{@event.FeedbackAnalysisResult.FeedbackAnalysisWorkflowResultId}-{CacheConstants.WorkflowResultCacheKey}",
+                workflowResultProgress,
+                cancellationToken: cancellationToken
+            );
     }
 }
