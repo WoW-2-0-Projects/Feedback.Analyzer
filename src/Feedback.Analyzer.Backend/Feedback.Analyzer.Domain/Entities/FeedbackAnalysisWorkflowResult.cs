@@ -15,7 +15,7 @@ public class FeedbackAnalysisWorkflowResult : Entity
     /// <summary>
     /// Gets or sets the count of feedbacks analyzed in the workflow.
     /// </summary>
-    public uint FeedbacksCount { get; set; }
+    public uint FeedbacksCount { get; init; }
 
     /// <summary>
     /// Gets or sets the start time of the workflow.
