@@ -23,8 +23,16 @@ public class FeedbackAnalysisWorkflowResultUpdateEventHandler(IFeedbackAnalysisW
         // Calculate processed and failed feedbacks count
         workflowResult.ProcessedFeedbacksCount =
             (uint)workflowResult.FeedbackAnalysisResults.Count(result => result.AnalysisResult.Status == WorkflowStatus.Completed);
-        
+
         workflowResult.FailedFeedbacksCount =
             (uint)workflowResult.FeedbackAnalysisResults.Count(result => result.AnalysisResult.Status == WorkflowStatus.Failed);
+
+        // TODO : Calculate feedback analysis results stats
+
+        // TODO : Calculate feedback analysis result points
+
+        // TODO : Update workflow status
+
+        await feedbackAnalysisWorkflowResultService.UpdateAsync(workflowResult, cancellationToken: cancellationToken);
     }
 }
