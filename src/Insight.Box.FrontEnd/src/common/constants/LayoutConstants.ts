@@ -15,6 +15,15 @@ export class LayoutConstants {
     public static readonly Started  = 'Started';
     public static readonly Completed  = 'Completed';
 
+    /* Organization */
+
+    public static readonly CreateOrganization = 'Create an Organization';
+    public static readonly EditOrganization = 'Edit organization ';
+    public static readonly OrganizationName = 'Organization name';
+    public static readonly OrganizationDescription = 'Organization description';
+    public static readonly EnterOrganizationName = 'Enter organization name';
+    public static readonly EnterOrganizationDescription = 'Enter organization description';
+
     /* Products */
 
     public static readonly Product = 'Product';
@@ -25,21 +34,26 @@ export class LayoutConstants {
     public static readonly EnterProductName = 'Enter product name';
     public static readonly EnterProductDescription = 'Enter product description';
 
-    /* Organization */
-
-    public static readonly CreateOrganization = 'Create an Organization';
-    public static readonly EditOrganization = 'Edit organization ';
-    public static readonly OrganizationName = 'Organization name';
-    public static readonly OrganizationDescription = 'Organization description';
-    public static readonly EnterOrganizationName = 'Enter organization name';
-    public static readonly EnterOrganizationDescription = 'Enter organization description';
-    public static readonly Status  = 'Status';
-
     /* Feedbacks */
+    public static readonly Username  = 'Username';
+    public static readonly Comment  = 'Comment';
     public static readonly Processed  = 'Processed';
+    public static readonly AnalysisTime  = 'Analysis Time';
+    public static readonly ModelExecutionTime  = 'Model Execution Time';
+    public static readonly FeedbackAnalysisResult  = 'Feedback Analysis Result';
+
+    /* Feedback Analysis */
+    public static readonly Status  = 'Status';
     public static readonly Failed  = 'Failed';
+    public static readonly Relevance  = 'Relevance';
     public static readonly Relevant  = 'Relevant';
     public static readonly NonRelevant  = 'Non-Relevant';
+    public static readonly Compliments  = 'Compliments';
+    public static readonly Complaints  = 'Complaints';
+    public static readonly Suggestions  = 'Suggestions';
+    public static readonly Questions  = 'Questions';
+    public static readonly Opinion  = 'Opinion';
+    public static readonly Ideas  = 'Ideas';
 
     /* Prompts */
     public static readonly CreatePrompt = 'Create a prompt';

@@ -27,7 +27,7 @@ public record WorkflowContext
     /// <summary>
     /// Gets execution histories grouped by prompt category Id
     /// </summary>
-    public IList<IGrouping<Guid, PromptExecutionHistory>> Histories { get; set; } =
+    public List<IGrouping<Guid, PromptExecutionHistory>> Histories { get; set; } =
         Enumerable.Empty<PromptExecutionHistory>().GroupBy(x => x.Id).ToList();
 
     /// <summary>

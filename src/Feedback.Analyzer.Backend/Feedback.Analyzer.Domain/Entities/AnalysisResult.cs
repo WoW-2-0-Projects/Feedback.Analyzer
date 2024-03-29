@@ -21,6 +21,16 @@ public class AnalysisResult
     /// Gets or sets the ID of the history associated with the analysis result.
     /// </summary>
     public Guid? HistoryId { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the analysis time in milliseconds.
+    /// </summary>
+    public TimeSpan ModelExecutionDuration { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the analysis time in milliseconds
+    /// </summary>
+    public TimeSpan AnalysisDuration { get; set; }
 
     /// <summary>
     /// Navigation History property.

@@ -32,14 +32,25 @@ const styles = computed(() => {
     let styles = '';
 
     switch (props.type) {
-        case ActionType.Success:
-            styles += ' bg-successColor text-successColor border-successColor';
-            break;
-        case ActionType.Danger:
-            styles += ' bg-dangerColor text-dangerColor';
+        case ActionType.Primary:
+            styles += ' bg-bg-primaryColor text-bg-primaryColor';
+            if(props.showBorder) styles += ' border-bg-primaryColor';
             break;
         case ActionType.Secondary:
             styles += ' bg-tertiaryContentColor text-tertiaryContentColor';
+            if(props.showBorder) styles += ' border-tertiaryContentColor';
+            break;
+        case ActionType.Danger:
+            styles += ' bg-dangerColor text-dangerColor';
+            if(props.showBorder) styles += ' border-dangerColor';
+            break;
+        case ActionType.Success:
+            styles += ' bg-successColor text-successColor';
+            if(props.showBorder) styles += ' border-successColor';
+            break;
+        case ActionType.Processing:
+            styles += ' bg-processingColor text-processingColor';
+            if(props.showBorder) styles += ' border-processingColor';
             break;
     }
 
