@@ -12,13 +12,9 @@ namespace Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
 /// <param name="mediator">The mediator instance to be used for event local publication.</param>
 public class MassTransitEventBusBroker(IBus bus, IPublisher mediator) : IEventBusBroker
 {
-    public ValueTask PublishLocalAsync<TEvent>(TEvent @event) where TEvent : EventBase
-    {
-        return new ValueTask(mediator.Publish(@event));
-    }
+    public async ValueTask PublishLocalAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : EventBase =>
+        await mediator.Publish(@event, cancellationToken);
 
-    public async ValueTask PublishAsync<TEvent>(TEvent @event) where TEvent : EventBase
-    {
-        await bus.Publish(@event);
-    }
+    public async ValueTask PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : EventBase =>
+        await bus.Publish(@event, cancellationToken);
 }
