@@ -5,7 +5,7 @@
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIdeasandQuestions : Migration
+    public partial class UpdateFeedbackAnalysisResult : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Feedback.Analyzer.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240326092822_Add Ideas and Questions")]
-    partial class AddIdeasandQuestions
+    [Migration("20240329093740_Update FeedbackAnalysisResult")]
+    partial class UpdateFeedbackAnalysisResult
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
