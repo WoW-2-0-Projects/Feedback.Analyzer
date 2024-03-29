@@ -4,7 +4,6 @@ using Feedback.Analyzer.Api.Data;
 using Feedback.Analyzer.Api.Middlewares;
 using Feedback.Analyzer.Application.Clients.Services;
 using Feedback.Analyzer.Application.Common.AnalysisWorkflows.Services;
-using Feedback.Analyzer.Application.Common.Caching;
 using Feedback.Analyzer.Application.Common.EventBus.Brokers;
 using Feedback.Analyzer.Application.Common.Identity.Services;
 using Feedback.Analyzer.Application.Common.PromptCategory.Services;
@@ -28,6 +27,7 @@ using Feedback.Analyzer.Domain.Constants;
 using Feedback.Analyzer.Domain.Extensions;
 using Feedback.Analyzer.Infrastructure.Clients.Services;
 using Feedback.Analyzer.Infrastructure.Common.AnalysisWorkflows.Services;
+using Feedback.Analyzer.Infrastructure.Common.Caching;
 using Feedback.Analyzer.Infrastructure.Common.EventBus.Brokers;
 using Feedback.Analyzer.Infrastructure.Common.EventBus.Extensions;
 using Feedback.Analyzer.Infrastructure.Common.Identity.Services;
@@ -125,10 +125,10 @@ public static partial class HostConfiguration
         builder.Services.Configure<CacheSettings>(builder.Configuration.GetSection(nameof(CacheSettings)));
 
         // Register the Memory Cache service.
-        builder.Services.AddMemoryCache();
+        builder.Services.AddLazyCache();
         
         // Register the Memory Cache as a singleton.
-        builder.Services.AddSingleton<ICacheBroker, MemoryCacheBroker>();
+        builder.Services.AddSingleton<ICacheBroker, LazyMemoryCacheBroker>();
         
         // Register middlewares
         builder.Services.AddSingleton<AccessTokenValidationMiddleware>();
@@ -175,14 +175,15 @@ public static partial class HostConfiguration
     /// <returns></returns>
     private static WebApplicationBuilder AddPersistence(this WebApplicationBuilder builder)
     {
-        // define db connection string based on runtime environment
+        // Register settings
+        builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(nameof(JwtSettings)));
+        
+        // Define db connection string based on runtime environment
         var dbConnectionString = builder.Environment.IsProduction()
             ? Environment.GetEnvironmentVariable(DataAccessConstants.DbConnectionString)
             : builder.Configuration.GetConnectionString(DataAccessConstants.DbConnectionString);
         
-        // register ef interceptors
-
-        //register db context
+        // Register db context
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
             options.UseNpgsql(dbConnectionString);

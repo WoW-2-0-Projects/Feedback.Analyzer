@@ -8,11 +8,13 @@ public class FeedbackAnalysisWorkflowResultConfiguration : IEntityTypeConfigurat
 {
     public void Configure(EntityTypeBuilder<FeedbackAnalysisWorkflowResult> builder)
     {
-        
         builder
             .HasOne<FeedbackAnalysisWorkflow>(result => result.Workflow)
             .WithMany(workflow => workflow.Results)
             .HasForeignKey(result => result.WorkflowId);
-        
+
+        builder.Property(result => result.FeedbacksCount).HasColumnType("integer");
+        builder.Property(result => result.ProcessedFeedbacksCount).HasColumnType("integer");
+        builder.Property(result => result.FailedFeedbacksCount).HasColumnType("integer");
     }
 }
