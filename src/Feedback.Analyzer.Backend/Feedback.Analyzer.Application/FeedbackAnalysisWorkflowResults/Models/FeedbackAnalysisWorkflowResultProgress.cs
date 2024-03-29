@@ -15,10 +15,10 @@ public struct FeedbackAnalysisWorkflowResultProgress(FeedbackAnalysisWorkflowRes
     /// <summary>
     /// Gets the total number of feedbacks.
     /// </summary>
-    public ulong FeedbacksCount { get; init; } = workflowResult.FeedbacksCount;
+    public uint FeedbacksCount { get; init; } = workflowResult.FeedbacksCount;
 
     /// <summary>
     /// Gets or sets the number of feedbacks that have been analysed.
     /// </summary>
-    public ulong AnalyzedFeedbacksCount { get; set; } = default;
+    public uint AnalyzedFeedbacksCount { get; set; } = default;
 }
