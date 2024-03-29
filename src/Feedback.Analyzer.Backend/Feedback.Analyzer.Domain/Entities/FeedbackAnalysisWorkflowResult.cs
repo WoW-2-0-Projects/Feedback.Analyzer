@@ -35,12 +35,13 @@ public class FeedbackAnalysisWorkflowResult : Entity
     /// <summary>
     /// Gets or sets the count of feedbacks processed in the workflow.
     /// </summary>
-    public uint ProcessedFeedbacksCount { get; set; } = default!;
+    public uint ProcessedFeedbacksCount { get; set; }
 
     /// <summary>
     /// Gets or sets the count of feedbacks successfully processed in the workflow.
     /// </summary>
-    public uint FailedFeedbacksCount { get; set; } = default!;
+    public uint FailedFeedbacksCount { get; set; }
+    public ICollection<FeedbackAnalysisWorkflowResultStats> Statistics { get; set; } = default!;
 
     /// <summary>
     /// Gets or sets the collection of feedback analysis results associated with this workflow result.
