@@ -7,17 +7,17 @@ export class AnalysisPrompt {
     /*
     * The ID of the prompt.
     */
-    id!: string | null;
+    id!: string;
 
     /*
     * The type of feedback analysis prompt.
     */
-    type: FeedbackAnalysisPromptCategory;
+    type!: FeedbackAnalysisPromptCategory;
 
     /*
     * The text content of the prompt.
     */
-    prompt: string;
+    prompt: string = '';
 
     /*
     * The version number of the prompt.
@@ -44,9 +44,7 @@ export class AnalysisPrompt {
     */
     modifiedTime!: Date;
 
-    constructor(type: FeedbackAnalysisPromptCategory, prompt: string) {
-        this.type = type;
-        this.prompt = prompt ?? '';
+    constructor() {
         this.version = 0;
         this.revision = 0;
     }

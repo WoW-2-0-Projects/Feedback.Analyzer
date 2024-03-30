@@ -21,7 +21,7 @@ const documentService = new DocumentService();
 
 const props = defineProps({
     chips: {
-        type: Array as PropType<ChipData>,
+        type: Array<ChipData>,
         required: true
     },
     displayLimit: {
@@ -63,7 +63,7 @@ const calculate = () => {
     for (index = 0; index < children.length - (counterChip.value ? 1 : 0); index++) {
         // Calculate sum of child width with 4px gap between them
         if (index >= props.displayLimit) break;
-        const childWidth = documentService.getWidth(children[index]) + 4;
+        const childWidth = documentService.getWidth(children[index] as HTMLElement) + 4;
         totalWidth += childWidth;
 
         // If the total width exceeds the container width, increment the row count

@@ -31,7 +31,7 @@
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
-import {ref} from "vue";
+import {type PropType, ref} from "vue";
 import type {Product} from "@/modules/products/models/Product";
 import {ActionType} from "@/common/components/actions/ActionType";
 
@@ -39,7 +39,7 @@ const isHover = ref<boolean>(false);
 
 const props = defineProps({
     product: {
-        type: Object as () => Product,
+        type: Object as PropType<Product>,
         required: true
     }
 });

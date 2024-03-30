@@ -6,19 +6,16 @@
         <input class="theme-input-bg"/>
 
         <!-- Workflows search bar -->
-        <workflows-search-bar :workflowsQuery="workflowsQuery" @addWorkflow="openWorkflowModal"/>
+        <workflows-search-bar :workflowsQuery="workflowsQuery" @addWorkflow="openWorkflowModal(null)"/>
 
         <!-- Workflows gallery -->
-        <infinite-scroll @onScroll="onScroll"
-                         :contentChangeSource="workflowsChangeSource"
-                         class="mt-20 flex flex-wrap justify-center gap-5">
-
+        <div class="mt-10">
             <workflow-card v-for="workflow in actualWorkflows" :workflow="workflow" :key="workflow.id"
                            @edit="openWorkflowModal" @delete="onDeleteWorkflowAsync"
                            @openFeedbackResult="openFeedbackResultModal"
             />
+        </div>
 
-        </infinite-scroll>
 
         <!-- Workflow modal -->
         <workflow-modal :isActive="isWorkflowModalActive" :isCreate="isWorkflowCreate"
@@ -41,7 +38,6 @@ import WorkflowsSearchBar from "@/modules/workflows/components/WorkflowsSearchBa
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import {FeedbackAnalysisWorkflowFilter} from "@/modules/workflows/models/FeedbackAnalysisWorkflowFilter";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
-import {FeedbackAnalysisWorkflow} from "@/modules/workflows/models/FeedbackAnalysisWorkflow";
 import {Query} from "@/infrastructure/models/query/Query";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import WorkflowModal from "@/modules/workflows/components/WorkflowModal.vue";
@@ -50,24 +46,23 @@ import type {Product} from "@/modules/products/models/Product";
 import {ProductFilter} from "@/modules/products/models/ProductFilter";
 import {UpdateFeedbackAnalysisWorkflowCommand} from "@/modules/workflows/models/UpdateFeedbackAnalysisWorkflowCommand";
 import WorkflowCard from "@/modules/workflows/components/WorkflowCard.vue";
-import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
-import {NotificationSource} from "@/infrastructure/models/notifications/Action";
 import {WorkflowType} from "@/modules/workflows/models/WorkflowType";
-import WorkflowResultCard from "@/modules/workflows/components/WorkflowResultCard.vue";
 import FeedbackAnalysisResultModal from "@/modules/feedbackAnalysisResults/components/FeedbackAnalysisResultModal.vue";
 import type {FeedbackAnalysisResult} from "@/modules/feedbackAnalysisResults/models/FeedbackAnalysisResult";
-import {WorkflowStatus} from "@/modules/workflows/models/WorkflowStatus";
+import {NotificationSource} from "@/infrastructure/models/delegates/NotificationSource";
+import {FeedbackAnalysisWorkflow} from "@/modules/workflows/models/FeedbackAnalysisWorkflow";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 const documentService = new DocumentService();
 
-const productsQuery = ref<Query<Product>>(new Query<ProductFilter>(new ProductFilter()));
+const productsQuery = ref<Query<ProductFilter>>(new Query<ProductFilter>(new ProductFilter()));
 const products = ref<Array<Product>>([]);
 
 // Workflow card states
 const workflowsChangeSource = ref<NotificationSource>(new NotificationSource());
 const workflowsQuery = ref<Query<FeedbackAnalysisWorkflowFilter>>(new Query<FeedbackAnalysisWorkflowFilter>(new FeedbackAnalysisWorkflowFilter()));
-const workflows = ref<Array<FeedbackAnalysisWorkflow>>([]);
+const workflows = ref<FeedbackAnalysisWorkflow[]>([]);
+
 const isWorkflowsLoading = ref<boolean>(false);
 const loadNextWorkflows = ref<boolean>(false);
 const actualWorkflows = computed(() => workflows.value.filter(workflow => workflow.type != WorkflowType.Template));
@@ -93,15 +88,15 @@ onBeforeMount(async () => {
 const loadWorkflowsAsync = async () => {
     const response = await insightBoxApiClient.workflows.getAsync(workflowsQuery.value);
     if (response.response) {
-        workflows.value = response.response;
-        workflowsChangeSource.value.updateListeners();
+        workflows.value = response.response!;
+        await workflowsChangeSource.value.updateListenersAsync();
     }
 };
 
 const loadProductsAsync = async () => {
     const response = await insightBoxApiClient.products.getAsync(productsQuery.value);
     if (response.isSuccess) {
-        products.value = response.response;
+        products.value = response.response!;
     }
 };
 
@@ -117,27 +112,21 @@ const openWorkflowModal = (workflowToEdit: FeedbackAnalysisWorkflow | null) => {
     }
 };
 
-const onWorkflowModalSubmit = async (workflow: FeedbackAnalysisWorkflow, baseWorkflow: FeedbackAnalysisWorkflow) => {
+const onWorkflowModalSubmit = async (workflow: FeedbackAnalysisWorkflow, baseWorkflow: FeedbackAnalysisWorkflow | null) => {
     if (isWorkflowCreate.value) {
-        await createWorkflowAsync(workflow, baseWorkflow);
+        await createWorkflowAsync(workflow, baseWorkflow!);
     } else {
         await updateWorkflowAsync(workflow);
     }
 }
 
-/*
- * Creates a prompt
- */
 const createWorkflowAsync = async (workflow: FeedbackAnalysisWorkflow, baseWorkflow: FeedbackAnalysisWorkflow) => {
     isWorkflowsLoading.value = true;
 
     const createWorkflowCommand = new CreateFeedbackAnalysisWorkflowCommand(workflow, baseWorkflow.id);
-    const response = await
-        insightBoxApiClient.workflows.createAsync(createWorkflowCommand);
+    const response = await insightBoxApiClient.workflows.createAsync(createWorkflowCommand);
 
-    if (response.response) {
-        workflows.value.push(response.response);
-    }
+    if (response.response) workflows.value.push(response.response);
 
     isWorkflowsLoading.value = false;
 };
@@ -154,8 +143,8 @@ const updateWorkflowAsync = async (workflow: FeedbackAnalysisWorkflow) => {
     const response = await
         insightBoxApiClient.workflows.updateAsync(updateWorkflowCommand);
 
-    if (response.response) {
-        const workflowIndex = workflows.value.findIndex(w => w.id === response.response.id);
+    if (response.response !== null) {
+        const workflowIndex = workflows.value.findIndex(w => w.id === response.response!.id);
         if (workflowIndex !== -1) {
             workflows.value[workflowIndex] = response.response;
         } else

@@ -7,9 +7,8 @@
         <div class="flex gap-5">
 
             <form-input :type="FormInputType.Text" :modelValue="searchKeyword"
-                        :size="ActionComponentSize.ExtraSmall"
-                        class="flex-grow"
-                        @update:modelValue="() => $emit('update:modelValue', $event)"
+                        :size="ActionComponentSize.ExtraSmall" class="flex-grow"
+                        @update:modelValue="value => $emit('update:modelValue', value)"
                         :label="LayoutConstants.Search" :placeholder="LayoutConstants.SearchHere"/>
 
             <app-button class="w-fit" :type="isEditingDisabled ? ActionType.Secondary : ActionType.Danger"
@@ -45,7 +44,7 @@
 
 <script setup lang="ts">
 
-import {defineEmits, defineProps, type PropType, ref, watch} from "vue";
+import {type PropType, ref, watch} from "vue";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import FormInput from "@/common/components/formInput/FormInput.vue";
 import FormTextArea from "@/common/components/formTextArea/FormTextArea.vue";
@@ -54,8 +53,9 @@ import {ActionComponentSize} from "@/common/components/formInput/ActionComponent
 import {FormInputType} from "@/common/components/formInput/FormInputType";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import {TextContentSnapshotQueue} from "@/infrastructure/models/textContent/TextContentSnapshotQueue";
-import  {Action} from "@/infrastructure/models/notifications/Action";
+import  {ParameterizedAction} from "@/infrastructure/models/delegates/ParameterizedAction";
 import {ActionType} from "@/common/components/actions/ActionType";
+import type {Action} from "@/infrastructure/models/delegates/Action";
 
 const textSnapshotService = ref<TextContentSnapshotQueue>(new TextContentSnapshotQueue());
 

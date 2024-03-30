@@ -11,62 +11,62 @@ export class FeedbackAnalysisResult {
     /**
      * The unique identifier for the feedback analysis result.
      */
-    public id: string;
+    public id!: string;
 
     /**
      * A value indicating whether the feedback is relevant.
      */
-    public isRelevant: boolean;
+    public isRelevant!: boolean;
 
     /**
      * The overall opinion type of the feedback.
      */
-    public opinion: OpinionType;
+    public opinion!: OpinionType;
 
     /**
      * An array of recognized languages in the feedback content.
      */
-    public languages: string[];
+    public languages!: string[];
 
     /**
      * The status of the analysis.
      */
-    public status: WorkflowStatus;
+    public status!: WorkflowStatus;
 
     /**
      * An array of positive points mentioned in the feedback.
      */
-    public positiveOpinionPoints: string[];
+    public positiveOpinionPoints!: string[];
 
     /**
      * An array of negative points mentioned in the feedback.
      */
-    public negativeOpinionPoints: string[];
+    public negativeOpinionPoints!: string[];
 
     /*
      * Customer ideas about the product.
      */
-    public ideas: string[];
+    public ideas!: string[];
 
     /*
      * Customer questions about the product.
      */
-    public questions: string[];
+    public questions!: string[];
 
     /*
      * The time spend to execute the semantic analysis model
      */
-    public modelExecutionDurationInMilliseconds: number;
+    public modelExecutionDurationInMilliseconds!: number;
 
     /**
      * The time taken to analyze the feedback in milliseconds.
      */
-    public analysisDurationInMilliseconds: number;
+    public analysisDurationInMilliseconds!: number;
 
     /**
      * The customer feedback associated with this analysis result.
      */
-    public customerFeedback: CustomerFeedback;
+    public customerFeedback!: CustomerFeedback;
 
     public map() {
         this.customerFeedback = plainToClass(CustomerFeedback, this.customerFeedback);

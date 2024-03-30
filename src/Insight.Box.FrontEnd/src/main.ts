@@ -10,7 +10,6 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from "@/infrastructure/router/Router";
-import {AuthenticationService} from "@/modules/accounts/services/AuthenticationService";
 
 const app = createApp(App);
 
@@ -19,9 +18,5 @@ app.use(createPinia());
 
 // Set router
 app.use(router);
-
-// Set account service
-const authService = new AuthenticationService();
-await authService.setCurrentUser();
 
 app.mount('#app');

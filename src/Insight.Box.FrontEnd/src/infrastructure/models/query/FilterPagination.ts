@@ -5,7 +5,7 @@ export class FilterPagination {
     /*
      * Page size
      */
-    public pageSize: numbrer;
+    public pageSize: number;
 
     /*
      * Page token
