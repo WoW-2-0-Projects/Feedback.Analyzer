@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 
-import {defineEmits, type PropType} from "vue";
+import {type PropType} from "vue";
 import FormSearchBar from "@/common/components/formSearchBar/FormSearchBar.vue";
 import type {Query} from "@/infrastructure/models/query/Query";
 import type {FeedbackAnalysisWorkflowFilter} from "@/modules/workflows/models/FeedbackAnalysisWorkflowFilter";

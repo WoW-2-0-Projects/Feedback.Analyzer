@@ -73,8 +73,8 @@ const getChartOptions = () => {
                             show: false,
                             label: "Unique visitors",
                             fontFamily: "Inter, sans-serif",
-                            formatter: function (w) {
-                                const sum = w.globals.seriesTotals.reduce((a, b) => {
+                            formatter: function (w:any) {
+                                const sum = w.globals.seriesTotals.reduce((a:any, b:any) => {
                                     return a + b
                                 }, 0)
                                 return '$' + sum + 'k'
@@ -84,7 +84,7 @@ const getChartOptions = () => {
                             show: false,
                             fontFamily: "Inter, sans-serif",
                             offsetY: -20,
-                            formatter: function (value) {
+                            formatter: function (value: any) {
                                 return value + "k"
                             },
                         },
@@ -111,10 +111,14 @@ const getChartOptions = () => {
 }
 
 onMounted(async () => {
+    if(!chartContainer.value) return;
+
     await chartService.render(chartContainer.value, getChartOptions());
 });
 
 onBeforeUnmount(async () => {
+    if(!chartContainer.value) return;
+
     await chartService.remove(chartContainer.value, getChartOptions());
 });
 

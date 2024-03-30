@@ -3,14 +3,14 @@
  */
 import type {RouteLocationNormalized, Router, RouteRecordRaw} from "vue-router";
 import {useRouter} from "vue-router";
-import {NotificationSource} from "@/infrastructure/models/notifications/Action";
+import {ParameterizedNotificationSource} from "@/infrastructure/models/delegates/ParameterizedNotificationSource";
 
 export class RouterService {
 
     constructor() {
     }
 
-    private readonly routeChangeSource = new NotificationSource<RouteLocationNormalized>;
+    private readonly routeChangeSource = new ParameterizedNotificationSource<RouteLocationNormalized>;
     private router!: Router;
 
     /*
@@ -34,6 +34,11 @@ export class RouterService {
      */
     public getRoutes(): Array<RouteRecordRaw> {
         return [
+            {
+                name: 'Home',
+                path: '/',
+                component: () => import('../../../common/views/HomeView.vue')
+            },
             {
                 name: 'Organizations',
                 path: '/organizations',

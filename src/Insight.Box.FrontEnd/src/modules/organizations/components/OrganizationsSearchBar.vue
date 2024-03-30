@@ -33,8 +33,8 @@ const emit = defineEmits<{
     (e : 'addOrganization'): void
 }>();
 
-const selectedFilter = ref<DropDownValue | null>(null);
-const filterDropDownValues = ref<Array<DropDownValue>>([
+const selectedFilter = ref<DropDownValue<string, any> | null>(null);
+const filterDropDownValues = ref<Array<DropDownValue<string, any>>>([
   {key: 'All', value: 'All'},
   {key: 'Active', value: 'Active'},
   {key: 'Inactive', value: 'Inactive'}

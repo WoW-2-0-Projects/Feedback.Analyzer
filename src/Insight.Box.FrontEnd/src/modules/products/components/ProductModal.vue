@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 
-import {defineEmits, type PropType} from 'vue';
+import {type PropType} from 'vue';
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import FormInput from "@/common/components/formInput/FormInput.vue";
