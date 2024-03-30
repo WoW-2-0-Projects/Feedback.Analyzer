@@ -49,7 +49,7 @@ import ExpandIcon from "@/common/components/icons/ExpandIcon.vue";
 
 const props = defineProps({
     values: {
-        type: Array as PropType<Array<DropDownValue>>,
+        type: Array as PropType<Array<DropDownValue<string, any>>>,
         required: true,
         default: []
     },
@@ -58,7 +58,8 @@ const props = defineProps({
         default: ActionComponentSize.Medium
     },
     modelValue: {
-        type: Object as () => DropDownValue | null
+        type: Object as PropType<DropDownValue<string, any> | null>,
+        required: true
     },
     label: {
         type: String,
@@ -114,17 +115,17 @@ const labelStyles = computed(() => {
 const emit = defineEmits(['update:modelValue']);
 
 // Component states
-const searchedOptions = ref<Array<DropDownValue>>(props.values);
+const searchedOptions = ref<Array<DropDownValue<string, any>>>(props.values);
 const searchValue = ref<string>('');
 const isOpen = ref<boolean>(false);
 
 onMounted(() => {
-    searchValue.value = props.modelValue?.key;
+    searchValue.value = props.modelValue?.key ?? '';
 });
 
 // Watcher for search value
 watch(() => [searchValue, props.values], () => searchOption());
-watch(() => props.modelValue, () => searchValue.value = props.modelValue?.key);
+watch(() => props.modelValue, () => searchValue.value = props.modelValue?.key ?? '');
 
 // Filters the options based on the search value
 const searchOption = () => {
@@ -133,7 +134,7 @@ const searchOption = () => {
         return;
     }
 
-    searchedOptions.value = props.values.filter((option) => {
+    searchedOptions.value = props.values.filter((option: DropDownValue<string, any>) => {
         return option.key.toLowerCase().includes(searchValue.value.toLowerCase());
     });
 };
@@ -146,12 +147,12 @@ const onFocusIn = () => {
 };
 
 const onFocusOut = () => {
-    searchValue.value = props.modelValue?.key;
+    searchValue.value = props.modelValue?.key ?? '';
     isFocused.value = false;
     isOpen.value = false;
 };
 
-const onSelected = (value: DropDownValue) => {
+const onSelected = (value: DropDownValue<string, any>) => {
     emit('update:modelValue', value);
     isOpen.value = false;
 }

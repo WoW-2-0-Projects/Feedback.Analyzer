@@ -1,5 +1,5 @@
 import {FilterPagination} from "@/infrastructure/models/query/FilterPagination";
-import {WorkflowType} from "@/modules/prompts/models/WorkflowType";
+import {WorkflowType} from "@/modules/workflows/models/WorkflowType";
 
 /*
  * Represents product filter
@@ -7,7 +7,7 @@ import {WorkflowType} from "@/modules/prompts/models/WorkflowType";
 export class AnalysisWorkflowFilter extends FilterPagination {
 
     /*
-     * Search keyword
+     * Workflow type
      */
     public type!: WorkflowType
 

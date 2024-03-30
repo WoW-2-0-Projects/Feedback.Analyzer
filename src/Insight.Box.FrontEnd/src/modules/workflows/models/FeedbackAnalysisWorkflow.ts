@@ -31,6 +31,11 @@ export class FeedbackAnalysisWorkflow implements IDropDownValue<string, Feedback
      */
     public type: WorkflowType;
 
+    /**
+     * Indicates whether all prompts are set for the workflow.
+     */
+    public allPromptsSet!: boolean;
+
     constructor() {
         this.name = '';
         this.type = WorkflowType.Training;

@@ -47,7 +47,7 @@
 
 
 import ModalBase from "@/common/components/modalBase/ModalBase.vue";
-import {defineEmits, type PropType, ref, watch} from "vue";
+import {type PropType} from "vue";
 import {Organization} from "@/modules/organizations/models/Organization";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import FormInput from "@/common/components/formInput/FormInput.vue";

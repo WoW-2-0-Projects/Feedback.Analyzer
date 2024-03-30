@@ -10,8 +10,6 @@
 <script setup lang="ts">
 
 import {
-    defineProps,
-    defineEmits,
     onMounted,
     onUnmounted,
     ref,
@@ -19,7 +17,7 @@ import {
     triggerRef
 } from 'vue';
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
-import {Action, NotificationSource} from "@/infrastructure/models/delegates/Action";
+import type {NotificationSource} from "@/infrastructure/models/delegates/NotificationSource";
 
 const documentService = new DocumentService();
 const scrollContainer = ref<HTMLDivElement>();
@@ -29,17 +27,12 @@ const emit = defineEmits(['onScroll']);
 const minimumScrollThresholdDistance = ref<number>(0);
 const isLoading = ref<boolean>(false);
 
-const props = defineProps({
-    contentChangeSource: {
-        type: Object as () => NotificationSource,
-        required: false
-    },
-    scrollThresholdDistance: {
-        type: Number as PropType<number>,
-        required: false,
-        default: 0
-    }
-});
+interface Props {
+    contentChangeSource: NotificationSource;
+    scrollThresholdDistance?: number;
+}
+
+const props = defineProps<Props>();
 
 onMounted(() => {
     if (!scrollContainer.value) return;
@@ -76,8 +69,11 @@ const onScroll = () => {
 };
 
 const calculateScrollThreshold = () => {
+    if(!scrollContainer.value) return;
+
     if (minimumScrollThresholdDistance.value == 0 && scrollContainer.value?.children.length > 0) {
-        minimumScrollThresholdDistance.value = 1.5 * documentService.getHeight(scrollContainer.value.children[0]);
+        minimumScrollThresholdDistance.value = 1.5 * documentService.getHeight(scrollContainer.value.children[0] as
+            HTMLElement);
     }
 }
 

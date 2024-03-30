@@ -50,14 +50,13 @@
 
 import ModalBase from "@/common/components/modalBase/ModalBase.vue";
 import {type PropType, ref} from "vue";
-import  {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
-import {LayoutConstants} from "../../../common/constants/LayoutConstants";
+import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
+import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import FormEditor from "@/common/components/formEditor/FormEditor.vue";
-import  {Action} from "@/infrastructure/models/notifications/Action";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ButtonRole} from "@/common/components/appButton/ButtonRole";
 import {ActionType} from "@/common/components/actions/ActionType";
-
+import type {Action} from "@/infrastructure/models/delegates/Action";
 
 const props = defineProps({
     prompt: {

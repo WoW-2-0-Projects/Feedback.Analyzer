@@ -2,6 +2,7 @@
  * Represents the request formatter service.
  */
 import type {Query} from "@/infrastructure/models/query/Query";
+import type {FilterPagination} from "@/infrastructure/models/query/FilterPagination";
 
 export class RequestFormatterService {
 
@@ -21,7 +22,7 @@ export class RequestFormatterService {
     /*
      * Builds query parameters from the given data
      */
-    public buildQueryParams<T>(query: Query<T>): Record<string, string> {
+    public buildQueryParams<T extends FilterPagination>(query: Query<T>): Record<string, string> {
         const queryParams: Record<string, string> = {};
 
         // Helper function for recursion

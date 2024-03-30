@@ -1,7 +1,7 @@
 <template>
 
     <form-input :type="FormInputType.Text" :modelValue="modelValue"
-                @update:modelValue="($event) => $emit('update:modelValue', $event)"
+                @update:modelValue="value => $emit('update:modelValue', value)"
                 :label="label" :placeholder="placeholder" :border="border"
     />
 
@@ -10,7 +10,6 @@
 <script setup lang="ts">
 
 import FormInput from "@/common/components/formInput/FormInput.vue";
-import {defineEmits, defineProps} from "vue";
 import {FormInputType} from "@/common/components/formInput/FormInputType";
 
 const props = defineProps({

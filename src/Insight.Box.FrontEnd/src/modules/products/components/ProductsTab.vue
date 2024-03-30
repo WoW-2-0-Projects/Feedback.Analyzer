@@ -19,7 +19,8 @@
                        :product="modalProduct"
         />
 
-        <confirmation-modal text="Are you sure you want to delete it?" :modalOptions="deleteConfirmationDialog"/>
+        <confirmation-modal text="Are you sure you want to delete it?"
+                            :modalOptions="deleteConfirmationDialog as any"/>
 
     </div>
 
@@ -33,7 +34,6 @@ import ProductsSearchBar from "@/modules/products/components/ProductsSearchBar.v
 import ProductModal from "@/modules/products/components/ProductModal.vue";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
-import {NotificationSource} from "@/infrastructure/models/notifications/Action";
 import {Query} from "@/infrastructure/models/query/Query";
 import {ProductFilter} from "@/modules/products/models/ProductFilter";
 import {CreateProductCommand} from "@/modules/products/models/CreateProductCommand";
@@ -56,7 +56,6 @@ const noProductsFound = ref<boolean>(false);
 
 /* Product modal states  */
 const productModalActive = ref<boolean>(false);
-const productsChangeSource = ref<NotificationSource<any>>(new NotificationSource());
 const modalProduct = ref<Product>(new Product());
 const deleteConfirmationDialog = ref(useConfirmDialog());
 

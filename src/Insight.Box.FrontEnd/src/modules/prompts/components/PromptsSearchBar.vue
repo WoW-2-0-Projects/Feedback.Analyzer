@@ -38,8 +38,8 @@ const props = defineProps({
     }
 });
 
-const selectedFilter = ref<DropDownValue | null>(null);
-const filterDropDownValues = ref<Array<DropDownValue | null>>([
+const selectedFilter = ref<DropDownValue<string, string> | null>(null);
+const filterDropDownValues = ref<Array<DropDownValue<string, string>>>([
     {key: 'All', value: 'All'},
     {key: 'Active', value: 'Active'},
     {key: 'Inactive', value: 'Inactive'}

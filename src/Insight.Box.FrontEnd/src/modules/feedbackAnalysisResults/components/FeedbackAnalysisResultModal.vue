@@ -139,7 +139,7 @@
 
 <script setup lang="ts">
 
-import {defineEmits, type PropType, watch} from 'vue';
+import {type PropType, watch} from 'vue';
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import ModalBase from "@/common/components/modalBase/ModalBase.vue";
 import {FeedbackAnalysisResult} from "@/modules/feedbackAnalysisResults/models/FeedbackAnalysisResult";

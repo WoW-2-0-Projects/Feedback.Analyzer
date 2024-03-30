@@ -80,11 +80,11 @@ export class DocumentService {
         return element.children.length == 0 ? 0 : (element.children[0] as HTMLElement).offsetWidth;
     }
 
-    public addEventListener(element: HTMLElement, eventName: string, callback: (event: HTMLElement) => void): void {
+    public addEventListener(element: HTMLElement | Window, eventName: string, callback: (event: HTMLElement) => void): void {
         element.addEventListener(eventName, (event: Event) => callback(event.target as HTMLElement));
     }
 
-    public removeEventListener(element: HTMLElement, eventName: string, callback: (event: HTMLElement) => void): void {
+    public removeEventListener(element: HTMLElement | Window, eventName: string, callback: (event: HTMLElement) => void): void {
         element.removeEventListener(eventName, (event: Event) => callback(event.target as HTMLElement));
     }
 

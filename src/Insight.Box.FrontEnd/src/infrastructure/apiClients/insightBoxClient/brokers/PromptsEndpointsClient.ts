@@ -5,8 +5,8 @@ import type {PromptFilter} from "@/modules/prompts/models/PromptFilter";
 import type {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 import type {PromptCategoryFilter} from "@/modules/prompts/models/PromptCategoryFilter";
 import type {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisPromptCategory";
-import type {PromptExecutionResultDto} from "@/modules/prompts/models/PromptExecutionResultDto";
 import type {CreatePromptCommand} from "@/modules/prompts/models/CreatePromptCommand";
+import type {PromptExecutionResult} from "@/modules/prompts/models/PromptExecutionResult";
 
 /**
  * Provides prompts endpoints client functionality
@@ -60,7 +60,7 @@ export  class PromptsEndpointsClient {
      */
     public async getPromptResultsByCategoryIdAsync(categoryId: string) {
         const  endpointUrl = `api/prompts/categories/${categoryId}/results/`;
-        return await  this.client.getAsync<Array<PromptExecutionResultDto>>(endpointUrl);
+        return await  this.client.getAsync<Array<PromptExecutionResult>>(endpointUrl);
     }
 
     /**
@@ -68,7 +68,7 @@ export  class PromptsEndpointsClient {
      */
     public async getPromptResultsByPromptIdAsync(promptId: string) {
         const  endpointUrl =`api/prompts${promptId}/results`;
-        return await this.client.getAsync<Array<PromptExecutionResultDto>>(endpointUrl);
+        return await this.client.getAsync<Array<PromptExecutionResult>>(endpointUrl);
     }
 
     /**
