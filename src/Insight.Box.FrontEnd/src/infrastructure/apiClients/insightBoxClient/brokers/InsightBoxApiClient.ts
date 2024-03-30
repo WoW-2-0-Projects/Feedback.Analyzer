@@ -35,7 +35,7 @@ export class InsightBoxApiClient {
 
     constructor() {
         // Set base url
-        this.baseUrl = "https://localhost:7239";
+        this.baseUrl = "https://insight-box-backend.proudgrass-5476634c.eastus.azurecontainerapps.io";
 
         // Create api client instance
         this.client = new ApiClientBase({
