@@ -257,8 +257,8 @@ public static partial class HostConfiguration
         
         // Define db connection string based on runtime environment
         var openAiApiKey = builder.Environment.IsProduction()
-            ? Environment.GetEnvironmentVariable("OpenAiApiSettings:ApiKey")
-            : builder.Configuration.GetValue<string>("OpenAiApiSettings:ApiKey");
+            ? Environment.GetEnvironmentVariable("OpenAiSettings-ApiKey")
+            : builder.Configuration.GetValue<string>("OpenAiSettings-ApiKey");
         
         if(string.IsNullOrWhiteSpace(openAiApiKey))
             throw new InvalidOperationException("OpenAI API key is not configured");
