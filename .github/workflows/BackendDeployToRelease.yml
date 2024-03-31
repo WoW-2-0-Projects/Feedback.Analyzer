@@ -36,6 +36,16 @@ jobs:
           tags: ${{ secrets.AZ_ACR_LOGIN_SERVER }}/insightboxbackend:${{ env.IMAGE_VERSION }}
           push: true
 
+      - name: Set Environment Variables for Container App
+        run: |
+          az containerapp update \
+            --name ${{ secrets.AZ_BACKEND_ACA_NAME }} \
+            --resource-group ${{ secrets.AZ_RG_NAME }} \
+            --environment-variables DbConnectionString='${{ secrets.DB_CONNECTION_STRING }}'
+        shell: bash
+        env:
+          AZURE_CREDENTIALS: ${{ secrets.AZ_SP_CREDENTIALS }}
+
   deploy-container-app:
     needs: build-and-push
     runs-on: ubuntu-latest
