@@ -254,9 +254,17 @@ public static partial class HostConfiguration
     {
         // Create kernel builder
         var kernelBuilder = Kernel.CreateBuilder();
+        
+        // Define db connection string based on runtime environment
+        var openAiApiKey = builder.Environment.IsProduction()
+            ? Environment.GetEnvironmentVariable("OpenAiApiSettings:ApiKey")
+            : builder.Configuration.GetValue<string>("OpenAiApiSettings:ApiKey");
+        
+        if(string.IsNullOrWhiteSpace(openAiApiKey))
+            throw new InvalidOperationException("OpenAI API key is not configured");
 
         // Add OpenAI connector
-        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-4-0125-preview", apiKey: builder.Configuration["OpenAiApiSettings:ApiKey"]!);
+        kernelBuilder.AddOpenAIChatCompletion(modelId: "gpt-4-0125-preview", apiKey: openAiApiKey);
 
         // Build kernel
         var kernel = kernelBuilder.Build();
