@@ -1,0 +1,31 @@
+.theme-modal-transition {
+  @apply transition duration-150;
+}
+
+.theme-modal-shadow {
+  @apply shadow-2xl;
+}
+
+.theme-modal-bg {
+  @apply bg-primaryColor;
+}
+
+.theme-modal-border {
+  @apply border border-accentSecondaryColor;
+}
+
+.modal-border-round {
+  @apply rounded-xl;
+}
+
+.modal-bg-overlay-blur {
+  @apply fixed inset-0 bg-opacity-30 bg-black top-0 left-0 h-screen w-screen backdrop-filter backdrop-blur-lg;
+}
+
+.modal-content-padding {
+  @apply p-10;
+}
+
+.modal-content-layout {
+  @apply w-[600px];
+}
