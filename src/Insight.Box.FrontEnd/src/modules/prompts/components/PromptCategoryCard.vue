@@ -120,8 +120,7 @@ const emit = defineEmits<{
     (e: 'addPrompt', promptCategoryId: string, loadPromptResultCallback: AsyncFunction): void,
     (e: 'editPrompt', promptId: string, loadPromptResultCallback: AsyncFunction<string>),
     (e: 'openHistory', history: PromptsExecutionHistory): void,
-    (e: 'loadCategory', categoryId: string): void,
-    (e: 'editPrompt', promptId: string, loadPromptResultCallback: AsyncFunction): void
+    (e: 'loadCategory', categoryId: string): void
 }>();
 
 const promptResultsTableData = ref<TableData>(new TableData([
