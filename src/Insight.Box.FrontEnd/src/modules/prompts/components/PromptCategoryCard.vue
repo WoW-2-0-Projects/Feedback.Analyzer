@@ -32,11 +32,11 @@
 
                         <app-button :type="ActionType.Secondary" :layout="ButtonLayout.Square" icon="fas fa-plus"
                                     :size="ActionComponentSize.ExtraSmall"
-                                    @click="emit('addPrompt', promptCategory.id, promptResultLoadFunction)"/>
+                                    @click="emit('addPrompt', promptCategory.id, promptResultLoadFunction!)"/>
 
                         <app-button :type="ActionType.Primary" :layout="ButtonLayout.Rectangle" icon="fas fa-play"
                                     text="Run"
-                                    :disabled="selectedTrainingWorkflow === null || promptCategory.selectedPromptId === null"
+                                    :disabled="!selectedTrainingWorkflow || !promptCategory.selectedPromptId"
                                     :size="ActionComponentSize.ExtraSmall" @click="onTriggerWorkflow"/>
 
                     </div>
@@ -66,18 +66,15 @@
 
 </template>
 
-
 <script setup lang="ts">
-
 
 import {onBeforeMount, type PropType, ref, watch} from "vue";
 import {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisPromptCategory";
 import {FeedbackAnalysisWorkflow} from "@/modules/workflows/models/FeedbackAnalysisWorkflow";
-import {LayoutConstants} from "../../../common/constants/LayoutConstants";
+import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
-import {AsyncFunction} from "@/infrastructure/models/notifications/Function";
 import {DropDownValue} from "@/common/components/formDropDown/DropDownValue";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import FormDropDown from "@/common/components/formDropDown/FormDropDown.vue";
@@ -89,6 +86,8 @@ import {TableAction} from "@/common/components/appTable/TableAction";
 import {TableRowData} from "@/common/components/appTable/TableRowData";
 import {DateTimeFormatterService} from "@/infrastructure/services/dateTime/DateTimeFormatterService";
 import {ActionType} from "@/common/components/actions/ActionType";
+import {AsyncFunction} from "@/infrastructure/models/delegates/AsyncFunction";
+import type {PromptExecutionResult} from "@/modules/prompts/models/PromptExecutionResult";
 
 const insightBoxApiClient = new InsightBoxApiClient();
 const dateTimeFormatterService = new DateTimeFormatterService();
@@ -106,21 +105,23 @@ const props = defineProps({
         type: Array as PropType<Array<FeedbackAnalysisWorkflow>>,
         required: true
     }
-})
+});
 
 const promptResultLoadFunction = ref<AsyncFunction>();
 const selectedTrainingWorkflow = ref<DropDownValue<string, FeedbackAnalysisWorkflow> | null>(null);
 const trainingWorkflowOptions = ref<Array<DropDownValue<string, FeedbackAnalysisWorkflow>>>();
+const promptExecutionResults = ref<Array<PromptExecutionResult>>([]);
 
 watch(() => props.workflows, async () => {
     loadWorkflowOptions();
 }, {deep: true});
 
 const emit = defineEmits<{
-    (e: 'addPrompt', promptCategoryId: string, loadPromptResultCallback: (promptId: string) => Promise): void
+    (e: 'addPrompt', promptCategoryId: string, loadPromptResultCallback: AsyncFunction): void,
     (e: 'editPrompt', promptId: string, loadPromptResultCallback: AsyncFunction<string>),
     (e: 'openHistory', history: PromptsExecutionHistory): void,
     (e: 'loadCategory', categoryId: string): void,
+    (e: 'editPrompt', promptId: string, loadPromptResultCallback: AsyncFunction): void
 }>();
 
 const promptResultsTableData = ref<TableData>(new TableData([
@@ -141,8 +142,8 @@ const promptHistoriesTableData = ref<TableData>(new TableData([
 ));
 
 onBeforeMount(async () => {
-    promptResultLoadFunction.value = new AsyncFunction<string>(loadPromptResultAsync);
     loadWorkflowOptions();
+    promptResultLoadFunction.value = new AsyncFunction(loadPromptResultsAsync);
     await loadAllPromptResultsAsync();
     await loadPromptExecutionHistoryAsync();
 });
@@ -236,5 +237,14 @@ const onPromptVersionSelected = async (promptId: string) => {
         emit('loadCategory', props.promptCategory?.id);
     }
 };
+
+
+const loadPromptResultsAsync = async () => {
+    const response = await insightBoxApiClient.prompts.getPromptResultsByCategoryIdAsync(props.promptCategory.id);
+
+    if (response.response) {
+        promptExecutionResults.value = response.response;
+    }
+}
 
 </script>

@@ -20,7 +20,8 @@
                             @submit="onOrganizationModalSubmit" :isCreate="isCreate"
                             :organization="modalOrganization"/>
 
-        <confirmation-modal text="Are you sure you want to delete it?" :modalOptions="deleteConfirmationDialog"/>
+        <confirmation-modal text="Are you sure you want to delete it?" :modalOptions="deleteConfirmationDialog as
+        any"/>
 
     </div>
 
@@ -32,7 +33,6 @@ import {onBeforeMount, ref} from "vue";
 import {DocumentService} from "@/infrastructure/services/document/DocumentService";
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import OrganizationsSearchBar from "@/modules/organizations/components/OrganizationsSearchBar.vue";
-import {NotificationSource} from "@/infrastructure/models/notifications/Action";
 import {Organization} from "../models/Organization";
 import {InsightBoxApiClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/InsightBoxApiClient";
 import OrganizationCard from "./OrganizationCard.vue";
@@ -53,7 +53,6 @@ const organizationsQuery = ref<Query<any>>(new Query(new OrganizationFilter()));
 
 /* Organization modal states  */
 const organizationModalActive = ref<boolean>(false);
-const organizationsChangeSource = ref<NotificationSource<any>>(new NotificationSource());
 const modalOrganization = ref<Organization>(new Organization());
 
 

@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 
-import {computed, defineEmits, type PropType, ref} from 'vue';
+import {computed, type PropType, ref} from 'vue';
 import {LayoutConstants} from "@/common/constants/LayoutConstants";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import FormInput from "@/common/components/formInput/FormInput.vue";
@@ -72,7 +72,7 @@ const props = defineProps({
         required: true
     },
     products: {
-        type: Array as PropType<Array<FeedbackAnalysisWorkflow>>,
+        type: Array as PropType<Array<Product>>,
         required: true
     },
     isActive: {
@@ -101,8 +101,12 @@ const productOptions = computed(() => props.products?.map(product =>
 const product = ref<DropDownValue<string, Product> | null>(null);
 
 const onSubmit = async () => {
-    props.workflow.productId = product?.value?.value?.id;
-    emit('submit', props.workflow, props.isCreate ? baseWorkflow.value!.value : null);
+
+
+
+
+    props.workflow.productId = product!.value!.value!.id;
+    emit('submit', props.workflow, props.isCreate ? baseWorkflow!.value!.value! : null);
 
     onClose();
 }

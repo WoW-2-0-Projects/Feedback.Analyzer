@@ -1,7 +1,7 @@
 /*
  * Represents the data of the table
  */
-import type {Action} from "@/infrastructure/models/delegates/Action";
+import type {ParameterizedAction} from "@/infrastructure/models/delegates/ParameterizedAction";
 import {TableAction} from "@/common/components/appTable/TableAction";
 
 export class TableRowData {

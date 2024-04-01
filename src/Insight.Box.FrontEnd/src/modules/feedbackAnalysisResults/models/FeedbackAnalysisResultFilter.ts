@@ -8,13 +8,11 @@ export class FeedbackAnalysisResultFilter extends  FilterPagination {
     /*
      * Result id
      */
-    public resultId: string;
+    public resultId!: string;
 
     constructor(resultId: string) {
         super();
         this.pageSize = 5;
         this.resultId = resultId;
-
-        this.searchKeyword = '';
     }
 }

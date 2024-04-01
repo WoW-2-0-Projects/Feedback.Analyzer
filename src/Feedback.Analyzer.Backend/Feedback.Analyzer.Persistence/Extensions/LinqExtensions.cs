@@ -1,4 +1,4 @@
-﻿using Feedback.Analyzer.Domain.Common.Query;
+﻿using Feedback.Analyzer.Domain.Common.Queries;
 
 namespace Feedback.Analyzer.Persistence.Extensions;
 

@@ -20,7 +20,7 @@
                     />
                     <app-button class="w-fit" :type="ActionType.Danger" :layout="ButtonLayout.Rectangle"
                                 :size="ActionComponentSize.ExtraSmall" icon="fas fa-trash"
-                                @click="emit('delete', workflow.id)"
+                                @click="emit('delete', workflowResult.id)"
                     />
 
                 </div>
@@ -113,26 +113,23 @@ import {FeedbackAnalysisResultFilter} from
         "@/modules/feedbackAnalysisResults/models/FeedbackAnalysisResultFilter";
 import FeedbackAnalysisResultTable from "@/modules/feedbackAnalysisResults/components/FeedbackAnalysisResultTable.vue";
 import {ActionType} from "@/common/components/actions/ActionType";
-import {Organization} from "@/modules/organizations/models/Organization";
-import type {NotificationSource} from "@/infrastructure/models/notifications/Action";
+import {ParameterizedNotificationSource} from "@/infrastructure/models/delegates/ParameterizedNotificationSource";
 
 const timeFormatterService = new DateTimeFormatterService();
 const insightBoxClient = new InsightBoxApiClient();
 
-const props = defineProps({
-    workflowResult: {
-        type: Object as PropType<FeedbackAnalysisWorkflowResult>,
-        required: true
-    },
-    closeSource: {
-        type: Object as PropType<NotificationSource<string>>
-    }
-});
+interface Props {
+    workflowResult: FeedbackAnalysisWorkflowResult;
+    closeSource: ParameterizedNotificationSource<string>;
+}
+
+const props = defineProps<Props>();
 
 // Feedback analysis results table states
 const isResultsListOpen = ref<boolean>(false);
 const feedbackAnalysisResults = ref<Array<FeedbackAnalysisResult>>([]);
-const feedbackAnalysisResultsQuery = ref<Query>(new Query(new FeedbackAnalysisResultFilter(props.workflowResult?.id)));
+const feedbackAnalysisResultsQuery = ref<Query<FeedbackAnalysisResultFilter>>(new Query(new
+FeedbackAnalysisResultFilter(props.workflowResult?.id)));
 
 onBeforeMount(() => {
     props.closeSource?.addListener((resultId: string) => {
@@ -144,7 +141,8 @@ onBeforeMount(() => {
 const emit = defineEmits<
     {
         (e: 'closeOthers', resultId: string): void
-        (e: 'openFeedbackResult', feedbackResultId: string): void
+        (e: 'openFeedbackResult', feedbackResultId: string): void,
+        (e: 'delete', workflowId: string): void
     }>();
 
 const onOpenFeedbackAnalysisResults = async () => {

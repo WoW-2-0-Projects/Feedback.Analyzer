@@ -118,7 +118,7 @@
             <!-- Workflow results history -->
             <div v-if="workflowResults.length > 0" class="flex flex-col w-full gap-5 p-5">
                 <workflow-result-card v-for="(result, index) in workflowResults" :workflowResult="result" :key="index"
-                                      :closeSource="closeSource" @closeOthers="resultId =>
+                                      :closeSource="closeSource as ParameterizedNotificationSource<string>" @closeOthers="resultId =>
                                       closeSource.updateListeners(resultId)"
                                       @openFeedbackResult="feedbackResultId => emit('openFeedbackResult', feedbackResultId)"
                 />
@@ -137,7 +137,7 @@
 
 <script setup lang="ts">
 
-import {defineEmits, type PropType, ref} from "vue";
+import {type PropType, ref} from "vue";
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
 import VerticalDivider from "@/common/components/dividers/VerticalDivider.vue";
@@ -152,27 +152,35 @@ import {Query} from "@/infrastructure/models/query/Query";
 import {FeedbackAnalysisWorkflowResultFilter} from "@/modules/workflows/models/FeedbackAnalysisWorkflowResultFilter";
 import WorkflowResultCard from "@/modules/workflows/components/WorkflowResultCard.vue";
 import {ActionType} from "@/common/components/actions/ActionType";
-import {NotificationSource} from "@/infrastructure/models/notifications/Action";
+import {ParameterizedNotificationSource} from "@/infrastructure/models/delegates/ParameterizedNotificationSource";
+import type {FeedbackAnalysisWorkflowResult} from "@/modules/workflows/models/FeedbackAnalysisWorkflowResult";
 
 const runButtonText = "Run";
 const isResultsListOpen = ref<boolean>(false);
 
 const insightBoxClient = new InsightBoxApiClient();
 
-const props = defineProps({
-    workflow: {
-        type: Object as PropType<FeedbackAnalysisWorkflow>,
-        required: true
-    }
-});
+interface Props {
+    workflow: FeedbackAnalysisWorkflow;
+}
+
+const props = defineProps<Props>();
+
+// const props = defineProps({
+//     workflow: {
+//         type: Object as PropType<FeedbackAnalysisWorkflow>,
+//         required: true
+//     }
+// });
 
 // Workflow results states
-const workflowResultsQuery = ref<Query>(new Query(new FeedbackAnalysisWorkflowResultFilter(props.workflow?.id)));
-const workflowResults = ref<FeedbackAnalysisWorkflow[]>([]);
-const closeSource = ref<NotificationSource<string>>(new NotificationSource<string>());
+const workflowResultsQuery = ref<Query<FeedbackAnalysisWorkflowResultFilter>>(new
+Query<FeedbackAnalysisWorkflowResultFilter>(new FeedbackAnalysisWorkflowResultFilter(props.workflow?.id)));
+const workflowResults = ref<Array<FeedbackAnalysisWorkflowResult>>([]);
+const closeSource = ref<ParameterizedNotificationSource<string>>(new ParameterizedNotificationSource<string>());
 
 const emit = defineEmits<{
-    (e: 'update', workflow: FeedbackAnalysisWorkflow): void,
+    (e: 'edit', workflow: FeedbackAnalysisWorkflow): void,
     (e: 'delete', workflowId: string): void,
     (e: 'openFeedbackResult', feedbackResultId: string): void
 }>();

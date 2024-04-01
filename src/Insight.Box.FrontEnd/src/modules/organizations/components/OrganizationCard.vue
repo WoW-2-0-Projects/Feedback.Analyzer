@@ -32,14 +32,14 @@ import {Organization} from '../models/Organization';
 import AppButton from "@/common/components/appButton/AppButton.vue";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 import {ButtonLayout} from "@/common/components/appButton/ButtonLayout";
-import {ref} from "vue";
+import {type PropType, ref} from "vue";
 import {ActionType} from "@/common/components/actions/ActionType";
 
 const isHover = ref<boolean>(false);
 
 const props = defineProps({
     organization: {
-        type: Object as () => Organization,
+        type: Object as PropType<Organization>,
         required: true
     }
 });

@@ -5,17 +5,17 @@ export class FeedbackAnalysisWorkflowResult {
     /**
      * Result Id
      */
-    public id: string;
+    public id!: string;
 
     /**
      * Workflow Id
      */
-    public workflowId: string;
+    public workflowId!: string;
 
     /**
      * The start time of the feedback analysis workflow.
      */
-    public startedTime: Date;
+    public startedTime!: Date;
 
     /**
      * The finish time of the feedback analysis workflow.

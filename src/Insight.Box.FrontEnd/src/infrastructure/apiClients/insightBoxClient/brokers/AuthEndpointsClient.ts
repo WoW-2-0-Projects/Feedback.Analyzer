@@ -47,7 +47,7 @@ export class AuthEndpointsClient {
      * @returns A promise that resolves with the details of the current user.
      */
     public async getCurrentUser() {
-        const config: AxiosRequestConfig = {mapper: (r: Client) => plainToClass(Client, r)};
+        const config: AxiosRequestConfig | any = {mapper: (r: Client) => plainToClass(Client, r)};
         const endpointUrl = 'api/auth/me';
         return await this.client.getAsync<Client>(endpointUrl, config);
     }

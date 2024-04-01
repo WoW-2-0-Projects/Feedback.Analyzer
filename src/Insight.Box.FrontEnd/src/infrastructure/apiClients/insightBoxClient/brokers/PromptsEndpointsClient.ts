@@ -5,8 +5,8 @@ import type {PromptFilter} from "@/modules/prompts/models/PromptFilter";
 import type {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 import type {PromptCategoryFilter} from "@/modules/prompts/models/PromptCategoryFilter";
 import type {AnalysisPromptCategory} from "@/modules/prompts/models/AnalysisPromptCategory";
-import type {PromptExecutionResult} from "@/modules/prompts/models/PromptExecutionResult";
 import type {CreatePromptCommand} from "@/modules/prompts/models/CreatePromptCommand";
+import type {PromptExecutionResult} from "@/modules/prompts/models/PromptExecutionResult";
 
 /**
  * Provides prompts endpoints client functionality
