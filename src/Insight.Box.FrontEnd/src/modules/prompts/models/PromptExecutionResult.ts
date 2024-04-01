@@ -1,34 +1,50 @@
+import type {ITableRow} from "@/common/components/appTable/ITableRow";
+import {TableRowData} from "@/common/components/appTable/TableRowData";
+import {ApiResponse} from "@/infrastructure/apiClients/apiClientBase/ApiResponse";
+
 /*
- * Represents the result of executing a prompt.
+ * Represents a prompt execution result.
  */
-export class PromptExecutionResult {
-    /*
-     * The ID of the prompt.
-     */
-    promptId!: string;
+export class PromptExecutionResult implements ITableRow {
 
     /*
-     * The version of the prompt.
+     * Prompt Id
      */
-    version!: number;
+    public promptId!: string;
 
     /*
-     *  The revision number of the prompt.
+     * Prompt version
      */
-    revision!: number;
+    public version!: number;
 
     /*
-     * The total number of executions for the prompt.
+     * Prompt revision
      */
-    executionsCount!: number;
+    public revision!: number;
 
     /*
-     * The average execution time for the prompt.
+     * Prompt executions count
      */
-    averageExecutionTime!: number;
+    public executionsCount!: number;
 
     /*
-     * The average accuracy of the prompt's executions.
+     * Average execution time
      */
-    averageAccuracy!: number;
+    public averageExecutionTime!: number;
+
+    /*
+     * Prompt average accuracy
+     */
+    public averageAccuracy!: number;
+
+    public mapToTableRow() {
+        return new TableRowData([
+            `${this.version}.${this.revision}`,
+            this.averageExecutionTime.toString(),
+            this.averageAccuracy.toString(),
+            this.executionsCount.toString(),
+        ], []);
+    }
 }
+
+

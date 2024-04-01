@@ -1,5 +1,5 @@
 ﻿using Feedback.Analyzer.Application.Organizations.Models;
-using Feedback.Analyzer.Domain.Common.Query;
+using Feedback.Analyzer.Domain.Common.Queries;
 
 namespace Feedback.Analyzer.Application.FeedbackAnalysisWorkflowResults.Models;
 

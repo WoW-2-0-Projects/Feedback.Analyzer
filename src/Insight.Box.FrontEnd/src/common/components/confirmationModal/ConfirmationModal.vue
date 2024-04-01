@@ -1,6 +1,6 @@
 <template>
 
-    <ModalBase :isActive="modalOptions.isRevealed" @closeModal="modalOptions.confirm(false)">
+    <ModalBase :isActive="(modalOptions as any).isRevealed" @closeModal="modalOptions.confirm(false)">
         <template v-slot:header>
             <h1 class="text-primaryContentColor text-xl"> {{ text }} </h1>
         </template>

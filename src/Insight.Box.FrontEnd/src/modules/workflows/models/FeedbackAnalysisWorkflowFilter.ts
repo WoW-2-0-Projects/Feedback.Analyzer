@@ -1,4 +1,4 @@
-import type {WorkflowType} from "@/modules/workflows/models/WorkflowType";
+import {WorkflowType} from "@/modules/workflows/models/WorkflowType";
 import {FilterPagination} from "@/common/FilterPagination";
 
 /*
@@ -9,17 +9,18 @@ export class FeedbackAnalysisWorkflowFilter extends  FilterPagination {
     /*
      * Workflow type
      */
-    public type: WorkflowType;
+    public type!: WorkflowType;
 
     /*
     * Search keyword
     */
-    public searchKeyword : string;
+    public searchKeyword! : string;
 
-    constructor() {
+    constructor(type = WorkflowType.Template) {
         super();
-        this.pageSize = 5;
 
+        this.type = type;
+        this.pageSize = 5;
         this.searchKeyword = '';
     }
 }

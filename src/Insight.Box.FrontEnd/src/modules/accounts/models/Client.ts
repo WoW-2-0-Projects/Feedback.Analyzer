@@ -8,7 +8,7 @@ export class Client {
     /*
      * Entity Id
      */
-    public id: string;
+    public id!: string;
 
     /**
      * The first name of the client.
@@ -23,5 +23,5 @@ export class Client {
     /**
      * The email address of the client.
      */
-    public emailAddress: string;
+    public emailAddress!: string;
 }

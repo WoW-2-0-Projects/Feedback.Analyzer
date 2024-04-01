@@ -5,7 +5,21 @@ namespace Feedback.Analyzer.Persistence.DataContexts;
 
 public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbContext(dbContextOptions)
 {
-    #region ClientsInfrastructure
+    #region Semantic Analysis Infrastructure
+
+    public DbSet<AnalysisPromptCategory> PromptCategories => Set<AnalysisPromptCategory>();
+    
+    public DbSet<AnalysisPrompt> Prompts => Set<AnalysisPrompt>();
+    
+    public DbSet<PromptExecutionHistory> PromptExecutionHistories => Set<PromptExecutionHistory>();
+
+    public DbSet<AnalysisWorkflow> AnalysisWorkflows => Set<AnalysisWorkflow>();
+    
+    public DbSet<WorkflowExecutionOption> WorkflowExecutionOptions => Set<WorkflowExecutionOption>();
+    
+    #endregion
+    
+    #region Clients Infrastructure
    
     public DbSet<Client> Clients => Set<Client>();
     
@@ -15,33 +29,22 @@ public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbC
     
     #endregion
 
-    #region FeedbackInfrastructure
+    #region Feedbacks Analysis Infrastructure
+    
     public DbSet<CustomerFeedback> Feedbacks => Set<CustomerFeedback>();
 
     public DbSet<FeedbackAnalysisResult> FeedbackAnalysisResults => Set<FeedbackAnalysisResult>();
     
     public DbSet<FeedbackAnalysisWorkflowResult> FeedbackAnalysisWorkflowResults => Set<FeedbackAnalysisWorkflowResult>();
-
-    #endregion
-
-    #region PromptsInfrastructure
-
-    public DbSet<PromptExecutionHistory> PromptExecutionHistories => Set<PromptExecutionHistory>();
-
-    #endregion
     
-    #region Prompt infrastructure
-    public DbSet<AnalysisPrompt> Prompts => Set<AnalysisPrompt>();
-
-    public DbSet<AnalysisWorkflow> AnalysisWorkflows => Set<AnalysisWorkflow>();
-    
-    public DbSet<WorkflowExecutionOption> WorkflowExecutionOptions => Set<WorkflowExecutionOption>();
-    
-    public DbSet<AnalysisPromptCategory> PromptCategories => Set<AnalysisPromptCategory>();
-
     public DbSet<FeedbackAnalysisWorkflow> FeedbackAnalysisWorkflows => Set<FeedbackAnalysisWorkflow>();
-    #endregion
     
+    public DbSet<FeedbackAnalysisWorkflowResultStats> FeedbackAnalysisWorkflowResultStats => Set<FeedbackAnalysisWorkflowResultStats>();
+    
+    public DbSet<FeedbackAnalysisWorkflowResultPoint> FeedbackAnalysisWorkflowResultPoints => Set<FeedbackAnalysisWorkflowResultPoint>();
+
+    #endregion
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);

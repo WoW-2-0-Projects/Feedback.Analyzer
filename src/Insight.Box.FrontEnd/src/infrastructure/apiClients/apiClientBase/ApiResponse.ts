@@ -5,12 +5,12 @@ import {plainToClass} from "class-transformer";
  * Represents API response
  */
 export class ApiResponse<T> {
-    public response: T | null;
+    public response!: T | null;
 
     /*
      * Gets error details, set only if request failed
      */
-    public error: ProblemDetails | null;
+    public error!: ProblemDetails | null;
 
     /*
     * Gets response status code

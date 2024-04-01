@@ -10,7 +10,7 @@
 
         <!-- Form input field -->
         <input :type="actualType" name="input" :value="value"
-               @input="emit('update:modelValue', `${prefix}${$event.target.value}`)"
+               @input="emit('update:modelValue', `${prefix}${($event?.target as HTMLInputElement)?.value}`)"
                @keydown="onInput" :disabled="disabled"
                class="w-full px-2.5 pb-2.5 pt-5 peer theme-input theme-input-text
                       theme-input-placeholder theme-action-transition text-base"
@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 
-import {computed, defineEmits, defineProps, type PropType, ref, watch} from 'vue';
+import {computed, type PropType, ref, watch} from 'vue';
 import {FormInputType} from "./FormInputType";
 import {ActionComponentSize} from "@/common/components/formInput/ActionComponentSize";
 
@@ -119,7 +119,8 @@ const labelStyles = computed(() => {
     return styles;
 });
 
-const actualType = ref<FormInputType>(props.type === FormInputType.Number ? FormInputType.Text : props.type);
+const actualType = ref<string>(props.type == FormInputType.Number ? FormInputType.Text :
+    props.type);
 const isFocused = ref<boolean>(false);
 
 const emit = defineEmits(['update:modelValue']);

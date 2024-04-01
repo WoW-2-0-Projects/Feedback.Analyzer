@@ -8,7 +8,7 @@ export class ChartService {
     /*
      * Renders a chart in the given container
      */
-    public async render(chartContainer: HTMLDivElement, options: any): Promise {
+    public async render(chartContainer: HTMLDivElement, options: any): Promise<void> {
         if (chartContainer && typeof ApexCharts !== 'undefined') {
 
             const chart = new ApexCharts(chartContainer, options);
@@ -16,7 +16,7 @@ export class ChartService {
         }
     }
 
-    public async remove(chartContainer: HTMLDivElement, options: any): Promise {
+    public async remove(chartContainer: HTMLDivElement, options: any): Promise<void> {
         if (chartContainer && typeof ApexCharts !== 'undefined') {
             const chart = new ApexCharts(chartContainer, options);
             await chart.destroy();

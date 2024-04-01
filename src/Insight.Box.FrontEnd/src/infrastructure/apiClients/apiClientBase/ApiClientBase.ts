@@ -64,8 +64,8 @@ export default class ApiClientBase {
         this.client.interceptors.response.use(<TResponse>(response: AxiosResponse<TResponse>) => {
                 let data = new ApiResponse(response.data as TResponse, null, response.status);
 
-                if(response.config.mapper != null && response.data != null)
-                    data.response = response.config.mapper(response.data);
+                if((response.config as any).mapper != null && response.data != null)
+                    data.response = (response.config as any).mapper(response.data);
 
                 return {
                     ...response,

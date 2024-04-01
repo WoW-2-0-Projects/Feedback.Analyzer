@@ -1,25 +1,18 @@
-import type ApiClientBase from "@/infrastructure/apiClients/apiClientBase/ApiClientBase";
-import type {Query} from "@/infrastructure/models/query/Query";
-import type {RequestFormatterService} from "@/infrastructure/apiClients/formatters/RequestFormatterService";
-import type {FeedbackAnalysisWorkflow} from "@/modules/prompts/models/FeedbackAnalysisWorkflow";
-import type {FeedbackAnalysisWorkflowFilter} from "@/modules/workflows/models/FeedbackAnalysisWorkflowFilter";
-import type {
-    CreateFeedbackAnalysisWorkflowCommand
-} from "@/modules/workflows/models/CreateFeedbackAnalysisWorkflowCommand";
 import type {
     UpdateFeedbackAnalysisWorkflowCommand
 } from "@/modules/workflows/models/UpdateFeedbackAnalysisWorkflowCommand";
 import type {
+    CreateFeedbackAnalysisWorkflowCommand
+} from "@/modules/workflows/models/CreateFeedbackAnalysisWorkflowCommand";
+import type {
     FeedbackAnalysisWorkflowResultFilter
 } from "@/modules/workflows/models/FeedbackAnalysisWorkflowResultFilter";
-import {FeedbackAnalysisWorkflowResult} from "@/modules/workflows/models/FeedbackAnalysisWorkflowResult";
-import {
-    FeedbackAnalysisResultFilter
-} from "@/modules/feedbackAnalysisResults/models/FeedbackAnalysisResultFilter";
-import type {AxiosRequestConfig} from "axios";
-import {Client} from "@/modules/accounts/models/Client";
-import {plainToClass} from "class-transformer";
-import {FeedbackAnalysisResult} from "@/modules/feedbackAnalysisResults/models/FeedbackAnalysisResult";
+import type {FeedbackAnalysisWorkflowResult} from "@/modules/workflows/models/FeedbackAnalysisWorkflowResult";
+import type {Query} from "@/infrastructure/models/query/Query";
+import type {FeedbackAnalysisWorkflowFilter} from "@/modules/workflows/models/FeedbackAnalysisWorkflowFilter";
+import type ApiClientBase from "@/infrastructure/apiClients/apiClientBase/ApiClientBase";
+import type {RequestFormatterService} from "@/infrastructure/apiClients/formatters/RequestFormatterService";
+import type {FeedbackAnalysisWorkflow} from "@/modules/workflows/models/FeedbackAnalysisWorkflow";
 
 export class WorkflowsEndpointsClient {
     public client: ApiClientBase;
