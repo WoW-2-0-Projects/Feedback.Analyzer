@@ -87,8 +87,7 @@ import {TableRowData} from "@/common/components/appTable/TableRowData";
 import {DateTimeFormatterService} from "@/infrastructure/services/dateTime/DateTimeFormatterService";
 import {ActionType} from "@/common/components/actions/ActionType";
 import {AsyncFunction} from "@/infrastructure/models/delegates/AsyncFunction";
-import type {PromptExecutionResult} from "@/modules/prompts/models/PromptExecutionResult";
-
+import {Action} from "@/infrastructure/models/delegates/Action";
 const insightBoxApiClient = new InsightBoxApiClient();
 const dateTimeFormatterService = new DateTimeFormatterService();
 
@@ -110,7 +109,6 @@ const props = defineProps({
 const promptResultLoadFunction = ref<AsyncFunction>();
 const selectedTrainingWorkflow = ref<DropDownValue<string, FeedbackAnalysisWorkflow> | null>(null);
 const trainingWorkflowOptions = ref<Array<DropDownValue<string, FeedbackAnalysisWorkflow>>>();
-const promptExecutionResults = ref<Array<PromptExecutionResult>>([]);
 
 watch(() => props.workflows, async () => {
     loadWorkflowOptions();
@@ -118,7 +116,7 @@ watch(() => props.workflows, async () => {
 
 const emit = defineEmits<{
     (e: 'addPrompt', promptCategoryId: string, loadPromptResultCallback: AsyncFunction): void,
-    (e: 'editPrompt', promptId: string, loadPromptResultCallback: AsyncFunction<string>),
+    (e: 'editPrompt', promptId: string, loadPromptResultCallback: AsyncFunction): void,
     (e: 'openHistory', history: PromptsExecutionHistory): void,
     (e: 'loadCategory', categoryId: string): void
 }>();
@@ -168,17 +166,21 @@ const loadPromptResultAsync = async (promptId: string) => {
 };
 
 const mapResultToTableRowData = (result: PromptExecutionResult) => {
+
     return new TableRowData([
             `${result.version}.${result.revision}`,
-            result.averageExecutionTime,
-            result.averageAccuracy,
-            result.executionsCount
+            result.averageExecutionTime.toString(),
+            result.averageAccuracy.toString(),
+            result.executionsCount.toString()
         ],
         [
             new TableAction(
-                () => emit('editPrompt', result.promptId, promptResultLoadFunction.value),
-                ActionType.Secondary, 'fas fa-edit'),
-            new TableAction(() => onPromptVersionSelected(result.promptId), ActionType.Secondary, 'fas fa-paperclip')
+                new Action(() => emit('editPrompt', result.promptId, promptResultLoadFunction.value!)),
+                ActionType.Secondary,
+                'fas fa-edit'),
+            new TableAction(new Action(() => onPromptVersionSelected(result.promptId)),
+                ActionType.Secondary,
+                'fas fa-paperclip')
         ]
     );
 };
@@ -201,15 +203,13 @@ const mapHistoryToTableRowData = (history: PromptsExecutionHistory) => {
 
     return new TableRowData([
             dateTimeFormatterService.formatHumanize(history.executionTime),
-            history.executionDurationInMilliseconds,
-            history.result !== null
+            history.executionDurationInMilliseconds.toString(),
+            (history.result !== null).toString()
         ],
 
         [
-            new TableAction(() => {
-                    emit('openHistory', history)
-                }
-                , ActionType.Secondary, 'fas fa-circle-info')
+            new TableAction(new Action(() => emit('openHistory', history)),
+                ActionType.Secondary, 'fas fa-circle-info')
         ]
     );
 };

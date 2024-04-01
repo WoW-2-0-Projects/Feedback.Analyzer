@@ -6,9 +6,7 @@
         <prompts-search-bar :promptsQuery="promptsCategoryQuery"/>
 
         <!-- Prompts gallery-->
-        <infinite-scroll @onScroll ="onScroll"
-                         :contentchangesource ="promptChangeSource"
-                         class="mt-10 flex flex-col gap-y-5">
+        <div class="mt-10 flex flex-col gap-y-5">
             <!--Prompts card-->
             <prompt-category-card v-for="promptCategory in promptCategories" :key="promptCategory.id"
                                   :promptCategory="promptCategory" :workflows="trainingWorkflows"
@@ -17,6 +15,7 @@
                                   @loadCategory="categoryId => loadCategoryAsync(categoryId)"
                                   @openHistory="onOpenHistoryModal"
             />
+        </div>
 
         <!--Prompts card-->
         <prompt-category-card v-for="promptCategory in promptCategories" :key="promptCategory.id"
@@ -54,12 +53,13 @@ import PromptCategoryCard from "@/modules/prompts/components/PromptCategoryCard.
 import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 import {CreatePromptCommand} from "@/modules/prompts/models/CreatePromptCommand";
 import PromptModal from "@/modules/prompts/components/PromptModal.vue";
-import type {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecutionHistory";
+import {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecutionHistory";
 import PromptExecutionHistoryModal from "@/modules/prompts/components/PromptExecutionHistoryModal.vue";
 import {FeedbackAnalysisWorkflowFilter} from "@/modules/workflows/models/FeedbackAnalysisWorkflowFilter";
 import type {FeedbackAnalysisWorkflow} from "@/modules/workflows/models/FeedbackAnalysisWorkflow";
 import type {AsyncFunction} from "@/infrastructure/models/delegates/AsyncFunction";
 import {WorkflowType} from "@/modules/workflows/models/WorkflowType";
+import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
 
 
 
@@ -90,7 +90,7 @@ const trainingWorkflows = ref<Array<FeedbackAnalysisWorkflow>>([])
 
 // Prompt execution history modal
 const historyModalActive = ref<boolean>(false);
-const openedHistory = ref<PromptsExecutionHistory | null>(null);
+const openedHistory = ref<PromptsExecutionHistory>(new PromptsExecutionHistory());
 
 // Search bar states
 const isSearchBarLoading = ref<boolean>(false);
