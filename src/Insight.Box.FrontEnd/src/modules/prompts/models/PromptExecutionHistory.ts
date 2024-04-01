@@ -1,34 +1,34 @@
 /**
  * Represents a data transfer object (DTO) for a prompt execution history record.
  */
-export interface PromptsExecutionHistory {
+export class PromptsExecutionHistory {
     /**
      * Unique identifier of the prompt execution history record.
      */
-    id: string; // Use 'string' for GUIDs in TypeScript
+    public id!: string; // Use 'string' for GUIDs in TypeScript
 
     /**
      * Unique identifier of the associated prompt.
      */
-    promptId: string;
+    public promptId!: string;
 
     /**
      * The result of the prompt execution (optional).
      */
-    result?: string | null;
+    public result?: string | null;
 
     /**
      * Any exception that occurred during the prompt execution (optional).
      */
-    exception?: string | null;
+    public exception?: string | null;
 
     /**
      * The timestamp of when the prompt execution occurred.
      */
-    executionTime: Date;
+    public executionTime!: Date;
 
     /**
      * The duration of the prompt execution in seconds.
      */
-    executionDurationInMilliseconds: number;
+    public executionDurationInMilliseconds!: number;
 }

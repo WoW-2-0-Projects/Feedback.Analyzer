@@ -15,7 +15,7 @@
                                 :label="LayoutConstants.ExecutionResult"
                                 :disabled="true"/>
 
-                <form-text-area v-else :modelValue="history.exception"
+                <form-text-area v-else :modelValue="history.exception!"
                                 :label="LayoutConstants.ExecutionException"
                                 :disabled="true"/>
             </div>
