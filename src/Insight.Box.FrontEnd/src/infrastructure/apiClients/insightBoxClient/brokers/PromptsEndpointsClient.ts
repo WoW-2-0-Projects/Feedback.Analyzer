@@ -50,9 +50,9 @@ export  class PromptsEndpointsClient {
      * Asynchronously retrieves a prompt category by its ID.
      */
     public async  getCategoryByIdAsync(categoryId: string) {
-        const  endpointUrl = `api/prompts/categories${categoryId}`;
+        const  endpointUrl = `api/prompts/categories/${categoryId}`;
 
-        return await this.client.getAsync<Array<AnalysisPromptCategory>>(endpointUrl);
+        return await this.client.getAsync<AnalysisPromptCategory>(endpointUrl);
     }
 
     /**

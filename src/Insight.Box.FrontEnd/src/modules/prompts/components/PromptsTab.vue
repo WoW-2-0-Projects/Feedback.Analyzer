@@ -6,6 +6,16 @@
         <prompts-search-bar :promptsQuery="promptsCategoryQuery"/>
 
         <!-- Prompts gallery-->
+        <div class="mt-10 flex flex-col gap-y-5">
+            <!--Prompts card-->
+            <prompt-category-card v-for="promptCategory in promptCategories" :key="promptCategory.id"
+                                  :promptCategory="promptCategory" :workflows="trainingWorkflows"
+                                  @addPrompt="(categoryId, loadFunc) => openPromptModal(null, categoryId, loadFunc)"
+                                  @editPrompt="(promptId, loadFunc) => openPromptModal(promptId,null, loadFunc)"
+                                  @loadCategory="categoryId => loadCategoryAsync(categoryId)"
+                                  @openHistory="onOpenHistoryModal"
+            />
+        </div>
 
         <!--Prompts card-->
         <prompt-category-card v-for="promptCategory in promptCategories" :key="promptCategory.id"
@@ -17,6 +27,12 @@
         <!-- Prompts create / edit modal -->
         <prompt-modal :isActive="promptModalActive" @closeModal="closePromptModal"
                       @submit="onPromptModalSubmit($event)" :isCreate="isCreate" :prompt="editingPrompt"
+        />
+
+        <!-- Prompt execution history modal -->
+        <prompt-execution-history-modal :history="openedHistory"
+                                        :isActive="historyModalActive"
+                                        @closeModal="historyModalActive = false"
         />
 
     </div>
@@ -37,10 +53,15 @@ import PromptCategoryCard from "@/modules/prompts/components/PromptCategoryCard.
 import {AnalysisPrompt} from "@/modules/prompts/models/AnalysisPrompt";
 import {CreatePromptCommand} from "@/modules/prompts/models/CreatePromptCommand";
 import PromptModal from "@/modules/prompts/components/PromptModal.vue";
+import {PromptsExecutionHistory} from "@/modules/prompts/models/PromptExecutionHistory";
+import PromptExecutionHistoryModal from "@/modules/prompts/components/PromptExecutionHistoryModal.vue";
 import {FeedbackAnalysisWorkflowFilter} from "@/modules/workflows/models/FeedbackAnalysisWorkflowFilter";
 import type {FeedbackAnalysisWorkflow} from "@/modules/workflows/models/FeedbackAnalysisWorkflow";
 import type {AsyncFunction} from "@/infrastructure/models/delegates/AsyncFunction";
 import {WorkflowType} from "@/modules/workflows/models/WorkflowType";
+import InfiniteScroll from "@/common/components/infiniteScroll/InfiniteScroll.vue";
+
+
 
 //Services
 const insightBoxApiClient = new InsightBoxApiClient();
@@ -67,6 +88,10 @@ const workflowQuery = ref<Query<FeedbackAnalysisWorkflowFilter>>(new Query<Feedb
 FeedbackAnalysisWorkflowFilter(WorkflowType.Training)));
 const trainingWorkflows = ref<Array<FeedbackAnalysisWorkflow>>([])
 
+// Prompt execution history modal
+const historyModalActive = ref<boolean>(false);
+const openedHistory = ref<PromptsExecutionHistory>(new PromptsExecutionHistory());
+
 // Search bar states
 const isSearchBarLoading = ref<boolean>(false);
 
@@ -92,6 +117,18 @@ const loadPromptCategoriesAsync = async () => {
     }
 
     isLoading.value = false;
+}
+
+const loadCategoryAsync = async (categoryId: string) => {
+    const response = await insightBoxApiClient.prompts.getCategoryByIdAsync(categoryId);
+
+    if (response.response) {
+        let categoryIndex = promptCategories.value.findIndex(c => c.id === categoryId);
+        if (categoryIndex !== -1) {
+            promptCategories.value[categoryIndex] = response.response;
+        } else
+            promptCategories.value.push(response.response);
+    }
 }
 
 const loadWorkflowsAsync = async () => {
@@ -141,7 +178,6 @@ const createPromptAsync = async (prompt: AnalysisPrompt) => {
 const updatePromptAsync = async (prompt: AnalysisPrompt) => {
     isSearchBarLoading.value = true;
 
-    // prompt.organizationId = '60e6a4de-31e5-4f8b-8e6a-0a8f63f41527';
     const createPromptCommand = new CreatePromptCommand(prompt);
 
     const response = await
@@ -158,9 +194,6 @@ const updatePromptAsync = async (prompt: AnalysisPrompt) => {
 
 /**
  * open the modal
- * @param promptId
- * @param promptCategoryId
- * @param loadPromptResultCallback
  */
 const openPromptModal = async (
     promptId: string | null,
@@ -186,12 +219,18 @@ const openPromptModal = async (
     }
 }
 
+const  onOpenHistoryModal = (history: PromptsExecutionHistory) => {
+   openedHistory.value = history;
+   historyModalActive.value = true;
+}
+
 /**
  * close the modal
  */
 const closePromptModal = () => {
     promptModalActive.value = false;
 }
+
 
 const onScroll = async () => {
 

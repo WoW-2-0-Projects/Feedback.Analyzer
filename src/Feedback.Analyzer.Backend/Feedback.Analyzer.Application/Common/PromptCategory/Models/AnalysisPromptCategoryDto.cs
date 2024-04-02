@@ -33,4 +33,9 @@ public class AnalysisPromptCategoryDto
     /// Unique identifier of the selected prompt
     /// </summary>
     public Guid? SelectedPromptId { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the selected prompt version.
+    /// </summary>
+    public string? SelectedPromptVersion { get; set; } = string.Empty;
 }

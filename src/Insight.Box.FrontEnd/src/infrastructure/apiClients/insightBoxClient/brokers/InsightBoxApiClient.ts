@@ -11,6 +11,9 @@ import {
 } from "@/infrastructure/apiClients/insightBoxClient/brokers/WorkflowsEndpointsClient";
 import  {PromptsEndpointsClient} from "@/infrastructure/apiClients/insightBoxClient/brokers/PromptsEndpointsClient";
 import {
+    PromptExecutionHistoriesEndpointsClient
+} from "@/infrastructure/apiClients/insightBoxClient/brokers/PromptExecutionHistoriesEndpointsClient";
+import {
     FeedbackAnalysisResultsEndpointsClient
 } from "@/infrastructure/apiClients/insightBoxClient/brokers/FeedbackAnalysisResultsEndpointsClient";
 
@@ -54,10 +57,12 @@ export class InsightBoxApiClient {
         this.prompts = new PromptsEndpointsClient(this.client, this.requestFormatterService)
         this.workflows = new WorkflowsEndpointsClient(this.client, this.requestFormatterService);
         this.results = new FeedbackAnalysisResultsEndpointsClient(this.client, this.requestFormatterService);
+        this.executionHistories = new PromptExecutionHistoriesEndpointsClient(this.client, this.requestFormatterService);
     }
 
     public readonly auth: AuthEndpointsClient;
     public readonly clients: ClientsEndpointsClient;
+    public executionHistories: PromptExecutionHistoriesEndpointsClient;
     public readonly organizations: OrganizationsEndpointsClient;
     public readonly products: ProductsEndpointsClient;
     public readonly prompts: PromptsEndpointsClient;

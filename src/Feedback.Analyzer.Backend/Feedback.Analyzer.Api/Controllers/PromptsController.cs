@@ -1,6 +1,8 @@
-using Feedback.Analyzer.Application.Common.PromptCategory.Quearies;
+using Feedback.Analyzer.Application.Common.PromptCategory.Commands;
+using Feedback.Analyzer.Application.Common.PromptCategory.Queries;
 using Feedback.Analyzer.Application.Common.Prompts.Commands;
 using Feedback.Analyzer.Application.Common.Prompts.Queries;
+using Feedback.Analyzer.Application.Common.PromptsHistory.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -76,8 +78,8 @@ public class PromptsController(IMediator mediator) : ControllerBase
 
     #region Prompt Results
 
-    [HttpGet("results/{categoryId:guid}")]
-    public async ValueTask<IActionResult> GetPromptResultById([FromRoute] Guid categoryId,
+    [HttpGet("categories/{categoryId:guid}/results")]
+    public async ValueTask<IActionResult> GetPromptResultByCategoryId([FromRoute] Guid categoryId,
                                                               CancellationToken cancellationToken = default)
     {
         var result = await mediator.Send(
@@ -89,6 +91,51 @@ public class PromptsController(IMediator mediator) : ControllerBase
         );
         return result.Any() ? Ok(result) : NoContent();
     }
+    
+    [HttpPut("categories/{categoryId:guid}/selected/{promptId:guid}")]
+    public async ValueTask<IActionResult> UpdateSelectedPrompt(
+        [FromRoute] Guid categoryId,
+        [FromRoute] Guid promptId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var result = await mediator.Send(
+            new UpdateSelectedPromptCommand
+            {
+                CategoryId = categoryId,
+                PromptId = promptId,
+            },
+            cancellationToken
+        );
+        return result ? Ok() : BadRequest();
+    }
+
 
     #endregion
+    
+    
+    [HttpGet("categories/{categoryId:guid}")]
+    public async ValueTask<IActionResult> GetCategoryById([FromRoute] Guid categoryId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new PromptCategoryGetByIdQuery
+            {
+                CategoryId = categoryId
+            },
+            cancellationToken
+        );
+        return result is not null ? Ok(result) : NotFound();
+    }
+    [HttpGet("{promptId:guid}/histories")]
+    public async ValueTask<IActionResult> GetHistoryByPromptId([FromRoute] Guid promptId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new PromptExecutionHistoryGetByPromptIdQuery
+            {
+                PromptId = promptId
+            },
+            cancellationToken
+        );
+        return result.Any() ? Ok(result) : NoContent();
+    }
 }

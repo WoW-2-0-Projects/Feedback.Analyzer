@@ -22,7 +22,11 @@ public class PromptResultGetByCategoryIdQueryHandler(IMapper mapper, IPromptServ
                 {
                     TrackingMode = QueryTrackingMode.AsNoTracking
                 }
-                ).ToListAsync(cancellationToken: cancellationToken);
+                )
+            .OrderByDescending(prompt => prompt.Version)
+            .ThenByDescending(prompt => prompt.Revision)
+            .Include(prompt => prompt.ExecutionHistories)
+            .ToListAsync(cancellationToken: cancellationToken);
         
         return mapper.Map<ICollection<PromptResultDto>>(matchedPrompts);
     }

@@ -11,7 +11,7 @@
 }
 
 .table-header-cell {
-  @apply sticky top-0 z-10 px-6 py-2 text-left rtl:text-right font-medium;
+  @apply sticky top-0 z-10 px-3 py-2 text-left rtl:text-right font-medium;
 }
 
 .table-data-row {
@@ -20,4 +20,8 @@
 
 .table-data-cell {
   @apply py-3 px-6 text-left rtl:text-right ;
+}
+
+.table-data-cell-small {
+  @apply py-1 px-2 text-left rtl:text-right ;
 }

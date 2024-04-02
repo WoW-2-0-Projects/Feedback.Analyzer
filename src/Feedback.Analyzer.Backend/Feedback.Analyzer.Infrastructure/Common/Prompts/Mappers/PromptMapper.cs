@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Feedback.Analyzer.Application.Common.Prompts.Models;
 using Feedback.Analyzer.Domain.Entities;
 
@@ -19,7 +19,9 @@ public class PromptMapper : Profile
                 {
                     opt.PreCondition(src => src.ExecutionHistories.Any());
                     opt.MapFrom(
-                        src => src.ExecutionHistories.Select(history => history.ExecutionDuration).Average(timeSpan => timeSpan.TotalMilliseconds)
+                        src => (uint)src.ExecutionHistories
+                            .Select(history => history.ExecutionDuration)
+                            .Average(timeSpan => timeSpan.TotalMilliseconds)
                     );
                 }
             );
