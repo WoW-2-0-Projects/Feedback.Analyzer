@@ -6,6 +6,9 @@ using Feedback.Analyzer.Persistence.Extensions;
 
 namespace Feedback.Analyzer.Infrastructure.Common.PromptsCategories.CommandHandlers;
 
+/// <summary>
+/// Handles the command to update the selected prompt for a prompt category.
+/// </summary>
 public class UpdateSelectedPromptCommandHandler(IPromptCategoryService promptCategoryService, IPromptService promptService)
     : ICommandHandler<UpdateSelectedPromptCommand, bool>
 {
