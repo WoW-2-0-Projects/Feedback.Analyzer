@@ -21,4 +21,24 @@ public class FeedbackOpinion
     /// Gets or sets an array of negative points mentioned in the feedback.
     /// </summary>
     public string[] NegativeOpinionPoints { get; set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// Gets or sets an array of ideas mentioned in the feedback.
+    /// </summary>
+    public string[] Ideas { get; set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// Gets or sets an array of questions raised in the feedback.
+    /// </summary>
+    public string[] Questions { get; set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// Gets or sets an array of actionable ideas proposed in the feedback.
+    /// </summary>
+    public string[] ActionableIdeas { get; set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// Gets or sets an array of actionable questions proposed in the feedback.
+    /// </summary>
+    public string[] ActionableQuestions { get; set; } = Array.Empty<string>();
 }

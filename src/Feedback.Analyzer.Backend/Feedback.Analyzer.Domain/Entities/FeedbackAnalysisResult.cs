@@ -14,7 +14,6 @@ public class FeedbackAnalysisResult : AuditableEntity
     {
         FeedbackRelevance = new FeedbackRelevance();
         FeedbackOpinion = new FeedbackOpinion();
-        FeedbackActionablePoints = new FeedbackActionablePoints();
         FeedbackEntities = new FeedbackEntities();
         FeedbackMetrics = new FeedbackMetrics();
         AnalysisResult = new AnalysisResult();
@@ -34,11 +33,6 @@ public class FeedbackAnalysisResult : AuditableEntity
     /// Gets or sets the opinion analysis result of the feedback.
     /// </summary>
     public FeedbackOpinion FeedbackOpinion { get; set; }
-
-    /// <summary>
-    /// Gets or sets the actionable points analysis result of the feedback.
-    /// </summary>
-    public FeedbackActionablePoints FeedbackActionablePoints { get; set; }
 
     /// <summary>
     /// Gets or sets the entities analysis result of the feedback.
